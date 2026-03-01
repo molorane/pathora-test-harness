@@ -29,6 +29,20 @@ public class AssertionEngine {
         operators.put(AssertionOperator.REGEX_MATCH, new RegexMatchOperator());
         operators.put(AssertionOperator.STARTS_WITH, new StartsWithOperator());
         operators.put(AssertionOperator.ENDS_WITH, new EndsWithOperator());
+        operators.put(AssertionOperator.DATE_BEFORE, new DateBeforeOperator());
+        operators.put(AssertionOperator.DATE_AFTER, new DateAfterOperator());
+        operators.put(AssertionOperator.DATETIME_BEFORE, new DateTimeBeforeOperator());
+        operators.put(AssertionOperator.DATETIME_AFTER, new DateTimeAfterOperator());
+        operators.put(AssertionOperator.DATE_BEFORE_NOW, new DateBeforeNowOperator());
+        operators.put(AssertionOperator.DATE_AFTER_NOW, new DateAfterNowOperator());
+        operators.put(AssertionOperator.DATE_WITHIN_LAST, new DateWithinLastOperator());
+        operators.put(AssertionOperator.DATE_WITHIN_NEXT, new DateWithinNextOperator());
+        operators.put(AssertionOperator.DURATION_BETWEEN, new DurationBetweenDatesOperator());
+        operators.put(AssertionOperator.DURATION_EQUALS, new DurationEqualsOperator());
+        operators.put(AssertionOperator.DURATION_GREATER_THAN, new DurationGreaterThanOperator());
+        operators.put(AssertionOperator.DURATION_LESS_THAN, new DurationLessThanOperator());
+        operators.put(AssertionOperator.DATE_AFTER_DURATION, new DateAfterDurationOperator());
+        operators.put(AssertionOperator.DATE_BEFORE_DURATION, new DateBeforeDurationOperator());
         operators.put(AssertionOperator.EXISTS, new ExistsOperator());
         operators.put(AssertionOperator.ARRAY_SIZE_EQUALS, new ArraySizeEqualsOperator());
         operators.put(AssertionOperator.ARRAY_CONTAINS, new ArrayContainsOperator());
@@ -44,6 +58,7 @@ public class AssertionEngine {
         operators.put(AssertionOperator.OBJECT_CONTAINS_FIELDS_IGNORE_NULLS,
                 new ObjectContainsFieldsIgnoreNullsOperator());
         operators.put(AssertionOperator.HAS_KEYS, new HasKeysOperator());
+        operators.put(AssertionOperator.FIELD_EQUALS_OTHER_FIELD, new FieldEqualsOtherFieldOperator());
     }
 
     public void assertResponse(
@@ -58,6 +73,13 @@ public class AssertionEngine {
         try {
 
             for (JsonAssertion assertion : assertions) {
+
+                // Context-aware operators resolve their own paths
+                OperatorAssertion handler = operators.get(assertion.operator());
+                if (handler instanceof DocumentContextAwareOperator contextAware) {
+                    contextAware.apply(context, assertion.value());
+                    continue;
+                }
 
                 Object actual = null;
                 boolean pathExists = true;

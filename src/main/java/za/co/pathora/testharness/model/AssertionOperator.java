@@ -28,6 +28,34 @@ public enum AssertionOperator {
 
     /*
      * =========================
+     * DATE OPERATORS
+     * =========================
+     */
+
+    DATE_BEFORE,
+    DATE_AFTER,
+    DATETIME_BEFORE,
+    DATETIME_AFTER,
+    DATE_BEFORE_NOW,
+    DATE_AFTER_NOW,
+    DATE_WITHIN_LAST,
+    DATE_WITHIN_NEXT,
+
+    /*
+     * =========================
+     * DURATION OPERATORS
+     * =========================
+     */
+
+    DURATION_BETWEEN,
+    DURATION_EQUALS,
+    DURATION_GREATER_THAN,
+    DURATION_LESS_THAN,
+    DATE_AFTER_DURATION,
+    DATE_BEFORE_DURATION,
+
+    /*
+     * =========================
      * STRUCTURAL OPERATORS
      * =========================
      */
@@ -59,5 +87,6 @@ public enum AssertionOperator {
 
     OBJECT_CONTAINS_FIELDS, // Actual object contains expected fields
     OBJECT_CONTAINS_FIELDS_IGNORE_NULLS, // Same as above but ignores null expected fields
-    HAS_KEYS // Object contains the specified keys (values don't matter)
+    HAS_KEYS, // Object contains the specified keys (values don't matter)
+    FIELD_EQUALS_OTHER_FIELD // Two fields in the response must be equal
 }
