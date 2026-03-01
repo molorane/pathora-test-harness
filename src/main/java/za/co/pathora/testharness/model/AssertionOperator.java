@@ -88,5 +88,15 @@ public enum AssertionOperator {
     OBJECT_CONTAINS_FIELDS, // Actual object contains expected fields
     OBJECT_CONTAINS_FIELDS_IGNORE_NULLS, // Same as above but ignores null expected fields
     HAS_KEYS, // Object contains the specified keys (values don't matter)
-    FIELD_EQUALS_OTHER_FIELD // Two fields in the response must be equal
+    FIELD_EQUALS_OTHER_FIELD, // Two fields in the response must be equal
+
+    /*
+     * =========================
+     * LOGICAL OPERATORS
+     * =========================
+     */
+
+    AND,
+    OR,
+    NOT
 }

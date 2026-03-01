@@ -11,7 +11,9 @@ public record JsonAssertion(
 
         @JsonProperty("Value") Object value,
 
-        @JsonProperty("Description") String description) {
+        @JsonProperty("Description") String description,
+
+        @JsonProperty("Assertions") java.util.List<JsonAssertion> assertions) {
     public JsonAssertion {
         if (operator == null) {
             operator = AssertionOperator.EQUALS;

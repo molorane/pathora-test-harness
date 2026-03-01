@@ -73,86 +73,146 @@ public class AssertionEngine {
         try {
 
             for (JsonAssertion assertion : assertions) {
-
-                // Context-aware operators resolve their own paths
-                OperatorAssertion handler = operators.get(assertion.operator());
-                if (handler instanceof DocumentContextAwareOperator contextAware) {
-                    contextAware.apply(context, assertion.value());
-                    continue;
-                }
-
-                Object actual = null;
-                boolean pathExists = true;
-
                 try {
-                    actual = context.read(assertion.jsonPath());
-
-                } catch (com.jayway.jsonpath.PathNotFoundException e) {
-
-                    pathExists = false;
-
-                    if (assertion.operator() != AssertionOperator.EXISTS) {
-                        throw new AssertionError(
-                                """
-                                        JSON_PATH_EVALUATION_FAILED
-                                        -----------------------------------------
-                                        JsonPath: %s
-                                        Operator: %s
-                                        Test File: %s
-                                        Entry Point: %s
-
-                                        Path does not exist in response.
-
-                                        Response:
-                                        %s
-                                        """.formatted(
-                                        assertion.jsonPath(),
-                                        assertion.operator(),
-                                        testFileName,
-                                        testCase.entryPointName(),
-                                        response),
-                                e);
-                    }
-
-                } catch (Exception e) {
-
-                    throw new AssertionError(
-                            """
-                                    JSON_PATH_RUNTIME_ERROR
-                                    -----------------------------------------
-                                    JsonPath: %s
-                                    Operator: %s
-                                    Test File: %s
-                                    Entry Point: %s
-
-                                    Error: %s
-
-                                    Response:
-                                    %s
-                                    """.formatted(
-                                    assertion.jsonPath(),
-                                    assertion.operator(),
-                                    testFileName,
-                                    testCase.entryPointName(),
-                                    e.getMessage(),
-                                    response),
-                            e);
+                    evaluateAssertion(assertion, context, testFileName, testCase, response);
+                } catch (AssertionError ex) {
+                    FailureLogger.logFailure(
+                            testCase,
+                            testFileName,
+                            mutatedRequest,
+                            response,
+                            ex);
+                    throw ex; // VERY IMPORTANT — let JUnit fail
                 }
-
-                applyAssertion(assertion, actual, pathExists);
             }
 
         } catch (AssertionError ex) {
-
-            FailureLogger.logFailure(
-                    testCase,
-                    testFileName,
-                    mutatedRequest,
-                    response,
-                    ex);
-
-            throw ex; // VERY IMPORTANT — let JUnit fail
+            // Already logged by inner loop if it came from evaluateAssertion,
+            // but catch here just in case it was thrown before the loop.
+            throw ex;
         }
+    }
+
+    private void evaluateAssertion(
+            JsonAssertion assertion,
+            DocumentContext context,
+            Path testFileName,
+            RuleTestCase testCase,
+            String response) {
+
+        // Handle logical composition operators first
+        if (assertion.operator() == AssertionOperator.AND) {
+            if (assertion.assertions() == null || assertion.assertions().isEmpty()) {
+                throw new IllegalArgumentException("AND operator requires 'Assertions' list");
+            }
+            for (JsonAssertion nested : assertion.assertions()) {
+                evaluateAssertion(nested, context, testFileName, testCase, response);
+            }
+            return;
+        }
+
+        if (assertion.operator() == AssertionOperator.OR) {
+            if (assertion.assertions() == null || assertion.assertions().isEmpty()) {
+                throw new IllegalArgumentException("OR operator requires 'Assertions' list");
+            }
+            AssertionError lastError = null;
+            for (JsonAssertion nested : assertion.assertions()) {
+                try {
+                    evaluateAssertion(nested, context, testFileName, testCase, response);
+                    return; // At least one passed, so OR is satisfied
+                } catch (AssertionError e) {
+                    lastError = e;
+                }
+            }
+            throw new AssertionError(
+                    "LOGICAL_OR_FAILED\n" +
+                            "None of the nested assertions passed.\n" +
+                            "Last error was: " + lastError.getMessage(),
+                    lastError);
+        }
+
+        if (assertion.operator() == AssertionOperator.NOT) {
+            if (assertion.assertions() == null || assertion.assertions().size() != 1) {
+                throw new IllegalArgumentException("NOT operator requires exactly one 'Assertions' configured");
+            }
+            JsonAssertion nested = assertion.assertions().get(0);
+            try {
+                evaluateAssertion(nested, context, testFileName, testCase, response);
+            } catch (AssertionError e) {
+                return; // The nested assertion failed, so NOT passes
+            }
+            throw new AssertionError(
+                    "LOGICAL_NOT_FAILED\n" +
+                            "Nested assertion passed, but NOT expects it to fail.\n" +
+                            "Nested JsonPath: " + nested.jsonPath());
+        }
+
+        // Context-aware operators resolve their own paths
+        OperatorAssertion handler = operators.get(assertion.operator());
+        if (handler instanceof DocumentContextAwareOperator contextAware) {
+            contextAware.apply(context, assertion.value());
+            return;
+        }
+
+        Object actual = null;
+        boolean pathExists = true;
+
+        try {
+            actual = context.read(assertion.jsonPath());
+
+        } catch (com.jayway.jsonpath.PathNotFoundException e) {
+
+            pathExists = false;
+
+            if (assertion.operator() != AssertionOperator.EXISTS) {
+                throw new AssertionError(
+                        """
+                                JSON_PATH_EVALUATION_FAILED
+                                -----------------------------------------
+                                JsonPath: %s
+                                Operator: %s
+                                Test File: %s
+                                Entry Point: %s
+
+                                Path does not exist in response.
+
+                                Response:
+                                %s
+                                """.formatted(
+                                assertion.jsonPath(),
+                                assertion.operator(),
+                                testFileName,
+                                testCase.entryPointName(),
+                                response),
+                        e);
+            }
+
+        } catch (Exception e) {
+
+            throw new AssertionError(
+                    """
+                            JSON_PATH_RUNTIME_ERROR
+                            -----------------------------------------
+                            JsonPath: %s
+                            Operator: %s
+                            Test File: %s
+                            Entry Point: %s
+
+                            Error: %s
+
+                            Response:
+                            %s
+                            """.formatted(
+                            assertion.jsonPath(),
+                            assertion.operator(),
+                            testFileName,
+                            testCase.entryPointName(),
+                            e.getMessage(),
+                            response),
+                    e);
+        }
+
+        applyAssertion(assertion, actual, pathExists);
     }
 
     public void applyAssertion(JsonAssertion assertion, Object actual, boolean pathExists) {
