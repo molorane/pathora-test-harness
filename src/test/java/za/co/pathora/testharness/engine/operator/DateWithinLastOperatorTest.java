@@ -7,7 +7,6 @@ import za.co.pathora.testharness.exception.HarnessAssertionException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,7 +25,12 @@ class DateWithinLastOperatorTest {
     void shouldPassWhenWithinLast24Hours() {
         String recent = LocalDateTime.now().minusHours(5)
                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        Map<String, Object> value = Map.of("amount", 24, "unit", "HOURS");
+        Object value = TestJsonHelper.parse("""
+                {
+                  "amount": 24,
+                  "unit": "HOURS"
+                }
+                """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.createdAt", recent, value, true));
     }
 
@@ -35,7 +39,12 @@ class DateWithinLastOperatorTest {
     void shouldPassWhenJustNow() {
         String now = LocalDateTime.now()
                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        Map<String, Object> value = Map.of("amount", 1, "unit", "HOURS");
+        Object value = TestJsonHelper.parse("""
+                {
+                  "amount": 1,
+                  "unit": "HOURS"
+                }
+                """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.createdAt", now, value, true));
     }
 
@@ -44,7 +53,12 @@ class DateWithinLastOperatorTest {
     void shouldPassWithDateWithinDays() {
         String recent = LocalDateTime.now().minusDays(3)
                 .toLocalDate().toString();
-        Map<String, Object> value = Map.of("amount", 7, "unit", "DAYS");
+        Object value = TestJsonHelper.parse("""
+                {
+                  "amount": 7,
+                  "unit": "DAYS"
+                }
+                """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.createdAt", recent, value, true));
     }
 
@@ -53,7 +67,12 @@ class DateWithinLastOperatorTest {
     void shouldFailWhenTooOld() {
         String old = LocalDateTime.now().minusDays(10)
                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        Map<String, Object> value = Map.of("amount", 24, "unit", "HOURS");
+        Object value = TestJsonHelper.parse("""
+                {
+                  "amount": 24,
+                  "unit": "HOURS"
+                }
+                """);
         assertThatThrownBy(() -> operator.apply("$.createdAt", old, value, true))
                 .isInstanceOf(HarnessAssertionException.class)
                 .hasMessageContaining("DATE_WITHIN_LAST failed");
@@ -64,7 +83,12 @@ class DateWithinLastOperatorTest {
     void shouldFailWithInvalidUnit() {
         String now = LocalDateTime.now()
                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        Map<String, Object> value = Map.of("amount", 1, "unit", "INVALID");
+        Object value = TestJsonHelper.parse("""
+                {
+                  "amount": 1,
+                  "unit": "INVALID"
+                }
+                """);
         assertThatThrownBy(() -> operator.apply("$.createdAt", now, value, true))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid duration unit");

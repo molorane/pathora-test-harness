@@ -5,8 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import za.co.pathora.testharness.exception.HarnessAssertionException;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -23,14 +21,20 @@ class ObjectContainsFieldsOperatorTest {
     @Test
     @DisplayName("PASS: actual contains all expected fields")
     void shouldPassWhenAllFieldsMatch() {
-        Map<String, Object> actual = Map.of(
-                "clientType", "1031",
-                "riskLevel", "HIGH",
-                "segment", "Retail");
+        Object actual = TestJsonHelper.parse("""
+                {
+                  "clientType": "1031",
+                  "riskLevel": "HIGH",
+                  "segment": "Retail"
+                }
+                """);
 
-        Map<String, Object> expected = Map.of(
-                "clientType", "1031",
-                "riskLevel", "HIGH");
+        Object expected = TestJsonHelper.parse("""
+                {
+                  "clientType": "1031",
+                  "riskLevel": "HIGH"
+                }
+                """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.client", actual, expected, true));
     }
@@ -38,8 +42,16 @@ class ObjectContainsFieldsOperatorTest {
     @Test
     @DisplayName("PASS: exact match — no extra fields")
     void shouldPassWithExactMatch() {
-        Map<String, Object> actual = Map.of("status", "APPROVED");
-        Map<String, Object> expected = Map.of("status", "APPROVED");
+        Object actual = TestJsonHelper.parse("""
+                {
+                  "status": "APPROVED"
+                }
+                """);
+        Object expected = TestJsonHelper.parse("""
+                {
+                  "status": "APPROVED"
+                }
+                """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.result", actual, expected, true));
     }
@@ -47,11 +59,21 @@ class ObjectContainsFieldsOperatorTest {
     @Test
     @DisplayName("PASS: nested map matches")
     void shouldPassWithNestedMap() {
-        Map<String, Object> nestedActual = Map.of("code", "X");
-        Map<String, Object> actual = Map.of("nested", nestedActual);
+        Object actual = TestJsonHelper.parse("""
+                {
+                  "nested": {
+                    "code": "X"
+                  }
+                }
+                """);
 
-        Map<String, Object> nestedExpected = Map.of("code", "X");
-        Map<String, Object> expected = Map.of("nested", nestedExpected);
+        Object expected = TestJsonHelper.parse("""
+                {
+                  "nested": {
+                    "code": "X"
+                  }
+                }
+                """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
@@ -59,13 +81,19 @@ class ObjectContainsFieldsOperatorTest {
     @Test
     @DisplayName("FAIL: field value mismatch")
     void shouldFailWhenFieldValueDiffers() {
-        Map<String, Object> actual = Map.of(
-                "clientType", "1031",
-                "riskLevel", "LOW");
+        Object actual = TestJsonHelper.parse("""
+                {
+                  "clientType": "1031",
+                  "riskLevel": "LOW"
+                }
+                """);
 
-        Map<String, Object> expected = Map.of(
-                "clientType", "1031",
-                "riskLevel", "HIGH");
+        Object expected = TestJsonHelper.parse("""
+                {
+                  "clientType": "1031",
+                  "riskLevel": "HIGH"
+                }
+                """);
 
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -75,11 +103,18 @@ class ObjectContainsFieldsOperatorTest {
     @Test
     @DisplayName("FAIL: expected field missing in actual")
     void shouldFailWhenFieldMissing() {
-        Map<String, Object> actual = Map.of("clientType", "1031");
+        Object actual = TestJsonHelper.parse("""
+                {
+                  "clientType": "1031"
+                }
+                """);
 
-        Map<String, Object> expected = Map.of(
-                "clientType", "1031",
-                "riskLevel", "HIGH");
+        Object expected = TestJsonHelper.parse("""
+                {
+                  "clientType": "1031",
+                  "riskLevel": "HIGH"
+                }
+                """);
 
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -89,11 +124,18 @@ class ObjectContainsFieldsOperatorTest {
     @Test
     @DisplayName("FAIL: null expected field does NOT match missing")
     void shouldFailWhenExpectedNullButFieldMissing() {
-        Map<String, Object> actual = Map.of("clientType", "1031");
+        Object actual = TestJsonHelper.parse("""
+                {
+                  "clientType": "1031"
+                }
+                """);
 
-        Map<String, Object> expected = new HashMap<>();
-        expected.put("clientType", "1031");
-        expected.put("middleName", null);
+        Object expected = TestJsonHelper.parse("""
+                {
+                  "clientType": "1031",
+                  "middleName": null
+                }
+                """);
 
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -103,7 +145,11 @@ class ObjectContainsFieldsOperatorTest {
     @Test
     @DisplayName("FAIL: actual is not a map")
     void shouldFailWhenActualIsNotMap() {
-        Map<String, Object> expected = Map.of("field", "value");
+        Object expected = TestJsonHelper.parse("""
+                {
+                  "field": "value"
+                }
+                """);
 
         assertThatThrownBy(() -> operator.apply("$.client", "not-a-map", expected, true))
                 .isInstanceOf(IllegalArgumentException.class)

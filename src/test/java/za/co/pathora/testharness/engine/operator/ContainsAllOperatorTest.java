@@ -5,9 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import za.co.pathora.testharness.exception.HarnessAssertionException;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -24,32 +21,73 @@ class ContainsAllOperatorTest {
     @Test
     @DisplayName("PASS: array contains all expected values")
     void shouldPassWhenAllFound() {
-        List<String> actual = Arrays.asList("1004", "1011", "1020");
-        List<String> expected = Arrays.asList("1004", "1011");
+        Object actual = TestJsonHelper.parse("""
+                [
+                  "1004",
+                  "1011",
+                  "1020"
+                ]
+                """);
+        Object expected = TestJsonHelper.parse("""
+                [
+                  "1004",
+                  "1011"
+                ]
+                """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", actual, expected, true));
     }
 
     @Test
     @DisplayName("PASS: exact match")
     void shouldPassWithExactMatch() {
-        List<String> actual = Arrays.asList("A", "B");
-        List<String> expected = Arrays.asList("A", "B");
+        Object actual = TestJsonHelper.parse("""
+                [
+                  "A",
+                  "B"
+                ]
+                """);
+        Object expected = TestJsonHelper.parse("""
+                [
+                  "A",
+                  "B"
+                ]
+                """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
 
     @Test
     @DisplayName("PASS: different order")
     void shouldPassWithDifferentOrder() {
-        List<String> actual = Arrays.asList("B", "A");
-        List<String> expected = Arrays.asList("A", "B");
+        Object actual = TestJsonHelper.parse("""
+                [
+                  "B",
+                  "A"
+                ]
+                """);
+        Object expected = TestJsonHelper.parse("""
+                [
+                  "A",
+                  "B"
+                ]
+                """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
 
     @Test
     @DisplayName("FAIL: one expected value missing")
     void shouldFailWhenOneMissing() {
-        List<String> actual = Arrays.asList("1004", "1020");
-        List<String> expected = Arrays.asList("1004", "1011");
+        Object actual = TestJsonHelper.parse("""
+                [
+                  "1004",
+                  "1020"
+                ]
+                """);
+        Object expected = TestJsonHelper.parse("""
+                [
+                  "1004",
+                  "1011"
+                ]
+                """);
         assertThatThrownBy(() -> operator.apply("$.codes", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
                 .hasMessageContaining("CONTAINS_ALL failed")
@@ -59,8 +97,18 @@ class ContainsAllOperatorTest {
     @Test
     @DisplayName("FAIL: none of the expected values found")
     void shouldFailWhenNoneFound() {
-        List<String> actual = Arrays.asList("X", "Y");
-        List<String> expected = Arrays.asList("A", "B");
+        Object actual = TestJsonHelper.parse("""
+                [
+                  "X",
+                  "Y"
+                ]
+                """);
+        Object expected = TestJsonHelper.parse("""
+                [
+                  "A",
+                  "B"
+                ]
+                """);
         assertThatThrownBy(() -> operator.apply("$.items", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
                 .hasMessageContaining("CONTAINS_ALL failed");
@@ -69,8 +117,16 @@ class ContainsAllOperatorTest {
     @Test
     @DisplayName("FAIL: empty actual array")
     void shouldFailWithEmptyActual() {
-        List<String> expected = Arrays.asList("A", "B");
-        assertThatThrownBy(() -> operator.apply("$.items", Collections.emptyList(), expected, true))
+        Object actual = TestJsonHelper.parse("""
+                []
+                """);
+        Object expected = TestJsonHelper.parse("""
+                [
+                  "A",
+                  "B"
+                ]
+                """);
+        assertThatThrownBy(() -> operator.apply("$.items", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
                 .hasMessageContaining("CONTAINS_ALL failed");
     }
@@ -78,7 +134,15 @@ class ContainsAllOperatorTest {
     @Test
     @DisplayName("PASS: empty expected — vacuously true")
     void shouldPassWithEmptyExpected() {
-        List<String> actual = Arrays.asList("A", "B");
-        assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, Collections.emptyList(), true));
+        Object actual = TestJsonHelper.parse("""
+                [
+                  "A",
+                  "B"
+                ]
+                """);
+        Object expected = TestJsonHelper.parse("""
+                []
+                """);
+        assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
 }

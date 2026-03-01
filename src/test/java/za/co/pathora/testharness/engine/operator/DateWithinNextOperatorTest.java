@@ -7,7 +7,6 @@ import za.co.pathora.testharness.exception.HarnessAssertionException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,7 +25,12 @@ class DateWithinNextOperatorTest {
     void shouldPassWhenWithinNext() {
         String future = LocalDateTime.now().plusDays(3)
                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        Map<String, Object> value = Map.of("amount", 7, "unit", "DAYS");
+        Object value = TestJsonHelper.parse("""
+                {
+                  "amount": 7,
+                  "unit": "DAYS"
+                }
+                """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.expiry", future, value, true));
     }
 
@@ -35,7 +39,12 @@ class DateWithinNextOperatorTest {
     void shouldPassWithinNext24Hours() {
         String future = LocalDateTime.now().plusHours(5)
                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        Map<String, Object> value = Map.of("amount", 24, "unit", "HOURS");
+        Object value = TestJsonHelper.parse("""
+                {
+                  "amount": 24,
+                  "unit": "HOURS"
+                }
+                """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.expiry", future, value, true));
     }
 
@@ -44,7 +53,12 @@ class DateWithinNextOperatorTest {
     void shouldFailWhenTooFarInFuture() {
         String farFuture = LocalDateTime.now().plusDays(30)
                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        Map<String, Object> value = Map.of("amount", 7, "unit", "DAYS");
+        Object value = TestJsonHelper.parse("""
+                {
+                  "amount": 7,
+                  "unit": "DAYS"
+                }
+                """);
         assertThatThrownBy(() -> operator.apply("$.expiry", farFuture, value, true))
                 .isInstanceOf(HarnessAssertionException.class)
                 .hasMessageContaining("DATE_WITHIN_NEXT failed");
@@ -55,7 +69,12 @@ class DateWithinNextOperatorTest {
     void shouldFailWhenInPast() {
         String past = LocalDateTime.now().minusDays(1)
                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        Map<String, Object> value = Map.of("amount", 7, "unit", "DAYS");
+        Object value = TestJsonHelper.parse("""
+                {
+                  "amount": 7,
+                  "unit": "DAYS"
+                }
+                """);
         assertThatThrownBy(() -> operator.apply("$.expiry", past, value, true))
                 .isInstanceOf(HarnessAssertionException.class)
                 .hasMessageContaining("DATE_WITHIN_NEXT failed");

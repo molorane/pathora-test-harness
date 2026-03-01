@@ -6,10 +6,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import za.co.pathora.testharness.exception.HarnessAssertionException;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -34,42 +30,72 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("PASS: all elements equal to 0")
         void shouldPassWhenAllZeros() {
-            List<Integer> list = Arrays.asList(0, 0, 0);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      0,
+                      0,
+                      0
+                    ]
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.penalties", list, 0, true));
         }
 
         @Test
         @DisplayName("PASS: all elements equal to string")
         void shouldPassWhenAllSameString() {
-            List<String> list = Arrays.asList("Retail", "Retail", "Retail");
+            Object list = TestJsonHelper.parse("""
+                    [
+                      "Retail",
+                      "Retail",
+                      "Retail"
+                    ]
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.segments", list, "Retail", true));
         }
 
         @Test
         @DisplayName("PASS: single element matches")
         void shouldPassWithSingleElement() {
-            List<String> list = List.of("Retail");
+            Object list = TestJsonHelper.parse("""
+                    [
+                      "Retail"
+                    ]
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.segments", list, "Retail", true));
         }
 
         @Test
         @DisplayName("PASS: empty array — vacuously true")
         void shouldPassWithEmptyArray() {
-            List<Object> list = Collections.emptyList();
+            Object list = TestJsonHelper.parse("""
+                    []
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "anything", true));
         }
 
         @Test
         @DisplayName("PASS: numeric type coercion — int 0 equals double 0.0")
         void shouldPassWithNumericCoercion() {
-            List<Integer> list = Arrays.asList(0, 0, 0);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      0,
+                      0,
+                      0
+                    ]
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.penalties", list, 0.0, true));
         }
 
         @Test
         @DisplayName("FAIL: one element differs")
         void shouldFailWhenOneElementDiffers() {
-            List<Integer> list = Arrays.asList(0, 0, 1);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                    """);
             assertThatThrownBy(() -> operator.apply("$.penalties", list, 0, true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("ALL_MATCH failed")
@@ -79,7 +105,13 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("FAIL: first element differs")
         void shouldFailWhenFirstElementDiffers() {
-            List<String> list = Arrays.asList("Corporate", "Retail", "Retail");
+            Object list = TestJsonHelper.parse("""
+                    [
+                      "Corporate",
+                      "Retail",
+                      "Retail"
+                    ]
+                    """);
             assertThatThrownBy(() -> operator.apply("$.segments", list, "Retail", true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("index 0");
@@ -88,7 +120,13 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("FAIL: all elements differ")
         void shouldFailWhenAllDiffer() {
-            List<Integer> list = Arrays.asList(1, 2, 3);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      1,
+                      2,
+                      3
+                    ]
+                    """);
             assertThatThrownBy(() -> operator.apply("$.penalties", list, 0, true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("ALL_MATCH failed");
@@ -106,16 +144,36 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("PASS: all elements greater than threshold")
         void shouldPassWhenAllGreater() {
-            List<Integer> list = Arrays.asList(60, 70, 80);
-            Map<String, Object> condition = Map.of("greaterThan", 50);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      60,
+                      70,
+                      80
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "greaterThan": 50
+                    }
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.scores", list, condition, true));
         }
 
         @Test
         @DisplayName("FAIL: one element equals threshold (not strictly greater)")
         void shouldFailWhenOneEqualsThreshold() {
-            List<Integer> list = Arrays.asList(60, 50, 80);
-            Map<String, Object> condition = Map.of("greaterThan", 50);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      60,
+                      50,
+                      80
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "greaterThan": 50
+                    }
+                    """);
             assertThatThrownBy(() -> operator.apply("$.scores", list, condition, true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("index 1");
@@ -124,8 +182,18 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("FAIL: one element below threshold")
         void shouldFailWhenOneBelowThreshold() {
-            List<Integer> list = Arrays.asList(60, 40, 80);
-            Map<String, Object> condition = Map.of("greaterThan", 50);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      60,
+                      40,
+                      80
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "greaterThan": 50
+                    }
+                    """);
             assertThatThrownBy(() -> operator.apply("$.scores", list, condition, true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("ALL_MATCH failed");
@@ -143,16 +211,36 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("PASS: all elements less than threshold")
         void shouldPassWhenAllLess() {
-            List<Integer> list = Arrays.asList(10, 20, 30);
-            Map<String, Object> condition = Map.of("lessThan", 50);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      10,
+                      20,
+                      30
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "lessThan": 50
+                    }
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.scores", list, condition, true));
         }
 
         @Test
         @DisplayName("FAIL: one element equals threshold (not strictly less)")
         void shouldFailWhenOneEqualsThreshold() {
-            List<Integer> list = Arrays.asList(10, 50, 30);
-            Map<String, Object> condition = Map.of("lessThan", 50);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      10,
+                      50,
+                      30
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "lessThan": 50
+                    }
+                    """);
             assertThatThrownBy(() -> operator.apply("$.scores", list, condition, true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("index 1");
@@ -161,8 +249,18 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("FAIL: one element above threshold")
         void shouldFailWhenOneAboveThreshold() {
-            List<Integer> list = Arrays.asList(10, 60, 30);
-            Map<String, Object> condition = Map.of("lessThan", 50);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      10,
+                      60,
+                      30
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "lessThan": 50
+                    }
+                    """);
             assertThatThrownBy(() -> operator.apply("$.scores", list, condition, true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("ALL_MATCH failed");
@@ -180,18 +278,42 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("PASS: all elements within range")
         void shouldPassWhenAllWithinRange() {
-            List<Integer> list = Arrays.asList(50, 75, 100);
-            Map<String, Object> condition = Map.of(
-                    "between", Map.of("min", 50, "max", 100));
+            Object list = TestJsonHelper.parse("""
+                    [
+                      50,
+                      75,
+                      100
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "between": {
+                        "min": 50,
+                        "max": 100
+                      }
+                    }
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.scores", list, condition, true));
         }
 
         @Test
         @DisplayName("FAIL: one element outside range")
         void shouldFailWhenOneOutsideRange() {
-            List<Integer> list = Arrays.asList(50, 110, 75);
-            Map<String, Object> condition = Map.of(
-                    "between", Map.of("min", 50, "max", 100));
+            Object list = TestJsonHelper.parse("""
+                    [
+                      50,
+                      110,
+                      75
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "between": {
+                        "min": 50,
+                        "max": 100
+                      }
+                    }
+                    """);
             assertThatThrownBy(() -> operator.apply("$.scores", list, condition, true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("index 1");
@@ -217,8 +339,18 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("FAIL: unknown condition key")
         void shouldFailWithUnknownCondition() {
-            List<Integer> list = Arrays.asList(1, 2, 3);
-            Map<String, Object> condition = Map.of("unknownKey", 50);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      1,
+                      2,
+                      3
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "unknownKey": 50
+                    }
+                    """);
             assertThatThrownBy(() -> operator.apply("$.scores", list, condition, true))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("greaterThan");
@@ -227,8 +359,17 @@ class AllMatchOperatorTest {
         @Test
         @DisplayName("FAIL: non-numeric value for greaterThan")
         void shouldFailWithNonNumericForGreaterThan() {
-            List<String> list = Arrays.asList("a", "b");
-            Map<String, Object> condition = Map.of("greaterThan", 50);
+            Object list = TestJsonHelper.parse("""
+                    [
+                      "a",
+                      "b"
+                    ]
+                    """);
+            Object condition = TestJsonHelper.parse("""
+                    {
+                      "greaterThan": 50
+                    }
+                    """);
             assertThatThrownBy(() -> operator.apply("$.items", list, condition, true))
                     .isInstanceOf(NumberFormatException.class);
         }
