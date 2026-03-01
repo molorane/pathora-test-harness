@@ -65,7 +65,8 @@ public class AssertionEngine {
             Path testFileName,
             String mutatedRequest,
             String response,
-            RuleTestCase testCase) {
+            RuleTestCase testCase
+    ) {
 
         var assertions = testCase.responseAssertions();
         DocumentContext context = JsonPath.parse(response);
