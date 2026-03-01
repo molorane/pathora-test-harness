@@ -6,7 +6,6 @@ import za.co.pathora.testharness.engine.operator.*;
 import za.co.pathora.testharness.model.AssertionOperator;
 import za.co.pathora.testharness.model.JsonAssertion;
 import za.co.pathora.testharness.model.RuleTestCase;
-import za.co.pathora.testharness.util.FailureLogger;
 
 import java.nio.file.Path;
 import java.util.EnumMap;
@@ -65,32 +64,13 @@ public class AssertionEngine {
             Path testFileName,
             String mutatedRequest,
             String response,
-            RuleTestCase testCase
-    ) {
+            RuleTestCase testCase) {
 
         var assertions = testCase.responseAssertions();
         DocumentContext context = JsonPath.parse(response);
 
-        try {
-
-            for (JsonAssertion assertion : assertions) {
-                try {
-                    evaluateAssertion(assertion, context, testFileName, testCase, response);
-                } catch (AssertionError ex) {
-                    FailureLogger.logFailure(
-                            testCase,
-                            testFileName,
-                            mutatedRequest,
-                            response,
-                            ex);
-                    throw ex; // VERY IMPORTANT — let JUnit fail
-                }
-            }
-
-        } catch (AssertionError ex) {
-            // Already logged by inner loop if it came from evaluateAssertion,
-            // but catch here just in case it was thrown before the loop.
-            throw ex;
+        for (JsonAssertion assertion : assertions) {
+            evaluateAssertion(assertion, context, testFileName, testCase, response);
         }
     }
 
