@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>za.co.pathora.testharness</groupId>
 	<artifactId>pathora-test-harness</artifactId>
-	<version>8.0.0</version>
+	<version>0.0.1</version>
 	<name>pathora-test-harness</name>
 	<packaging>jar</packaging>
 	<description>Pathora Test Harness — lightweight, framework-independent Java library</description>
