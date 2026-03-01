@@ -1,9 +1,6 @@
 package za.co.pathora.testharness.engine;
 
-
 import za.co.pathora.testharness.model.RuleTestCase;
-
-import java.nio.file.Path;
 
 public class ResponseAssertionExecutor {
 
@@ -14,17 +11,13 @@ public class ResponseAssertionExecutor {
     }
 
     public void execute(
-            Path testFileName,
             String mutatedRequest,
             String response,
-            RuleTestCase testCase
-    ) {
+            RuleTestCase testCase) {
 
         assertionEngine.assertResponse(
-                testFileName,
                 mutatedRequest,
                 response,
-                testCase
-        );
+                testCase);
     }
 }

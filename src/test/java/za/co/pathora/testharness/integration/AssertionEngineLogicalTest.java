@@ -8,8 +8,6 @@ import za.co.pathora.testharness.model.JsonAssertion;
 import za.co.pathora.testharness.model.RuleTestCase;
 import za.co.pathora.testharness.engine.AssertionEngine;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -18,12 +16,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class AssertionEngineLogicalTest {
 
         private AssertionEngine engine;
-        private Path dummyPath;
 
         @BeforeEach
         void setUp() throws Exception {
                 engine = new AssertionEngine();
-                dummyPath = Files.createTempFile("dummy", ".json");
         }
 
         @Test
@@ -37,8 +33,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"score": 75, "status": "APPROVED"}
                                 """;
-
-                assertThatNoException().isThrownBy(() -> engine.assertResponse(dummyPath, "{}", response, testCase));
+                assertThatNoException().isThrownBy(() -> engine.assertResponse("{}", response, testCase));
         }
 
         @Test
@@ -52,8 +47,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"score": 75, "status": "PENDING"}
                                 """;
-
-                assertThatThrownBy(() -> engine.assertResponse(dummyPath, "{}", response, testCase))
+                assertThatThrownBy(() -> engine.assertResponse("{}", response, testCase))
                                 .isInstanceOf(AssertionError.class)
                                 .hasMessageContaining("EQUALS failed");
         }
@@ -68,8 +62,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"status": "PENDING"}
                                 """;
-
-                assertThatNoException().isThrownBy(() -> engine.assertResponse(dummyPath, "{}", response, testCase));
+                assertThatNoException().isThrownBy(() -> engine.assertResponse("{}", response, testCase));
         }
 
         @Test
@@ -82,8 +75,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"status": "DECLINED"}
                                 """;
-
-                assertThatThrownBy(() -> engine.assertResponse(dummyPath, "{}", response, testCase))
+                assertThatThrownBy(() -> engine.assertResponse("{}", response, testCase))
                                 .isInstanceOf(AssertionError.class)
                                 .hasMessageContaining("LOGICAL_OR_FAILED");
         }
@@ -97,8 +89,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"status": "APPROVED"}
                                 """;
-
-                assertThatNoException().isThrownBy(() -> engine.assertResponse(dummyPath, "{}", response, testCase));
+                assertThatNoException().isThrownBy(() -> engine.assertResponse("{}", response, testCase));
         }
 
         @Test
@@ -111,7 +102,7 @@ class AssertionEngineLogicalTest {
                                 {"status": "DECLINED"}
                                 """;
 
-                assertThatThrownBy(() -> engine.assertResponse(dummyPath, "{}", response, testCase))
+                assertThatThrownBy(() -> engine.assertResponse("{}", response, testCase))
                                 .isInstanceOf(AssertionError.class)
                                 .hasMessageContaining("LOGICAL_NOT_FAILED");
         }

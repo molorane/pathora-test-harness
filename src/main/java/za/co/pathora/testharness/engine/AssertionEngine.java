@@ -7,7 +7,6 @@ import za.co.pathora.testharness.model.AssertionOperator;
 import za.co.pathora.testharness.model.JsonAssertion;
 import za.co.pathora.testharness.model.RuleTestCase;
 
-import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -61,7 +60,6 @@ public class AssertionEngine {
     }
 
     public void assertResponse(
-            Path testFileName,
             String mutatedRequest,
             String response,
             RuleTestCase testCase) {
@@ -70,14 +68,13 @@ public class AssertionEngine {
         DocumentContext context = JsonPath.parse(response);
 
         for (JsonAssertion assertion : assertions) {
-            evaluateAssertion(assertion, context, testFileName, testCase, response);
+            evaluateAssertion(assertion, context, testCase, response);
         }
     }
 
     private void evaluateAssertion(
             JsonAssertion assertion,
             DocumentContext context,
-            Path testFileName,
             RuleTestCase testCase,
             String response) {
 
@@ -87,7 +84,7 @@ public class AssertionEngine {
                 throw new IllegalArgumentException("AND operator requires 'Assertions' list");
             }
             for (JsonAssertion nested : assertion.assertions()) {
-                evaluateAssertion(nested, context, testFileName, testCase, response);
+                evaluateAssertion(nested, context, testCase, response);
             }
             return;
         }
@@ -99,7 +96,7 @@ public class AssertionEngine {
             AssertionError lastError = null;
             for (JsonAssertion nested : assertion.assertions()) {
                 try {
-                    evaluateAssertion(nested, context, testFileName, testCase, response);
+                    evaluateAssertion(nested, context, testCase, response);
                     return; // At least one passed, so OR is satisfied
                 } catch (AssertionError e) {
                     lastError = e;
@@ -118,7 +115,7 @@ public class AssertionEngine {
             }
             JsonAssertion nested = assertion.assertions().get(0);
             try {
-                evaluateAssertion(nested, context, testFileName, testCase, response);
+                evaluateAssertion(nested, context, testCase, response);
             } catch (AssertionError e) {
                 return; // The nested assertion failed, so NOT passes
             }
@@ -152,7 +149,6 @@ public class AssertionEngine {
                                 -----------------------------------------
                                 JsonPath: %s
                                 Operator: %s
-                                Test File: %s
                                 Entry Point: %s
 
                                 Path does not exist in response.
@@ -162,7 +158,6 @@ public class AssertionEngine {
                                 """.formatted(
                                 assertion.jsonPath(),
                                 assertion.operator(),
-                                testFileName,
                                 testCase.entryPointName(),
                                 response),
                         e);
@@ -176,7 +171,6 @@ public class AssertionEngine {
                             -----------------------------------------
                             JsonPath: %s
                             Operator: %s
-                            Test File: %s
                             Entry Point: %s
 
                             Error: %s
@@ -186,7 +180,6 @@ public class AssertionEngine {
                             """.formatted(
                             assertion.jsonPath(),
                             assertion.operator(),
-                            testFileName,
                             testCase.entryPointName(),
                             e.getMessage(),
                             response),
