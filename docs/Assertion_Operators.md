@@ -19,21 +19,29 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ 
-  "JsonPath": "$.outputData.status", 
-  "Operator": "EQUALS", 
-  "Value": "APPROVED" 
+{
+  "JsonPath": "$.outputData.status",
+  "Operator": "EQUALS",
+  "Value": "APPROVED"
 }
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "status": "APPROVED" } }
+{
+  "outputData": {
+    "status": "APPROVED"
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { "status": "PENDING" } }
+{
+  "outputData": {
+    "status": "PENDING"
+  }
+}
 ```
 
 > **Notes:** Performs strict comparison. Types must match. If JsonPath returns a list instead of a scalar, the assertion fails.
@@ -46,17 +54,29 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ "JsonPath": "$.outputData.status", "Operator": "NOT_EQUALS", "Value": "DECLINED" }
+{
+  "JsonPath": "$.outputData.status",
+  "Operator": "NOT_EQUALS",
+  "Value": "DECLINED"
+}
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "status": "APPROVED" } }
+{
+  "outputData": {
+    "status": "APPROVED"
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { "status": "DECLINED" } }
+{
+  "outputData": {
+    "status": "DECLINED"
+  }
+}
 ```
 
 > **Notes:** Used for negative validation. Strict comparison is still applied.
@@ -69,17 +89,29 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ "JsonPath": "$.outputData.score", "Operator": "GREATER_THAN", "Value": 50 }
+{
+  "JsonPath": "$.outputData.score",
+  "Operator": "GREATER_THAN",
+  "Value": 50
+}
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "score": 75 } }
+{
+  "outputData": {
+    "score": 75
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { "score": 45 } }
+{
+  "outputData": {
+    "score": 45
+  }
+}
 ```
 
 > **Notes:** Only valid for numeric values. Type mismatch results in failure.
@@ -92,17 +124,29 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ "JsonPath": "$.outputData.score", "Operator": "LESS_THAN", "Value": 100 }
+{
+  "JsonPath": "$.outputData.score",
+  "Operator": "LESS_THAN",
+  "Value": 100
+}
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "score": 80 } }
+{
+  "outputData": {
+    "score": 80
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { "score": 120 } }
+{
+  "outputData": {
+    "score": 120
+  }
+}
 ```
 
 > **Notes:** Boundary condition enforcement. Numeric types required.
@@ -118,18 +162,29 @@ Each operator section includes:
 {
   "JsonPath": "$.outputData.riskScore",
   "Operator": "BETWEEN",
-  "Value": { "min": 50, "max": 100 }
+  "Value": {
+    "min": 50,
+    "max": 100
+  }
 }
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "riskScore": 75 } }
+{
+  "outputData": {
+    "riskScore": 75
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { "riskScore": 30 } }
+{
+  "outputData": {
+    "riskScore": 30
+  }
+}
 ```
 
 > **Notes:** Value must be a JSON object with `min` and `max` keys. Both boundaries are inclusive. Numeric types required.
@@ -152,12 +207,20 @@ Each operator section includes:
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "referenceId": "REF-1234-56789" } }
+{
+  "outputData": {
+    "referenceId": "REF-1234-56789"
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { "referenceId": "INVALID-ID" } }
+{
+  "outputData": {
+    "referenceId": "INVALID-ID"
+  }
+}
 ```
 
 > **Notes:** Uses full match (`matches()`), not partial find. Value must be a valid regex string. Case-sensitive by default. The `Description` field is optional but recommended for regex patterns to explain intent.
@@ -172,17 +235,26 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ "JsonPath": "$.outputData.referenceId", "Operator": "EXISTS" }
+{
+  "JsonPath": "$.outputData.referenceId",
+  "Operator": "EXISTS"
+}
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "referenceId": "ABC123" } }
+{
+  "outputData": {
+    "referenceId": "ABC123"
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { } }
+{
+  "outputData": {}
+}
 ```
 
 > **Notes:** Does not validate value content. Only checks presence. No `Value` field required.
@@ -195,17 +267,29 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ "JsonPath": "$.outputData.reasonCodes", "Operator": "ARRAY_SIZE_EQUALS", "Value": 2 }
+{
+  "JsonPath": "$.outputData.reasonCodes",
+  "Operator": "ARRAY_SIZE_EQUALS",
+  "Value": 2
+}
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "reasonCodes": ["1004", "1011"] } }
+{
+  "outputData": {
+    "reasonCodes": ["1004", "1011"]
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { "reasonCodes": ["1004"] } }
+{
+  "outputData": {
+    "reasonCodes": ["1004"]
+  }
+}
 ```
 
 > **Notes:** Enforces cardinality. Prevents hidden extra elements. A null or missing array is treated as size 0.
@@ -220,17 +304,29 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ "JsonPath": "$.outputData.reasonCodes", "Operator": "ARRAY_CONTAINS", "Value": "1004" }
+{
+  "JsonPath": "$.outputData.reasonCodes",
+  "Operator": "ARRAY_CONTAINS",
+  "Value": "1004"
+}
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "reasonCodes": ["1004", "1011"] } }
+{
+  "outputData": {
+    "reasonCodes": ["1004", "1011"]
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { "reasonCodes": ["1011"] } }
+{
+  "outputData": {
+    "reasonCodes": ["1011"]
+  }
+}
 ```
 
 > **Notes:** JsonPath must resolve to an array. If a scalar is returned, the assertion fails.
@@ -243,22 +339,38 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ "JsonPath": "$.outputData.tags", "Operator": "ARRAY_CONTAINS_ONLY_VALUES", "Value": ["B", "A"] }
+{
+  "JsonPath": "$.outputData.tags",
+  "Operator": "ARRAY_CONTAINS_ONLY_VALUES",
+  "Value": ["B", "A"]
+}
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "tags": ["A", "B"] } }
+{
+  "outputData": {
+    "tags": ["A", "B"]
+  }
+}
 ```
 
 **FAIL** — actual response (extra element):
 ```json
-{ "outputData": { "tags": ["A", "B", "C"] } }
+{
+  "outputData": {
+    "tags": ["A", "B", "C"]
+  }
+}
 ```
 
 **FAIL** — actual response (missing element):
 ```json
-{ "outputData": { "tags": ["A"] } }
+{
+  "outputData": {
+    "tags": ["A"]
+  }
+}
 ```
 
 > **Notes:** Both size and content must match. Order is ignored. Useful when you need to assert the complete set of values without caring about ordering.
@@ -271,22 +383,38 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ "JsonPath": "$.outputData.results", "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE", "Value": "SUCCESS" }
+{
+  "JsonPath": "$.outputData.results",
+  "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE",
+  "Value": "SUCCESS"
+}
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "results": ["SUCCESS"] } }
+{
+  "outputData": {
+    "results": ["SUCCESS"]
+  }
+}
 ```
 
 **FAIL** — actual response (too many elements):
 ```json
-{ "outputData": { "results": ["SUCCESS", "PENDING"] } }
+{
+  "outputData": {
+    "results": ["SUCCESS", "PENDING"]
+  }
+}
 ```
 
 **FAIL** — actual response (wrong value):
 ```json
-{ "outputData": { "results": ["FAILED"] } }
+{
+  "outputData": {
+    "results": ["FAILED"]
+  }
+}
 ```
 
 > **Notes:** Enforces both cardinality (exactly 1) and value equality. Fails if the array has zero or more than one element, or if the single element doesn't match.
@@ -302,7 +430,9 @@ Each operator section includes:
 {
   "JsonPath": "$.outputData.dataItemNeeds",
   "Operator": "ARRAY_CONTAINS_OBJECT_WITH_FIELDS",
-  "Value": { "type": "1035" }
+  "Value": {
+    "type": "1035"
+  }
 }
 ```
 
@@ -311,7 +441,10 @@ Each operator section includes:
 {
   "outputData": {
     "dataItemNeeds": [
-      { "type": "1035", "status": "ACTIVE" }
+      {
+        "type": "1035",
+        "status": "ACTIVE"
+      }
     ]
   }
 }
@@ -322,7 +455,9 @@ Each operator section includes:
 {
   "outputData": {
     "dataItemNeeds": [
-      { "type": "1040" }
+      {
+        "type": "1040"
+      }
     ]
   }
 }
@@ -338,36 +473,69 @@ Each operator section includes:
 
 **Equals mode** — scalar Value (defaults to equality):
 ```json
-{ "JsonPath": "$.outputData.penalties", "Operator": "ALL_MATCH", "Value": 0 }
+{
+  "JsonPath": "$.outputData.penalties",
+  "Operator": "ALL_MATCH",
+  "Value": 0
+}
 ```
 
 **PASS** — actual response:
 ```json
-{ "outputData": { "penalties": [0, 0, 0] } }
+{
+  "outputData": {
+    "penalties": [0, 0, 0]
+  }
+}
 ```
 
 **FAIL** — actual response:
 ```json
-{ "outputData": { "penalties": [0, 0, 1] } }
+{
+  "outputData": {
+    "penalties": [0, 0, 1]
+  }
+}
 ```
 
 **greaterThan mode:**
 ```json
-{ "JsonPath": "$.outputData.scores", "Operator": "ALL_MATCH", "Value": { "greaterThan": 50 } }
+{
+  "JsonPath": "$.outputData.scores",
+  "Operator": "ALL_MATCH",
+  "Value": {
+    "greaterThan": 50
+  }
+}
 ```
 
 **PASS:** `{ "scores": [60, 70, 80] }` — **FAIL:** `{ "scores": [60, 50, 80] }`
 
 **lessThan mode:**
 ```json
-{ "JsonPath": "$.outputData.scores", "Operator": "ALL_MATCH", "Value": { "lessThan": 50 } }
+{
+  "JsonPath": "$.outputData.scores",
+  "Operator": "ALL_MATCH",
+  "Value": {
+    "lessThan": 50
+  }
+}
 ```
 
 **PASS:** `{ "scores": [10, 20, 30] }` — **FAIL:** `{ "scores": [10, 50, 30] }`
 
 **between mode:**
 ```json
-{ "JsonPath": "$.outputData.scores", "Operator": "ALL_MATCH", "Value": { "between": { "min": 50, "max": 100 } } }
+{
+  "JsonPath": "$.outputData.scores",
+  "Operator": "ALL_MATCH",
+  "Value": {
+    "between": {
+      "min": 50,
+      "max": 100
+    }
+  }
+}
 ```
 
 **PASS:** `{ "scores": [50, 75, 100] }` — **FAIL:** `{ "scores": [50, 110, 75] }`
@@ -387,7 +555,10 @@ Each operator section includes:
 {
   "JsonPath": "$.outputData.client",
   "Operator": "OBJECT_CONTAINS_FIELDS",
-  "Value": { "clientType": "1031", "riskLevel": "HIGH" }
+  "Value": {
+    "clientType": "1031",
+    "riskLevel": "HIGH"
+  }
 }
 ```
 
@@ -429,7 +600,10 @@ Each operator section includes:
 {
   "JsonPath": "$.outputData.client",
   "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS",
-  "Value": { "clientType": "1031", "middleName": null }
+  "Value": {
+    "clientType": "1031",
+    "middleName": null
+  }
 }
 ```
 
