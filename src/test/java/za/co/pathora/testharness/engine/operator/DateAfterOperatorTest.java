@@ -17,18 +17,33 @@ class DateAfterOperatorTest {
         operator = new DateAfterOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.start", "Operator": "DATE_AFTER", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: date after expected")
     void shouldPassWhenAfter() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.start", "2027-01-01", "2026-12-31", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.start", "Operator": "DATE_AFTER", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: one day after")
     void shouldPassWhenOneDayAfter() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.start", "2027-01-01", "2026-12-31", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.start", "Operator": "DATE_AFTER", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: same date")
     void shouldFailWhenEqual() {
@@ -37,6 +52,11 @@ class DateAfterOperatorTest {
                 .hasMessageContaining("DATE_AFTER failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.start", "Operator": "DATE_AFTER", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: date before expected")
     void shouldFailWhenBefore() {
@@ -45,6 +65,11 @@ class DateAfterOperatorTest {
                 .hasMessageContaining("DATE_AFTER failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.start", "Operator": "DATE_AFTER", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: invalid date format")
     void shouldFailWithInvalidFormat() {

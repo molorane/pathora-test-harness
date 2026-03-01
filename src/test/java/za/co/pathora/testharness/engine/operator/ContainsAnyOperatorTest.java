@@ -18,6 +18,11 @@ class ContainsAnyOperatorTest {
         operator = new ContainsAnyOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "CONTAINS_ANY", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: array contains one of the expected values")
     void shouldPassWhenOneMatches() {
@@ -30,6 +35,11 @@ class ContainsAnyOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "CONTAINS_ANY", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: array contains all expected values")
     void shouldPassWhenAllMatch() {
@@ -42,6 +52,11 @@ class ContainsAnyOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "CONTAINS_ANY", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: last expected value found")
     void shouldPassWhenLastExpectedFound() {
@@ -54,6 +69,11 @@ class ContainsAnyOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "CONTAINS_ANY", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: none of the expected values found")
     void shouldFailWhenNoneFound() {
@@ -68,6 +88,11 @@ class ContainsAnyOperatorTest {
                 .hasMessageContaining("CONTAINS_ANY failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "CONTAINS_ANY", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: empty actual array")
     void shouldFailWithEmptyActual() {
@@ -82,6 +107,11 @@ class ContainsAnyOperatorTest {
                 .hasMessageContaining("CONTAINS_ANY failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "CONTAINS_ANY", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {

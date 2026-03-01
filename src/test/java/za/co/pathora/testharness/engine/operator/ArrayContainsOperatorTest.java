@@ -18,6 +18,11 @@ class ArrayContainsOperatorTest {
         operator = new ArrayContainsOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "ARRAY_CONTAINS", "Value": "1004" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: array contains the expected string value")
     void shouldPassWhenArrayContainsString() {
@@ -27,6 +32,11 @@ class ArrayContainsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", list, "1004", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.ids", "Operator": "ARRAY_CONTAINS", "Value": 2.0 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: array contains the expected numeric value")
     void shouldPassWhenArrayContainsNumber() {
@@ -36,6 +46,11 @@ class ArrayContainsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.ids", list, 2.0, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_CONTAINS", "Value": "ONLY" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: array contains value — single element")
     void shouldPassWithSingleElementArray() {
@@ -45,6 +60,11 @@ class ArrayContainsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "ONLY", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_CONTAINS", "Value": "C" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: array contains value — last element")
     void shouldPassWhenValueIsLastElement() {
@@ -54,6 +74,11 @@ class ArrayContainsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "C", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "ARRAY_CONTAINS", "Value": "1004" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: array does not contain expected value")
     void shouldFailWhenValueNotInArray() {
@@ -65,6 +90,11 @@ class ArrayContainsOperatorTest {
                 .hasMessageContaining("ARRAY_CONTAINS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "ARRAY_CONTAINS", "Value": "1004" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: empty array")
     void shouldFailWhenArrayIsEmpty() {
@@ -76,6 +106,11 @@ class ArrayContainsOperatorTest {
                 .hasMessageContaining("ARRAY_CONTAINS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "ARRAY_CONTAINS", "Value": "1004" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {

@@ -18,6 +18,11 @@ class ObjectContainsFieldsOperatorTest {
         operator = new ObjectContainsFieldsOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "OBJECT_CONTAINS_FIELDS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: actual contains all expected fields")
     void shouldPassWhenAllFieldsMatch() {
@@ -39,6 +44,11 @@ class ObjectContainsFieldsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.client", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.result", "Operator": "OBJECT_CONTAINS_FIELDS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: exact match — no extra fields")
     void shouldPassWithExactMatch() {
@@ -56,6 +66,11 @@ class ObjectContainsFieldsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.result", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.data", "Operator": "OBJECT_CONTAINS_FIELDS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: nested map matches")
     void shouldPassWithNestedMap() {
@@ -78,6 +93,11 @@ class ObjectContainsFieldsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "OBJECT_CONTAINS_FIELDS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: field value mismatch")
     void shouldFailWhenFieldValueDiffers() {
@@ -100,6 +120,11 @@ class ObjectContainsFieldsOperatorTest {
                 .hasMessageContaining("OBJECT_CONTAINS_FIELDS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "OBJECT_CONTAINS_FIELDS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: expected field missing in actual")
     void shouldFailWhenFieldMissing() {
@@ -121,6 +146,11 @@ class ObjectContainsFieldsOperatorTest {
                 .hasMessageContaining("OBJECT_CONTAINS_FIELDS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "OBJECT_CONTAINS_FIELDS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: null expected field does NOT match missing")
     void shouldFailWhenExpectedNullButFieldMissing() {
@@ -142,6 +172,11 @@ class ObjectContainsFieldsOperatorTest {
                 .hasMessageContaining("OBJECT_CONTAINS_FIELDS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "OBJECT_CONTAINS_FIELDS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual is not a map")
     void shouldFailWhenActualIsNotMap() {

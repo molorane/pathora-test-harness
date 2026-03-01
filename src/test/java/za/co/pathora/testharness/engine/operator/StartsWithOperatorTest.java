@@ -17,36 +17,66 @@ class StartsWithOperatorTest {
         operator = new StartsWithOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.refId", "Operator": "STARTS_WITH", "Value": "REF-" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: string starts with prefix")
     void shouldPassWhenStartsWithPrefix() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.refId", "REF-1234-56789", "REF-", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.code", "Operator": "STARTS_WITH", "Value": "ABC" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: exact match counts as starts with")
     void shouldPassWhenExactMatch() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.code", "ABC", "ABC", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.name", "Operator": "STARTS_WITH", "Value": "J" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: single character prefix")
     void shouldPassWithSingleCharPrefix() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.name", "John", "J", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.field", "Operator": "STARTS_WITH", "Value": "" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: empty prefix — always matches")
     void shouldPassWithEmptyPrefix() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.field", "anything", "", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.code", "Operator": "STARTS_WITH", "Value": "123" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: numeric actual converted to string")
     void shouldPassWithNumericActual() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.code", 12345, "123", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.refId", "Operator": "STARTS_WITH", "Value": "REF-" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: string does not start with prefix")
     void shouldFailWhenDoesNotStartWith() {
@@ -55,6 +85,11 @@ class StartsWithOperatorTest {
                 .hasMessageContaining("STARTS_WITH failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.refId", "Operator": "STARTS_WITH", "Value": "REF-" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: case mismatch")
     void shouldFailOnCaseMismatch() {
@@ -63,6 +98,11 @@ class StartsWithOperatorTest {
                 .hasMessageContaining("STARTS_WITH failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.code", "Operator": "STARTS_WITH", "Value": "ABCDEF" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: prefix longer than actual")
     void shouldFailWhenPrefixLongerThanActual() {
@@ -71,6 +111,11 @@ class StartsWithOperatorTest {
                 .hasMessageContaining("STARTS_WITH failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.field", "Operator": "STARTS_WITH", "Value": "REF-" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: empty actual with non-empty prefix")
     void shouldFailWhenActualIsEmpty() {

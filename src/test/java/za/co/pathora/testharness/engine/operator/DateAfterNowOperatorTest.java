@@ -20,12 +20,22 @@ class DateAfterNowOperatorTest {
         operator = new DateAfterNowOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_AFTER_NOW", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("PASS: future date is after now")
     void shouldPassWithFutureDate() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.expiry", "2099-12-31", null, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_AFTER_NOW", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("PASS: future datetime is after now")
     void shouldPassWithFutureDatetime() {
@@ -34,6 +44,11 @@ class DateAfterNowOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.expiry", future, null, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_AFTER_NOW", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: past date is not after now")
     void shouldFailWithPastDate() {

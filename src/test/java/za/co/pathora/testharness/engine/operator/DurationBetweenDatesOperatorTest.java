@@ -24,6 +24,11 @@ class DurationBetweenDatesOperatorTest {
                 return JsonPath.parse(json);
         }
 
+       /**
+         * ```json
+         * { "Operator": "DURATION_BETWEEN_DATES", "Value": { "startPath": "$.outputData.applicationDate", "endPath": "$.outputData.approvalDate", "unit": "DAYS", "min": 0, "max": 7 } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: 5 days within 0-7 range")
         void shouldPassWhenWithinRange() {
@@ -42,6 +47,11 @@ class DurationBetweenDatesOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "DURATION_BETWEEN_DATES", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "DAYS", "min": 0, "max": 7 } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: at min boundary")
         void shouldPassAtMin() {
@@ -60,6 +70,11 @@ class DurationBetweenDatesOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "DURATION_BETWEEN_DATES", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "DAYS", "min": 0, "max": 7 } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: 10 days exceeds max 7")
         void shouldFailWhenExceedsMax() {

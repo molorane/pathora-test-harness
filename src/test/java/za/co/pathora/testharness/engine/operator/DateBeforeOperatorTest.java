@@ -17,18 +17,33 @@ class DateBeforeOperatorTest {
         operator = new DateBeforeOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_BEFORE", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: date before expected")
     void shouldPassWhenBefore() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.expiry", "2025-06-15", "2026-12-31", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_BEFORE", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: one day before")
     void shouldPassWhenOneDayBefore() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.expiry", "2026-12-30", "2026-12-31", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_BEFORE", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: same date")
     void shouldFailWhenEqual() {
@@ -37,6 +52,11 @@ class DateBeforeOperatorTest {
                 .hasMessageContaining("DATE_BEFORE failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_BEFORE", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: date after expected")
     void shouldFailWhenAfter() {
@@ -45,6 +65,11 @@ class DateBeforeOperatorTest {
                 .hasMessageContaining("DATE_BEFORE failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_BEFORE", "Value": "2026-12-31" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: invalid date format")
     void shouldFailWithInvalidFormat() {

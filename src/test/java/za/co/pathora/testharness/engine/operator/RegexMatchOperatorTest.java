@@ -19,6 +19,11 @@ class RegexMatchOperatorTest {
 
     // ── PASS cases ──
 
+    /**
+     * ```json
+     * { "JsonPath": "$.refId", "Operator": "REGEX_MATCH", "Value": "^REF-\\d{4}-\\d{5}$" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: reference ID matches pattern")
     void shouldPassWhenReferenceIdMatches() {
@@ -26,6 +31,11 @@ class RegexMatchOperatorTest {
                 .isThrownBy(() -> operator.apply("$.refId", "REF-1234-56789", "^REF-\\d{4}-\\d{5}$", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.email", "Operator": "REGEX_MATCH", "Value": "^[\\w.]+@[\\w.]+\\.[a-z]{2 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: email matches pattern")
     void shouldPassWhenEmailMatches() {
@@ -33,12 +43,22 @@ class RegexMatchOperatorTest {
                 .isThrownBy(() -> operator.apply("$.email", "user@example.com", "^[\\w.]+@[\\w.]+\\.[a-z]{2,}$", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.code", "Operator": "REGEX_MATCH", "Value": "^\\d+$" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: numeric string matches digit pattern")
     void shouldPassWhenDigitsMatch() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.code", "12345", "^\\d+$", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.id", "Operator": "REGEX_MATCH", "Value": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: UUID matches pattern")
     void shouldPassWhenUuidMatches() {
@@ -46,12 +66,22 @@ class RegexMatchOperatorTest {
                 "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.name", "Operator": "REGEX_MATCH", "Value": ".+" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: any non-empty string")
     void shouldPassWithDotPlus() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.name", "anything", ".+", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.code", "Operator": "REGEX_MATCH", "Value": "^\\d+$" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: numeric actual converted to string")
     void shouldPassWithNumericActual() {
@@ -60,6 +90,11 @@ class RegexMatchOperatorTest {
 
     // ── FAIL cases ──
 
+    /**
+     * ```json
+     * { "JsonPath": "$.refId", "Operator": "REGEX_MATCH", "Value": "^REF-\\d{4}-\\d{5}$" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: reference ID does not match pattern")
     void shouldFailWhenPatternDoesNotMatch() {
@@ -68,6 +103,11 @@ class RegexMatchOperatorTest {
                 .hasMessageContaining("REGEX_MATCH failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.refId", "Operator": "REGEX_MATCH", "Value": "^REF-\\d{4}-\\d{5}$" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: partial match is not enough — must be full match")
     void shouldFailOnPartialMatch() {
@@ -76,6 +116,11 @@ class RegexMatchOperatorTest {
                 .hasMessageContaining("REGEX_MATCH failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.field", "Operator": "REGEX_MATCH", "Value": ".+" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: empty string against non-empty pattern")
     void shouldFailWhenActualIsEmpty() {
@@ -86,6 +131,11 @@ class RegexMatchOperatorTest {
 
     // ── Edge / error cases ──
 
+    /**
+     * ```json
+     * { "JsonPath": "$.field", "Operator": "REGEX_MATCH", "Value": 123 }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: expected is not a string")
     void shouldFailWhenExpectedIsNotString() {
@@ -94,6 +144,11 @@ class RegexMatchOperatorTest {
                 .hasMessageContaining("REGEX_MATCH requires a string pattern");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.field", "Operator": "REGEX_MATCH", "Value": "[invalid(" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: invalid regex pattern")
     void shouldFailWithInvalidRegex() {
@@ -102,6 +157,11 @@ class RegexMatchOperatorTest {
                 .hasMessageContaining("invalid regex pattern");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.status", "Operator": "REGEX_MATCH", "Value": "^APPROVED$" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: case-sensitive match by default")
     void shouldBeCaseSensitive() {

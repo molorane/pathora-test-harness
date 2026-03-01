@@ -24,6 +24,11 @@ class DurationEqualsOperatorTest {
                 return JsonPath.parse(json);
         }
 
+       /**
+         * ```json
+         * { "Operator": "DURATION_EQUALS", "Value": { "startPath": "$.outputData.createdAt", "endPath": "$.outputData.processedAt", "unit": "MINUTES", "expected": 150 } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: duration equals expected — 150 minutes")
         void shouldPassWhenEqual() {
@@ -42,6 +47,11 @@ class DurationEqualsOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "DURATION_EQUALS", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "DAYS", "expected": 5 } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: duration equals expected — 5 days")
         void shouldPassWithDays() {
@@ -59,6 +69,11 @@ class DurationEqualsOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "DURATION_EQUALS", "Value": { "startPath": "$.outputData.createdAt", "endPath": "$.outputData.processedAt", "unit": "MINUTES", "expected": 150 } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: duration does not match")
         void shouldFailWhenNotEqual() {

@@ -20,6 +20,11 @@ class DateWithinLastOperatorTest {
         operator = new DateWithinLastOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.createdAt", "Operator": "DATE_WITHIN_LAST", "Value": value }
+     * ```
+     */
     @Test
     @DisplayName("PASS: datetime within last 24 hours")
     void shouldPassWhenWithinLast24Hours() {
@@ -34,6 +39,11 @@ class DateWithinLastOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.createdAt", recent, value, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.createdAt", "Operator": "DATE_WITHIN_LAST", "Value": value }
+     * ```
+     */
     @Test
     @DisplayName("PASS: datetime just now")
     void shouldPassWhenJustNow() {
@@ -48,6 +58,11 @@ class DateWithinLastOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.createdAt", now, value, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.createdAt", "Operator": "DATE_WITHIN_LAST", "Value": value }
+     * ```
+     */
     @Test
     @DisplayName("PASS: date within last 7 days")
     void shouldPassWithDateWithinDays() {
@@ -62,6 +77,11 @@ class DateWithinLastOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.createdAt", recent, value, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.createdAt", "Operator": "DATE_WITHIN_LAST", "Value": value }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: datetime too old")
     void shouldFailWhenTooOld() {
@@ -78,6 +98,11 @@ class DateWithinLastOperatorTest {
                 .hasMessageContaining("DATE_WITHIN_LAST failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.createdAt", "Operator": "DATE_WITHIN_LAST", "Value": value }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: invalid unit")
     void shouldFailWithInvalidUnit() {

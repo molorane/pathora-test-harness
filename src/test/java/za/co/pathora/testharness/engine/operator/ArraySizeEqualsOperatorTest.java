@@ -21,6 +21,11 @@ class ArraySizeEqualsOperatorTest {
         operator = new ArraySizeEqualsOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_SIZE_EQUALS", "Value": 3 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: array size matches expected")
     void shouldPassWhenSizeMatches() {
@@ -28,18 +33,33 @@ class ArraySizeEqualsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, 3, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_SIZE_EQUALS", "Value": 0 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: empty array with expected size 0")
     void shouldPassWithEmptyArray() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", Collections.emptyList(), 0, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_SIZE_EQUALS", "Value": 0 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: null actual treated as size 0")
     void shouldPassWhenNullTreatedAsEmpty() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", null, 0, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_SIZE_EQUALS", "Value": "2" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: expected size as string — coerced to int")
     void shouldPassWithStringExpectedSize() {
@@ -47,6 +67,11 @@ class ArraySizeEqualsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "2", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_SIZE_EQUALS", "Value": 1 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: single element array")
     void shouldPassWithSingleElement() {
@@ -54,6 +79,11 @@ class ArraySizeEqualsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, 1, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_SIZE_EQUALS", "Value": 2 }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: array size mismatch — too many elements")
     void shouldFailWhenTooManyElements() {
@@ -63,6 +93,11 @@ class ArraySizeEqualsOperatorTest {
                 .hasMessageContaining("ARRAY_SIZE_EQUALS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_SIZE_EQUALS", "Value": 3 }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: array size mismatch — too few elements")
     void shouldFailWhenTooFewElements() {
@@ -72,6 +107,11 @@ class ArraySizeEqualsOperatorTest {
                 .hasMessageContaining("ARRAY_SIZE_EQUALS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_SIZE_EQUALS", "Value": 1 }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: non-list value")
     void shouldFailWhenNotAList() {
@@ -80,6 +120,11 @@ class ArraySizeEqualsOperatorTest {
                 .hasMessageContaining("Expected array at path");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "ARRAY_SIZE_EQUALS", "Value": 1 }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: null actual with expected size > 0")
     void shouldFailWhenNullWithNonZeroExpected() {

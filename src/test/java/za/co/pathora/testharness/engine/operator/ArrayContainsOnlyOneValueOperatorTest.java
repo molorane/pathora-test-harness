@@ -21,6 +21,11 @@ class ArrayContainsOnlyOneValueOperatorTest {
         operator = new ArrayContainsOnlyOneValueOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.results", "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE", "Value": "SUCCESS" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: single element matching expected string")
     void shouldPassWithSingleMatchingString() {
@@ -28,6 +33,11 @@ class ArrayContainsOnlyOneValueOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.results", list, "SUCCESS", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.results", "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE", "Value": 42 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: single element matching expected number")
     void shouldPassWithSingleMatchingNumber() {
@@ -35,6 +45,11 @@ class ArrayContainsOnlyOneValueOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.results", list, 42, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.results", "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE", "Value": 5.0 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: numeric type coercion — int vs double")
     void shouldPassWithNumericCoercion() {
@@ -42,6 +57,11 @@ class ArrayContainsOnlyOneValueOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.results", list, 5.0, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.results", "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE", "Value": "SUCCESS" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: multiple elements in array")
     void shouldFailWithMultipleElements() {
@@ -51,6 +71,11 @@ class ArrayContainsOnlyOneValueOperatorTest {
                 .hasMessageContaining("Expected exactly one element");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.results", "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE", "Value": "SUCCESS" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: empty array")
     void shouldFailWithEmptyArray() {
@@ -60,6 +85,11 @@ class ArrayContainsOnlyOneValueOperatorTest {
                 .hasMessageContaining("Expected exactly one element");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.results", "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE", "Value": "SUCCESS" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: single element but wrong value")
     void shouldFailWithWrongValue() {
@@ -69,6 +99,11 @@ class ArrayContainsOnlyOneValueOperatorTest {
                 .hasMessageContaining("ARRAY_CONTAINS_ONLY_ONE_VALUE failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.results", "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE", "Value": "SUCCESS" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {
@@ -77,6 +112,11 @@ class ArrayContainsOnlyOneValueOperatorTest {
                 .hasMessageContaining("Expected array at path");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.results", "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE", "Value": "100" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: string-to-number coercion")
     void shouldPassWithStringToNumberCoercion() {

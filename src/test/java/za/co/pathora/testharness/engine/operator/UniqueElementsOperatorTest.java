@@ -21,6 +21,11 @@ class UniqueElementsOperatorTest {
         operator = new UniqueElementsOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "UNIQUE_ELEMENTS", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("PASS: all elements unique")
     void shouldPassWithUniqueElements() {
@@ -28,6 +33,11 @@ class UniqueElementsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", list, null, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "UNIQUE_ELEMENTS", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("PASS: single element — always unique")
     void shouldPassWithSingleElement() {
@@ -35,12 +45,22 @@ class UniqueElementsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", list, null, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "UNIQUE_ELEMENTS", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("PASS: empty array — vacuously unique")
     void shouldPassWithEmptyArray() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", Collections.emptyList(), null, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.ids", "Operator": "UNIQUE_ELEMENTS", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("PASS: unique numbers")
     void shouldPassWithUniqueNumbers() {
@@ -48,6 +68,11 @@ class UniqueElementsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.ids", list, null, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "UNIQUE_ELEMENTS", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: duplicate string")
     void shouldFailWithDuplicateString() {
@@ -58,6 +83,11 @@ class UniqueElementsOperatorTest {
                 .hasMessageContaining("Duplicate found: A");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.ids", "Operator": "UNIQUE_ELEMENTS", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: duplicate numbers")
     void shouldFailWithDuplicateNumbers() {
@@ -68,6 +98,11 @@ class UniqueElementsOperatorTest {
                 .hasMessageContaining("index 2");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "UNIQUE_ELEMENTS", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: all elements same")
     void shouldFailWhenAllSame() {
@@ -77,6 +112,11 @@ class UniqueElementsOperatorTest {
                 .hasMessageContaining("UNIQUE_ELEMENTS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "UNIQUE_ELEMENTS", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {

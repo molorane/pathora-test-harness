@@ -21,12 +21,22 @@ class ArrayIsEmptyOperatorTest {
         operator = new ArrayIsEmptyOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "ARRAY_IS_EMPTY", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("PASS: empty array")
     void shouldPassWithEmptyArray() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", Collections.emptyList(), null, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "ARRAY_IS_EMPTY", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: non-empty array — one element")
     void shouldFailWithOneElement() {
@@ -37,6 +47,11 @@ class ArrayIsEmptyOperatorTest {
                 .hasMessageContaining("1 elements");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "ARRAY_IS_EMPTY", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: non-empty array — multiple elements")
     void shouldFailWithMultipleElements() {
@@ -47,6 +62,11 @@ class ArrayIsEmptyOperatorTest {
                 .hasMessageContaining("3 elements");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "ARRAY_IS_EMPTY", "Value": null }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {

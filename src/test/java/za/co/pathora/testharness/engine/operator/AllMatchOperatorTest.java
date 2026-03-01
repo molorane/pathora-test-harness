@@ -27,6 +27,11 @@ class AllMatchOperatorTest {
     @DisplayName("Equals mode (scalar Value)")
     class EqualsMode {
 
+       /**
+         * ```json
+         * { "JsonPath": "$.penalties", "Operator": "ALL_MATCH", "Value": 0 }
+         * ```
+         */
         @Test
         @DisplayName("PASS: all elements equal to 0")
         void shouldPassWhenAllZeros() {
@@ -36,6 +41,11 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.penalties", list, 0, true));
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.segments", "Operator": "ALL_MATCH", "Value": "Retail" }
+         * ```
+         */
         @Test
         @DisplayName("PASS: all elements equal to string")
         void shouldPassWhenAllSameString() {
@@ -45,6 +55,11 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.segments", list, "Retail", true));
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.segments", "Operator": "ALL_MATCH", "Value": "Retail" }
+         * ```
+         */
         @Test
         @DisplayName("PASS: single element matches")
         void shouldPassWithSingleElement() {
@@ -54,6 +69,11 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.segments", list, "Retail", true));
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.items", "Operator": "ALL_MATCH", "Value": "anything" }
+         * ```
+         */
         @Test
         @DisplayName("PASS: empty array — vacuously true")
         void shouldPassWithEmptyArray() {
@@ -63,6 +83,11 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "anything", true));
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.penalties", "Operator": "ALL_MATCH", "Value": 0.0 }
+         * ```
+         */
         @Test
         @DisplayName("PASS: numeric type coercion — int 0 equals double 0.0")
         void shouldPassWithNumericCoercion() {
@@ -72,6 +97,11 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.penalties", list, 0.0, true));
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.penalties", "Operator": "ALL_MATCH", "Value": 0 }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: one element differs")
         void shouldFailWhenOneElementDiffers() {
@@ -84,6 +114,11 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("index 2");
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.segments", "Operator": "ALL_MATCH", "Value": "Retail" }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: first element differs")
         void shouldFailWhenFirstElementDiffers() {
@@ -95,6 +130,11 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("index 0");
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.penalties", "Operator": "ALL_MATCH", "Value": 0 }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: all elements differ")
         void shouldFailWhenAllDiffer() {
@@ -115,6 +155,11 @@ class AllMatchOperatorTest {
     @DisplayName("greaterThan mode")
     class GreaterThanMode {
 
+       /**
+         * ```json
+         * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("PASS: all elements greater than threshold")
         void shouldPassWhenAllGreater() {
@@ -129,6 +174,11 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.scores", list, condition, true));
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: one element equals threshold (not strictly greater)")
         void shouldFailWhenOneEqualsThreshold() {
@@ -145,6 +195,11 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("index 1");
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: one element below threshold")
         void shouldFailWhenOneBelowThreshold() {
@@ -170,6 +225,11 @@ class AllMatchOperatorTest {
     @DisplayName("lessThan mode")
     class LessThanMode {
 
+       /**
+         * ```json
+         * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("PASS: all elements less than threshold")
         void shouldPassWhenAllLess() {
@@ -184,6 +244,11 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.scores", list, condition, true));
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: one element equals threshold (not strictly less)")
         void shouldFailWhenOneEqualsThreshold() {
@@ -200,6 +265,11 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("index 1");
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: one element above threshold")
         void shouldFailWhenOneAboveThreshold() {
@@ -225,6 +295,11 @@ class AllMatchOperatorTest {
     @DisplayName("between mode")
     class BetweenMode {
 
+       /**
+         * ```json
+         * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("PASS: all elements within range")
         void shouldPassWhenAllWithinRange() {
@@ -242,6 +317,11 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.scores", list, condition, true));
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: one element outside range")
         void shouldFailWhenOneOutsideRange() {
@@ -270,6 +350,11 @@ class AllMatchOperatorTest {
     @DisplayName("Edge cases")
     class EdgeCases {
 
+       /**
+         * ```json
+         * { "JsonPath": "$.items", "Operator": "ALL_MATCH", "Value": 0 }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: actual is not a list")
         void shouldFailWhenNotList() {
@@ -278,6 +363,11 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("Expected array at path");
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: unknown condition key")
         void shouldFailWithUnknownCondition() {
@@ -294,6 +384,11 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("greaterThan");
         }
 
+       /**
+         * ```json
+         * { "JsonPath": "$.items", "Operator": "ALL_MATCH", "Value": condition }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: non-numeric value for greaterThan")
         void shouldFailWithNonNumericForGreaterThan() {

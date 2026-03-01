@@ -19,7 +19,11 @@ Each operator section includes:
 
 **Assertion:**
 ```json
-{ "JsonPath": "$.outputData.status", "Operator": "EQUALS", "Value": "APPROVED" }
+{ 
+  "JsonPath": "$.outputData.status", 
+  "Operator": "EQUALS", 
+  "Value": "APPROVED" 
+}
 ```
 
 **PASS** — actual response:

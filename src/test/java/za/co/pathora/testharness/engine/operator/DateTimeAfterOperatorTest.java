@@ -17,6 +17,11 @@ class DateTimeAfterOperatorTest {
         operator = new DateTimeAfterOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.ts", "Operator": "DATE_TIME_AFTER", "Value": "2026-12-31T23:59:59" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: datetime after expected")
     void shouldPassWhenAfter() {
@@ -24,6 +29,11 @@ class DateTimeAfterOperatorTest {
                 .isThrownBy(() -> operator.apply("$.ts", "2027-01-01T00:00:00", "2026-12-31T23:59:59", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.ts", "Operator": "DATE_TIME_AFTER", "Value": "2026-12-31T10:00:00" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: same day, later time")
     void shouldPassWhenSameDayLaterTime() {
@@ -31,6 +41,11 @@ class DateTimeAfterOperatorTest {
                 .isThrownBy(() -> operator.apply("$.ts", "2026-12-31T23:00:00", "2026-12-31T10:00:00", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.ts", "Operator": "DATE_TIME_AFTER", "Value": "2026-12-31T23:59:58" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: one second after")
     void shouldPassWhenOneSecondAfter() {
@@ -38,6 +53,11 @@ class DateTimeAfterOperatorTest {
                 .isThrownBy(() -> operator.apply("$.ts", "2026-12-31T23:59:59", "2026-12-31T23:59:58", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.ts", "Operator": "DATE_TIME_AFTER", "Value": "2026-12-31T10:00:00" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: same datetime")
     void shouldFailWhenEqual() {
@@ -46,6 +66,11 @@ class DateTimeAfterOperatorTest {
                 .hasMessageContaining("DATETIME_AFTER failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.ts", "Operator": "DATE_TIME_AFTER", "Value": "2026-12-31T23:59:59" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: datetime before expected")
     void shouldFailWhenBefore() {
@@ -54,6 +79,11 @@ class DateTimeAfterOperatorTest {
                 .hasMessageContaining("DATETIME_AFTER failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.ts", "Operator": "DATE_TIME_AFTER", "Value": "2026-12-31T10:00:00" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: invalid datetime format")
     void shouldFailWithInvalidFormat() {

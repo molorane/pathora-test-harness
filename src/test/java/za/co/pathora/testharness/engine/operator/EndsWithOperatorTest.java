@@ -17,36 +17,66 @@ class EndsWithOperatorTest {
         operator = new EndsWithOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.refId", "Operator": "ENDS_WITH", "Value": "123" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: string ends with suffix")
     void shouldPassWhenEndsWith() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.refId", "REF-1234-123", "123", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.code", "Operator": "ENDS_WITH", "Value": "ABC" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: exact match counts as ends with")
     void shouldPassWhenExactMatch() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.code", "ABC", "ABC", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.name", "Operator": "ENDS_WITH", "Value": "n" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: single character suffix")
     void shouldPassWithSingleCharSuffix() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.name", "John", "n", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.field", "Operator": "ENDS_WITH", "Value": "" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: empty suffix — always matches")
     void shouldPassWithEmptySuffix() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.field", "anything", "", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.code", "Operator": "ENDS_WITH", "Value": "345" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: numeric actual converted to string")
     void shouldPassWithNumericActual() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.code", 12345, "345", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.refId", "Operator": "ENDS_WITH", "Value": "5678" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: string does not end with suffix")
     void shouldFailWhenDoesNotEndWith() {
@@ -55,6 +85,11 @@ class EndsWithOperatorTest {
                 .hasMessageContaining("ENDS_WITH failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.file", "Operator": "ENDS_WITH", "Value": ".pdf" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: case mismatch")
     void shouldFailOnCaseMismatch() {
@@ -63,6 +98,11 @@ class EndsWithOperatorTest {
                 .hasMessageContaining("ENDS_WITH failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.code", "Operator": "ENDS_WITH", "Value": "ABCDEF" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: suffix longer than actual")
     void shouldFailWhenSuffixLongerThanActual() {

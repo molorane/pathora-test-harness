@@ -20,6 +20,11 @@ class DateWithinNextOperatorTest {
         operator = new DateWithinNextOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_WITHIN_NEXT", "Value": value }
+     * ```
+     */
     @Test
     @DisplayName("PASS: future date within next 7 days")
     void shouldPassWhenWithinNext() {
@@ -34,6 +39,11 @@ class DateWithinNextOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.expiry", future, value, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_WITHIN_NEXT", "Value": value }
+     * ```
+     */
     @Test
     @DisplayName("PASS: future datetime within next 24 hours")
     void shouldPassWithinNext24Hours() {
@@ -48,6 +58,11 @@ class DateWithinNextOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.expiry", future, value, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_WITHIN_NEXT", "Value": value }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: date too far in the future")
     void shouldFailWhenTooFarInFuture() {
@@ -64,6 +79,11 @@ class DateWithinNextOperatorTest {
                 .hasMessageContaining("DATE_WITHIN_NEXT failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.expiry", "Operator": "DATE_WITHIN_NEXT", "Value": value }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: date in the past")
     void shouldFailWhenInPast() {

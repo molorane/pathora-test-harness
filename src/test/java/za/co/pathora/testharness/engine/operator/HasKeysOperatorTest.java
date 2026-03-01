@@ -18,6 +18,11 @@ class HasKeysOperatorTest {
         operator = new HasKeysOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "HAS_KEYS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: object has all expected keys")
     void shouldPassWhenAllKeysPresent() {
@@ -34,6 +39,11 @@ class HasKeysOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.client", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.data", "Operator": "HAS_KEYS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: exact keys — no extras")
     void shouldPassWithExactKeys() {
@@ -49,6 +59,11 @@ class HasKeysOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.data", "Operator": "HAS_KEYS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: single key")
     void shouldPassWithSingleKey() {
@@ -63,6 +78,11 @@ class HasKeysOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "HAS_KEYS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: one key missing")
     void shouldFailWhenOneKeyMissing() {
@@ -80,6 +100,11 @@ class HasKeysOperatorTest {
                 .hasMessageContaining("riskLevel");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "HAS_KEYS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: all keys missing")
     void shouldFailWhenAllKeysMissing() {
@@ -96,6 +121,11 @@ class HasKeysOperatorTest {
                 .hasMessageContaining("HAS_KEYS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "HAS_KEYS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual is not a map")
     void shouldFailWhenActualIsNotMap() {

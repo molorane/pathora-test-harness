@@ -18,6 +18,11 @@ class ArrayContainsOnlyValuesOperatorTest {
         operator = new ArrayContainsOnlyValuesOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.tags", "Operator": "ARRAY_CONTAINS_ONLY_VALUES", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: exact match — same values same order")
     void shouldPassWithExactMatch() {
@@ -30,6 +35,11 @@ class ArrayContainsOnlyValuesOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.tags", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.tags", "Operator": "ARRAY_CONTAINS_ONLY_VALUES", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: same values — different order")
     void shouldPassWithDifferentOrder() {
@@ -42,6 +52,11 @@ class ArrayContainsOnlyValuesOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.tags", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.tags", "Operator": "ARRAY_CONTAINS_ONLY_VALUES", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: single element match")
     void shouldPassWithSingleElement() {
@@ -54,6 +69,11 @@ class ArrayContainsOnlyValuesOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.tags", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.tags", "Operator": "ARRAY_CONTAINS_ONLY_VALUES", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: extra element in actual")
     void shouldFailWithExtraElement() {
@@ -68,6 +88,11 @@ class ArrayContainsOnlyValuesOperatorTest {
                 .hasMessageContaining("ARRAY_CONTAINS_ONLY_VALUES failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.tags", "Operator": "ARRAY_CONTAINS_ONLY_VALUES", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: missing element in actual")
     void shouldFailWithMissingElement() {
@@ -82,6 +107,11 @@ class ArrayContainsOnlyValuesOperatorTest {
                 .hasMessageContaining("ARRAY_CONTAINS_ONLY_VALUES failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.tags", "Operator": "ARRAY_CONTAINS_ONLY_VALUES", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: same size but different values")
     void shouldFailWithDifferentValues() {
@@ -96,6 +126,11 @@ class ArrayContainsOnlyValuesOperatorTest {
                 .hasMessageContaining("ARRAY_CONTAINS_ONLY_VALUES failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.tags", "Operator": "ARRAY_CONTAINS_ONLY_VALUES", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {
@@ -107,6 +142,11 @@ class ArrayContainsOnlyValuesOperatorTest {
                 .hasMessageContaining("Expected array at path");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.tags", "Operator": "ARRAY_CONTAINS_ONLY_VALUES", "Value": "not-a-list" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: expected is not a list")
     void shouldFailWhenExpectedIsNotList() {

@@ -24,6 +24,11 @@ class DateAfterDurationOperatorTest {
                 return JsonPath.parse(json);
         }
 
+       /**
+         * ```json
+         * { "Operator": "DATE_AFTER_DURATION", "Value": { "basePath": "$.outputData.applicationDate", "comparePath": "$.outputData.approvalDate", "amount": 3, "unit": "DAYS" } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: approval is 5 days after application (min 3)")
         void shouldPassWhenSufficientDuration() {
@@ -41,6 +46,11 @@ class DateAfterDurationOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "DATE_AFTER_DURATION", "Value": { "basePath": "$.outputData.applicationDate", "comparePath": "$.outputData.approvalDate", "amount": 3, "unit": "DAYS" } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: exactly at threshold — 3 days")
         void shouldPassAtExactThreshold() {
@@ -58,6 +68,11 @@ class DateAfterDurationOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "DATE_AFTER_DURATION", "Value": { "basePath": "$.outputData.start", "comparePath": "$.outputData.end", "amount": 3, "unit": "HOURS" } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: datetime — 4 hours after base")
         void shouldPassWithDatetimeHours() {
@@ -75,6 +90,11 @@ class DateAfterDurationOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "DATE_AFTER_DURATION", "Value": { "basePath": "$.outputData.applicationDate", "comparePath": "$.outputData.approvalDate", "amount": 3, "unit": "DAYS" } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: approval only 1 day after application (min 3)")
         void shouldFailWhenInsufficientDuration() {
@@ -94,6 +114,11 @@ class DateAfterDurationOperatorTest {
                                 .hasMessageContaining("DATE_AFTER_DURATION failed");
         }
 
+       /**
+         * ```json
+         * { "Operator": "DATE_AFTER_DURATION", "Value": { "basePath": "$.outputData.applicationDate", "comparePath": "$.outputData.approvalDate", "amount": 3, "unit": "DAYS" } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: compare date before base date")
         void shouldFailWhenCompareBeforeBase() {
@@ -113,6 +138,11 @@ class DateAfterDurationOperatorTest {
                                 .hasMessageContaining("DATE_AFTER_DURATION failed");
         }
 
+       /**
+         * ```json
+         * { "Operator": "DATE_AFTER_DURATION", "Value": { "basePath": "$.outputData.applicationDate", "comparePath": "$.outputData.approvalDate", "amount": 3, "unit": "DAYS" } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: invalid date format")
         void shouldFailWithInvalidDate() {

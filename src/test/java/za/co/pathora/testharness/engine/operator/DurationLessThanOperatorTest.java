@@ -24,6 +24,11 @@ class DurationLessThanOperatorTest {
                 return JsonPath.parse(json);
         }
 
+       /**
+         * ```json
+         * { "Operator": "DURATION_LESS_THAN", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "MINUTES", "value": 180 } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: duration < threshold")
         void shouldPassWhenLess() {
@@ -41,6 +46,11 @@ class DurationLessThanOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "DURATION_LESS_THAN", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "MINUTES", "value": 180 } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: duration equals threshold (not strictly less)")
         void shouldFailWhenEqual() {
@@ -60,6 +70,11 @@ class DurationLessThanOperatorTest {
                                 .hasMessageContaining("DURATION_LESS_THAN failed");
         }
 
+       /**
+         * ```json
+         * { "Operator": "DURATION_LESS_THAN", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "MINUTES", "value": 180 } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: duration > threshold")
         void shouldFailWhenGreater() {

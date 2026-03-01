@@ -20,6 +20,11 @@ class BetweenOperatorTest {
 
     // ── PASS cases ──
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("PASS: value within range")
     void shouldPassWhenValueWithinRange() {
@@ -32,6 +37,11 @@ class BetweenOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.score", 75, range, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("PASS: value equals min boundary (inclusive)")
     void shouldPassWhenValueEqualsMin() {
@@ -44,6 +54,11 @@ class BetweenOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.score", 50, range, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("PASS: value equals max boundary (inclusive)")
     void shouldPassWhenValueEqualsMax() {
@@ -56,6 +71,11 @@ class BetweenOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.score", 100, range, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.probability", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("PASS: double value within range")
     void shouldPassWithDoubleValue() {
@@ -68,6 +88,11 @@ class BetweenOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.probability", 0.5, range, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("PASS: string-to-number coercion on actual")
     void shouldPassWithStringActualCoercion() {
@@ -80,6 +105,11 @@ class BetweenOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.score", "15", range, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.temp", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("PASS: negative range")
     void shouldPassWithNegativeRange() {
@@ -94,6 +124,11 @@ class BetweenOperatorTest {
 
     // ── FAIL cases ──
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: value below min")
     void shouldFailWhenValueBelowMin() {
@@ -108,6 +143,11 @@ class BetweenOperatorTest {
                 .hasMessageContaining("BETWEEN failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: value above max")
     void shouldFailWhenValueAboveMax() {
@@ -122,6 +162,11 @@ class BetweenOperatorTest {
                 .hasMessageContaining("BETWEEN failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: value just below min")
     void shouldFailWhenValueJustBelowMin() {
@@ -136,6 +181,11 @@ class BetweenOperatorTest {
                 .hasMessageContaining("BETWEEN failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: value just above max")
     void shouldFailWhenValueJustAboveMax() {
@@ -152,6 +202,11 @@ class BetweenOperatorTest {
 
     // ── Edge / error cases ──
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: missing 'min' key in value")
     void shouldFailWhenMinKeyMissing() {
@@ -165,6 +220,11 @@ class BetweenOperatorTest {
                 .hasMessageContaining("'min' and 'max'");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: missing 'max' key in value")
     void shouldFailWhenMaxKeyMissing() {
@@ -178,6 +238,11 @@ class BetweenOperatorTest {
                 .hasMessageContaining("'min' and 'max'");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": "not-a-map" }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: expected is not a map")
     void shouldFailWhenExpectedIsNotMap() {
@@ -186,6 +251,11 @@ class BetweenOperatorTest {
                 .hasMessageContaining("Expected object but got");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("PASS: min equals max — exact match")
     void shouldPassWhenMinEqualsMaxAndValueMatches() {
@@ -198,6 +268,11 @@ class BetweenOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.score", 42, range, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "BETWEEN", "Value": range }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: min equals max — value differs")
     void shouldFailWhenMinEqualsMaxAndValueDiffers() {

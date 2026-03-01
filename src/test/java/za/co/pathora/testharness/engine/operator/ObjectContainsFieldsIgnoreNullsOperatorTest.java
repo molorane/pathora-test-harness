@@ -18,6 +18,11 @@ class ObjectContainsFieldsIgnoreNullsOperatorTest {
         operator = new ObjectContainsFieldsIgnoreNullsOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: null expected fields are ignored")
     void shouldPassIgnoringNullExpectedFields() {
@@ -37,6 +42,11 @@ class ObjectContainsFieldsIgnoreNullsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.client", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: all non-null fields match")
     void shouldPassWhenNonNullFieldsMatch() {
@@ -59,6 +69,11 @@ class ObjectContainsFieldsIgnoreNullsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.client", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.data", "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: all expected fields are null — always passes")
     void shouldPassWhenAllExpectedFieldsAreNull() {
@@ -78,6 +93,11 @@ class ObjectContainsFieldsIgnoreNullsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: non-null expected field value mismatch")
     void shouldFailWhenNonNullFieldMismatch() {
@@ -99,6 +119,11 @@ class ObjectContainsFieldsIgnoreNullsOperatorTest {
                 .hasMessageContaining("OBJECT_CONTAINS_FIELDS_IGNORE_NULLS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.client", "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: non-null expected field missing in actual")
     void shouldFailWhenNonNullFieldMissing() {
@@ -120,6 +145,11 @@ class ObjectContainsFieldsIgnoreNullsOperatorTest {
                 .hasMessageContaining("OBJECT_CONTAINS_FIELDS_IGNORE_NULLS failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.data", "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: exact match with no null fields")
     void shouldPassWithExactMatchNoNulls() {
@@ -140,6 +170,11 @@ class ObjectContainsFieldsIgnoreNullsOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.data", "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual is not a map")
     void shouldFailWhenActualIsNotMap() {

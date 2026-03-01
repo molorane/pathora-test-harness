@@ -24,6 +24,11 @@ class DateBeforeDurationOperatorTest {
                 return JsonPath.parse(json);
         }
 
+       /**
+         * ```json
+         * { "Operator": "DATE_BEFORE_DURATION", "Value": { "basePath": "$.outputData.applicationDate", "comparePath": "$.outputData.approvalDate", "amount": 5, "unit": "DAYS" } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: compare date is before base + 5 days")
         void shouldPassWhenBefore() {
@@ -41,6 +46,11 @@ class DateBeforeDurationOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "DATE_BEFORE_DURATION", "Value": { "basePath": "$.outputData.applicationDate", "comparePath": "$.outputData.approvalDate", "amount": 3, "unit": "DAYS" } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: compare date is after base + 3 days")
         void shouldFailWhenAfter() {
@@ -60,6 +70,11 @@ class DateBeforeDurationOperatorTest {
                                 .hasMessageContaining("DATE_BEFORE_DURATION failed");
         }
 
+       /**
+         * ```json
+         * { "Operator": "DATE_BEFORE_DURATION", "Value": { "basePath": "$.outputData.start", "comparePath": "$.outputData.end", "amount": 3, "unit": "DAYS" } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: compare date equals threshold (not strictly before)")
         void shouldFailWhenEqualToThreshold() {

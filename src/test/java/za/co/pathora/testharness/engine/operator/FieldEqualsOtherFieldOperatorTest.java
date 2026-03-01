@@ -24,6 +24,11 @@ class FieldEqualsOtherFieldOperatorTest {
                 return JsonPath.parse(json);
         }
 
+       /**
+         * ```json
+         * { "Operator": "FIELD_EQUALS_OTHER_FIELD", "Value": { "leftPath": "$.outputData.amount", "rightPath": "$.outputData.calculatedAmount" } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: two fields have the same value")
         void shouldPassWhenFieldsEqual() {
@@ -39,6 +44,11 @@ class FieldEqualsOtherFieldOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "FIELD_EQUALS_OTHER_FIELD", "Value": { "leftPath": "$.outputData.status", "rightPath": "$.outputData.finalStatus" } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: string fields equal")
         void shouldPassWhenStringFieldsEqual() {
@@ -54,6 +64,11 @@ class FieldEqualsOtherFieldOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "FIELD_EQUALS_OTHER_FIELD", "Value": { "leftPath": "$.outputData.amount", "rightPath": "$.outputData.calculatedAmount" } }
+         * ```
+         */
         @Test
         @DisplayName("PASS: numeric type coercion — int vs double")
         void shouldPassWithTypeCoercion() {
@@ -69,6 +84,11 @@ class FieldEqualsOtherFieldOperatorTest {
                 assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
         }
 
+       /**
+         * ```json
+         * { "Operator": "FIELD_EQUALS_OTHER_FIELD", "Value": { "leftPath": "$.outputData.amount", "rightPath": "$.outputData.calculatedAmount" } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: two fields have different values")
         void shouldFailWhenFieldsDiffer() {
@@ -88,6 +108,11 @@ class FieldEqualsOtherFieldOperatorTest {
                                 .hasMessageContaining("200");
         }
 
+       /**
+         * ```json
+         * { "Operator": "FIELD_EQUALS_OTHER_FIELD", "Value": { "leftPath": "$.outputData.status", "rightPath": "$.outputData.finalStatus" } }
+         * ```
+         */
         @Test
         @DisplayName("FAIL: different string values")
         void shouldFailWhenStringFieldsDiffer() {

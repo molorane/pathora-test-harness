@@ -18,6 +18,11 @@ class ContainsAllOperatorTest {
         operator = new ContainsAllOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "CONTAINS_ALL", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: array contains all expected values")
     void shouldPassWhenAllFound() {
@@ -30,6 +35,11 @@ class ContainsAllOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "CONTAINS_ALL", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: exact match")
     void shouldPassWithExactMatch() {
@@ -42,6 +52,11 @@ class ContainsAllOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "CONTAINS_ALL", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: different order")
     void shouldPassWithDifferentOrder() {
@@ -54,6 +69,11 @@ class ContainsAllOperatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.codes", "Operator": "CONTAINS_ALL", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: one expected value missing")
     void shouldFailWhenOneMissing() {
@@ -69,6 +89,11 @@ class ContainsAllOperatorTest {
                 .hasMessageContaining("Missing value: 1011");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "CONTAINS_ALL", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: none of the expected values found")
     void shouldFailWhenNoneFound() {
@@ -83,6 +108,11 @@ class ContainsAllOperatorTest {
                 .hasMessageContaining("CONTAINS_ALL failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "CONTAINS_ALL", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: empty actual array")
     void shouldFailWithEmptyActual() {
@@ -97,6 +127,11 @@ class ContainsAllOperatorTest {
                 .hasMessageContaining("CONTAINS_ALL failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.items", "Operator": "CONTAINS_ALL", "Value": {...} }
+     * ```
+     */
     @Test
     @DisplayName("PASS: empty expected — vacuously true")
     void shouldPassWithEmptyExpected() {

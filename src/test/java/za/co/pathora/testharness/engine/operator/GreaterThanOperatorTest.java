@@ -17,30 +17,55 @@ class GreaterThanOperatorTest {
         operator = new GreaterThanOperator();
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "GREATER_THAN", "Value": 50 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: actual greater than expected")
     void shouldPassWhenActualIsGreater() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.score", 75, 50, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "GREATER_THAN", "Value": 1 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: actual much greater than expected")
     void shouldPassWhenActualIsMuchGreater() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.score", 1000, 1, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.rate", "Operator": "GREATER_THAN", "Value": 5 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: double actual greater than int expected")
     void shouldPassWithMixedNumericTypes() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.rate", 5.5, 5, true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "GREATER_THAN", "Value": "50" }
+     * ```
+     */
     @Test
     @DisplayName("PASS: string-to-number coercion — actual number > string expected")
     void shouldPassWithStringCoercion() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.score", 100, "50", true));
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "GREATER_THAN", "Value": 50 }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual less than expected")
     void shouldFailWhenActualIsLess() {
@@ -49,6 +74,11 @@ class GreaterThanOperatorTest {
                 .hasMessageContaining("GREATER_THAN failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.score", "Operator": "GREATER_THAN", "Value": 50 }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: actual equals expected — not strictly greater")
     void shouldFailWhenEqual() {
@@ -57,6 +87,11 @@ class GreaterThanOperatorTest {
                 .hasMessageContaining("GREATER_THAN failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.temp", "Operator": "GREATER_THAN", "Value": -5 }
+     * ```
+     */
     @Test
     @DisplayName("FAIL: negative numbers — actual less")
     void shouldFailWithNegativeNumbers() {
@@ -65,6 +100,11 @@ class GreaterThanOperatorTest {
                 .hasMessageContaining("GREATER_THAN failed");
     }
 
+    /**
+     * ```json
+     * { "JsonPath": "$.temp", "Operator": "GREATER_THAN", "Value": -10 }
+     * ```
+     */
     @Test
     @DisplayName("PASS: negative numbers — actual greater")
     void shouldPassWithNegativeNumbers() {
