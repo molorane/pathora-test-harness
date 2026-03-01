@@ -22,10 +22,7 @@ class ArrayContainsOperatorTest {
     @DisplayName("PASS: array contains the expected string value")
     void shouldPassWhenArrayContainsString() {
         Object list = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011"
-                ]
+                ["1004", "1011" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", list, "1004", true));
     }
@@ -34,11 +31,7 @@ class ArrayContainsOperatorTest {
     @DisplayName("PASS: array contains the expected numeric value")
     void shouldPassWhenArrayContainsNumber() {
         Object list = TestJsonHelper.parse("""
-                [
-                  1.0,
-                  2.0,
-                  3.0
-                ]
+                [1.0, 2.0, 3.0 ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.ids", list, 2.0, true));
     }
@@ -47,9 +40,7 @@ class ArrayContainsOperatorTest {
     @DisplayName("PASS: array contains value — single element")
     void shouldPassWithSingleElementArray() {
         Object list = TestJsonHelper.parse("""
-                [
-                  "ONLY"
-                ]
+                ["ONLY" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "ONLY", true));
     }
@@ -58,11 +49,7 @@ class ArrayContainsOperatorTest {
     @DisplayName("PASS: array contains value — last element")
     void shouldPassWhenValueIsLastElement() {
         Object list = TestJsonHelper.parse("""
-                [
-                  "A",
-                  "B",
-                  "C"
-                ]
+                ["A", "B", "C" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "C", true));
     }
@@ -71,10 +58,7 @@ class ArrayContainsOperatorTest {
     @DisplayName("FAIL: array does not contain expected value")
     void shouldFailWhenValueNotInArray() {
         Object list = TestJsonHelper.parse("""
-                [
-                  "1011",
-                  "1012"
-                ]
+                ["1011", "1012" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.codes", list, "1004", true))
                 .isInstanceOf(HarnessAssertionException.class)

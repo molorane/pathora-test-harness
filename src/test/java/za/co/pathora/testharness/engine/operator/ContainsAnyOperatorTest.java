@@ -22,17 +22,10 @@ class ContainsAnyOperatorTest {
     @DisplayName("PASS: array contains one of the expected values")
     void shouldPassWhenOneMatches() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1020",
-                  "1030"
-                ]
+                ["1004", "1020", "1030" ]
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011"
-                ]
+                ["1004", "1011" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", actual, expected, true));
     }
@@ -41,17 +34,10 @@ class ContainsAnyOperatorTest {
     @DisplayName("PASS: array contains all expected values")
     void shouldPassWhenAllMatch() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011",
-                  "1020"
-                ]
+                ["1004", "1011", "1020" ]
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011"
-                ]
+                ["1004", "1011" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", actual, expected, true));
     }
@@ -60,18 +46,10 @@ class ContainsAnyOperatorTest {
     @DisplayName("PASS: last expected value found")
     void shouldPassWhenLastExpectedFound() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "A",
-                  "B",
-                  "C"
-                ]
+                ["A", "B", "C" ]
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "X",
-                  "Y",
-                  "C"
-                ]
+                ["X", "Y", "C" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
@@ -80,16 +58,10 @@ class ContainsAnyOperatorTest {
     @DisplayName("FAIL: none of the expected values found")
     void shouldFailWhenNoneFound() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "1020",
-                  "1030"
-                ]
+                ["1020", "1030" ]
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011"
-                ]
+                ["1004", "1011" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.codes", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -103,10 +75,7 @@ class ContainsAnyOperatorTest {
                 []
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011"
-                ]
+                ["1004", "1011" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.codes", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -117,10 +86,7 @@ class ContainsAnyOperatorTest {
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {
         Object expected = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011"
-                ]
+                ["1004", "1011" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.codes", "scalar", expected, true))
                 .isInstanceOf(AssertionError.class)

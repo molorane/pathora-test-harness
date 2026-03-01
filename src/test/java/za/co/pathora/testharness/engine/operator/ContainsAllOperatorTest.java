@@ -22,17 +22,10 @@ class ContainsAllOperatorTest {
     @DisplayName("PASS: array contains all expected values")
     void shouldPassWhenAllFound() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011",
-                  "1020"
-                ]
+                ["1004", "1011", "1020" ]
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011"
-                ]
+                ["1004", "1011" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", actual, expected, true));
     }
@@ -41,16 +34,10 @@ class ContainsAllOperatorTest {
     @DisplayName("PASS: exact match")
     void shouldPassWithExactMatch() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "A",
-                  "B"
-                ]
+                ["A", "B" ]
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "A",
-                  "B"
-                ]
+                ["A", "B" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
@@ -59,16 +46,10 @@ class ContainsAllOperatorTest {
     @DisplayName("PASS: different order")
     void shouldPassWithDifferentOrder() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "B",
-                  "A"
-                ]
+                ["B", "A" ]
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "A",
-                  "B"
-                ]
+                ["A", "B" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
@@ -77,16 +58,10 @@ class ContainsAllOperatorTest {
     @DisplayName("FAIL: one expected value missing")
     void shouldFailWhenOneMissing() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1020"
-                ]
+                ["1004", "1020" ]
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "1004",
-                  "1011"
-                ]
+                ["1004", "1011" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.codes", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -98,16 +73,10 @@ class ContainsAllOperatorTest {
     @DisplayName("FAIL: none of the expected values found")
     void shouldFailWhenNoneFound() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "X",
-                  "Y"
-                ]
+                ["X", "Y" ]
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "A",
-                  "B"
-                ]
+                ["A", "B" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.items", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -121,10 +90,7 @@ class ContainsAllOperatorTest {
                 []
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "A",
-                  "B"
-                ]
+                ["A", "B" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.items", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -135,10 +101,7 @@ class ContainsAllOperatorTest {
     @DisplayName("PASS: empty expected — vacuously true")
     void shouldPassWithEmptyExpected() {
         Object actual = TestJsonHelper.parse("""
-                [
-                  "A",
-                  "B"
-                ]
+                ["A", "B" ]
                 """);
         Object expected = TestJsonHelper.parse("""
                 []

@@ -29,10 +29,7 @@ class HasKeysOperatorTest {
                 }
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "clientType",
-                  "riskLevel"
-                ]
+                ["clientType", "riskLevel" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.client", actual, expected, true));
     }
@@ -47,10 +44,7 @@ class HasKeysOperatorTest {
                 }
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "a",
-                  "b"
-                ]
+                ["a", "b" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
@@ -64,9 +58,7 @@ class HasKeysOperatorTest {
                 }
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "status"
-                ]
+                ["status" ]
                 """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
@@ -80,10 +72,7 @@ class HasKeysOperatorTest {
                 }
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "clientType",
-                  "riskLevel"
-                ]
+                ["clientType", "riskLevel" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -100,10 +89,7 @@ class HasKeysOperatorTest {
                 }
                 """);
         Object expected = TestJsonHelper.parse("""
-                [
-                  "clientType",
-                  "riskLevel"
-                ]
+                ["clientType", "riskLevel" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
                 .isInstanceOf(HarnessAssertionException.class)
@@ -114,10 +100,7 @@ class HasKeysOperatorTest {
     @DisplayName("FAIL: actual is not a map")
     void shouldFailWhenActualIsNotMap() {
         Object expected = TestJsonHelper.parse("""
-                [
-                  "clientType",
-                  "riskLevel"
-                ]
+                ["clientType", "riskLevel" ]
                 """);
         assertThatThrownBy(() -> operator.apply("$.client", "not-a-map", expected, true))
                 .isInstanceOf(IllegalArgumentException.class)
