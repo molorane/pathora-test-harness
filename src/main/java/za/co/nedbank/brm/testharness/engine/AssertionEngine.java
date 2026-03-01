@@ -1,6 +1,5 @@
 package za.co.nedbank.brm.testharness.engine;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import za.co.nedbank.brm.testharness.exception.HarnessAssertionException;
@@ -16,14 +15,11 @@ import static za.co.nedbank.brm.testharness.model.AssertionOperator.*;
 
 public class AssertionEngine {
 
-    private final ObjectMapper mapper = new ObjectMapper();
-
     public void assertResponse(
             Path testFileName,
             String mutatedRequest,
             String response,
-            RuleTestCase testCase
-    ) {
+            RuleTestCase testCase) {
 
         var assertions = testCase.responseAssertions();
         DocumentContext context = JsonPath.parse(response);
@@ -45,58 +41,53 @@ public class AssertionEngine {
                     if (assertion.operator() != AssertionOperator.EXISTS) {
                         throw new AssertionError(
                                 """
-                                JSON_PATH_EVALUATION_FAILED
-                                -----------------------------------------
-                                JsonPath: %s
-                                Operator: %s
-                                Test File: %s
-                                Entry Point: %s
-                                
-                                Path does not exist in response.
-                                
-                                Response:
-                                %s
-                                """.formatted(
+                                        JSON_PATH_EVALUATION_FAILED
+                                        -----------------------------------------
+                                        JsonPath: %s
+                                        Operator: %s
+                                        Test File: %s
+                                        Entry Point: %s
+
+                                        Path does not exist in response.
+
+                                        Response:
+                                        %s
+                                        """.formatted(
                                         assertion.jsonPath(),
                                         assertion.operator(),
                                         testFileName,
                                         testCase.entryPointName(),
-                                        response
-                                ),
-                                e
-                        );
+                                        response),
+                                e);
                     }
 
                 } catch (Exception e) {
 
                     throw new AssertionError(
                             """
-                            JSON_PATH_RUNTIME_ERROR
-                            -----------------------------------------
-                            JsonPath: %s
-                            Operator: %s
-                            Test File: %s
-                            Entry Point: %s
-                            
-                            Error: %s
-                            
-                            Response:
-                            %s
-                            """.formatted(
+                                    JSON_PATH_RUNTIME_ERROR
+                                    -----------------------------------------
+                                    JsonPath: %s
+                                    Operator: %s
+                                    Test File: %s
+                                    Entry Point: %s
+
+                                    Error: %s
+
+                                    Response:
+                                    %s
+                                    """.formatted(
                                     assertion.jsonPath(),
                                     assertion.operator(),
                                     testFileName,
                                     testCase.entryPointName(),
                                     e.getMessage(),
-                                    response
-                            ),
-                            e
-                    );
+                                    response),
+                            e);
                 }
 
                 applyAssertion(assertion, actual, pathExists);
             }
-
 
         } catch (AssertionError ex) {
 
@@ -105,19 +96,16 @@ public class AssertionEngine {
                     testFileName,
                     mutatedRequest,
                     response,
-                    ex
-            );
+                    ex);
 
             throw ex; // VERY IMPORTANT — let JUnit fail
         }
     }
 
-
     public void applyAssertion(
             JsonAssertion assertion,
             Object actual,
-            boolean pathExists
-    ) {
+            boolean pathExists) {
 
         String path = assertion.jsonPath();
         Object expected = assertion.value();
@@ -134,8 +122,7 @@ public class AssertionEngine {
             case EXISTS -> {
                 if (!pathExists) {
                     throw new AssertionError(
-                            "Expected path to exist: " + path
-                    );
+                            "Expected path to exist: " + path);
                 }
             }
 
@@ -154,8 +141,7 @@ public class AssertionEngine {
                             expected,
                             actual,
                             "Expected array at path " + path +
-                                    " but got: " + actual
-                    );
+                                    " but got: " + actual);
                 }
 
                 int expectedSize = ((Number) normalizeExpected(expected)).intValue();
@@ -168,11 +154,9 @@ public class AssertionEngine {
                             list.size(),
                             "ARRAY_SIZE_EQUALS failed at " + path +
                                     ". Expected size: " + expectedSize +
-                                    ", Actual size: " + list.size()
-                    );
+                                    ", Actual size: " + list.size());
                 }
             }
-
 
             /*
              * =========================
@@ -183,8 +167,7 @@ public class AssertionEngine {
             case ARRAY_CONTAINS -> {
                 List<?> list = requireList(actual, path);
 
-                Object normalizedExpected =
-                        normalizeTypes(normalizeResult(expected, path), expected)[1];
+                Object normalizedExpected = normalizeTypes(normalizeResult(expected, path), expected)[1];
 
                 if (!list.contains(normalizedExpected)) {
                     throw new HarnessAssertionException(
@@ -194,8 +177,7 @@ public class AssertionEngine {
                             list,
                             "ARRAY_CONTAINS failed at " + path +
                                     ". Expected array to contain: " + normalizedExpected +
-                                    ", Actual: " + list
-                    );
+                                    ", Actual: " + list);
                 }
             }
 
@@ -213,8 +195,7 @@ public class AssertionEngine {
                             list,
                             "ARRAY_CONTAINS_ONLY_VALUES failed at " + path +
                                     ". Expected: " + expectedList +
-                                    ", Actual: " + list
-                    );
+                                    ", Actual: " + list);
                 }
             }
 
@@ -228,8 +209,7 @@ public class AssertionEngine {
                             expected,
                             list,
                             "ARRAY_CONTAINS_ONLY_ONE_VALUE failed at " + path +
-                                    ". Expected exactly one element, Actual: " + list
-                    );
+                                    ". Expected exactly one element, Actual: " + list);
                 }
 
                 Object actualValue = normalizeResult(list.get(0), path);
@@ -243,8 +223,7 @@ public class AssertionEngine {
                             normalized[0],
                             "ARRAY_CONTAINS_ONLY_ONE_VALUE failed at " + path +
                                     ". Expected: " + normalized[1] +
-                                    ", Actual: " + normalized[0]
-                    );
+                                    ", Actual: " + normalized[0]);
                 }
             }
 
@@ -252,8 +231,7 @@ public class AssertionEngine {
                 List<?> list = requireList(actual, path);
 
                 boolean found = list.stream()
-                        .anyMatch(item ->
-                                objectContainsFields(item, expected, false));
+                        .anyMatch(item -> objectContainsFields(item, expected, false));
 
                 if (!found) {
                     throw new HarnessAssertionException(
@@ -263,8 +241,7 @@ public class AssertionEngine {
                             list,
                             "ARRAY_CONTAINS_OBJECT_WITH_FIELDS failed at " + path +
                                     ". Expected object fields: " + expected +
-                                    ", Actual: " + list
-                    );
+                                    ", Actual: " + list);
                 }
             }
 
@@ -285,8 +262,7 @@ public class AssertionEngine {
                             normalizedActual,
                             "OBJECT_CONTAINS_FIELDS failed at " + path +
                                     ". Expected fields: " + expected +
-                                    ", Actual: " + normalizedActual
-                    );
+                                    ", Actual: " + normalizedActual);
                 }
             }
 
@@ -301,8 +277,7 @@ public class AssertionEngine {
                             normalizedActual,
                             "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS failed at " + path +
                                     ". Expected fields: " + expected +
-                                    ", Actual: " + normalizedActual
-                    );
+                                    ", Actual: " + normalizedActual);
                 }
             }
 
@@ -313,9 +288,9 @@ public class AssertionEngine {
              */
 
             case EQUALS,
-                 NOT_EQUALS,
-                 GREATER_THAN,
-                 LESS_THAN -> {
+                    NOT_EQUALS,
+                    GREATER_THAN,
+                    LESS_THAN -> {
 
                 Object normalizedActual = normalizeResult(actual, path);
                 Object[] normalized = normalizeTypes(normalizedActual, expected);
@@ -334,8 +309,7 @@ public class AssertionEngine {
                                     finalActual,
                                     "EQUALS failed at " + path +
                                             ". Expected: " + finalExpected +
-                                            ", Actual: " + finalActual
-                            );
+                                            ", Actual: " + finalActual);
                         }
                     }
 
@@ -347,8 +321,7 @@ public class AssertionEngine {
                                     finalExpected,
                                     finalActual,
                                     "NOT_EQUALS failed at " + path +
-                                            ". Value: " + finalActual
-                            );
+                                            ". Value: " + finalActual);
                         }
                     }
 
@@ -364,8 +337,7 @@ public class AssertionEngine {
                                     a,
                                     "GREATER_THAN failed at " + path +
                                             ". Expected > " + e +
-                                            ", Actual: " + a
-                            );
+                                            ", Actual: " + a);
                         }
                     }
 
@@ -381,8 +353,7 @@ public class AssertionEngine {
                                     a,
                                     "LESS_THAN failed at " + path +
                                             ". Expected < " + e +
-                                            ", Actual: " + a
-                            );
+                                            ", Actual: " + a);
                         }
                     }
                 }
@@ -414,14 +385,12 @@ public class AssertionEngine {
             return (Map<String, Object>) map;
         }
         throw new IllegalArgumentException(
-                "Expected object but got: " + value
-        );
+                "Expected object but got: " + value);
     }
 
-
     private boolean objectContainsFields(Object actual,
-                                         Object expected,
-                                         boolean ignoreNulls) {
+            Object expected,
+            boolean ignoreNulls) {
 
         Map<String, Object> actualMap = toMap(actual);
         Map<String, Object> expectedMap = toMap(expected);
@@ -449,15 +418,14 @@ public class AssertionEngine {
         return true;
     }
 
-
     private Object[] normalizeTypes(Object actual, Object expected) {
 
         if (actual == null || expected == null) {
-            return new Object[]{actual, expected};
+            return new Object[] { actual, expected };
         }
 
         if (actual instanceof Number && expected instanceof Number) {
-            return new Object[]{
+            return new Object[] {
                     ((Number) actual).doubleValue(),
                     ((Number) expected).doubleValue()
             };
@@ -465,7 +433,7 @@ public class AssertionEngine {
 
         if (actual instanceof Number && expected instanceof String str) {
             try {
-                return new Object[]{
+                return new Object[] {
                         ((Number) actual).doubleValue(),
                         Double.parseDouble(str)
                 };
@@ -475,7 +443,7 @@ public class AssertionEngine {
 
         if (expected instanceof Number && actual instanceof String str) {
             try {
-                return new Object[]{
+                return new Object[] {
                         Double.parseDouble(str),
                         ((Number) expected).doubleValue()
                 };
@@ -483,23 +451,20 @@ public class AssertionEngine {
             }
         }
 
-        return new Object[]{actual, expected};
+        return new Object[] { actual, expected };
     }
-
 
     private Object normalizeResult(Object result, String path) {
         if (result instanceof List<?> list) {
 
             if (list.isEmpty()) {
                 throw new AssertionError(
-                        "No match found for path: " + path
-                );
+                        "No match found for path: " + path);
             }
 
             if (list.size() > 1) {
                 throw new AssertionError(
-                        "Multiple matches found for path: " + path
-                );
+                        "Multiple matches found for path: " + path);
             }
 
             return list.get(0);
@@ -512,8 +477,7 @@ public class AssertionEngine {
         if (!(value instanceof List<?> list)) {
             throw new AssertionError(
                     "Expected array at path " + path +
-                            " but got: " + value
-            );
+                            " but got: " + value);
         }
         return list;
     }
@@ -548,14 +512,16 @@ public class AssertionEngine {
             if (str.matches("-?\\d+")) {
                 return Integer.parseInt(str);
             }
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
 
         // decimal
         try {
             if (str.matches("-?\\d+\\.\\d+")) {
                 return Double.parseDouble(str);
             }
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
 
         // fallback → keep as string
         return str;
