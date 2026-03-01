@@ -591,10 +591,7 @@ Each operator section includes:
 {
   "JsonPath": "$.outputData.timestamp",
   "Operator": "DATE_WITHIN_LAST",
-  "Value": {
-    "amount": 30,
-    "unit": "DAYS"
-  }
+  "Value": "P30D"
 }
 ```
 
@@ -616,7 +613,7 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** `Value` must be an object with `amount` (number) and `unit` (ChronoUnit string, e.g., "DAYS", "HOURS").
+> **Notes:** `Value` must be an ISO-8601 duration (e.g., `P30D` for 30 days).
 
 ---
 
@@ -629,10 +626,7 @@ Each operator section includes:
 {
   "JsonPath": "$.outputData.expiryDate",
   "Operator": "DATE_WITHIN_NEXT",
-  "Value": {
-    "amount": 30,
-    "unit": "DAYS"
-  }
+  "Value": "P30D"
 }
 ```
 
@@ -654,7 +648,7 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** `Value` must be an object with `amount` (number) and `unit` (ChronoUnit string, e.g., "DAYS", "MONTHS").
+> **Notes:** `Value` must be an ISO-8601 duration.
 
 ---
 
@@ -668,18 +662,16 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
+  "JsonPath": "$.outputData.times",
   "Operator": "DURATION_BETWEEN",
   "Value": {
-    "startPath": "$.outputData.startTime",
-    "endPath": "$.outputData.endTime",
-    "min": 1,
-    "max": 5,
-    "unit": "DAYS"
+    "min": "P1D",
+    "max": "P5D"
   }
 }
 ```
 
-> **Notes:** Extracts dates from `startPath` and `endPath`. Because this operates on multiple fields, the top-level `JsonPath` might be omitted or ignored depending on the engine context. Requires `min`, `max`, and `unit` (e.g. "DAYS", "HOURS").
+> **Notes:** Extracts dates and asserts the duration between them falls within min/max durations.
 
 ---
 
@@ -690,34 +682,26 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
+  "JsonPath": "$.outputData.processingTime",
   "Operator": "DURATION_EQUALS",
-  "Value": {
-    "startPath": "$.outputData.startTime",
-    "endPath": "$.outputData.endTime",
-    "expected": 5,
-    "unit": "MINUTES"
-  }
+  "Value": "PT5M"
 }
 ```
 
-> **Notes:** Extracts dates from `startPath` and `endPath` to calculate duration and asserts it exactly equals the `expected` amount with the given `unit`.
+> **Notes:** Requires ISO-8601 duration string.
 
 ---
 
 ### DURATION_GREATER_THAN
 
-**Purpose:** Validates that the extracted duration is greater than the expected threshold.
+**Purpose:** Validates that the extracted duration is greater than the expected duration.
 
 **Assertion:**
 ```json
 {
+  "JsonPath": "$.outputData.processingTime",
   "Operator": "DURATION_GREATER_THAN",
-  "Value": {
-    "startPath": "$.outputData.startTime",
-    "endPath": "$.outputData.endTime",
-    "value": 1,
-    "unit": "MINUTES"
-  }
+  "Value": "PT1M"
 }
 ```
 
@@ -725,18 +709,14 @@ Each operator section includes:
 
 ### DURATION_LESS_THAN
 
-**Purpose:** Validates that the extracted duration is less than the expected threshold.
+**Purpose:** Validates that the extracted duration is less than the expected duration.
 
 **Assertion:**
 ```json
 {
+  "JsonPath": "$.outputData.processingTime",
   "Operator": "DURATION_LESS_THAN",
-  "Value": {
-    "startPath": "$.outputData.startTime",
-    "endPath": "$.outputData.endTime",
-    "value": 1,
-    "unit": "HOURS"
-  }
+  "Value": "PT1H"
 }
 ```
 
@@ -744,18 +724,14 @@ Each operator section includes:
 
 ### DATE_AFTER_DURATION
 
-**Purpose:** Validates that a comparison date is strictly after exactly a specified duration from a reference date.
+**Purpose:** Validates that the given date is after exactly a specified duration from another reference date.
 
 **Assertion:**
 ```json
 {
+  "JsonPath": "$.outputData.completionDate",
   "Operator": "DATE_AFTER_DURATION",
-  "Value": {
-    "basePath": "$.outputData.startDate",
-    "comparePath": "$.outputData.completionDate",
-    "amount": 1,
-    "unit": "DAYS"
-  }
+  "Value": "P1D"
 }
 ```
 
@@ -763,18 +739,14 @@ Each operator section includes:
 
 ### DATE_BEFORE_DURATION
 
-**Purpose:** Validates that a comparison date is strictly before a specified duration from a reference date.
+**Purpose:** Validates that the given date is before a specified duration from a reference date.
 
 **Assertion:**
 ```json
 {
+  "JsonPath": "$.outputData.completionDate",
   "Operator": "DATE_BEFORE_DURATION",
-  "Value": {
-    "basePath": "$.outputData.startDate",
-    "comparePath": "$.outputData.completionDate",
-    "amount": 1,
-    "unit": "DAYS"
-  }
+  "Value": "P1D"
 }
 ```
 

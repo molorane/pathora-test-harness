@@ -22,10 +22,10 @@ public class AssertionEngine {
         operators.put(AssertionOperator.EQUALS, new EqualsOperator());
         operators.put(AssertionOperator.NOT_EQUALS, new NotEqualsOperator());
         operators.put(AssertionOperator.GREATER_THAN, new GreaterThanOperator());
-        operators.put(AssertionOperator.GREATER_THAN_OR_EQUALS, new GreaterThanOrEqualsOperator());
         operators.put(AssertionOperator.LESS_THAN, new LessThanOperator());
-        operators.put(AssertionOperator.LESS_THAN_OR_EQUALS, new LessThanOrEqualsOperator());
         operators.put(AssertionOperator.BETWEEN, new BetweenOperator());
+        operators.put(AssertionOperator.GREATER_THAN_OR_EQUALS, new GreaterThanOrEqualsOperator());
+        operators.put(AssertionOperator.LESS_THAN_OR_EQUALS, new LessThanOrEqualsOperator());
         operators.put(AssertionOperator.REGEX_MATCH, new RegexMatchOperator());
         operators.put(AssertionOperator.STARTS_WITH, new StartsWithOperator());
         operators.put(AssertionOperator.ENDS_WITH, new EndsWithOperator());
