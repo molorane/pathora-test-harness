@@ -1,0 +1,35 @@
+package za.co.pathora.testharness.engine.operator;
+
+import za.co.pathora.testharness.exception.HarnessAssertionException;
+import za.co.pathora.testharness.model.AssertionOperator;
+import za.co.pathora.testharness.util.AssertionUtils;
+
+import java.util.List;
+
+public class ContainsAnyOperator implements OperatorAssertion {
+
+    @Override
+    public void apply(String path, Object actual, Object expected, boolean pathExists) {
+
+        List<?> actualList = AssertionUtils.requireList(actual, path);
+        List<?> expectedList = AssertionUtils.requireList(expected, path + " (expected)");
+
+        for (Object exp : expectedList) {
+            for (Object act : actualList) {
+                Object[] normalized = AssertionUtils.normalizeTypes(act, exp);
+                if (java.util.Objects.equals(normalized[0], normalized[1])) {
+                    return; // found at least one match
+                }
+            }
+        }
+
+        throw new HarnessAssertionException(
+                AssertionOperator.CONTAINS_ANY,
+                path,
+                expected,
+                actual,
+                "CONTAINS_ANY failed at " + path +
+                        ". Expected array to contain at least one of: " + expectedList +
+                        ", Actual: " + actualList);
+    }
+}

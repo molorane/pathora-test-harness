@@ -22,16 +22,28 @@ public class AssertionEngine {
         operators.put(AssertionOperator.EQUALS, new EqualsOperator());
         operators.put(AssertionOperator.NOT_EQUALS, new NotEqualsOperator());
         operators.put(AssertionOperator.GREATER_THAN, new GreaterThanOperator());
+        operators.put(AssertionOperator.GREATER_THAN_OR_EQUALS, new GreaterThanOrEqualsOperator());
         operators.put(AssertionOperator.LESS_THAN, new LessThanOperator());
+        operators.put(AssertionOperator.LESS_THAN_OR_EQUALS, new LessThanOrEqualsOperator());
+        operators.put(AssertionOperator.BETWEEN, new BetweenOperator());
+        operators.put(AssertionOperator.REGEX_MATCH, new RegexMatchOperator());
+        operators.put(AssertionOperator.STARTS_WITH, new StartsWithOperator());
+        operators.put(AssertionOperator.ENDS_WITH, new EndsWithOperator());
         operators.put(AssertionOperator.EXISTS, new ExistsOperator());
         operators.put(AssertionOperator.ARRAY_SIZE_EQUALS, new ArraySizeEqualsOperator());
         operators.put(AssertionOperator.ARRAY_CONTAINS, new ArrayContainsOperator());
         operators.put(AssertionOperator.ARRAY_CONTAINS_ONLY_VALUES, new ArrayContainsOnlyValuesOperator());
         operators.put(AssertionOperator.ARRAY_CONTAINS_ONLY_ONE_VALUE, new ArrayContainsOnlyOneValueOperator());
         operators.put(AssertionOperator.ARRAY_CONTAINS_OBJECT_WITH_FIELDS, new ArrayContainsObjectWithFieldsOperator());
+        operators.put(AssertionOperator.ALL_MATCH, new AllMatchOperator());
+        operators.put(AssertionOperator.CONTAINS_ANY, new ContainsAnyOperator());
+        operators.put(AssertionOperator.CONTAINS_ALL, new ContainsAllOperator());
+        operators.put(AssertionOperator.ARRAY_IS_EMPTY, new ArrayIsEmptyOperator());
+        operators.put(AssertionOperator.UNIQUE_ELEMENTS, new UniqueElementsOperator());
         operators.put(AssertionOperator.OBJECT_CONTAINS_FIELDS, new ObjectContainsFieldsOperator());
         operators.put(AssertionOperator.OBJECT_CONTAINS_FIELDS_IGNORE_NULLS,
                 new ObjectContainsFieldsIgnoreNullsOperator());
+        operators.put(AssertionOperator.HAS_KEYS, new HasKeysOperator());
     }
 
     public void assertResponse(

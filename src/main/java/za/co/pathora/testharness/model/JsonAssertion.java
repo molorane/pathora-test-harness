@@ -5,16 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record JsonAssertion(
+        @JsonProperty("JsonPath") String jsonPath,
 
-    @JsonProperty("JsonPath")
-    String jsonPath,
+        @JsonProperty("Operator") AssertionOperator operator,
 
-    @JsonProperty("Operator")
-    AssertionOperator operator,
+        @JsonProperty("Value") Object value,
 
-    @JsonProperty("Value")
-    Object value
-) {
+        @JsonProperty("Description") String description) {
     public JsonAssertion {
         if (operator == null) {
             operator = AssertionOperator.EQUALS;

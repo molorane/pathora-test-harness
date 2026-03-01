@@ -105,6 +105,61 @@ Each operator section includes:
 
 ---
 
+### BETWEEN
+
+**Purpose:** Validates that the extracted numeric value falls within a specified range (inclusive on both ends).
+
+**Assertion:**
+```json
+{
+  "JsonPath": "$.outputData.riskScore",
+  "Operator": "BETWEEN",
+  "Value": { "min": 50, "max": 100 }
+}
+```
+
+**PASS** — actual response:
+```json
+{ "outputData": { "riskScore": 75 } }
+```
+
+**FAIL** — actual response:
+```json
+{ "outputData": { "riskScore": 30 } }
+```
+
+> **Notes:** Value must be a JSON object with `min` and `max` keys. Both boundaries are inclusive. Numeric types required.
+
+---
+
+### REGEX_MATCH
+
+**Purpose:** Validates that the extracted string value matches the given regular expression pattern (full match).
+
+**Assertion:**
+```json
+{
+  "JsonPath": "$.outputData.referenceId",
+  "Operator": "REGEX_MATCH",
+  "Value": "^REF-\\d{4}-\\d{5}$",
+  "Description": "Reference ID must follow format REF-XXXX-XXXXX"
+}
+```
+
+**PASS** — actual response:
+```json
+{ "outputData": { "referenceId": "REF-1234-56789" } }
+```
+
+**FAIL** — actual response:
+```json
+{ "outputData": { "referenceId": "INVALID-ID" } }
+```
+
+> **Notes:** Uses full match (`matches()`), not partial find. Value must be a valid regex string. Case-sensitive by default. The `Description` field is optional but recommended for regex patterns to explain intent.
+
+---
+
 ## Structural Operators
 
 ### EXISTS
@@ -270,6 +325,50 @@ Each operator section includes:
 ```
 
 > **Notes:** Performs structural subset match against each array element. Fails if no matching element is found. Extra fields on the actual object are allowed.
+
+---
+
+### ALL_MATCH
+
+**Purpose:** Validates that **every** element in the array matches a condition. The condition defaults to equality when a scalar value is provided.
+
+**Equals mode** — scalar Value (defaults to equality):
+```json
+{ "JsonPath": "$.outputData.penalties", "Operator": "ALL_MATCH", "Value": 0 }
+```
+
+**PASS** — actual response:
+```json
+{ "outputData": { "penalties": [0, 0, 0] } }
+```
+
+**FAIL** — actual response:
+```json
+{ "outputData": { "penalties": [0, 0, 1] } }
+```
+
+**greaterThan mode:**
+```json
+{ "JsonPath": "$.outputData.scores", "Operator": "ALL_MATCH", "Value": { "greaterThan": 50 } }
+```
+
+**PASS:** `{ "scores": [60, 70, 80] }` — **FAIL:** `{ "scores": [60, 50, 80] }`
+
+**lessThan mode:**
+```json
+{ "JsonPath": "$.outputData.scores", "Operator": "ALL_MATCH", "Value": { "lessThan": 50 } }
+```
+
+**PASS:** `{ "scores": [10, 20, 30] }` — **FAIL:** `{ "scores": [10, 50, 30] }`
+
+**between mode:**
+```json
+{ "JsonPath": "$.outputData.scores", "Operator": "ALL_MATCH", "Value": { "between": { "min": 50, "max": 100 } } }
+```
+
+**PASS:** `{ "scores": [50, 75, 100] }` — **FAIL:** `{ "scores": [50, 110, 75] }`
+
+> **Notes:** Scalar Value → equality check. Object Value must have one of: `greaterThan`, `lessThan`, or `between`. Empty arrays pass vacuously. Error messages include the failing element's index.
 
 ---
 
