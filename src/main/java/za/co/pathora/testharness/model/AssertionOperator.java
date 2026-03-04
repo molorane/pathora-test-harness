@@ -75,7 +75,7 @@ public enum AssertionOperator {
     ARRAY_CONTAINS_OBJECT_WITH_FIELDS, // Array contains at least one object matching expected fields
     ALL_MATCH, // All array elements match a condition
     CONTAINS_ANY, // Array contains at least one of the expected values
-    CONTAINS_ALL, // Array contains all of the expected values
+    CONTAINS_ALL, // Array contains all the expected values
     ARRAY_IS_EMPTY, // Array is empty
     UNIQUE_ELEMENTS, // Array has no duplicate elements
 

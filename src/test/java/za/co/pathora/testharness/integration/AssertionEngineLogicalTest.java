@@ -33,7 +33,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"score": 75, "status": "APPROVED"}
                                 """;
-                assertThatNoException().isThrownBy(() -> engine.assertResponse("{}", response, testCase));
+                assertThatNoException().isThrownBy(() -> engine.assertResponse(response, testCase));
         }
 
         @Test
@@ -47,7 +47,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"score": 75, "status": "PENDING"}
                                 """;
-                assertThatThrownBy(() -> engine.assertResponse("{}", response, testCase))
+                assertThatThrownBy(() -> engine.assertResponse(response, testCase))
                                 .isInstanceOf(AssertionError.class)
                                 .hasMessageContaining("EQUALS failed");
         }
@@ -62,7 +62,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"status": "PENDING"}
                                 """;
-                assertThatNoException().isThrownBy(() -> engine.assertResponse("{}", response, testCase));
+                assertThatNoException().isThrownBy(() -> engine.assertResponse(response, testCase));
         }
 
         @Test
@@ -75,7 +75,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"status": "DECLINED"}
                                 """;
-                assertThatThrownBy(() -> engine.assertResponse("{}", response, testCase))
+                assertThatThrownBy(() -> engine.assertResponse(response, testCase))
                                 .isInstanceOf(AssertionError.class)
                                 .hasMessageContaining("LOGICAL_OR_FAILED");
         }
@@ -89,7 +89,7 @@ class AssertionEngineLogicalTest {
                 String response = """
                                 {"status": "APPROVED"}
                                 """;
-                assertThatNoException().isThrownBy(() -> engine.assertResponse("{}", response, testCase));
+                assertThatNoException().isThrownBy(() -> engine.assertResponse(response, testCase));
         }
 
         @Test
@@ -102,7 +102,7 @@ class AssertionEngineLogicalTest {
                                 {"status": "DECLINED"}
                                 """;
 
-                assertThatThrownBy(() -> engine.assertResponse("{}", response, testCase))
+                assertThatThrownBy(() -> engine.assertResponse(response, testCase))
                                 .isInstanceOf(AssertionError.class)
                                 .hasMessageContaining("LOGICAL_NOT_FAILED");
         }

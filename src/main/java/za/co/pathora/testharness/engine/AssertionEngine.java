@@ -60,7 +60,6 @@ public class AssertionEngine {
     }
 
     public void assertResponse(
-            String mutatedRequest,
             String response,
             RuleTestCase testCase) {
 
