@@ -3,7 +3,6 @@ package io.github.molorane.pathora.testharness.engine;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.github.molorane.pathora.testharness.engine.operator.*;
-import za.co.pathora.testharness.engine.operator.*;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
