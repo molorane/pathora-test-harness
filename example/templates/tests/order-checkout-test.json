@@ -24,13 +24,11 @@
         },
         {
           "JsonPath": "$.customerId",
-          "Operator": "EQUALS",
           "Value": "CUST-99001",
           "Description": "Customer ID must match request parameter"
         },
         {
           "JsonPath": "$.totalItems",
-          "Operator": "EQUALS",
           "Value": 3,
           "Description": "Total items count must be 3"
         },
@@ -42,7 +40,6 @@
         },
         {
           "JsonPath": "$.status",
-          "Operator": "EQUALS",
           "Value": "CREATED",
           "Description": "Order status must be CREATED"
         }

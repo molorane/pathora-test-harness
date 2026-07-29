@@ -24,7 +24,6 @@
         },
         {
           "JsonPath": "$.transactionId",
-          "Operator": "EQUALS",
           "Value": "TXN-998811",
           "Description": "Transaction ID must match input request"
         },
@@ -36,7 +35,6 @@
         },
         {
           "JsonPath": "$.status",
-          "Operator": "EQUALS",
           "Value": "SUCCESS",
           "Description": "Payment status must be SUCCESS"
         }

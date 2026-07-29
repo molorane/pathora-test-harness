@@ -28,13 +28,11 @@
         },
         {
           "JsonPath": "$.applicantId",
-          "Operator": "EQUALS",
           "Value": "APP-998877",
           "Description": "Applicant ID must match request parameter"
         },
         {
           "JsonPath": "$.approvedAmount",
-          "Operator": "EQUALS",
           "Value": 75000.00,
           "Description": "Approved amount must equal requested amount for high credit score"
         },
@@ -46,7 +44,6 @@
         },
         {
           "JsonPath": "$.decisionStatus",
-          "Operator": "EQUALS",
           "Value": "APPROVED",
           "Description": "Decision status must be APPROVED"
         }

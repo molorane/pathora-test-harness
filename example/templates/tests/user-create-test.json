@@ -28,7 +28,6 @@
         },
         {
           "JsonPath": "$.username",
-          "Operator": "EQUALS",
           "Value": "sarah_connor",
           "Description": "Username must match updated request parameter"
         },
@@ -40,13 +39,11 @@
         },
         {
           "JsonPath": "$.role",
-          "Operator": "EQUALS",
           "Value": "MANAGER",
           "Description": "Role must match assigned role"
         },
         {
           "JsonPath": "$.status",
-          "Operator": "EQUALS",
           "Value": "ACTIVE",
           "Description": "Status must be ACTIVE"
         }

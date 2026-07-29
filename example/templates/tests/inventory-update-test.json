@@ -22,7 +22,6 @@
       "ResponseAssertions": [
         {
           "JsonPath": "$.productId",
-          "Operator": "EQUALS",
           "Value": "SKU-90882",
           "Description": "Product ID must match updated value"
         },
@@ -34,13 +33,11 @@
         },
         {
           "JsonPath": "$.stockStatus",
-          "Operator": "EQUALS",
           "Value": "IN_STOCK",
           "Description": "Stock status must be IN_STOCK"
         },
         {
           "JsonPath": "$.unitPrice",
-          "Operator": "EQUALS",
           "Value": 18.75,
           "Description": "Unit price must match input unit price"
         }
