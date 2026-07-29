@@ -123,7 +123,7 @@ public class DynamicTestAdapter {
         log.info("Mutated Request: {}", mutatedRequest);
 
         // Act
-        String response = dispatchToEngine(testCase, mutatedRequest);
+        String response = dispatchToEngine(suite, testCase, mutatedRequest);
 
         // Assert
         assertAndReportFailure(testFileName, mutatedRequest, response, testCase);
@@ -141,12 +141,13 @@ public class DynamicTestAdapter {
                 baseRequest,
                 testCase.testCaseParameterValues(),
                 testFileName,
-                testCase.entryPointName()
+                testCase.entryPointName(),
+                suite.isXmlRequest()
         );
     }
 
-    private String dispatchToEngine(RuleTestCase testCase, String mutatedRequest) throws Exception {
-        return dispatcher.dispatch(testCase.entryPointName(), mutatedRequest);
+    private String dispatchToEngine(TestSuite suite, RuleTestCase testCase, String mutatedRequest) throws Exception {
+        return dispatcher.dispatch(testCase.entryPointName(), mutatedRequest, suite.isXmlRequest());
     }
 
     private void assertAndReportFailure(

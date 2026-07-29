@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine;
 
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.xml.XmlMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.github.molorane.pathora.testharness.model.JsonMutation;
-import io.github.molorane.pathora.testharness.util.XmlHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -12,17 +12,13 @@ import java.util.Map;
 public class JsonMutationEngine {
 
     private final ObjectMapper objectMapper;
-    private final ObjectMapper xmlMapper;
+    private final XmlMapper xmlMapper;
 
     public JsonMutationEngine() {
-        this(new ObjectMapper(), null);
+        this(new ObjectMapper(), new XmlMapper());
     }
 
-    public JsonMutationEngine(ObjectMapper objectMapper) {
-        this(objectMapper, null);
-    }
-
-    public JsonMutationEngine(ObjectMapper objectMapper, ObjectMapper xmlMapper) {
+    public JsonMutationEngine(ObjectMapper objectMapper, XmlMapper xmlMapper) {
         this.objectMapper = objectMapper;
         this.xmlMapper = xmlMapper;
     }
@@ -31,13 +27,21 @@ public class JsonMutationEngine {
                         List<JsonMutation> mutations,
                         String testFileName,
                         String entryPoint) {
+        return apply(payload, mutations, testFileName, entryPoint, false);
+    }
+
+    public String apply(String payload,
+                        List<JsonMutation> mutations,
+                        String testFileName,
+                        String entryPoint,
+                        boolean isXml) {
 
         // If no mutations provided, return original payload unchanged
         if (mutations == null || mutations.isEmpty()) {
             return payload;
         }
 
-        String jsonPayload = XmlHelper.isXml(payload) ? convertXmlToJson(payload) : payload;
+        String jsonPayload = isXml ? convertXmlToJson(payload) : payload;
 
         DocumentContext context = JsonPath.parse(jsonPayload);
 
@@ -80,8 +84,7 @@ public class JsonMutationEngine {
 
     private String convertXmlToJson(String xml) {
         try {
-            ObjectMapper mapper = (xmlMapper != null) ? xmlMapper : XmlHelper.getXmlMapper();
-            Object node = mapper.readValue(xml, Object.class);
+            Object node = xmlMapper.readValue(xml, Object.class);
             return objectMapper.writeValueAsString(node);
         } catch (Exception e) {
             throw new IllegalArgumentException(

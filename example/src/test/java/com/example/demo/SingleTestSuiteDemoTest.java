@@ -122,10 +122,11 @@ class SingleTestSuiteDemoTest {
                         rawRequest,
                         testCase.testCaseParameterValues(),
                         suitePath.getFileName().toString(),
-                        testCase.entryPointName()
+                        testCase.entryPointName(),
+                        suite.isXmlRequest()
                 );
 
-                String responseJson = dispatcher.dispatch(testCase.entryPointName(), mutatedRequest);
+                String responseJson = dispatcher.dispatch(testCase.entryPointName(), mutatedRequest, suite.isXmlRequest());
                 assertThat(responseJson).isNotNull().isNotEmpty();
 
                 assertionEngine.assertResponse(responseJson, testCase, mutatedRequest);

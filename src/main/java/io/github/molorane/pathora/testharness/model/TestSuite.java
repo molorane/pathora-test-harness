@@ -23,4 +23,12 @@ public record TestSuite(
         }
         return defaultJSONRequestPath;
     }
+
+    public boolean isXmlRequest() {
+        if (defaultXMLRequestPath != null && !defaultXMLRequestPath.isBlank()) {
+            return true;
+        }
+        String path = defaultRequestPath();
+        return path != null && path.toLowerCase().endsWith(".xml");
+    }
 }

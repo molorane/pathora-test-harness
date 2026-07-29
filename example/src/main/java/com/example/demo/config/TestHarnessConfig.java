@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import tools.jackson.databind.ObjectMapper;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.EntryPointDispatcher;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
@@ -12,6 +11,8 @@ import io.github.molorane.pathora.testharness.registry.EntryPointRegistry;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.xml.XmlMapper;
 
 import java.util.List;
 
@@ -29,10 +30,17 @@ public class TestHarnessConfig {
     }
 
     @Bean
+    public XmlMapper xmlMapper() {
+        return new XmlMapper();
+    }
+
+    @Bean
     public EntryPointDispatcher entryPointDispatcher(
-            EntryPointRegistry registry,
-            ObjectMapper objectMapper) {
-        return new EntryPointDispatcher(registry, objectMapper);
+        EntryPointRegistry registry,
+        ObjectMapper objectMapper,
+        XmlMapper xmlMapper
+    ) {
+        return new EntryPointDispatcher(registry, objectMapper, xmlMapper);
     }
 
     @Bean
@@ -51,8 +59,10 @@ public class TestHarnessConfig {
     }
 
     @Bean
-    public JsonMutationEngine jsonMutationEngine(ObjectMapper objectMapper) {
-        return new JsonMutationEngine(objectMapper);
+    public JsonMutationEngine jsonMutationEngine(
+        ObjectMapper objectMapper,
+        XmlMapper xmlMapper) {
+        return new JsonMutationEngine(objectMapper, xmlMapper);
     }
 
     @Bean
