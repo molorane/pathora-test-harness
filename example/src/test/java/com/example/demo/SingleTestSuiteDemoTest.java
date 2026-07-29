@@ -44,7 +44,7 @@ class SingleTestSuiteDemoTest {
     @Test
     @DisplayName("Verify Spring Boot Context Loads Executors")
     void contextLoads() {
-        assertThat(executorBeans).hasSize(5);
+        assertThat(executorBeans).hasSize(6);
     }
 
     @Test
@@ -75,6 +75,18 @@ class SingleTestSuiteDemoTest {
     @DisplayName("Execute Loan Application Test Suite")
     void testLoanApplicationSuite() throws Exception {
         runTestSuite("templates/tests/loan-application-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute Deeply Nested Policy Evaluation Test Suite")
+    void testPolicyEvaluationSuite() throws Exception {
+        runTestSuite("templates/tests/policy-evaluation-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute Deeply Nested Policy Risk Assessment Test Suite")
+    void testPolicyRiskAssessmentSuite() throws Exception {
+        runTestSuite("templates/tests/policy-risk-assessment-test.json");
     }
 
     private void runTestSuite(String testSuiteRelativePath) throws Exception {

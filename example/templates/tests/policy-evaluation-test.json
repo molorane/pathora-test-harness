@@ -1,0 +1,239 @@
+{
+  "DefaultJSONRequestPath": "../requests/complex-policy-request.json",
+  "Tests": [
+    {
+      "TestName": "Test 1: Policy Header & Underwriter Verification",
+      "TestDescription": "Validates header prefix, email regex format, non-rejected status, map keys, and path existence.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.policyNumber",
+          "Operator": "STARTS_WITH",
+          "Value": "POL-",
+          "Description": "Policy number must start with POL- prefix"
+        },
+        {
+          "JsonPath": "$.primaryContactEmail",
+          "Operator": "REGEX_MATCH",
+          "Value": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$",
+          "Description": "Contact email must be valid email format"
+        },
+        {
+          "JsonPath": "$.status",
+          "Operator": "NOT_EQUALS",
+          "Value": "REJECTED",
+          "Description": "Status must not be REJECTED"
+        },
+        {
+          "JsonPath": "$.underwritingSummary",
+          "Operator": "HAS_KEYS",
+          "Value": ["approved", "score", "tier"],
+          "Description": "Summary map must contain required key names"
+        },
+        {
+          "JsonPath": "$.evaluationTimestamp",
+          "Operator": "PATH_EXISTS",
+          "Value": null,
+          "Description": "Evaluation timestamp path must exist in response"
+        }
+      ]
+    },
+    {
+      "TestName": "Test 2: Premium & Financial Bounds Verification",
+      "TestDescription": "Validates premium thresholds, price range between bounds, discount limit, region value set, and field cross-equality.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.totalPremium",
+          "Operator": "GREATER_THAN",
+          "Value": 10000.0,
+          "Description": "Total premium must exceed 10000.0"
+        },
+        {
+          "JsonPath": "$.finalPrice",
+          "Operator": "BETWEEN",
+          "Value": {
+            "min": 10000.0,
+            "max": 20000.0
+          },
+          "Description": "Final price must be between 10000.0 and 20000.0"
+        },
+        {
+          "JsonPath": "$.discountAmount",
+          "Operator": "LESS_THAN_OR_EQUALS",
+          "Value": 2000.0,
+          "Description": "Discount amount must not exceed 2000.0"
+        },
+        {
+          "JsonPath": "$.underwriterRegion",
+          "Operator": "VALUE_IN",
+          "Value": ["AFRICA_SOUTH", "AFRICA_NORTH", "EUROPE"],
+          "Description": "Region must be in allowed list"
+        },
+        {
+          "JsonPath": "$.riskScore",
+          "Operator": "FIELD_EQUALS_OTHER_FIELD",
+          "Value": {
+            "leftPath": "$.riskScore",
+            "rightPath": "$.insuredRiskScore"
+          },
+          "Description": "riskScore must equal insuredRiskScore"
+        }
+      ]
+    },
+    {
+      "TestName": "Test 3: Clause Array & Requirements Inspection",
+      "TestDescription": "Validates array size, document inclusion, tag subset completeness, list uniqueness, and empty exclusions list.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.approvedClauses",
+          "Operator": "ARRAY_SIZE_EQUALS",
+          "Value": 2,
+          "Description": "Approved clauses array must have exact size 2"
+        },
+        {
+          "JsonPath": "$.requiredDocs",
+          "Operator": "ARRAY_CONTAINS",
+          "Value": "AUDIT_REPORT",
+          "Description": "Required docs must contain AUDIT_REPORT"
+        },
+        {
+          "JsonPath": "$.approvedTags",
+          "Operator": "CONTAINS_ALL",
+          "Value": ["PROPERTY", "CYBER"],
+          "Description": "Approved tags must contain all specified tags"
+        },
+        {
+          "JsonPath": "$.uniqueReferenceCodes",
+          "Operator": "UNIQUE_ELEMENTS",
+          "Value": null,
+          "Description": "Reference codes must contain no duplicates"
+        },
+        {
+          "JsonPath": "$.emptyExclusions",
+          "Operator": "ARRAY_IS_EMPTY",
+          "Value": null,
+          "Description": "Exclusions list must be empty"
+        }
+      ]
+    },
+    {
+      "TestName": "Test 4: Object Composition & Risk Summary Validation",
+      "TestDescription": "Validates map fields, map null-ignoring fields, nested object elements in arrays, absence of prohibited risk flags, and document presence.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.underwritingSummary",
+          "Operator": "OBJECT_CONTAINS_FIELDS",
+          "Value": {
+            "tier": "PREMIUM",
+            "approved": true
+          },
+          "Description": "Summary object must contain specified key-value fields"
+        },
+        {
+          "JsonPath": "$.underwritingSummary",
+          "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS",
+          "Value": {
+            "tier": "PREMIUM",
+            "score": 820
+          },
+          "Description": "Summary object must contain fields ignoring null entries"
+        },
+        {
+          "JsonPath": "$.approvedClauses",
+          "Operator": "ARRAY_CONTAINS_OBJECT_WITH_FIELDS",
+          "Value": {
+            "clauseId": "CLS-01",
+            "status": "APPROVED"
+          },
+          "Description": "Approved clauses array must contain object matching fields"
+        },
+        {
+          "JsonPath": "$.riskFlags",
+          "Operator": "DOES_NOT_CONTAIN_ANY",
+          "Value": ["BANKRUPTCY", "FRAUD"],
+          "Description": "Risk flags must not contain BANKRUPTCY or FRAUD"
+        },
+        {
+          "JsonPath": "$.requiredDocs",
+          "Operator": "CONTAINS_ANY",
+          "Value": ["TAX_CLEARANCE", "PASSPORT"],
+          "Description": "Required docs must contain at least TAX_CLEARANCE or PASSPORT"
+        }
+      ]
+    },
+    {
+      "TestName": "Test 5: Logical Composition Rules Verification",
+      "TestDescription": "Validates composite AND rules, composite OR options, NOT negations, ALL_MATCH element criteria, and VALUE_NOT_IN constraints.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$",
+          "Operator": "AND",
+          "Value": null,
+          "Description": "Status must be APPROVED AND riskScore > 800",
+          "Assertions": [
+            {
+              "JsonPath": "$.status",
+              "Value": "APPROVED"
+            },
+            {
+              "JsonPath": "$.riskScore",
+              "Operator": "GREATER_THAN",
+              "Value": 800
+            }
+          ]
+        },
+        {
+          "JsonPath": "$",
+          "Operator": "OR",
+          "Value": null,
+          "Description": "Region must be AFRICA_SOUTH or EUROPE",
+          "Assertions": [
+            {
+              "JsonPath": "$.underwriterRegion",
+              "Value": "AFRICA_SOUTH"
+            },
+            {
+              "JsonPath": "$.underwriterRegion",
+              "Value": "EUROPE"
+            }
+          ]
+        },
+        {
+          "JsonPath": "$",
+          "Operator": "NOT",
+          "Value": null,
+          "Description": "Status must NOT be CANCELLED",
+          "Assertions": [
+            {
+              "JsonPath": "$.status",
+              "Value": "CANCELLED"
+            }
+          ]
+        },
+        {
+          "JsonPath": "$.approvedClauses[*].limit",
+          "Operator": "ALL_MATCH",
+          "Value": {
+            "greaterThan": 0
+          },
+          "Description": "All approved clause limits must be greater than 0"
+        },
+        {
+          "JsonPath": "$.status",
+          "Operator": "VALUE_NOT_IN",
+          "Value": ["REJECTED", "CANCELLED"],
+          "Description": "Status must not be in excluded list"
+        }
+      ]
+    }
+  ]
+}

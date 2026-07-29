@@ -1,0 +1,260 @@
+{
+  "DefaultJSONRequestPath": "../requests/complex-policy-request.json",
+  "Tests": [
+    {
+      "TestName": "Test 1: High Risk Score Parameter Mutation Test",
+      "TestDescription": "Mutates risk score and base premium, validating score bounds, price increase, single document value, region suffix, and discount cap.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.insuredParty.riskMetrics.score",
+          "Value": 900
+        },
+        {
+          "JsonPath": "$.coverageDetails.basePremium",
+          "Value": 25000.00
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.riskScore",
+          "Operator": "GREATER_THAN_OR_EQUALS",
+          "Value": 900,
+          "Description": "Risk score must be at least 900 after mutation"
+        },
+        {
+          "JsonPath": "$.finalPrice",
+          "Operator": "GREATER_THAN",
+          "Value": 20000.0,
+          "Description": "Final price must exceed 20000.0 with increased base premium"
+        },
+        {
+          "JsonPath": "$.singlePrimaryAuditor",
+          "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE",
+          "Value": "SENIOR_AUDITOR_SMITH",
+          "Description": "Primary auditor array must contain exactly one matching value"
+        },
+        {
+          "JsonPath": "$.underwriterRegion",
+          "Operator": "ENDS_WITH",
+          "Value": "_SOUTH",
+          "Description": "Region code must end with _SOUTH"
+        },
+        {
+          "JsonPath": "$.discountAmount",
+          "Operator": "LESS_THAN",
+          "Value": 5000.0,
+          "Description": "Discount amount must be less than 5000.0"
+        }
+      ]
+    },
+    {
+      "TestName": "Test 2: Date & Time Chronology Inspection",
+      "TestDescription": "Validates future expiration, before date limits, datetime after thresholds, date within next year, and past effective date.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.expirationTimestamp",
+          "Operator": "DATE_AFTER_NOW",
+          "Value": null,
+          "Description": "Expiration timestamp must be in the future relative to current time"
+        },
+        {
+          "JsonPath": "$.policyHeaderEffectiveDate",
+          "Operator": "DATE_BEFORE",
+          "Value": "2030-01-01",
+          "Description": "Effective date must be before 2030"
+        },
+        {
+          "JsonPath": "$.evaluationTimestamp",
+          "Operator": "DATETIME_AFTER",
+          "Value": "2025-01-01T00:00:00",
+          "Description": "Evaluation timestamp must be after 2025"
+        },
+        {
+          "JsonPath": "$.evaluationTimestamp",
+          "Operator": "DATE_WITHIN_NEXT",
+          "Value": {
+            "amount": 365,
+            "unit": "DAYS"
+          },
+          "Description": "Evaluation timestamp must fall within next 365 days"
+        },
+        {
+          "JsonPath": "$.policyHeaderEffectiveDate",
+          "Operator": "DATE_BEFORE_NOW",
+          "Value": null,
+          "Description": "Effective date must be in the past or present"
+        }
+      ]
+    },
+    {
+      "TestName": "Test 3: Policy Validity Duration Verification",
+      "TestDescription": "Validates exact duration in days, duration in months, duration below max years, date after duration, and date before duration.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.evaluationTimestamp",
+          "Operator": "DURATION_EQUALS",
+          "Value": {
+            "startPath": "$.evaluationTimestamp",
+            "endPath": "$.expirationTimestamp",
+            "unit": "DAYS",
+            "expected": 365
+          },
+          "Description": "Duration between evaluation and expiration must equal 365 days"
+        },
+        {
+          "JsonPath": "$.evaluationTimestamp",
+          "Operator": "DURATION_GREATER_THAN",
+          "Value": {
+            "startPath": "$.evaluationTimestamp",
+            "endPath": "$.expirationTimestamp",
+            "unit": "MONTHS",
+            "value": 11
+          },
+          "Description": "Duration between dates must exceed 11 months"
+        },
+        {
+          "JsonPath": "$.evaluationTimestamp",
+          "Operator": "DURATION_LESS_THAN",
+          "Value": {
+            "startPath": "$.evaluationTimestamp",
+            "endPath": "$.expirationTimestamp",
+            "unit": "YEARS",
+            "value": 2
+          },
+          "Description": "Duration between dates must be less than 2 years"
+        },
+        {
+          "JsonPath": "$.evaluationTimestamp",
+          "Operator": "DATE_AFTER_DURATION",
+          "Value": {
+            "basePath": "$.evaluationTimestamp",
+            "comparePath": "$.expirationTimestamp",
+            "amount": 360,
+            "unit": "DAYS"
+          },
+          "Description": "Expiration must be after evaluation + 360 days"
+        },
+        {
+          "JsonPath": "$.evaluationTimestamp",
+          "Operator": "DATE_BEFORE_DURATION",
+          "Value": {
+            "basePath": "$.evaluationTimestamp",
+            "comparePath": "$.expirationTimestamp",
+            "amount": 400,
+            "unit": "DAYS"
+          },
+          "Description": "Expiration must be before evaluation + 400 days"
+        }
+      ]
+    },
+    {
+      "TestName": "Test 4: Excluded Risk Flags & Value Constraints",
+      "TestDescription": "Validates partial list non-containment, exact reference array values, non-existent path absence, non-empty legal name, and minimum clauses count.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.riskFlags",
+          "Operator": "DOES_NOT_CONTAIN_ALL",
+          "Value": ["FLOOD", "EARTHQUAKE", "VOLCANO"],
+          "Description": "Risk flags must not contain all of FLOOD, EARTHQUAKE, VOLCANO"
+        },
+        {
+          "JsonPath": "$.uniqueReferenceCodes",
+          "Operator": "ARRAY_CONTAINS_ONLY_VALUES",
+          "Value": ["REF-101", "REF-102", "REF-103"],
+          "Description": "Reference codes array must contain only specified values in any order"
+        },
+        {
+          "JsonPath": "$.nonExistentField",
+          "Operator": "PATH_NOT_EXISTS",
+          "Value": null,
+          "Description": "nonExistentField must not exist in response"
+        },
+        {
+          "JsonPath": "$.insuredPartyLegalName",
+          "Operator": "NOT_EQUALS",
+          "Value": "",
+          "Description": "Legal name must not be empty string"
+        },
+        {
+          "JsonPath": "$.appliedClausesCount",
+          "Operator": "GREATER_THAN_OR_EQUALS",
+          "Value": 1,
+          "Description": "Applied clauses count must be at least 1"
+        }
+      ]
+    },
+    {
+      "TestName": "Test 5: Comprehensive Logical & Structural Verification",
+      "TestDescription": "Validates complex AND conditions, OR alternatives, NOT constraints, map object equality, and exact price calculations.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$",
+          "Operator": "AND",
+          "Value": null,
+          "Description": "Status is APPROVED AND legalName is Pathora Enterprise Solutions",
+          "Assertions": [
+            {
+              "JsonPath": "$.status",
+              "Value": "APPROVED"
+            },
+            {
+              "JsonPath": "$.insuredPartyLegalName",
+              "Value": "Pathora Enterprise Solutions"
+            }
+          ]
+        },
+        {
+          "JsonPath": "$",
+          "Operator": "OR",
+          "Value": null,
+          "Description": "Credit rating is AA+ or AAA",
+          "Assertions": [
+            {
+              "JsonPath": "$.creditRating",
+              "Value": "AA+"
+            },
+            {
+              "JsonPath": "$.creditRating",
+              "Value": "AAA"
+            }
+          ]
+        },
+        {
+          "JsonPath": "$",
+          "Operator": "NOT",
+          "Value": null,
+          "Description": "Status is NOT SUSPENDED",
+          "Assertions": [
+            {
+              "JsonPath": "$.status",
+              "Value": "SUSPENDED"
+            }
+          ]
+        },
+        {
+          "JsonPath": "$.underwriterSummary",
+          "Operator": "OBJECT_CONTAINS_FIELDS",
+          "Value": {
+            "code": "UW-NORTH-99",
+            "region": "AFRICA_SOUTH"
+          },
+          "Description": "Underwriter summary must contain code and region"
+        },
+        {
+          "JsonPath": "$.finalPrice",
+          "Value": 14450.0,
+          "Description": "Final price must equal 14450.0"
+        }
+      ]
+    }
+  ]
+}
