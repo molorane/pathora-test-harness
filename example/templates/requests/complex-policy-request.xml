@@ -1,0 +1,55 @@
+<PolicyRequest>
+    <policyHeader>
+        <policyNumber>POL-2026-88901</policyNumber>
+        <effectiveDate>2026-01-01T00:00:00</effectiveDate>
+        <expiryDate>2027-01-01T00:00:00</expiryDate>
+        <underwriter>
+            <code>UW-NORTH-99</code>
+            <region>AFRICA_SOUTH</region>
+            <contact>
+                <email>underwriting@pathora.co.za</email>
+                <phone>+27110000000</phone>
+            </contact>
+        </underwriter>
+    </policyHeader>
+    <insuredParty>
+        <entityId>ENT-10029</entityId>
+        <legalName>Pathora Enterprise Solutions</legalName>
+        <registrationNumber>2020/123456/07</registrationNumber>
+        <riskMetrics>
+            <creditRating>AA+</creditRating>
+            <score>820</score>
+            <priorClaimsCount>2</priorClaimsCount>
+            <flaggedRisks>FLOOD</flaggedRisks>
+            <flaggedRisks>CYBER_ATTACK</flaggedRisks>
+        </riskMetrics>
+    </insuredParty>
+    <coverageDetails>
+        <basePremium>15000.00</basePremium>
+        <deductible>2500.00</deductible>
+        <clauses>
+            <clauseId>CLS-01</clauseId>
+            <title>General Liability Coverage</title>
+            <limit>5000000.00</limit>
+            <mandatory>true</mandatory>
+            <tags>PROPERTY</tags>
+            <tags>LIABILITY</tags>
+        </clauses>
+        <clauses>
+            <clauseId>CLS-02</clauseId>
+            <title>Cyber Incident &amp; Ransomware Endorsement</title>
+            <limit>1000000.00</limit>
+            <mandatory>false</mandatory>
+            <tags>CYBER</tags>
+            <tags>INCIDENT</tags>
+        </clauses>
+        <endorsements>
+            <code>END-FLOOD-01</code>
+            <fee>450.00</fee>
+        </endorsements>
+        <endorsements>
+            <code>END-CYBER-02</code>
+            <fee>250.00</fee>
+        </endorsements>
+    </coverageDetails>
+</PolicyRequest>

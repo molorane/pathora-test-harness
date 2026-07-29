@@ -1,7 +1,6 @@
 package com.example.demo.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.EntryPointDispatcher;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
@@ -25,21 +24,15 @@ public class TestHarnessConfig {
     }
 
     @Bean
-    ObjectMapper objectMapper() {
+    public ObjectMapper objectMapper() {
         return new ObjectMapper();
-    }
-
-    @Bean
-    public XmlMapper xmlMapper() {
-        return new XmlMapper();
     }
 
     @Bean
     public EntryPointDispatcher entryPointDispatcher(
             EntryPointRegistry registry,
-            ObjectMapper objectMapper,
-            XmlMapper xmlMapper) {
-        return new EntryPointDispatcher(registry, objectMapper, xmlMapper);
+            ObjectMapper objectMapper) {
+        return new EntryPointDispatcher(registry, objectMapper);
     }
 
     @Bean
@@ -58,8 +51,8 @@ public class TestHarnessConfig {
     }
 
     @Bean
-    public JsonMutationEngine jsonMutationEngine(ObjectMapper objectMapper, XmlMapper xmlMapper) {
-        return new JsonMutationEngine(objectMapper, xmlMapper);
+    public JsonMutationEngine jsonMutationEngine(ObjectMapper objectMapper) {
+        return new JsonMutationEngine(objectMapper);
     }
 
     @Bean

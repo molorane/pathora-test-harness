@@ -1,0 +1,81 @@
+{
+  "DefaultXMLRequestPath": "../requests/complex-policy-request.xml",
+  "Tests": [
+    {
+      "TestName": "Test 1: Premium Calculation & Underwriter Region Verification from XML",
+      "TestDescription": "Validates policy evaluation premium scaling and regional routing using a complex XML request template.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.policyHeader.underwriter.code",
+          "Value": "UW-GLOBAL-01"
+        },
+        {
+          "JsonPath": "$.coverageDetails.basePremium",
+          "Value": 25000.00
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.policyNumber",
+          "Value": "POL-2026-88901",
+          "Description": "Policy number must match input header"
+        },
+        {
+          "JsonPath": "$.status",
+          "Value": "APPROVED",
+          "Description": "High rating policy should be approved"
+        },
+        {
+          "JsonPath": "$.totalPremium",
+          "Operator": "GREATER_THAN",
+          "Value": 25000.00,
+          "Description": "Total premium must exceed base premium due to endorsements"
+        },
+        {
+          "JsonPath": "$.underwriterSummary.code",
+          "Operator": "STARTS_WITH",
+          "Value": "UW-",
+          "Description": "Underwriter code format check"
+        }
+      ]
+    },
+    {
+      "TestName": "Test 2: Risk Flag Exclusion & Claims Inspection from XML",
+      "TestDescription": "Validates risk score metric evaluation when reading from an XML request template.",
+      "EntryPointName": "policy-evaluation-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.insuredParty.riskMetrics.score",
+          "Value": 850
+        },
+        {
+          "JsonPath": "$.insuredParty.riskMetrics.creditRating",
+          "Value": "AAA"
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.creditRating",
+          "Value": "AAA",
+          "Description": "Credit rating must match updated parameter"
+        },
+        {
+          "JsonPath": "$.riskScore",
+          "Value": 850,
+          "Description": "Risk score must match updated score"
+        },
+        {
+          "JsonPath": "$.insuredPartyLegalName",
+          "Value": "Pathora Enterprise Solutions",
+          "Description": "Insured legal name must match XML input"
+        },
+        {
+          "JsonPath": "$.underwritingSummary.tier",
+          "Value": "PREMIUM",
+          "Description": "High score must map to PREMIUM underwriting tier"
+        }
+      ]
+    }
+  ]
+}

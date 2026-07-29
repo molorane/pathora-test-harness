@@ -1,7 +1,6 @@
 package io.github.molorane.pathora.testharness.engine;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.molorane.pathora.testharness.registry.EntryPointRegistry;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import io.github.molorane.pathora.testharness.util.XmlHelper;
@@ -40,7 +39,6 @@ public class EntryPointDispatcher {
         }
 
         Object response = executor.execute(request);
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         return objectMapper.writeValueAsString(response);
     }

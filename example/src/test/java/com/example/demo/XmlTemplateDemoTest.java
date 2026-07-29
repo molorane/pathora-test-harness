@@ -56,6 +56,12 @@ class XmlTemplateDemoTest {
         runTestSuite("templates/tests/user-create-xml-test.json");
     }
 
+    @Test
+    @DisplayName("Execute Deeply Nested Policy Evaluation Test Suite using XML Request Template")
+    void testComplexPolicyXmlSuite() throws Exception {
+        runTestSuite("templates/tests/policy-evaluation-xml-test.json");
+    }
+
     private void runTestSuite(String testSuiteRelativePath) throws Exception {
         Path suitePath = Paths.get(testSuiteRelativePath);
         assertThat(Files.exists(suitePath))
