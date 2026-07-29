@@ -14,6 +14,11 @@ public class JsonMutationEngine {
                         String testFileName,
                         String entryPoint) {
 
+        // If no mutations provided, return original JSON unchanged
+        if (mutations == null || mutations.isEmpty()) {
+            return json;
+        }
+
         DocumentContext context = JsonPath.parse(json);
 
         for (JsonMutation mutation : mutations) {
@@ -24,20 +29,20 @@ public class JsonMutationEngine {
             } catch (Exception e) {
                 throw new AssertionError(
                         """
-                        ==========================
-                        MUTATION_FAILED
-                        ==========================
-                        Test File   : %s
-                        Entry Point : %s
-                        JsonPath    : %s
-                        Value       : %s
-                        
-                        Reason:
-                        %s
-                        
-                        Original JSON:
-                        %s
-                        """.formatted(
+                                ==========================
+                                MUTATION_FAILED
+                                ==========================
+                                Test File   : %s
+                                Entry Point : %s
+                                JsonPath    : %s
+                                Value       : %s
+                                
+                                Reason:
+                                %s
+                                
+                                Original JSON:
+                                %s
+                                """.formatted(
                                 testFileName,
                                 entryPoint,
                                 mutation.jsonPath(),
@@ -85,24 +90,19 @@ public class JsonMutationEngine {
                 );
             }
 
-            if (list.size() > 1) {
-                throw new IllegalStateException(
-                        "Multiple elements matched filter for path: " + parentPath
-                );
+            for (Object target : list) {
+
+                if (!(target instanceof Map<?, ?> map)) {
+                    throw new IllegalStateException(
+                            "Target element is not JSON object: " + target
+                    );
+                }
+
+                @SuppressWarnings("unchecked")
+                Map<String, Object> targetMap = (Map<String, Object>) map;
+
+                targetMap.put(leafProperty, mutation.value());
             }
-
-            Object target = list.get(0);
-
-            if (!(target instanceof Map<?, ?> map)) {
-                throw new IllegalStateException(
-                        "Target element is not JSON object: " + target
-                );
-            }
-
-            @SuppressWarnings("unchecked")
-            Map<String, Object> targetMap = (Map<String, Object>) map;
-
-            targetMap.put(leafProperty, mutation.value());
             return;
         }
 

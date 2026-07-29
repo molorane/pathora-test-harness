@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record JsonMutation(
 
-    @JsonProperty("JsonPath")
-    String jsonPath,
+        @JsonProperty("JsonPath")
+        String jsonPath,
 
-    @JsonProperty("Value")
-    Object value
+        @JsonProperty("Value")
+        Object value
 ) {
 }

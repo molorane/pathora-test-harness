@@ -35,7 +35,8 @@ public final class OperatorRegistry {
         CLASS_MAP.put(AssertionOperator.DURATION_LESS_THAN, "DurationLessThanOperator");
         CLASS_MAP.put(AssertionOperator.DATE_AFTER_DURATION, "DateAfterDurationOperator");
         CLASS_MAP.put(AssertionOperator.DATE_BEFORE_DURATION, "DateBeforeDurationOperator");
-        CLASS_MAP.put(AssertionOperator.EXISTS, "ExistsOperator");
+        CLASS_MAP.put(AssertionOperator.PATH_EXISTS, "PathExistsOperator");
+        CLASS_MAP.put(AssertionOperator.PATH_NOT_EXISTS, "PathNotExistsOperator");
         CLASS_MAP.put(AssertionOperator.ARRAY_SIZE_EQUALS, "ArraySizeEqualsOperator");
         CLASS_MAP.put(AssertionOperator.ARRAY_CONTAINS, "ArrayContainsOperator");
         CLASS_MAP.put(AssertionOperator.ARRAY_CONTAINS_ONLY_VALUES, "ArrayContainsOnlyValuesOperator");
@@ -44,8 +45,12 @@ public final class OperatorRegistry {
         CLASS_MAP.put(AssertionOperator.ALL_MATCH, "AllMatchOperator");
         CLASS_MAP.put(AssertionOperator.CONTAINS_ANY, "ContainsAnyOperator");
         CLASS_MAP.put(AssertionOperator.CONTAINS_ALL, "ContainsAllOperator");
+        CLASS_MAP.put(AssertionOperator.DOES_NOT_CONTAIN_ANY, "DoesNotContainAnyOperator");
+        CLASS_MAP.put(AssertionOperator.DOES_NOT_CONTAIN_ALL, "DoesNotContainAllOperator");
         CLASS_MAP.put(AssertionOperator.ARRAY_IS_EMPTY, "ArrayIsEmptyOperator");
         CLASS_MAP.put(AssertionOperator.UNIQUE_ELEMENTS, "UniqueElementsOperator");
+        CLASS_MAP.put(AssertionOperator.VALUE_IN, "ValueInOperator");
+        CLASS_MAP.put(AssertionOperator.VALUE_NOT_IN, "ValueNotInOperator");
         CLASS_MAP.put(AssertionOperator.OBJECT_CONTAINS_FIELDS, "ObjectContainsFieldsOperator");
         CLASS_MAP.put(AssertionOperator.OBJECT_CONTAINS_FIELDS_IGNORE_NULLS,
                 "ObjectContainsFieldsIgnoreNullsOperator");

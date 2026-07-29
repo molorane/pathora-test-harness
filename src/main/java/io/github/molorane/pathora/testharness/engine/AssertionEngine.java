@@ -22,11 +22,20 @@ public class AssertionEngine {
             String response,
             RuleTestCase testCase) {
 
+        assertResponse(response, testCase, null);
+    }
+
+    public void assertResponse(
+            String response,
+            RuleTestCase testCase,
+            String mutatedRequest
+    ) {
+
         var assertions = testCase.responseAssertions();
         DocumentContext context = JsonPath.parse(response);
 
         for (JsonAssertion assertion : assertions) {
-            evaluateAssertion(assertion, context, testCase, response);
+            evaluateAssertion(assertion, context, testCase, response, mutatedRequest);
         }
     }
 
@@ -34,11 +43,12 @@ public class AssertionEngine {
             JsonAssertion assertion,
             DocumentContext context,
             RuleTestCase testCase,
-            String response) {
+            String response,
+            String mutatedRequest) {
 
         // Handle logical composition operators first
         if (isLogicalOperator(assertion.operator())) {
-            evaluateLogicalAssertion(assertion, context, testCase, response);
+            evaluateLogicalAssertion(assertion, context, testCase, response, mutatedRequest);
             return;
         }
 
@@ -49,7 +59,7 @@ public class AssertionEngine {
             return;
         }
 
-        evaluatePathAssertion(assertion, context, testCase, response);
+        evaluatePathAssertion(assertion, context, testCase, response, mutatedRequest);
     }
 
     private boolean isLogicalOperator(AssertionOperator operator) {
@@ -62,13 +72,14 @@ public class AssertionEngine {
             JsonAssertion assertion,
             DocumentContext context,
             RuleTestCase testCase,
-            String response) {
+            String response,
+            String mutatedRequest) {
         if (assertion.operator() == AssertionOperator.AND) {
-            evaluateAnd(assertion, context, testCase, response);
+            evaluateAnd(assertion, context, testCase, response, mutatedRequest);
         } else if (assertion.operator() == AssertionOperator.OR) {
-            evaluateOr(assertion, context, testCase, response);
+            evaluateOr(assertion, context, testCase, response, mutatedRequest);
         } else if (assertion.operator() == AssertionOperator.NOT) {
-            evaluateNot(assertion, context, testCase, response);
+            evaluateNot(assertion, context, testCase, response, mutatedRequest);
         }
     }
 
@@ -76,12 +87,13 @@ public class AssertionEngine {
             JsonAssertion assertion,
             DocumentContext context,
             RuleTestCase testCase,
-            String response) {
+            String response,
+            String mutatedRequest) {
         if (assertion.assertions() == null || assertion.assertions().isEmpty()) {
             throw new IllegalArgumentException("AND operator requires 'Assertions' list");
         }
         for (JsonAssertion nested : assertion.assertions()) {
-            evaluateAssertion(nested, context, testCase, response);
+            evaluateAssertion(nested, context, testCase, response, mutatedRequest);
         }
     }
 
@@ -89,14 +101,15 @@ public class AssertionEngine {
             JsonAssertion assertion,
             DocumentContext context,
             RuleTestCase testCase,
-            String response) {
+            String response,
+            String mutatedRequest) {
         if (assertion.assertions() == null || assertion.assertions().isEmpty()) {
             throw new IllegalArgumentException("OR operator requires 'Assertions' list");
         }
         AssertionError lastError = null;
         for (JsonAssertion nested : assertion.assertions()) {
             try {
-                evaluateAssertion(nested, context, testCase, response);
+                evaluateAssertion(nested, context, testCase, response, mutatedRequest);
                 return; // At least one passed, so OR is satisfied
             } catch (AssertionError e) {
                 lastError = e;
@@ -113,13 +126,14 @@ public class AssertionEngine {
             JsonAssertion assertion,
             DocumentContext context,
             RuleTestCase testCase,
-            String response) {
+            String response,
+            String mutatedRequest) {
         if (assertion.assertions() == null || assertion.assertions().size() != 1) {
             throw new IllegalArgumentException("NOT operator requires exactly one 'Assertions' configured");
         }
         JsonAssertion nested = assertion.assertions().get(0);
         try {
-            evaluateAssertion(nested, context, testCase, response);
+            evaluateAssertion(nested, context, testCase, response, mutatedRequest);
         } catch (AssertionError e) {
             return; // The nested assertion failed, so NOT passes
         }
@@ -133,7 +147,8 @@ public class AssertionEngine {
             JsonAssertion assertion,
             DocumentContext context,
             RuleTestCase testCase,
-            String response) {
+            String response,
+            String mutatedRequest) {
         Object actual = null;
         boolean pathExists = true;
 
@@ -141,9 +156,9 @@ public class AssertionEngine {
             actual = context.read(assertion.jsonPath());
         } catch (com.jayway.jsonpath.PathNotFoundException e) {
             pathExists = false;
-            handlePathNotFound(assertion, testCase, response, e);
+            handlePathNotFound(assertion, testCase, response, mutatedRequest, e);
         } catch (Exception e) {
-            handlePathException(assertion, testCase, response, e);
+            handlePathException(assertion, testCase, response, mutatedRequest, e);
         }
 
         applyAssertion(assertion, actual, pathExists);
@@ -153,13 +168,17 @@ public class AssertionEngine {
             JsonAssertion assertion,
             RuleTestCase testCase,
             String response,
+            String mutatedRequest,
             com.jayway.jsonpath.PathNotFoundException e) {
-        if (assertion.operator() != AssertionOperator.EXISTS) {
+        if (assertion.operator() != AssertionOperator.EXISTS
+                && assertion.operator() != AssertionOperator.PATH_EXISTS
+                && assertion.operator() != AssertionOperator.PATH_NOT_EXISTS) {
             throw new AssertionError(
                     """
                             JSON_PATH_EVALUATION_FAILED
                             -----------------------------------------
                             JsonPath: %s
+                            Expected Value: %s
                             Operator: %s
                             Entry Point: %s
 
@@ -167,11 +186,15 @@ public class AssertionEngine {
 
                             Response:
                             %s
+                            Mutated Request:
+                            %s
                             """.formatted(
                             assertion.jsonPath(),
+                            assertion.value(),
                             assertion.operator(),
                             testCase.entryPointName(),
-                            response),
+                            response,
+                            mutatedRequest),
                     e);
         }
     }
@@ -180,25 +203,31 @@ public class AssertionEngine {
             JsonAssertion assertion,
             RuleTestCase testCase,
             String response,
+            String mutatedRequest,
             Exception e) {
         throw new AssertionError(
                 """
                         JSON_PATH_RUNTIME_ERROR
                         -----------------------------------------
                         JsonPath: %s
+                        Expected Value: %s
                         Operator: %s
                         Entry Point: %s
-
+                        
                         Error: %s
-
+                        
                         Response:
+                        %s
+                        Mutated Request:
                         %s
                         """.formatted(
                         assertion.jsonPath(),
+                        assertion.value(),
                         assertion.operator(),
                         testCase.entryPointName(),
                         e.getMessage(),
-                        response),
+                        response,
+                        mutatedRequest),
                 e);
     }
 

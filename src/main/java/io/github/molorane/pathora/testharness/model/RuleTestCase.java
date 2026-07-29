@@ -8,19 +8,19 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record RuleTestCase(
 
-    @JsonProperty("TestName")
-    String testName,
+        @JsonProperty("TestName")
+        String testName,
 
-    @JsonProperty("TestDescription")
-    String testDescription,
+        @JsonProperty("TestDescription")
+        String testDescription,
 
-    @JsonProperty("EntryPointName")
-    String entryPointName,
+        @JsonProperty("EntryPointName")
+        String entryPointName,
 
-    @JsonProperty("TestCaseParameterValues")
-    List<JsonMutation> testCaseParameterValues,
+        @JsonProperty("TestCaseParameterValues")
+        List<JsonMutation> testCaseParameterValues,
 
-    @JsonProperty("ResponseAssertions")
-    List<JsonAssertion> responseAssertions
+        @JsonProperty("ResponseAssertions")
+        List<JsonAssertion> responseAssertions
 ) {
 }

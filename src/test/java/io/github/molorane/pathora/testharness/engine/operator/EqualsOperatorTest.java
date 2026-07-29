@@ -18,14 +18,14 @@ class EqualsOperatorTest {
     }
 
     /**
-     ```json
-        {
-            "JsonPath":
-            "$.status",
-            "Operator": "EQUALS",
-            "Value": "APPROVED"
-        }
-     ```
+     * ```json
+     * {
+     * "JsonPath":
+     * "$.status",
+     * "Operator": "EQUALS",
+     * "Value": "APPROVED"
+     * }
+     * ```
      */
     @Test
     @DisplayName("PASS: string equals string")
@@ -97,6 +97,32 @@ class EqualsOperatorTest {
     @DisplayName("PASS: boolean equals boolean")
     void shouldPassWhenBooleansMatch() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.active", true, true, true));
+    }
+
+    /**
+     * ```json
+     * { "JsonPath": "$.active", "Operator": "EQUALS", "Value": true }
+     * ```
+     */
+    @Test
+    @DisplayName("PASS: boolean equals boolean")
+    void shouldFailWhenExpectedIsBooleanAndActualIsString() {
+        assertThatThrownBy(() -> operator.apply("$.active", "true", true, true))
+                .isInstanceOf(HarnessAssertionException.class)
+                .hasMessageContaining("EQUALS failed");
+    }
+
+    /**
+     * ```json
+     * { "JsonPath": "$.active", "Operator": "EQUALS", "Value": true }
+     * ```
+     */
+    @Test
+    @DisplayName("PASS: boolean equals boolean")
+    void shouldFailWhenActualIsBooleanAndExpectedIsString() {
+        assertThatThrownBy(() -> operator.apply("$.active", true, "true", true))
+                .isInstanceOf(HarnessAssertionException.class)
+                .hasMessageContaining("EQUALS failed");
     }
 
     /**

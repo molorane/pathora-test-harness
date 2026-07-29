@@ -12,13 +12,13 @@ public final class AssertionUtils {
 
     public static Object[] normalizeTypes(Object actual, Object expected) {
         if (actual == null || expected == null) {
-            return new Object[] { actual, expected };
+            return new Object[]{actual, expected};
         }
         Object[] normalized = tryNormalizeNumbers(actual, expected);
         if (normalized != null) {
             return normalized;
         }
-        return new Object[] { actual, expected };
+        return new Object[]{actual, expected};
     }
 
     private static Double tryParseDouble(String str) {
@@ -32,18 +32,18 @@ public final class AssertionUtils {
     private static Object[] tryNormalizeNumbers(Object actual, Object expected) {
         if (actual instanceof Number actNum) {
             if (expected instanceof Number expNum) {
-                return new Object[] { actNum.doubleValue(), expNum.doubleValue() };
+                return new Object[]{actNum.doubleValue(), expNum.doubleValue()};
             }
             if (expected instanceof String expStr) {
                 Double d = tryParseDouble(expStr);
                 if (d != null) {
-                    return new Object[] { actNum.doubleValue(), d };
+                    return new Object[]{actNum.doubleValue(), d};
                 }
             }
         } else if (expected instanceof Number expNum && actual instanceof String actStr) {
             Double d = tryParseDouble(actStr);
             if (d != null) {
-                return new Object[] { d, expNum.doubleValue() };
+                return new Object[]{d, expNum.doubleValue()};
             }
         }
         return null;
@@ -53,12 +53,12 @@ public final class AssertionUtils {
         if (result instanceof List<?> list) {
 
             if (list.isEmpty()) {
-                throw new AssertionError(
+                throw new RuntimeException(
                         "No match found for path: " + path);
             }
 
             if (list.size() > 1) {
-                throw new AssertionError(
+                throw new RuntimeException(
                         "Multiple matches found for path: " + path);
             }
 
@@ -139,8 +139,8 @@ public final class AssertionUtils {
     }
 
     public static boolean objectContainsFields(Object actual,
-            Object expected,
-            boolean ignoreNulls) {
+                                               Object expected,
+                                               boolean ignoreNulls) {
 
         Map<String, Object> actualMap = toMap(actual);
         Map<String, Object> expectedMap = toMap(expected);

@@ -38,7 +38,8 @@ public class ArraySizeEqualsOperator implements OperatorAssertion {
                     list.size(),
                     "ARRAY_SIZE_EQUALS failed at " + path +
                             ". Expected size: " + expectedSize +
-                            ", Actual size: " + list.size());
+                            ", Actual size: " + list.size()
+            );
         }
     }
 }

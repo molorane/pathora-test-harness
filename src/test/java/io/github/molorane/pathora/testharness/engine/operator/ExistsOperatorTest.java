@@ -9,17 +9,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ExistsOperatorTest {
 
-    private ExistsOperator operator;
+    private PathExistsOperator operator;
 
     @BeforeEach
     void setUp() {
-        operator = new ExistsOperator();
+        operator = new PathExistsOperator();
     }
 
     /**
-     * ```json
-     * { "JsonPath": "$.referenceId", "Operator": "EXISTS", "Value": null }
-     * ```
+     * {@code { "JsonPath": "$.referenceId", "Operator": "PATH_EXISTS" }}
      */
     @Test
     @DisplayName("PASS: path exists with string value")
@@ -28,9 +26,7 @@ class ExistsOperatorTest {
     }
 
     /**
-     * ```json
-     * { "JsonPath": "$.count", "Operator": "EXISTS", "Value": null }
-     * ```
+     * {@code { "JsonPath": "$.count", "Operator": "PATH_EXISTS" }}
      */
     @Test
     @DisplayName("PASS: path exists with numeric value")
@@ -39,9 +35,7 @@ class ExistsOperatorTest {
     }
 
     /**
-     * ```json
-     * { "JsonPath": "$.field", "Operator": "EXISTS", "Value": null }
-     * ```
+     * {@code { "JsonPath": "$.field", "Operator": "PATH_EXISTS" }}
      */
     @Test
     @DisplayName("PASS: path exists with null value")
@@ -50,9 +44,7 @@ class ExistsOperatorTest {
     }
 
     /**
-     * ```json
-     * { "JsonPath": "$.active", "Operator": "EXISTS", "Value": null }
-     * ```
+     * {@code { "JsonPath": "$.active", "Operator": "PATH_EXISTS" }}
      */
     @Test
     @DisplayName("PASS: path exists with boolean value")
@@ -61,28 +53,25 @@ class ExistsOperatorTest {
     }
 
     /**
-     * ```json
-     * { "JsonPath": "$.missing", "Operator": "EXISTS", "Value": null }
-     * ```
+     * {@code { "JsonPath": "$.missing", "Operator": "PATH_EXISTS" }}
      */
     @Test
     @DisplayName("FAIL: path does not exist")
     void shouldFailWhenPathDoesNotExist() {
         assertThatThrownBy(() -> operator.apply("$.missing", null, null, false))
                 .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("Expected path to exist: $.missing");
+                .hasMessageContaining("PATH_EXISTS_FAILED")
+                .hasMessageContaining("$.missing");
     }
 
     /**
-     * ```json
-     * { "JsonPath": "$.outputData.nested.field", "Operator": "EXISTS", "Value": null }
-     * ```
+     * {@code { "JsonPath": "$.outputData.nested.field", "Operator": "PATH_EXISTS" }}
      */
     @Test
-    @DisplayName("FAIL: path does not exist — nested path")
+    @DisplayName("FAIL: nested path does not exist")
     void shouldFailForNestedMissingPath() {
         assertThatThrownBy(() -> operator.apply("$.outputData.nested.field", null, null, false))
                 .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("Expected path to exist");
+                .hasMessageContaining("PATH_EXISTS_FAILED");
     }
 }

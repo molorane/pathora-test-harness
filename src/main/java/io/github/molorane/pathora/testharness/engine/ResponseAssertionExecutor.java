@@ -11,11 +11,9 @@ public class ResponseAssertionExecutor {
     }
 
     public void execute(
+            String mutatedRequest,
             String response,
             RuleTestCase testCase) {
-
-        assertionEngine.assertResponse(
-                response,
-                testCase);
+        assertionEngine.assertResponse(response, testCase, mutatedRequest);
     }
 }

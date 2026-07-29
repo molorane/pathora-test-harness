@@ -30,12 +30,12 @@ public class HarnessAssertionException extends AssertionError {
             Object actual,
             String message) {
         return """
-
+                
                 Assertion: %s
                 Path:      %s
                 Expected:  %s
                 Actual:    %s
-
+                
                 %s
                 """.formatted(operator, path, expected, actual, message);
     }

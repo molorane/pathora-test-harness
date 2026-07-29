@@ -60,7 +60,9 @@ public enum AssertionOperator {
      * =========================
      */
 
-    EXISTS,
+    PATH_EXISTS,       // Path exists in the response (replaces EXISTS)
+    PATH_NOT_EXISTS,   // Path is absent or filter returns no matches
+    EXISTS,            // @deprecated — use PATH_EXISTS
     ARRAY_SIZE_EQUALS,
 
     /*
@@ -76,8 +78,12 @@ public enum AssertionOperator {
     ALL_MATCH, // All array elements match a condition
     CONTAINS_ANY, // Array contains at least one of the expected values
     CONTAINS_ALL, // Array contains all the expected values
+    DOES_NOT_CONTAIN_ANY, // Array contains none of the expected values
+    DOES_NOT_CONTAIN_ALL, // Array does not contain all the expected values
     ARRAY_IS_EMPTY, // Array is empty
     UNIQUE_ELEMENTS, // Array has no duplicate elements
+    VALUE_IN, // Scalar value is in a list of expected values
+    VALUE_NOT_IN, // Scalar value is not in a list of expected values
 
     /*
      * =========================

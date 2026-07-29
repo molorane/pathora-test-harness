@@ -20,7 +20,7 @@ public class TestSuiteLoader {
 
         if (Files.notExists(suitePath)) {
             throw new IllegalArgumentException(
-                "Test suite file does not exist: " + suitePath.toAbsolutePath()
+                    "Test suite file does not exist: " + suitePath.toAbsolutePath()
             );
         }
 

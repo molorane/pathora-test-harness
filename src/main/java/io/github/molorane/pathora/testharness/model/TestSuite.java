@@ -8,11 +8,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record TestSuite(
 
-    @JsonProperty("DefaultJSONRequestPath")
-    String defaultJSONRequestPath,
+        @JsonProperty("DefaultJSONRequestPath")
+        String defaultJSONRequestPath,
 
-    @JsonProperty("Tests")
-    List<RuleTestCase> tests
-
+        @JsonProperty("Tests")
+        List<RuleTestCase> tests
 ) {
 }

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
-
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -27,7 +26,7 @@ class AllMatchOperatorTest {
     @DisplayName("Equals mode (scalar Value)")
     class EqualsMode {
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.penalties", "Operator": "ALL_MATCH", "Value": 0 }
          * ```
@@ -36,12 +35,12 @@ class AllMatchOperatorTest {
         @DisplayName("PASS: all elements equal to 0")
         void shouldPassWhenAllZeros() {
             Object list = TestJsonHelper.parse("""
-                [0, 0, 0 ]
-                """);
+                    [0, 0, 0 ]
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.penalties", list, 0, true));
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.segments", "Operator": "ALL_MATCH", "Value": "Retail" }
          * ```
@@ -50,12 +49,12 @@ class AllMatchOperatorTest {
         @DisplayName("PASS: all elements equal to string")
         void shouldPassWhenAllSameString() {
             Object list = TestJsonHelper.parse("""
-                ["Retail", "Retail", "Retail" ]
-                """);
+                    ["Retail", "Retail", "Retail" ]
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.segments", list, "Retail", true));
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.segments", "Operator": "ALL_MATCH", "Value": "Retail" }
          * ```
@@ -64,12 +63,12 @@ class AllMatchOperatorTest {
         @DisplayName("PASS: single element matches")
         void shouldPassWithSingleElement() {
             Object list = TestJsonHelper.parse("""
-                ["Retail" ]
-                """);
+                    ["Retail" ]
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.segments", list, "Retail", true));
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.items", "Operator": "ALL_MATCH", "Value": "anything" }
          * ```
@@ -78,12 +77,12 @@ class AllMatchOperatorTest {
         @DisplayName("PASS: empty array — vacuously true")
         void shouldPassWithEmptyArray() {
             Object list = TestJsonHelper.parse("""
-                []
-                """);
+                    []
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "anything", true));
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.penalties", "Operator": "ALL_MATCH", "Value": 0.0 }
          * ```
@@ -92,12 +91,12 @@ class AllMatchOperatorTest {
         @DisplayName("PASS: numeric type coercion — int 0 equals double 0.0")
         void shouldPassWithNumericCoercion() {
             Object list = TestJsonHelper.parse("""
-                [0, 0, 0 ]
-                """);
+                    [0, 0, 0 ]
+                    """);
             assertThatNoException().isThrownBy(() -> operator.apply("$.penalties", list, 0.0, true));
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.penalties", "Operator": "ALL_MATCH", "Value": 0 }
          * ```
@@ -106,15 +105,15 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: one element differs")
         void shouldFailWhenOneElementDiffers() {
             Object list = TestJsonHelper.parse("""
-                [0, 0, 1 ]
-                """);
+                    [0, 0, 1 ]
+                    """);
             assertThatThrownBy(() -> operator.apply("$.penalties", list, 0, true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("ALL_MATCH failed")
                     .hasMessageContaining("index 2");
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.segments", "Operator": "ALL_MATCH", "Value": "Retail" }
          * ```
@@ -123,14 +122,14 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: first element differs")
         void shouldFailWhenFirstElementDiffers() {
             Object list = TestJsonHelper.parse("""
-                ["Corporate", "Retail", "Retail" ]
-                """);
+                    ["Corporate", "Retail", "Retail" ]
+                    """);
             assertThatThrownBy(() -> operator.apply("$.segments", list, "Retail", true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("index 0");
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.penalties", "Operator": "ALL_MATCH", "Value": 0 }
          * ```
@@ -139,8 +138,8 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: all elements differ")
         void shouldFailWhenAllDiffer() {
             Object list = TestJsonHelper.parse("""
-                [1, 2, 3 ]
-                """);
+                    [1, 2, 3 ]
+                    """);
             assertThatThrownBy(() -> operator.apply("$.penalties", list, 0, true))
                     .isInstanceOf(HarnessAssertionException.class)
                     .hasMessageContaining("ALL_MATCH failed");
@@ -155,7 +154,7 @@ class AllMatchOperatorTest {
     @DisplayName("greaterThan mode")
     class GreaterThanMode {
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -164,8 +163,8 @@ class AllMatchOperatorTest {
         @DisplayName("PASS: all elements greater than threshold")
         void shouldPassWhenAllGreater() {
             Object list = TestJsonHelper.parse("""
-                [60, 70, 80 ]
-                """);
+                    [60, 70, 80 ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "greaterThan": 50
@@ -174,7 +173,7 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.scores", list, condition, true));
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -183,8 +182,8 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: one element equals threshold (not strictly greater)")
         void shouldFailWhenOneEqualsThreshold() {
             Object list = TestJsonHelper.parse("""
-                [60, 50, 80 ]
-                """);
+                    [60, 50, 80 ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "greaterThan": 50
@@ -195,7 +194,7 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("index 1");
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -204,8 +203,8 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: one element below threshold")
         void shouldFailWhenOneBelowThreshold() {
             Object list = TestJsonHelper.parse("""
-                [60, 40, 80 ]
-                """);
+                    [60, 40, 80 ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "greaterThan": 50
@@ -225,7 +224,7 @@ class AllMatchOperatorTest {
     @DisplayName("lessThan mode")
     class LessThanMode {
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -234,8 +233,8 @@ class AllMatchOperatorTest {
         @DisplayName("PASS: all elements less than threshold")
         void shouldPassWhenAllLess() {
             Object list = TestJsonHelper.parse("""
-                [10, 20, 30 ]
-                """);
+                    [10, 20, 30 ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "lessThan": 50
@@ -244,7 +243,7 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.scores", list, condition, true));
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -253,8 +252,8 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: one element equals threshold (not strictly less)")
         void shouldFailWhenOneEqualsThreshold() {
             Object list = TestJsonHelper.parse("""
-                [10, 50, 30 ]
-                """);
+                    [10, 50, 30 ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "lessThan": 50
@@ -265,7 +264,7 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("index 1");
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -274,8 +273,8 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: one element above threshold")
         void shouldFailWhenOneAboveThreshold() {
             Object list = TestJsonHelper.parse("""
-                [10, 60, 30 ]
-                """);
+                    [10, 60, 30 ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "lessThan": 50
@@ -295,7 +294,7 @@ class AllMatchOperatorTest {
     @DisplayName("between mode")
     class BetweenMode {
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -304,8 +303,8 @@ class AllMatchOperatorTest {
         @DisplayName("PASS: all elements within range")
         void shouldPassWhenAllWithinRange() {
             Object list = TestJsonHelper.parse("""
-                [50, 75, 100 ]
-                """);
+                    [50, 75, 100 ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "between": {
@@ -317,7 +316,7 @@ class AllMatchOperatorTest {
             assertThatNoException().isThrownBy(() -> operator.apply("$.scores", list, condition, true));
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -326,8 +325,8 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: one element outside range")
         void shouldFailWhenOneOutsideRange() {
             Object list = TestJsonHelper.parse("""
-                [50, 110, 75 ]
-                """);
+                    [50, 110, 75 ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "between": {
@@ -350,7 +349,7 @@ class AllMatchOperatorTest {
     @DisplayName("Edge cases")
     class EdgeCases {
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.items", "Operator": "ALL_MATCH", "Value": 0 }
          * ```
@@ -363,7 +362,7 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("Expected array at path");
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.scores", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -372,8 +371,8 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: unknown condition key")
         void shouldFailWithUnknownCondition() {
             Object list = TestJsonHelper.parse("""
-                [1, 2, 3 ]
-                """);
+                    [1, 2, 3 ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "unknownKey": 50
@@ -384,7 +383,7 @@ class AllMatchOperatorTest {
                     .hasMessageContaining("greaterThan");
         }
 
-       /**
+        /**
          * ```json
          * { "JsonPath": "$.items", "Operator": "ALL_MATCH", "Value": condition }
          * ```
@@ -393,8 +392,8 @@ class AllMatchOperatorTest {
         @DisplayName("FAIL: non-numeric value for greaterThan")
         void shouldFailWithNonNumericForGreaterThan() {
             Object list = TestJsonHelper.parse("""
-                ["a", "b" ]
-                """);
+                    ["a", "b" ]
+                    """);
             Object condition = TestJsonHelper.parse("""
                     {
                       "greaterThan": 50
