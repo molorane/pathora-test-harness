@@ -1,0 +1,46 @@
+{
+  "DefaultJSONRequestPath": "../requests/payment-process-request.json",
+  "Tests": [
+    {
+      "TestName": "Successful Payment Processing Test",
+      "TestDescription": "Validates successful payment gateway response, transaction reference, and positive amount.",
+      "EntryPointName": "payment-gateway-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.amount",
+          "Value": 499.99
+        },
+        {
+          "JsonPath": "$.paymentMethod",
+          "Value": "DEBIT_CARD"
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.paymentId",
+          "Operator": "STARTS_WITH",
+          "Value": "PAY-",
+          "Description": "Payment ID must be generated with PAY- prefix"
+        },
+        {
+          "JsonPath": "$.transactionId",
+          "Operator": "EQUALS",
+          "Value": "TXN-998811",
+          "Description": "Transaction ID must match input request"
+        },
+        {
+          "JsonPath": "$.amount",
+          "Operator": "GREATER_THAN",
+          "Value": 0.0,
+          "Description": "Payment amount must be greater than zero"
+        },
+        {
+          "JsonPath": "$.status",
+          "Operator": "EQUALS",
+          "Value": "SUCCESS",
+          "Description": "Payment status must be SUCCESS"
+        }
+      ]
+    }
+  ]
+}

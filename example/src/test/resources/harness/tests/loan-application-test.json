@@ -1,0 +1,56 @@
+{
+  "DefaultJSONRequestPath": "../requests/loan-application-request.json",
+  "Tests": [
+    {
+      "TestName": "High Credit Score Loan Approval Test",
+      "TestDescription": "Validates loan approval decision, prime interest rate assignment, and full requested amount approval for high credit score applicants.",
+      "EntryPointName": "loan-application-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.applicantId",
+          "Value": "APP-998877"
+        },
+        {
+          "JsonPath": "$.requestedAmount",
+          "Value": 75000.00
+        },
+        {
+          "JsonPath": "$.creditScore",
+          "Value": 780
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.applicationId",
+          "Operator": "STARTS_WITH",
+          "Value": "APP-",
+          "Description": "Application ID must start with APP-"
+        },
+        {
+          "JsonPath": "$.applicantId",
+          "Operator": "EQUALS",
+          "Value": "APP-998877",
+          "Description": "Applicant ID must match request parameter"
+        },
+        {
+          "JsonPath": "$.approvedAmount",
+          "Operator": "EQUALS",
+          "Value": 75000.00,
+          "Description": "Approved amount must equal requested amount for high credit score"
+        },
+        {
+          "JsonPath": "$.interestRate",
+          "Operator": "LESS_THAN_OR_EQUALS",
+          "Value": 7.0,
+          "Description": "Interest rate must be prime (<= 7.0%)"
+        },
+        {
+          "JsonPath": "$.decisionStatus",
+          "Operator": "EQUALS",
+          "Value": "APPROVED",
+          "Description": "Decision status must be APPROVED"
+        }
+      ]
+    }
+  ]
+}

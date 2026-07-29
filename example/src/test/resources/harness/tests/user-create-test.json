@@ -1,0 +1,56 @@
+{
+  "DefaultJSONRequestPath": "../requests/user-create-request.json",
+  "Tests": [
+    {
+      "TestName": "Valid User Registration Test",
+      "TestDescription": "Validates successful user account creation, userId generation, role assignment, and active status.",
+      "EntryPointName": "user-registration-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.username",
+          "Value": "sarah_connor"
+        },
+        {
+          "JsonPath": "$.email",
+          "Value": "sarah.connor@cyberdyne.org"
+        },
+        {
+          "JsonPath": "$.role",
+          "Value": "MANAGER"
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.userId",
+          "Operator": "STARTS_WITH",
+          "Value": "USR-",
+          "Description": "User ID must be generated with USR- prefix"
+        },
+        {
+          "JsonPath": "$.username",
+          "Operator": "EQUALS",
+          "Value": "sarah_connor",
+          "Description": "Username must match updated request parameter"
+        },
+        {
+          "JsonPath": "$.email",
+          "Operator": "REGEX_MATCH",
+          "Value": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$",
+          "Description": "Email must be a valid email format"
+        },
+        {
+          "JsonPath": "$.role",
+          "Operator": "EQUALS",
+          "Value": "MANAGER",
+          "Description": "Role must match assigned role"
+        },
+        {
+          "JsonPath": "$.status",
+          "Operator": "EQUALS",
+          "Value": "ACTIVE",
+          "Description": "Status must be ACTIVE"
+        }
+      ]
+    }
+  ]
+}

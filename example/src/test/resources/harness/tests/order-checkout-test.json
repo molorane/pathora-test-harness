@@ -1,0 +1,52 @@
+{
+  "DefaultJSONRequestPath": "../requests/order-checkout-request.json",
+  "Tests": [
+    {
+      "TestName": "Order Checkout Calculation Test",
+      "TestDescription": "Validates total items, subtotal, 15% tax calculation, and order status upon checkout.",
+      "EntryPointName": "order-processing-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.customerId",
+          "Value": "CUST-99001"
+        },
+        {
+          "JsonPath": "$.currency",
+          "Value": "USD"
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.orderId",
+          "Operator": "STARTS_WITH",
+          "Value": "ORD-",
+          "Description": "Order ID must start with ORD-"
+        },
+        {
+          "JsonPath": "$.customerId",
+          "Operator": "EQUALS",
+          "Value": "CUST-99001",
+          "Description": "Customer ID must match request parameter"
+        },
+        {
+          "JsonPath": "$.totalItems",
+          "Operator": "EQUALS",
+          "Value": 3,
+          "Description": "Total items count must be 3"
+        },
+        {
+          "JsonPath": "$.subtotal",
+          "Operator": "GREATER_THAN",
+          "Value": 100.0,
+          "Description": "Subtotal must be greater than 100.0"
+        },
+        {
+          "JsonPath": "$.status",
+          "Operator": "EQUALS",
+          "Value": "CREATED",
+          "Description": "Order status must be CREATED"
+        }
+      ]
+    }
+  ]
+}

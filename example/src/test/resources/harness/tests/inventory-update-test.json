@@ -1,0 +1,50 @@
+{
+  "DefaultJSONRequestPath": "../requests/inventory-update-request.json",
+  "Tests": [
+    {
+      "TestName": "Inventory Stock Restock Test",
+      "TestDescription": "Validates stock level increase, stock status IN_STOCK, and product unit price.",
+      "EntryPointName": "inventory-update-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.productId",
+          "Value": "SKU-90882"
+        },
+        {
+          "JsonPath": "$.addQuantity",
+          "Value": 250
+        },
+        {
+          "JsonPath": "$.unitPrice",
+          "Value": 18.75
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.productId",
+          "Operator": "EQUALS",
+          "Value": "SKU-90882",
+          "Description": "Product ID must match updated value"
+        },
+        {
+          "JsonPath": "$.stockLevel",
+          "Operator": "GREATER_THAN_OR_EQUALS",
+          "Value": 200,
+          "Description": "Stock level must be at least 200 units"
+        },
+        {
+          "JsonPath": "$.stockStatus",
+          "Operator": "EQUALS",
+          "Value": "IN_STOCK",
+          "Description": "Stock status must be IN_STOCK"
+        },
+        {
+          "JsonPath": "$.unitPrice",
+          "Operator": "EQUALS",
+          "Value": 18.75,
+          "Description": "Unit price must match input unit price"
+        }
+      ]
+    }
+  ]
+}
