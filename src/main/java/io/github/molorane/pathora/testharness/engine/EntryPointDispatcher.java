@@ -6,27 +6,27 @@ import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 
 public class EntryPointDispatcher {
 
-        private final EntryPointRegistry registry;
-        private final ObjectMapper objectMapper;
+    private final EntryPointRegistry registry;
+    private final ObjectMapper objectMapper;
 
-        public EntryPointDispatcher(
-                        EntryPointRegistry registry,
-                        ObjectMapper objectMapper) {
-                this.registry = registry;
-                this.objectMapper = objectMapper;
-        }
+    public EntryPointDispatcher(
+            EntryPointRegistry registry,
+            ObjectMapper objectMapper) {
+        this.registry = registry;
+        this.objectMapper = objectMapper;
+    }
 
-        public String dispatch(String entryPointName, String requestJson)
-                        throws Exception {
+    public String dispatch(String entryPointName, String requestJson)
+            throws Exception {
 
-                EntryPointExecutor executor = registry.get(entryPointName);
+        EntryPointExecutor executor = registry.get(entryPointName);
 
-                Object request = objectMapper.readValue(
-                                requestJson,
-                                executor.getRequestType());
+        Object request = objectMapper.readValue(
+                requestJson,
+                executor.getRequestType());
 
-                Object response = executor.execute(request);
+        Object response = executor.execute(request);
 
-                return objectMapper.writeValueAsString(response);
-        }
+        return objectMapper.writeValueAsString(response);
+    }
 }

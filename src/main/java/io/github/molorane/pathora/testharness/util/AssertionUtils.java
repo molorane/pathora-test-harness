@@ -11,39 +11,42 @@ public final class AssertionUtils {
     }
 
     public static Object[] normalizeTypes(Object actual, Object expected) {
-
         if (actual == null || expected == null) {
             return new Object[] { actual, expected };
         }
-
-        if (actual instanceof Number && expected instanceof Number) {
-            return new Object[] {
-                    ((Number) actual).doubleValue(),
-                    ((Number) expected).doubleValue()
-            };
+        Object[] normalized = tryNormalizeNumbers(actual, expected);
+        if (normalized != null) {
+            return normalized;
         }
-
-        if (actual instanceof Number && expected instanceof String str) {
-            try {
-                return new Object[] {
-                        ((Number) actual).doubleValue(),
-                        Double.parseDouble(str)
-                };
-            } catch (NumberFormatException ignored) {
-            }
-        }
-
-        if (expected instanceof Number && actual instanceof String str) {
-            try {
-                return new Object[] {
-                        Double.parseDouble(str),
-                        ((Number) expected).doubleValue()
-                };
-            } catch (NumberFormatException ignored) {
-            }
-        }
-
         return new Object[] { actual, expected };
+    }
+
+    private static Double tryParseDouble(String str) {
+        try {
+            return Double.parseDouble(str);
+        } catch (NumberFormatException ignored) {
+            return null;
+        }
+    }
+
+    private static Object[] tryNormalizeNumbers(Object actual, Object expected) {
+        if (actual instanceof Number actNum) {
+            if (expected instanceof Number expNum) {
+                return new Object[] { actNum.doubleValue(), expNum.doubleValue() };
+            }
+            if (expected instanceof String expStr) {
+                Double d = tryParseDouble(expStr);
+                if (d != null) {
+                    return new Object[] { actNum.doubleValue(), d };
+                }
+            }
+        } else if (expected instanceof Number expNum && actual instanceof String actStr) {
+            Double d = tryParseDouble(actStr);
+            if (d != null) {
+                return new Object[] { d, expNum.doubleValue() };
+            }
+        }
+        return null;
     }
 
     public static Object normalizeResult(Object result, String path) {
@@ -75,43 +78,46 @@ public final class AssertionUtils {
     }
 
     public static Object normalizeExpected(Object expected) {
-
         if (expected == null) {
             return null;
         }
-
         if (!(expected instanceof String str)) {
             return expected;
         }
+        return parseString(str.trim());
+    }
 
-        str = str.trim();
-
+    private static Object parseString(String str) {
         if ("null".equalsIgnoreCase(str)) {
             return null;
         }
-
         if ("true".equalsIgnoreCase(str)) {
             return true;
         }
         if ("false".equalsIgnoreCase(str)) {
             return false;
         }
-
-        try {
-            if (str.matches("-?\\d+")) {
-                return Integer.parseInt(str);
-            }
-        } catch (NumberFormatException ignored) {
+        Object num = tryParseNumericString(str);
+        if (num != null) {
+            return num;
         }
-
-        try {
-            if (str.matches("-?\\d+\\.\\d+")) {
-                return Double.parseDouble(str);
-            }
-        } catch (NumberFormatException ignored) {
-        }
-
         return str;
+    }
+
+    private static Object tryParseNumericString(String str) {
+        if (str.matches("-?\\d+")) {
+            try {
+                return Integer.parseInt(str);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        if (str.matches("-?\\d+\\.\\d+")) {
+            try {
+                return Double.parseDouble(str);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return null;
     }
 
     public static boolean deepEquals(Object actual, Object expected) {
