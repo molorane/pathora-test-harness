@@ -1,0 +1,6 @@
+<UserRequest>
+    <username>john_doe</username>
+    <email>john.doe@example.com</email>
+    <role>USER</role>
+    <status>ACTIVE</status>
+</UserRequest>

@@ -10,10 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.Stream;
 
+import com.example.demo.config.TestHarnessConfig;
+import org.springframework.context.annotation.Import;
+
 /**
  * Demonstrates executing all test suite files in a directory dynamically using @TestFactory.
  */
 @SpringBootTest
+@Import(TestHarnessConfig.class)
 class AllSuiteTest {
 
     private static final Logger log = LoggerFactory.getLogger(AllSuiteTest.class);

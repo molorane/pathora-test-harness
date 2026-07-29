@@ -1,25 +1,45 @@
 package io.github.molorane.pathora.testharness.engine;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.github.molorane.pathora.testharness.model.JsonMutation;
+import io.github.molorane.pathora.testharness.util.XmlHelper;
 
 import java.util.List;
 import java.util.Map;
 
 public class JsonMutationEngine {
 
-    public String apply(String json,
+    private final ObjectMapper objectMapper;
+    private final ObjectMapper xmlMapper;
+
+    public JsonMutationEngine() {
+        this(new ObjectMapper(), null);
+    }
+
+    public JsonMutationEngine(ObjectMapper objectMapper) {
+        this(objectMapper, null);
+    }
+
+    public JsonMutationEngine(ObjectMapper objectMapper, ObjectMapper xmlMapper) {
+        this.objectMapper = objectMapper;
+        this.xmlMapper = xmlMapper;
+    }
+
+    public String apply(String payload,
                         List<JsonMutation> mutations,
                         String testFileName,
                         String entryPoint) {
 
-        // If no mutations provided, return original JSON unchanged
+        // If no mutations provided, return original payload unchanged
         if (mutations == null || mutations.isEmpty()) {
-            return json;
+            return payload;
         }
 
-        DocumentContext context = JsonPath.parse(json);
+        String jsonPayload = XmlHelper.isXml(payload) ? convertXmlToJson(payload) : payload;
+
+        DocumentContext context = JsonPath.parse(jsonPayload);
 
         for (JsonMutation mutation : mutations) {
 
@@ -36,11 +56,11 @@ public class JsonMutationEngine {
                                 Entry Point : %s
                                 JsonPath    : %s
                                 Value       : %s
-                                
+
                                 Reason:
                                 %s
-                                
-                                Original JSON:
+
+                                Original Payload:
                                 %s
                                 """.formatted(
                                 testFileName,
@@ -48,7 +68,7 @@ public class JsonMutationEngine {
                                 mutation.jsonPath(),
                                 mutation.value(),
                                 e.getMessage(),
-                                json
+                                payload
                         ),
                         e
                 );
@@ -56,6 +76,18 @@ public class JsonMutationEngine {
         }
 
         return context.jsonString();
+    }
+
+    private String convertXmlToJson(String xml) {
+        try {
+            ObjectMapper mapper = (xmlMapper != null) ? xmlMapper : XmlHelper.getXmlMapper();
+            Object node = mapper.readValue(xml, Object.class);
+            return objectMapper.writeValueAsString(node);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(
+                    "Failed to convert XML template to JSON representation: " + e.getMessage(), e
+            );
+        }
     }
 
     private void applySingleMutation(DocumentContext context,
@@ -122,5 +154,4 @@ public class JsonMutationEngine {
                         + " -> " + parentResult.getClass()
         );
     }
-
 }

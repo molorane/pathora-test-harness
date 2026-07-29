@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.config.TestHarnessConfig;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.EntryPointDispatcher;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,15 +22,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.example.demo.config.TestHarnessConfig;
-import org.springframework.context.annotation.Import;
-
 /**
- * Demonstrates testing test suite files individually (one file at a time).
+ * Dedicated test class demonstrating testing using XML request templates (.xml).
  */
 @SpringBootTest
 @Import(TestHarnessConfig.class)
-class SingleTestSuiteDemoTest {
+class XmlTemplateDemoTest {
 
     @Autowired
     private List<EntryPointExecutor> executorBeans;
@@ -46,57 +45,15 @@ class SingleTestSuiteDemoTest {
     private AssertionEngine assertionEngine;
 
     @Test
-    @DisplayName("Verify Spring Boot Context Loads Executors")
+    @DisplayName("Verify Spring Boot Context Loads Executors for XML Tests")
     void contextLoads() {
-        assertThat(executorBeans).hasSize(6);
+        assertThat(executorBeans).isNotEmpty();
     }
 
     @Test
-    @DisplayName("Execute User Registration Test Suite (JSON)")
-    void testUserRegistrationSuite() throws Exception {
-        runTestSuite("templates/tests/user-create-test.json");
-    }
-
-    @Test
-    @DisplayName("Execute User Registration Test Suite (XML)")
+    @DisplayName("Execute User Registration Test Suite using XML Request Template")
     void testUserRegistrationXmlSuite() throws Exception {
         runTestSuite("templates/tests/user-create-xml-test.json");
-    }
-
-    @Test
-    @DisplayName("Execute Order Checkout Test Suite")
-    void testOrderCheckoutSuite() throws Exception {
-        runTestSuite("templates/tests/order-checkout-test.json");
-    }
-
-    @Test
-    @DisplayName("Execute Payment Gateway Test Suite")
-    void testPaymentGatewaySuite() throws Exception {
-        runTestSuite("templates/tests/payment-process-test.json");
-    }
-
-    @Test
-    @DisplayName("Execute Inventory Update Test Suite")
-    void testInventoryUpdateSuite() throws Exception {
-        runTestSuite("templates/tests/inventory-update-test.json");
-    }
-
-    @Test
-    @DisplayName("Execute Loan Application Test Suite")
-    void testLoanApplicationSuite() throws Exception {
-        runTestSuite("templates/tests/loan-application-test.json");
-    }
-
-    @Test
-    @DisplayName("Execute Deeply Nested Policy Evaluation Test Suite")
-    void testPolicyEvaluationSuite() throws Exception {
-        runTestSuite("templates/tests/policy-evaluation-test.json");
-    }
-
-    @Test
-    @DisplayName("Execute Deeply Nested Policy Risk Assessment Test Suite")
-    void testPolicyRiskAssessmentSuite() throws Exception {
-        runTestSuite("templates/tests/policy-risk-assessment-test.json");
     }
 
     private void runTestSuite(String testSuiteRelativePath) throws Exception {

@@ -135,7 +135,7 @@ public class DynamicTestAdapter {
             RuleTestCase testCase,
             String testFileName
     ) throws Exception {
-        String baseRequest = templateLoader.loadTemplate(suitePath, suite.defaultJSONRequestPath());
+        String baseRequest = templateLoader.loadTemplate(suitePath, suite.defaultRequestPath());
 
         return mutationEngine.apply(
                 baseRequest,

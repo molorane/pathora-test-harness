@@ -31,6 +31,10 @@ public class RequestTemplateLoader {
         }
 
         // Relative to suite file directory
+        if (suitePath != null && suitePath.getParent() != null) {
+            return suitePath.getParent().resolve(candidate).normalize();
+        }
+
         return candidate;
     }
 }

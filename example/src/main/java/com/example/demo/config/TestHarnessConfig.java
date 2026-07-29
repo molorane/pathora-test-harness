@@ -1,11 +1,13 @@
 package com.example.demo.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.EntryPointDispatcher;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
 import io.github.molorane.pathora.testharness.engine.ResponseAssertionExecutor;
 import io.github.molorane.pathora.testharness.loader.RequestLoader;
+import io.github.molorane.pathora.testharness.loader.RequestTemplateLoader;
 import io.github.molorane.pathora.testharness.loader.TestSuiteLoader;
 import io.github.molorane.pathora.testharness.registry.EntryPointRegistry;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
@@ -23,8 +25,21 @@ public class TestHarnessConfig {
     }
 
     @Bean
-    public EntryPointDispatcher entryPointDispatcher(EntryPointRegistry registry, ObjectMapper objectMapper) {
-        return new EntryPointDispatcher(registry, objectMapper);
+    ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    public XmlMapper xmlMapper() {
+        return new XmlMapper();
+    }
+
+    @Bean
+    public EntryPointDispatcher entryPointDispatcher(
+            EntryPointRegistry registry,
+            ObjectMapper objectMapper,
+            XmlMapper xmlMapper) {
+        return new EntryPointDispatcher(registry, objectMapper, xmlMapper);
     }
 
     @Bean
@@ -38,8 +53,13 @@ public class TestHarnessConfig {
     }
 
     @Bean
-    public JsonMutationEngine jsonMutationEngine() {
-        return new JsonMutationEngine();
+    public RequestTemplateLoader requestTemplateLoader() {
+        return new RequestTemplateLoader();
+    }
+
+    @Bean
+    public JsonMutationEngine jsonMutationEngine(ObjectMapper objectMapper, XmlMapper xmlMapper) {
+        return new JsonMutationEngine(objectMapper, xmlMapper);
     }
 
     @Bean

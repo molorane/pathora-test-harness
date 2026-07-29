@@ -11,7 +11,16 @@ public record TestSuite(
         @JsonProperty("DefaultJSONRequestPath")
         String defaultJSONRequestPath,
 
+        @JsonProperty("DefaultXMLRequestPath")
+        String defaultXMLRequestPath,
+
         @JsonProperty("Tests")
         List<RuleTestCase> tests
 ) {
+    public String defaultRequestPath() {
+        if (defaultXMLRequestPath != null && !defaultXMLRequestPath.isBlank()) {
+            return defaultXMLRequestPath;
+        }
+        return defaultJSONRequestPath;
+    }
 }

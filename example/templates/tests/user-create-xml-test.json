@@ -1,0 +1,47 @@
+{
+  "DefaultXMLRequestPath": "../requests/user-create-request.xml",
+  "Tests": [
+    {
+      "TestName": "Valid User Registration Test from XML Template",
+      "TestDescription": "Validates successful user account creation using an XML base request template.",
+      "EntryPointName": "user-registration-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.username",
+          "Value": "alex_murphy"
+        },
+        {
+          "JsonPath": "$.email",
+          "Value": "alex.murphy@ocp.com"
+        },
+        {
+          "JsonPath": "$.role",
+          "Value": "ADMIN"
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.userId",
+          "Operator": "STARTS_WITH",
+          "Value": "USR-",
+          "Description": "User ID must be generated with USR- prefix"
+        },
+        {
+          "JsonPath": "$.username",
+          "Value": "alex_murphy",
+          "Description": "Username must match updated parameter"
+        },
+        {
+          "JsonPath": "$.role",
+          "Value": "ADMIN",
+          "Description": "Role must match assigned ADMIN role"
+        },
+        {
+          "JsonPath": "$.status",
+          "Value": "ACTIVE",
+          "Description": "Status must be ACTIVE"
+        }
+      ]
+    }
+  ]
+}
