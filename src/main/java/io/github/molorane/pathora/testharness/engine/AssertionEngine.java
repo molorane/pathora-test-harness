@@ -8,14 +8,13 @@ import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
 
-import java.util.Map;
 
 public class AssertionEngine {
 
-    private final Map<AssertionOperator, OperatorAssertion> operators;
+    private final OperatorRegistry operatorRegistry;
 
     public AssertionEngine() {
-        operators = OperatorRegistry.loadOperators();
+        this.operatorRegistry = new OperatorRegistry();
     }
 
     public void assertResponse(
@@ -53,7 +52,7 @@ public class AssertionEngine {
         }
 
         // Context-aware operators resolve their own paths
-        OperatorAssertion handler = operators.get(assertion.operator());
+        OperatorAssertion handler = operatorRegistry.get(assertion.operator());
         if (handler instanceof DocumentContextAwareOperator contextAware) {
             contextAware.apply(context, assertion.value());
             return;
@@ -233,7 +232,7 @@ public class AssertionEngine {
 
     public void applyAssertion(JsonAssertion assertion, Object actual, boolean pathExists) {
 
-        OperatorAssertion handler = operators.get(assertion.operator());
+        OperatorAssertion handler = operatorRegistry.get(assertion.operator());
 
         if (handler == null) {
             throw new IllegalArgumentException(

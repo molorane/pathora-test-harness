@@ -11,6 +11,11 @@ import java.util.Objects;
 public class AllMatchOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.ALL_MATCH;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         List<?> list = AssertionUtils.requireList(actual, path);

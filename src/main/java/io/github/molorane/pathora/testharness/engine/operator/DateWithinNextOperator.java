@@ -11,6 +11,11 @@ import java.util.Map;
 public class DateWithinNextOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.DATE_WITHIN_NEXT;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);

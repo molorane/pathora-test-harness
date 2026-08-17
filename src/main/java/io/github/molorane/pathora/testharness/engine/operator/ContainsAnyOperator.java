@@ -9,6 +9,11 @@ import java.util.List;
 public class ContainsAnyOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.CONTAINS_ANY;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         List<?> actualList = AssertionUtils.requireList(actual, path);

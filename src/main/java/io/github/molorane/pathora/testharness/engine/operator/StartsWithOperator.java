@@ -7,6 +7,11 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 public class StartsWithOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.STARTS_WITH;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);

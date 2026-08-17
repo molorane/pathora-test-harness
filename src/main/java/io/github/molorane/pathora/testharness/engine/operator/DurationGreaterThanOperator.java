@@ -10,6 +10,11 @@ import java.util.Map;
 public class DurationGreaterThanOperator implements DocumentContextAwareOperator {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.DURATION_GREATER_THAN;
+    }
+
+    @Override
     public void apply(DocumentContext context, Object expected) {
 
         Map<String, Object> config = AssertionUtils.toMap(expected);

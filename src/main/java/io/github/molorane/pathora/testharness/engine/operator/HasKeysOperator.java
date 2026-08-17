@@ -11,6 +11,11 @@ import java.util.Map;
 public class HasKeysOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.HAS_KEYS;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         Map<String, Object> actualMap = AssertionUtils.toMap(actual);

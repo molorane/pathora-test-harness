@@ -1,5 +1,6 @@
 package io.github.molorane.pathora.testharness.engine.operator;
 
+import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import java.util.Collection;
 
 /**
@@ -37,6 +38,11 @@ import java.util.Collection;
  * @see PathExistsOperator
  */
 public class PathNotExistsOperator implements OperatorAssertion {
+
+    @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.PATH_NOT_EXISTS;
+    }
 
     @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {

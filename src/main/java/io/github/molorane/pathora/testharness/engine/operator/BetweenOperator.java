@@ -9,6 +9,11 @@ import java.util.Map;
 public class BetweenOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.BETWEEN;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);

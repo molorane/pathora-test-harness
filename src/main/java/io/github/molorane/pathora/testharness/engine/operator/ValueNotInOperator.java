@@ -10,6 +10,11 @@ import java.util.Objects;
 public class ValueNotInOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.VALUE_NOT_IN;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);

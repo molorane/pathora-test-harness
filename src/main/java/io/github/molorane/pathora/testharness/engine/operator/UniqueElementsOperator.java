@@ -11,6 +11,11 @@ import java.util.Set;
 public class UniqueElementsOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.UNIQUE_ELEMENTS;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         List<?> list = AssertionUtils.requireList(actual, path);

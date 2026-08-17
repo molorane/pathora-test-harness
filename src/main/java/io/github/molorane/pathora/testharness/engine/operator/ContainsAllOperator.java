@@ -10,6 +10,11 @@ import java.util.Objects;
 public class ContainsAllOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.CONTAINS_ALL;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         List<?> actualList = AssertionUtils.requireList(actual, path);

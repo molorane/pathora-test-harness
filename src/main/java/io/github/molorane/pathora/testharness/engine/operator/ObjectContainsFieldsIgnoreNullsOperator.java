@@ -7,6 +7,11 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 public class ObjectContainsFieldsIgnoreNullsOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.OBJECT_CONTAINS_FIELDS_IGNORE_NULLS;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);

@@ -11,6 +11,11 @@ import java.util.Objects;
 public class FieldEqualsOtherFieldOperator implements DocumentContextAwareOperator {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.FIELD_EQUALS_OTHER_FIELD;
+    }
+
+    @Override
     public void apply(DocumentContext context, Object expected) {
 
         Map<String, Object> config = AssertionUtils.toMap(expected);

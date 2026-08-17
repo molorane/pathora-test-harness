@@ -9,6 +9,11 @@ import java.util.List;
 public class ArrayContainsOnlyValuesOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.ARRAY_CONTAINS_ONLY_VALUES;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         List<?> list = AssertionUtils.requireList(actual, path);

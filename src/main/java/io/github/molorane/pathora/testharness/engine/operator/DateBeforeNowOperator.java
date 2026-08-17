@@ -9,6 +9,11 @@ import java.time.LocalDateTime;
 public class DateBeforeNowOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.DATE_BEFORE_NOW;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);

@@ -10,6 +10,11 @@ import java.util.List;
 public class ArraySizeEqualsOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.ARRAY_SIZE_EQUALS;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         List<?> list;

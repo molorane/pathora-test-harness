@@ -10,6 +10,11 @@ import java.util.regex.PatternSyntaxException;
 public class RegexMatchOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.REGEX_MATCH;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);

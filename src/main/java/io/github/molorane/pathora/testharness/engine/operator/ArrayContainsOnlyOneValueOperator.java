@@ -10,6 +10,11 @@ import java.util.Objects;
 public class ArrayContainsOnlyOneValueOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.ARRAY_CONTAINS_ONLY_ONE_VALUE;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         List<?> list = AssertionUtils.requireList(actual, path);

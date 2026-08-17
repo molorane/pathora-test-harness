@@ -7,6 +7,11 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 public class LessThanOrEqualsOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.LESS_THAN_OR_EQUALS;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);

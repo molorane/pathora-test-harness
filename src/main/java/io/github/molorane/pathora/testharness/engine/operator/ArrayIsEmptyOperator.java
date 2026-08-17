@@ -9,6 +9,11 @@ import java.util.List;
 public class ArrayIsEmptyOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.ARRAY_IS_EMPTY;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         List<?> list = AssertionUtils.requireList(actual, path);

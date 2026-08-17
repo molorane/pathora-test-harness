@@ -12,6 +12,11 @@ import java.util.Map;
 public class DateAfterDurationOperator implements DocumentContextAwareOperator {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.DATE_AFTER_DURATION;
+    }
+
+    @Override
     public void apply(DocumentContext context, Object expected) {
 
         Map<String, Object> config = AssertionUtils.toMap(expected);

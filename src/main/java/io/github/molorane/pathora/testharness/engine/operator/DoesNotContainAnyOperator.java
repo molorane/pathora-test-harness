@@ -10,6 +10,11 @@ import java.util.Objects;
 public class DoesNotContainAnyOperator implements OperatorAssertion {
 
     @Override
+    public AssertionOperator operator() {
+        return AssertionOperator.DOES_NOT_CONTAIN_ANY;
+    }
+
+    @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
 
         List<?> actualList = AssertionUtils.requireList(actual, path);
