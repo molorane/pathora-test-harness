@@ -98,6 +98,19 @@ public enum AssertionOperator {
 
     /*
      * =========================
+     * MONEY OPERATORS
+     * =========================
+     */
+
+    MONEY_EQUALS,
+    MONEY_GREATER_THAN,
+    MONEY_GREATER_THAN_OR_EQUALS,
+    MONEY_LESS_THAN,
+    MONEY_LESS_THAN_OR_EQUALS,
+    MONEY_BETWEEN,
+
+    /*
+     * =========================
      * LOGICAL OPERATORS
      * =========================
      */
