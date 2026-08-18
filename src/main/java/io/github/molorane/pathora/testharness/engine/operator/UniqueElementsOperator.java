@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class UniqueElementsOperator implements OperatorAssertion {
+public class UniqueElementsOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

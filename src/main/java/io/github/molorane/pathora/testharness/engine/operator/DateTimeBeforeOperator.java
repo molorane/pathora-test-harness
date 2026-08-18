@@ -7,7 +7,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-public class DateTimeBeforeOperator implements OperatorAssertion {
+public class DateTimeBeforeOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

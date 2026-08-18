@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class AllMatchOperator implements OperatorAssertion {
+public class AllMatchOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

@@ -37,7 +37,7 @@ import java.util.Collection;
  *
  * @see PathExistsOperator
  */
-public class PathNotExistsOperator implements OperatorAssertion {
+public class PathNotExistsOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

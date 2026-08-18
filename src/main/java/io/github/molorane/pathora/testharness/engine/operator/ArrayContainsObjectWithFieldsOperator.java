@@ -6,7 +6,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 
 import java.util.List;
 
-public class ArrayContainsObjectWithFieldsOperator implements OperatorAssertion {
+public class ArrayContainsObjectWithFieldsOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

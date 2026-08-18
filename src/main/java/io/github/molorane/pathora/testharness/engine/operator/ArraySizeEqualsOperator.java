@@ -7,7 +7,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 import java.util.Collections;
 import java.util.List;
 
-public class ArraySizeEqualsOperator implements OperatorAssertion {
+public class ArraySizeEqualsOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

@@ -6,7 +6,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 
 import java.util.Map;
 
-public class BetweenOperator implements OperatorAssertion {
+public class BetweenOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

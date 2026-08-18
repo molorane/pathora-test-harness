@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
-public class DateAfterDurationOperator implements DocumentContextAwareOperator {
+public class DateAfterDurationOperator implements DocumentContextAwareEvaluator {
 
     @Override
     public AssertionOperator operator() {

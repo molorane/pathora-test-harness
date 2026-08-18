@@ -19,7 +19,7 @@ import io.github.molorane.pathora.testharness.model.AssertionOperator;
  *
  * @see PathNotExistsOperator
  */
-public class PathExistsOperator implements OperatorAssertion {
+public class PathExistsOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

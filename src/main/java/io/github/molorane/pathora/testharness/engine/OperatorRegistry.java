@@ -1,6 +1,6 @@
 package io.github.molorane.pathora.testharness.engine;
 
-import io.github.molorane.pathora.testharness.engine.operator.OperatorAssertion;
+import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 
 import java.util.Map;
@@ -11,23 +11,23 @@ import java.util.stream.StreamSupport;
 
 public final class OperatorRegistry {
 
-    private final Map<AssertionOperator, OperatorAssertion> operators;
+    private final Map<AssertionOperator, AssertionEvaluator> operators;
 
     public OperatorRegistry() {
         this.operators = loadOperators();
     }
 
-    private Map<AssertionOperator, OperatorAssertion> loadOperators() {
+    private Map<AssertionOperator, AssertionEvaluator> loadOperators() {
         return StreamSupport.stream(
-                        ServiceLoader.load(OperatorAssertion.class).spliterator(),
+                        ServiceLoader.load(AssertionEvaluator.class).spliterator(),
                         false)
                 .collect(Collectors.toUnmodifiableMap(
-                        OperatorAssertion::operator,
+                        AssertionEvaluator::operator,
                         Function.identity()
                 ));
     }
 
-    public OperatorAssertion get(AssertionOperator operator) {
+    public AssertionEvaluator get(AssertionOperator operator) {
         return operators.get(operator);
     }
 }

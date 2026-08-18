@@ -8,7 +8,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 import java.util.Map;
 import java.util.Objects;
 
-public class FieldEqualsOtherFieldOperator implements DocumentContextAwareOperator {
+public class FieldEqualsOtherFieldOperator implements DocumentContextAwareEvaluator {
 
     @Override
     public AssertionOperator operator() {

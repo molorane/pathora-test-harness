@@ -2,8 +2,8 @@ package io.github.molorane.pathora.testharness.engine;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import io.github.molorane.pathora.testharness.engine.operator.DocumentContextAwareOperator;
-import io.github.molorane.pathora.testharness.engine.operator.OperatorAssertion;
+import io.github.molorane.pathora.testharness.engine.operator.DocumentContextAwareEvaluator;
+import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
@@ -52,8 +52,8 @@ public class AssertionEngine {
         }
 
         // Context-aware operators resolve their own paths
-        OperatorAssertion handler = operatorRegistry.get(assertion.operator());
-        if (handler instanceof DocumentContextAwareOperator contextAware) {
+        AssertionEvaluator handler = operatorRegistry.get(assertion.operator());
+        if (handler instanceof DocumentContextAwareEvaluator contextAware) {
             contextAware.apply(context, assertion.value());
             return;
         }
@@ -232,7 +232,7 @@ public class AssertionEngine {
 
     public void applyAssertion(JsonAssertion assertion, Object actual, boolean pathExists) {
 
-        OperatorAssertion handler = operatorRegistry.get(assertion.operator());
+        AssertionEvaluator handler = operatorRegistry.get(assertion.operator());
 
         if (handler == null) {
             throw new IllegalArgumentException(

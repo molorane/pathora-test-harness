@@ -2,7 +2,7 @@ package io.github.molorane.pathora.testharness.engine.operator;
 
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 
-public class ExistsOperator implements OperatorAssertion {
+public class ExistsOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

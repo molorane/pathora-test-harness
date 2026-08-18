@@ -7,7 +7,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 
 import java.util.Map;
 
-public class DurationBetweenDatesOperator implements DocumentContextAwareOperator {
+public class DurationBetweenDatesOperator implements DocumentContextAwareEvaluator {
 
     @Override
     public AssertionOperator operator() {

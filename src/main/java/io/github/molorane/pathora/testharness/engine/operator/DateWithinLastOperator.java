@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
-public class DateWithinLastOperator implements OperatorAssertion {
+public class DateWithinLastOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

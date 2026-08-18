@@ -7,7 +7,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class RegexMatchOperator implements OperatorAssertion {
+public class RegexMatchOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

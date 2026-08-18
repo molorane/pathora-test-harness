@@ -6,7 +6,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 
 import java.time.LocalDateTime;
 
-public class DateTimeAfterOperator implements OperatorAssertion {
+public class DateTimeAfterOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

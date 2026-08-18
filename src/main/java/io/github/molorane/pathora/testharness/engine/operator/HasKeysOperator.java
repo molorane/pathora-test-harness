@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class HasKeysOperator implements OperatorAssertion {
+public class HasKeysOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

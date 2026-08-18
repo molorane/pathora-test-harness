@@ -7,7 +7,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 
 import java.util.Map;
 
-public class DurationEqualsOperator implements DocumentContextAwareOperator {
+public class DurationEqualsOperator implements DocumentContextAwareEvaluator {
 
     @Override
     public AssertionOperator operator() {

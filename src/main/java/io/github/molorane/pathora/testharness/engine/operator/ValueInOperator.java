@@ -7,7 +7,7 @@ import io.github.molorane.pathora.testharness.util.AssertionUtils;
 import java.util.List;
 import java.util.Objects;
 
-public class ValueInOperator implements OperatorAssertion {
+public class ValueInOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {

@@ -4,7 +4,7 @@ import io.github.molorane.pathora.testharness.exception.HarnessAssertionExceptio
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.util.AssertionUtils;
 
-public class GreaterThanOperator implements OperatorAssertion {
+public class GreaterThanOperator implements AssertionEvaluator {
 
     @Override
     public AssertionOperator operator() {
