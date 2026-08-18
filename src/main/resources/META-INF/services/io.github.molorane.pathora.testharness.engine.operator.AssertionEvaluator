@@ -35,6 +35,7 @@ io.github.molorane.pathora.testharness.engine.operator.LessThanEvaluator
 io.github.molorane.pathora.testharness.engine.operator.LessThanOrEqualsEvaluator
 io.github.molorane.pathora.testharness.engine.operator.MoneyBetweenEvaluator
 io.github.molorane.pathora.testharness.engine.operator.MoneyEqualsEvaluator
+io.github.molorane.pathora.testharness.engine.operator.MoneyEqualsWithToleranceEvaluator
 io.github.molorane.pathora.testharness.engine.operator.MoneyGreaterThanEvaluator
 io.github.molorane.pathora.testharness.engine.operator.MoneyGreaterThanOrEqualsEvaluator
 io.github.molorane.pathora.testharness.engine.operator.MoneyLessThanEvaluator

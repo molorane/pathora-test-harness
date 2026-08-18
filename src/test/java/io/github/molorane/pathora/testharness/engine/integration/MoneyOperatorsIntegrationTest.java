@@ -25,7 +25,8 @@ class MoneyOperatorsIntegrationTest extends BaseIntegrationTest {
                 assertion("$.thresholdAmount", AssertionOperator.MONEY_GREATER_THAN_OR_EQUALS, 1000.00),
                 assertion("$.smallFee", AssertionOperator.MONEY_LESS_THAN, 10.00),
                 assertion("$.exactAmount", AssertionOperator.MONEY_LESS_THAN_OR_EQUALS, 100.50),
-                assertion("$.currencyAmount", AssertionOperator.MONEY_BETWEEN, Map.of("min", 200.00, "max", 300.00))
+                assertion("$.currencyAmount", AssertionOperator.MONEY_BETWEEN, Map.of("min", 200.00, "max", 300.00)),
+                assertion("$.interestAccrual", AssertionOperator.MONEY_EQUALS_WITH_TOLERANCE, Map.of("expected", 100.00, "tolerance", 0.01))
         );
 
         RuleTestCase ruleTestCase = testCase("Money Operators Test", assertions);

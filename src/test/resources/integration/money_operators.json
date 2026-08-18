@@ -6,5 +6,6 @@
   },
   "largeBalance": 50000.00,
   "smallFee": 5.25,
-  "thresholdAmount": 1000.00
+  "thresholdAmount": 1000.00,
+  "interestAccrual": 100.005
 }

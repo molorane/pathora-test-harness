@@ -103,6 +103,7 @@ public enum AssertionOperator {
      */
 
     MONEY_EQUALS,
+    MONEY_EQUALS_WITH_TOLERANCE,
     MONEY_GREATER_THAN,
     MONEY_GREATER_THAN_OR_EQUALS,
     MONEY_LESS_THAN,

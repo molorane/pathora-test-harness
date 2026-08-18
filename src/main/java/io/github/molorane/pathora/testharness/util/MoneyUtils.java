@@ -101,4 +101,12 @@ public final class MoneyUtils {
         }
         return bd;
     }
+
+    public static boolean isWithinTolerance(BigDecimal actual, BigDecimal expected, BigDecimal tolerance) {
+        if (actual == null || expected == null || tolerance == null) {
+            return false;
+        }
+        BigDecimal diff = actual.subtract(expected).abs();
+        return diff.compareTo(tolerance) <= 0;
+    }
 }
