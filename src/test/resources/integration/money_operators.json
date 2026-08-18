@@ -1,0 +1,10 @@
+{
+  "exactAmount": 100.50,
+  "currencyAmount": {
+    "amount": 250.75,
+    "currency": "USD"
+  },
+  "largeBalance": 50000.00,
+  "smallFee": 5.25,
+  "thresholdAmount": 1000.00
+}

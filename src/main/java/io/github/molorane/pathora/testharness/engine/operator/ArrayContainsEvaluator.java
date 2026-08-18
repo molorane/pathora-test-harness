@@ -18,17 +18,16 @@ public class ArrayContainsEvaluator implements AssertionEvaluator {
 
         List<?> list = AssertionUtils.requireList(actual, path);
 
-        Object normalizedExpected = AssertionUtils.normalizeTypes(
-                AssertionUtils.normalizeResult(expected, path), expected)[1];
+        boolean found = list.stream().anyMatch(element -> AssertionUtils.deepEquals(element, expected));
 
-        if (!list.contains(normalizedExpected)) {
+        if (!found) {
             throw new HarnessAssertionException(
                     AssertionOperator.ARRAY_CONTAINS,
                     path,
-                    normalizedExpected,
+                    expected,
                     list,
                     "ARRAY_CONTAINS failed at " + path +
-                            ". Expected array to contain: " + normalizedExpected +
+                            ". Expected array to contain: " + expected +
                             ", Actual: " + list);
         }
     }

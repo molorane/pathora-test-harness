@@ -1,0 +1,37 @@
+{
+  "numbers": [
+    10,
+    20,
+    30
+  ],
+  "uniqueNumbers": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "singleElementList": [
+    "ONLY_ONE"
+  ],
+  "emptyList": [],
+  "fruits": [
+    "apple",
+    "banana",
+    "cherry"
+  ],
+  "singleFruitList": [
+    "banana"
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice"
+    },
+    {
+      "id": 2,
+      "name": "Bob"
+    }
+  ],
+  "category": "TECH"
+}

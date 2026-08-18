@@ -1,0 +1,12 @@
+{
+  "pastDate": "2000-01-01",
+  "futureDate": "2099-12-31",
+  "recentPastDateTime": "2020-01-01T00:00:00",
+  "distantFutureDateTime": "2099-01-01T00:00:00",
+  "todayDate": "2026-08-18",
+  "baseDate": "2026-01-01T00:00:00",
+  "earlierDate": "2026-01-05T00:00:00",
+  "laterDate": "2026-02-15T00:00:00",
+  "dtEarlier": "2026-08-18T08:00:00",
+  "dtLater": "2026-08-18T18:00:00"
+}

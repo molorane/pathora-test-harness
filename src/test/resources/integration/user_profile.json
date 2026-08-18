@@ -1,0 +1,27 @@
+{
+  "userId": "USR-7712",
+  "username": "johndoe",
+  "email": "johndoe@example.com",
+  "roles": [
+    "USER",
+    "ADMIN",
+    "TESTER"
+  ],
+  "profile": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "age": 32,
+    "verified": true,
+    "securityFlags": {
+      "twoFactorEnabled": true,
+      "emailVerified": true
+    }
+  },
+  "preferences": {
+    "theme": "DARK",
+    "notifications": {
+      "email": true,
+      "sms": false
+    }
+  }
+}

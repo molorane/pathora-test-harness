@@ -1,0 +1,38 @@
+{
+  "accountNumber": "ACC-987654321",
+  "accountHolder": "Alice Smith",
+  "accountType": "SAVINGS",
+  "status": "ACTIVE",
+  "balance": {
+    "amount": 15420.50,
+    "currency": "USD"
+  },
+  "availableBalance": 15420.50,
+  "openingDate": "2021-03-15",
+  "transactions": [
+    {
+      "id": "TXN-001",
+      "type": "CREDIT",
+      "amount": 2500.00,
+      "currency": "USD",
+      "category": "SALARY",
+      "date": "2026-08-01"
+    },
+    {
+      "id": "TXN-002",
+      "type": "DEBIT",
+      "amount": 120.75,
+      "currency": "USD",
+      "category": "UTILITIES",
+      "date": "2026-08-05"
+    },
+    {
+      "id": "TXN-003",
+      "type": "DEBIT",
+      "amount": 450.00,
+      "currency": "USD",
+      "category": "RENT",
+      "date": "2026-08-10"
+    }
+  ]
+}
