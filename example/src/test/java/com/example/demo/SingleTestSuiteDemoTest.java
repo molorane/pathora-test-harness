@@ -153,6 +153,12 @@ class SingleTestSuiteDemoTest {
         runTestSuite("templates/tests/policy-risk-assessment-test.json");
     }
 
+    @Test
+    @DisplayName("Execute All Operators Comprehensive Demonstration Test Suite (JSON)")
+    void test() throws Exception {
+        runTestSuite("templates/tests/scalar-operators-test.json");
+    }
+
     private void runTestSuite(String testSuiteRelativePath) throws Exception {
         Path suitePath = Paths.get(testSuiteRelativePath);
         assertThat(Files.exists(suitePath))
