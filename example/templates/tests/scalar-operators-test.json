@@ -1,0 +1,58 @@
+{
+  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
+  "Tests": [
+    {
+      "TestName": "Scalar Operators Demonstration Test",
+      "TestDescription": "Validates scalar equality, comparison, and range assertion operators.",
+      "EntryPointName": "all-operators-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.score",
+          "Operator": "EQUALS",
+          "Value": 85,
+          "Description": "EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.status",
+          "Operator": "NOT_EQUALS",
+          "Value": "REJECTED",
+          "Description": "NOT_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.score",
+          "Operator": "GREATER_THAN",
+          "Value": 80,
+          "Description": "GREATER_THAN assertion"
+        },
+        {
+          "JsonPath": "$.score",
+          "Operator": "GREATER_THAN_OR_EQUALS",
+          "Value": 85,
+          "Description": "GREATER_THAN_OR_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.negativeScore",
+          "Operator": "LESS_THAN",
+          "Value": 0,
+          "Description": "LESS_THAN assertion"
+        },
+        {
+          "JsonPath": "$.temperature",
+          "Operator": "LESS_THAN_OR_EQUALS",
+          "Value": 36.6,
+          "Description": "LESS_THAN_OR_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.rating",
+          "Operator": "BETWEEN",
+          "Value": {
+            "min": 4.0,
+            "max": 5.0
+          },
+          "Description": "BETWEEN assertion"
+        }
+      ]
+    }
+  ]
+}

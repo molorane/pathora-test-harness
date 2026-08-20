@@ -1,0 +1,70 @@
+{
+  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
+  "Tests": [
+    {
+      "TestName": "Money Operators Demonstration Test",
+      "TestDescription": "Validates monetary equality, tolerances, currency codes, limits, and ranges.",
+      "EntryPointName": "all-operators-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.exactAmount",
+          "Operator": "MONEY_EQUALS",
+          "Value": "100.5",
+          "Description": "MONEY_EQUALS scalar assertion"
+        },
+        {
+          "JsonPath": "$.currencyAmount",
+          "Operator": "MONEY_EQUALS",
+          "Value": {
+            "amount": 250.75,
+            "currency": "USD"
+          },
+          "Description": "MONEY_EQUALS currency map assertion"
+        },
+        {
+          "JsonPath": "$.interestAccrual",
+          "Operator": "MONEY_EQUALS_WITH_TOLERANCE",
+          "Value": {
+            "expected": 100.00,
+            "tolerance": 0.01
+          },
+          "Description": "MONEY_EQUALS_WITH_TOLERANCE assertion"
+        },
+        {
+          "JsonPath": "$.largeBalance",
+          "Operator": "MONEY_GREATER_THAN",
+          "Value": 10000.00,
+          "Description": "MONEY_GREATER_THAN assertion"
+        },
+        {
+          "JsonPath": "$.thresholdAmount",
+          "Operator": "MONEY_GREATER_THAN_OR_EQUALS",
+          "Value": 1000.00,
+          "Description": "MONEY_GREATER_THAN_OR_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.smallFee",
+          "Operator": "MONEY_LESS_THAN",
+          "Value": 10.00,
+          "Description": "MONEY_LESS_THAN assertion"
+        },
+        {
+          "JsonPath": "$.exactAmount",
+          "Operator": "MONEY_LESS_THAN_OR_EQUALS",
+          "Value": 100.50,
+          "Description": "MONEY_LESS_THAN_OR_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.currencyAmount",
+          "Operator": "MONEY_BETWEEN",
+          "Value": {
+            "min": 200.00,
+            "max": 300.00
+          },
+          "Description": "MONEY_BETWEEN assertion"
+        }
+      ]
+    }
+  ]
+}

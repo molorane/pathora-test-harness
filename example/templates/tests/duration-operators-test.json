@@ -1,0 +1,54 @@
+{
+  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
+  "Tests": [
+    {
+      "TestName": "Duration Operators Demonstration Test",
+      "TestDescription": "Validates calculated durations between timestamps and ISO-8601 duration values.",
+      "EntryPointName": "all-operators-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "Operator": "DURATION_EQUALS",
+          "Value": {
+            "startPath": "$.startDate",
+            "endPath": "$.endDate",
+            "unit": "MINUTES",
+            "expected": 120
+          },
+          "Description": "DURATION_EQUALS assertion"
+        },
+        {
+          "Operator": "DURATION_GREATER_THAN",
+          "Value": {
+            "startPath": "$.startDate",
+            "endPath": "$.endDate",
+            "unit": "HOURS",
+            "value": 1
+          },
+          "Description": "DURATION_GREATER_THAN assertion"
+        },
+        {
+          "Operator": "DURATION_LESS_THAN",
+          "Value": {
+            "startPath": "$.startDate",
+            "endPath": "$.endDate",
+            "unit": "HOURS",
+            "value": 5
+          },
+          "Description": "DURATION_LESS_THAN assertion"
+        },
+        {
+          "Operator": "DURATION_BETWEEN",
+          "Value": {
+            "startPath": "$.startDate",
+            "endPath": "$.endDate",
+            "unit": "HOURS",
+            "min": 1,
+            "max": 3
+          },
+          "Description": "DURATION_BETWEEN assertion"
+        }
+      ]
+    }
+  ]
+}

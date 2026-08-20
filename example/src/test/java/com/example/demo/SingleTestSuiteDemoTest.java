@@ -48,7 +48,61 @@ class SingleTestSuiteDemoTest {
     @Test
     @DisplayName("Verify Spring Boot Context Loads Executors")
     void contextLoads() {
-        assertThat(executorBeans).hasSize(6);
+        assertThat(executorBeans).hasSize(7);
+    }
+
+    @Test
+    @DisplayName("Execute All Operators Comprehensive Demonstration Test Suite (JSON)")
+    void testAllOperatorsSuite() throws Exception {
+        runTestSuite("templates/tests/all-operators-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute Scalar Operators Test Suite (JSON)")
+    void testScalarOperatorsSuite() throws Exception {
+        runTestSuite("templates/tests/scalar-operators-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute String Operators Test Suite (JSON)")
+    void testStringOperatorsSuite() throws Exception {
+        runTestSuite("templates/tests/string-operators-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute Date Operators Test Suite (JSON)")
+    void testDateOperatorsSuite() throws Exception {
+        runTestSuite("templates/tests/date-operators-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute Duration Operators Test Suite (JSON)")
+    void testDurationOperatorsSuite() throws Exception {
+        runTestSuite("templates/tests/duration-operators-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute Structural Operators Test Suite (JSON)")
+    void testStructuralOperatorsSuite() throws Exception {
+        runTestSuite("templates/tests/structural-operators-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute Array Operators Test Suite (JSON)")
+    void testArrayOperatorsSuite() throws Exception {
+        runTestSuite("templates/tests/array-operators-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute Object Operators Test Suite (JSON)")
+    void testObjectOperatorsSuite() throws Exception {
+        runTestSuite("templates/tests/object-operators-test.json");
+    }
+
+    @Test
+    @DisplayName("Execute Money Operators Test Suite (JSON)")
+    void testMoneyOperatorsSuite() throws Exception {
+        runTestSuite("templates/tests/money-operators-test.json");
     }
 
     @Test

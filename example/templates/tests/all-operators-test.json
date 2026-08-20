@@ -1,0 +1,427 @@
+{
+  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
+  "Tests": [
+    {
+      "TestName": "Comprehensive All Operators Demonstration Test",
+      "TestDescription": "Validates every single operator supported by Pathora Test Harness in a JSON rule file.",
+      "EntryPointName": "all-operators-service",
+      "TestCaseParameterValues": [
+        {
+          "JsonPath": "$.category",
+          "Value": "TECH"
+        }
+      ],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.score",
+          "Operator": "EQUALS",
+          "Value": 85,
+          "Description": "Scalar EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.status",
+          "Operator": "NOT_EQUALS",
+          "Value": "REJECTED",
+          "Description": "Scalar NOT_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.score",
+          "Operator": "GREATER_THAN",
+          "Value": 80,
+          "Description": "Scalar GREATER_THAN assertion"
+        },
+        {
+          "JsonPath": "$.score",
+          "Operator": "GREATER_THAN_OR_EQUALS",
+          "Value": 85,
+          "Description": "Scalar GREATER_THAN_OR_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.negativeScore",
+          "Operator": "LESS_THAN",
+          "Value": 0,
+          "Description": "Scalar LESS_THAN assertion"
+        },
+        {
+          "JsonPath": "$.temperature",
+          "Operator": "LESS_THAN_OR_EQUALS",
+          "Value": 36.6,
+          "Description": "Scalar LESS_THAN_OR_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.rating",
+          "Operator": "BETWEEN",
+          "Value": {
+            "min": 4.0,
+            "max": 5.0
+          },
+          "Description": "Scalar BETWEEN assertion"
+        },
+        {
+          "JsonPath": "$.productCode",
+          "Operator": "STARTS_WITH",
+          "Value": "PRD-",
+          "Description": "String STARTS_WITH assertion"
+        },
+        {
+          "JsonPath": "$.versionStr",
+          "Operator": "ENDS_WITH",
+          "Value": "-RELEASE",
+          "Description": "String ENDS_WITH assertion"
+        },
+        {
+          "JsonPath": "$.email",
+          "Operator": "REGEX_MATCH",
+          "Value": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$",
+          "Description": "String REGEX_MATCH assertion"
+        },
+        {
+          "JsonPath": "$.pastDate",
+          "Operator": "DATE_BEFORE",
+          "Value": "2025-01-01",
+          "Description": "Date DATE_BEFORE assertion"
+        },
+        {
+          "JsonPath": "$.futureDate",
+          "Operator": "DATE_AFTER",
+          "Value": "2025-01-01",
+          "Description": "Date DATE_AFTER assertion"
+        },
+        {
+          "JsonPath": "$.dtEarlier",
+          "Operator": "DATETIME_BEFORE",
+          "Value": "2026-08-18T12:00:00",
+          "Description": "Date DATETIME_BEFORE assertion"
+        },
+        {
+          "JsonPath": "$.dtLater",
+          "Operator": "DATETIME_AFTER",
+          "Value": "2026-08-18T12:00:00",
+          "Description": "Date DATETIME_AFTER assertion"
+        },
+        {
+          "JsonPath": "$.pastDate",
+          "Operator": "DATE_BEFORE_NOW",
+          "Description": "Date DATE_BEFORE_NOW assertion"
+        },
+        {
+          "JsonPath": "$.futureDate",
+          "Operator": "DATE_AFTER_NOW",
+          "Description": "Date DATE_AFTER_NOW assertion"
+        },
+        {
+          "JsonPath": "$.recentPastDateTime",
+          "Operator": "DATE_WITHIN_LAST",
+          "Value": {
+            "amount": 20,
+            "unit": "YEARS"
+          },
+          "Description": "Date DATE_WITHIN_LAST assertion"
+        },
+        {
+          "JsonPath": "$.distantFutureDateTime",
+          "Operator": "DATE_WITHIN_NEXT",
+          "Value": {
+            "amount": 100,
+            "unit": "YEARS"
+          },
+          "Description": "Date DATE_WITHIN_NEXT assertion"
+        },
+        {
+          "Operator": "DATE_BEFORE_DURATION",
+          "Value": {
+            "basePath": "$.baseDate",
+            "comparePath": "$.earlierDate",
+            "amount": 10,
+            "unit": "DAYS"
+          },
+          "Description": "Date DATE_BEFORE_DURATION assertion"
+        },
+        {
+          "Operator": "DATE_AFTER_DURATION",
+          "Value": {
+            "basePath": "$.baseDate",
+            "comparePath": "$.laterDate",
+            "amount": 10,
+            "unit": "DAYS"
+          },
+          "Description": "Date DATE_AFTER_DURATION assertion"
+        },
+        {
+          "Operator": "DURATION_EQUALS",
+          "Value": {
+            "startPath": "$.startDate",
+            "endPath": "$.endDate",
+            "unit": "MINUTES",
+            "expected": 120
+          },
+          "Description": "Duration DURATION_EQUALS assertion"
+        },
+        {
+          "Operator": "DURATION_GREATER_THAN",
+          "Value": {
+            "startPath": "$.startDate",
+            "endPath": "$.endDate",
+            "unit": "HOURS",
+            "value": 1
+          },
+          "Description": "Duration DURATION_GREATER_THAN assertion"
+        },
+        {
+          "Operator": "DURATION_LESS_THAN",
+          "Value": {
+            "startPath": "$.startDate",
+            "endPath": "$.endDate",
+            "unit": "HOURS",
+            "value": 5
+          },
+          "Description": "Duration DURATION_LESS_THAN assertion"
+        },
+        {
+          "Operator": "DURATION_BETWEEN",
+          "Value": {
+            "startPath": "$.startDate",
+            "endPath": "$.endDate",
+            "unit": "HOURS",
+            "min": 1,
+            "max": 3
+          },
+          "Description": "Duration DURATION_BETWEEN assertion"
+        },
+        {
+          "JsonPath": "$.existingKey",
+          "Operator": "EXISTS",
+          "Description": "Structural EXISTS assertion"
+        },
+        {
+          "JsonPath": "$.activeFlag",
+          "Operator": "PATH_EXISTS",
+          "Description": "Structural PATH_EXISTS assertion"
+        },
+        {
+          "JsonPath": "$.nonExistentPath",
+          "Operator": "PATH_NOT_EXISTS",
+          "Description": "Structural PATH_NOT_EXISTS assertion"
+        },
+        {
+          "JsonPath": "$.numbers",
+          "Operator": "ARRAY_SIZE_EQUALS",
+          "Value": 3,
+          "Description": "Array ARRAY_SIZE_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.numbers",
+          "Operator": "ARRAY_CONTAINS",
+          "Value": 20,
+          "Description": "Array ARRAY_CONTAINS assertion"
+        },
+        {
+          "JsonPath": "$.singleFruitList",
+          "Operator": "ARRAY_CONTAINS_ONLY_VALUES",
+          "Value": ["banana"],
+          "Description": "Array ARRAY_CONTAINS_ONLY_VALUES assertion"
+        },
+        {
+          "JsonPath": "$.singleElementList",
+          "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE",
+          "Value": "ONLY_ONE",
+          "Description": "Array ARRAY_CONTAINS_ONLY_ONE_VALUE assertion"
+        },
+        {
+          "JsonPath": "$.users",
+          "Operator": "ARRAY_CONTAINS_OBJECT_WITH_FIELDS",
+          "Value": {
+            "name": "Alice"
+          },
+          "Description": "Array ARRAY_CONTAINS_OBJECT_WITH_FIELDS assertion"
+        },
+        {
+          "JsonPath": "$.numbers",
+          "Operator": "ALL_MATCH",
+          "Value": {
+            "greaterThan": 5
+          },
+          "Description": "Array ALL_MATCH assertion"
+        },
+        {
+          "JsonPath": "$.fruits",
+          "Operator": "CONTAINS_ANY",
+          "Value": ["banana", "mango"],
+          "Description": "Array CONTAINS_ANY assertion"
+        },
+        {
+          "JsonPath": "$.fruits",
+          "Operator": "CONTAINS_ALL",
+          "Value": ["apple", "cherry"],
+          "Description": "Array CONTAINS_ALL assertion"
+        },
+        {
+          "JsonPath": "$.fruits",
+          "Operator": "DOES_NOT_CONTAIN_ANY",
+          "Value": ["grape", "orange"],
+          "Description": "Array DOES_NOT_CONTAIN_ANY assertion"
+        },
+        {
+          "JsonPath": "$.fruits",
+          "Operator": "DOES_NOT_CONTAIN_ALL",
+          "Value": ["apple", "grape"],
+          "Description": "Array DOES_NOT_CONTAIN_ALL assertion"
+        },
+        {
+          "JsonPath": "$.emptyList",
+          "Operator": "ARRAY_IS_EMPTY",
+          "Description": "Array ARRAY_IS_EMPTY assertion"
+        },
+        {
+          "JsonPath": "$.uniqueNumbers",
+          "Operator": "UNIQUE_ELEMENTS",
+          "Description": "Array UNIQUE_ELEMENTS assertion"
+        },
+        {
+          "JsonPath": "$.category",
+          "Operator": "VALUE_IN",
+          "Value": ["TECH", "FINANCE", "HEALTH"],
+          "Description": "Array VALUE_IN assertion"
+        },
+        {
+          "JsonPath": "$.category",
+          "Operator": "VALUE_NOT_IN",
+          "Value": ["SPORTS", "MUSIC"],
+          "Description": "Array VALUE_NOT_IN assertion"
+        },
+        {
+          "JsonPath": "$.userInfo",
+          "Operator": "OBJECT_CONTAINS_FIELDS",
+          "Value": {
+            "id": 101,
+            "name": "Jane Doe"
+          },
+          "Description": "Object OBJECT_CONTAINS_FIELDS assertion"
+        },
+        {
+          "JsonPath": "$.userInfo",
+          "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS",
+          "Value": {
+            "id": 101,
+            "optionalNote": null
+          },
+          "Description": "Object OBJECT_CONTAINS_FIELDS_IGNORE_NULLS assertion"
+        },
+        {
+          "JsonPath": "$.userInfo",
+          "Operator": "HAS_KEYS",
+          "Value": ["id", "name"],
+          "Description": "Object HAS_KEYS assertion"
+        },
+        {
+          "Operator": "FIELD_EQUALS_OTHER_FIELD",
+          "Value": {
+            "leftPath": "$.metrics.total",
+            "rightPath": "$.metrics.calculatedTotal"
+          },
+          "Description": "Object FIELD_EQUALS_OTHER_FIELD assertion"
+        },
+        {
+          "JsonPath": "$.exactAmount",
+          "Operator": "MONEY_EQUALS",
+          "Value": "100.5",
+          "Description": "Money MONEY_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.currencyAmount",
+          "Operator": "MONEY_EQUALS",
+          "Value": {
+            "amount": 250.75,
+            "currency": "USD"
+          },
+          "Description": "Money MONEY_EQUALS structured object assertion"
+        },
+        {
+          "JsonPath": "$.interestAccrual",
+          "Operator": "MONEY_EQUALS_WITH_TOLERANCE",
+          "Value": {
+            "expected": 100.00,
+            "tolerance": 0.01
+          },
+          "Description": "Money MONEY_EQUALS_WITH_TOLERANCE assertion"
+        },
+        {
+          "JsonPath": "$.largeBalance",
+          "Operator": "MONEY_GREATER_THAN",
+          "Value": 10000.00,
+          "Description": "Money MONEY_GREATER_THAN assertion"
+        },
+        {
+          "JsonPath": "$.thresholdAmount",
+          "Operator": "MONEY_GREATER_THAN_OR_EQUALS",
+          "Value": 1000.00,
+          "Description": "Money MONEY_GREATER_THAN_OR_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.smallFee",
+          "Operator": "MONEY_LESS_THAN",
+          "Value": 10.00,
+          "Description": "Money MONEY_LESS_THAN assertion"
+        },
+        {
+          "JsonPath": "$.exactAmount",
+          "Operator": "MONEY_LESS_THAN_OR_EQUALS",
+          "Value": 100.50,
+          "Description": "Money MONEY_LESS_THAN_OR_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.currencyAmount",
+          "Operator": "MONEY_BETWEEN",
+          "Value": {
+            "min": 200.00,
+            "max": 300.00
+          },
+          "Description": "Money MONEY_BETWEEN assertion"
+        },
+        {
+          "Operator": "AND",
+          "Assertions": [
+            {
+              "JsonPath": "$.status",
+              "Operator": "EQUALS",
+              "Value": "APPROVED"
+            },
+            {
+              "JsonPath": "$.activeFlag",
+              "Operator": "EQUALS",
+              "Value": true
+            }
+          ],
+          "Description": "Logical AND assertion"
+        },
+        {
+          "Operator": "OR",
+          "Assertions": [
+            {
+              "JsonPath": "$.status",
+              "Operator": "EQUALS",
+              "Value": "REJECTED"
+            },
+            {
+              "JsonPath": "$.status",
+              "Operator": "EQUALS",
+              "Value": "APPROVED"
+            }
+          ],
+          "Description": "Logical OR assertion"
+        },
+        {
+          "Operator": "NOT",
+          "Assertions": [
+            {
+              "JsonPath": "$.status",
+              "Operator": "EQUALS",
+              "Value": "CANCELLED"
+            }
+          ],
+          "Description": "Logical NOT assertion"
+        }
+      ]
+    }
+  ]
+}

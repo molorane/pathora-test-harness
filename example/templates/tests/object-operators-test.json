@@ -1,0 +1,45 @@
+{
+  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
+  "Tests": [
+    {
+      "TestName": "Object Operators Demonstration Test",
+      "TestDescription": "Validates object field containment, key presence, and cross-field comparisons.",
+      "EntryPointName": "all-operators-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.userInfo",
+          "Operator": "OBJECT_CONTAINS_FIELDS",
+          "Value": {
+            "id": 101,
+            "name": "Jane Doe"
+          },
+          "Description": "OBJECT_CONTAINS_FIELDS assertion"
+        },
+        {
+          "JsonPath": "$.userInfo",
+          "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS",
+          "Value": {
+            "id": 101,
+            "optionalNote": null
+          },
+          "Description": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS assertion"
+        },
+        {
+          "JsonPath": "$.userInfo",
+          "Operator": "HAS_KEYS",
+          "Value": ["id", "name"],
+          "Description": "HAS_KEYS assertion"
+        },
+        {
+          "Operator": "FIELD_EQUALS_OTHER_FIELD",
+          "Value": {
+            "leftPath": "$.metrics.total",
+            "rightPath": "$.metrics.calculatedTotal"
+          },
+          "Description": "FIELD_EQUALS_OTHER_FIELD assertion"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
+  "Tests": [
+    {
+      "TestName": "Date Operators Demonstration Test",
+      "TestDescription": "Validates date chronology, datetime comparisons, relative timeframes, and duration offsets.",
+      "EntryPointName": "all-operators-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.pastDate",
+          "Operator": "DATE_BEFORE",
+          "Value": "2025-01-01",
+          "Description": "DATE_BEFORE assertion"
+        },
+        {
+          "JsonPath": "$.futureDate",
+          "Operator": "DATE_AFTER",
+          "Value": "2025-01-01",
+          "Description": "DATE_AFTER assertion"
+        },
+        {
+          "JsonPath": "$.dtEarlier",
+          "Operator": "DATETIME_BEFORE",
+          "Value": "2026-08-18T12:00:00",
+          "Description": "DATETIME_BEFORE assertion"
+        },
+        {
+          "JsonPath": "$.dtLater",
+          "Operator": "DATETIME_AFTER",
+          "Value": "2026-08-18T12:00:00",
+          "Description": "DATETIME_AFTER assertion"
+        },
+        {
+          "JsonPath": "$.pastDate",
+          "Operator": "DATE_BEFORE_NOW",
+          "Description": "DATE_BEFORE_NOW assertion"
+        },
+        {
+          "JsonPath": "$.futureDate",
+          "Operator": "DATE_AFTER_NOW",
+          "Description": "DATE_AFTER_NOW assertion"
+        },
+        {
+          "JsonPath": "$.recentPastDateTime",
+          "Operator": "DATE_WITHIN_LAST",
+          "Value": {
+            "amount": 20,
+            "unit": "YEARS"
+          },
+          "Description": "DATE_WITHIN_LAST assertion"
+        },
+        {
+          "JsonPath": "$.distantFutureDateTime",
+          "Operator": "DATE_WITHIN_NEXT",
+          "Value": {
+            "amount": 100,
+            "unit": "YEARS"
+          },
+          "Description": "DATE_WITHIN_NEXT assertion"
+        },
+        {
+          "Operator": "DATE_BEFORE_DURATION",
+          "Value": {
+            "basePath": "$.baseDate",
+            "comparePath": "$.earlierDate",
+            "amount": 10,
+            "unit": "DAYS"
+          },
+          "Description": "DATE_BEFORE_DURATION assertion"
+        },
+        {
+          "Operator": "DATE_AFTER_DURATION",
+          "Value": {
+            "basePath": "$.baseDate",
+            "comparePath": "$.laterDate",
+            "amount": 10,
+            "unit": "DAYS"
+          },
+          "Description": "DATE_AFTER_DURATION assertion"
+        }
+      ]
+    }
+  ]
+}

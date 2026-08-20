@@ -28,6 +28,9 @@ public final class OperatorRegistry {
     }
 
     public AssertionEvaluator get(AssertionOperator operator) {
+        if (operator == null) {
+            return null;
+        }
         return operators.get(operator);
     }
 }

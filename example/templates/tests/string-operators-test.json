@@ -1,0 +1,31 @@
+{
+  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
+  "Tests": [
+    {
+      "TestName": "String Operators Demonstration Test",
+      "TestDescription": "Validates string prefixes, suffixes, and regex pattern assertion operators.",
+      "EntryPointName": "all-operators-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.productCode",
+          "Operator": "STARTS_WITH",
+          "Value": "PRD-",
+          "Description": "STARTS_WITH assertion"
+        },
+        {
+          "JsonPath": "$.versionStr",
+          "Operator": "ENDS_WITH",
+          "Value": "-RELEASE",
+          "Description": "ENDS_WITH assertion"
+        },
+        {
+          "JsonPath": "$.email",
+          "Operator": "REGEX_MATCH",
+          "Value": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$",
+          "Description": "REGEX_MATCH assertion"
+        }
+      ]
+    }
+  ]
+}

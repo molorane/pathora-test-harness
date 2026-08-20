@@ -1,0 +1,99 @@
+{
+  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
+  "Tests": [
+    {
+      "TestName": "Array Operators Demonstration Test",
+      "TestDescription": "Validates array sizing, element containment, uniqueness, matching, and membership assertion operators.",
+      "EntryPointName": "all-operators-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.numbers",
+          "Operator": "ARRAY_SIZE_EQUALS",
+          "Value": 3,
+          "Description": "ARRAY_SIZE_EQUALS assertion"
+        },
+        {
+          "JsonPath": "$.numbers",
+          "Operator": "ARRAY_CONTAINS",
+          "Value": 20,
+          "Description": "ARRAY_CONTAINS assertion"
+        },
+        {
+          "JsonPath": "$.singleFruitList",
+          "Operator": "ARRAY_CONTAINS_ONLY_VALUES",
+          "Value": ["banana"],
+          "Description": "ARRAY_CONTAINS_ONLY_VALUES assertion"
+        },
+        {
+          "JsonPath": "$.singleElementList",
+          "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE",
+          "Value": "ONLY_ONE",
+          "Description": "ARRAY_CONTAINS_ONLY_ONE_VALUE assertion"
+        },
+        {
+          "JsonPath": "$.users",
+          "Operator": "ARRAY_CONTAINS_OBJECT_WITH_FIELDS",
+          "Value": {
+            "name": "Alice"
+          },
+          "Description": "ARRAY_CONTAINS_OBJECT_WITH_FIELDS assertion"
+        },
+        {
+          "JsonPath": "$.numbers",
+          "Operator": "ALL_MATCH",
+          "Value": {
+            "greaterThan": 5
+          },
+          "Description": "ALL_MATCH assertion"
+        },
+        {
+          "JsonPath": "$.fruits",
+          "Operator": "CONTAINS_ANY",
+          "Value": ["banana", "mango"],
+          "Description": "CONTAINS_ANY assertion"
+        },
+        {
+          "JsonPath": "$.fruits",
+          "Operator": "CONTAINS_ALL",
+          "Value": ["apple", "cherry"],
+          "Description": "CONTAINS_ALL assertion"
+        },
+        {
+          "JsonPath": "$.fruits",
+          "Operator": "DOES_NOT_CONTAIN_ANY",
+          "Value": ["grape", "orange"],
+          "Description": "DOES_NOT_CONTAIN_ANY assertion"
+        },
+        {
+          "JsonPath": "$.fruits",
+          "Operator": "DOES_NOT_CONTAIN_ALL",
+          "Value": ["apple", "grape"],
+          "Description": "DOES_NOT_CONTAIN_ALL assertion"
+        },
+        {
+          "JsonPath": "$.emptyList",
+          "Operator": "ARRAY_IS_EMPTY",
+          "Description": "ARRAY_IS_EMPTY assertion"
+        },
+        {
+          "JsonPath": "$.uniqueNumbers",
+          "Operator": "UNIQUE_ELEMENTS",
+          "Description": "UNIQUE_ELEMENTS assertion"
+        },
+        {
+          "JsonPath": "$.category",
+          "Operator": "VALUE_IN",
+          "Value": ["TECH", "FINANCE", "HEALTH"],
+          "Description": "VALUE_IN assertion"
+        },
+        {
+          "JsonPath": "$.category",
+          "Operator": "VALUE_NOT_IN",
+          "Value": ["SPORTS", "MUSIC"],
+          "Description": "VALUE_NOT_IN assertion"
+        }
+      ]
+    }
+  ]
+}

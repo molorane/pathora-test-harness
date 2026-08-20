@@ -1,0 +1,28 @@
+{
+  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
+  "Tests": [
+    {
+      "TestName": "Structural Operators Demonstration Test",
+      "TestDescription": "Validates path existence, non-existence, and key presence assertion operators.",
+      "EntryPointName": "all-operators-service",
+      "TestCaseParameterValues": [],
+      "ResponseAssertions": [
+        {
+          "JsonPath": "$.existingKey",
+          "Operator": "EXISTS",
+          "Description": "EXISTS assertion"
+        },
+        {
+          "JsonPath": "$.activeFlag",
+          "Operator": "PATH_EXISTS",
+          "Description": "PATH_EXISTS assertion"
+        },
+        {
+          "JsonPath": "$.nonExistentPath",
+          "Operator": "PATH_NOT_EXISTS",
+          "Description": "PATH_NOT_EXISTS assertion"
+        }
+      ]
+    }
+  ]
+}
