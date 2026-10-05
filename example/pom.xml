@@ -13,7 +13,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>pathora-demo-example</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.1</version>
     <name>pathora-demo-example</name>
     <description>Spring Boot demo project demonstrating Pathora Test Harness</description>
 
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>io.github.molorane</groupId>
             <artifactId>pathora-test-harness</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </dependency>
 
         <dependency>
