@@ -9,21 +9,28 @@
 	<packaging>jar</packaging>
 	<description>Pathora Test Harness — lightweight, framework-independent Java library</description>
 	<url>https://github.com/molorane/pathora-test-harness</url>
-	
-	<licenses>
-		<license/>
-	</licenses>
 
-	<developers>
-		<developer/>
-	</developers>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/license/mit</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+    <developers>
+        <developer>
+            <name>Mothusi Molorane</name>
+            <url>https://github.com/molorane</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/molorane/pathora-test-harness.git</connection>
+        <developerConnection>scm:git:ssh://github.com/molorane/pathora-test-harness.git</developerConnection>
+        <url>https://github.com/molorane/pathora-test-harness</url>
+        <tag>HEAD</tag>
+    </scm>
 
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
@@ -144,7 +151,7 @@
 			<plugin>
 				<groupId>org.sonatype.central</groupId>
 				<artifactId>central-publishing-maven-plugin</artifactId>
-				<version>0.6.0</version>
+				<version>0.11.0</version>
 				<extensions>true</extensions>
 				<configuration>
 					<publishingServerId>central</publishingServerId>
@@ -172,6 +179,34 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
