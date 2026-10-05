@@ -20,9 +20,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.status",
-  "Operator": "EQUALS",
-  "Value": "APPROVED"
+  "path": "$.outputData.status",
+  "operator": "EQUALS",
+  "value": "APPROVED"
 }
 ```
 
@@ -44,7 +44,7 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** Performs strict comparison. Types must match. If JsonPath returns a list instead of a scalar, the assertion fails.
+> **Notes:** Performs strict comparison. Types must match. If JSONPath returns a list instead of a scalar, the assertion fails.
 
 ---
 
@@ -55,9 +55,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.status",
-  "Operator": "NOT_EQUALS",
-  "Value": "DECLINED"
+  "path": "$.outputData.status",
+  "operator": "NOT_EQUALS",
+  "value": "DECLINED"
 }
 ```
 
@@ -90,9 +90,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.score",
-  "Operator": "GREATER_THAN",
-  "Value": 50
+  "path": "$.outputData.score",
+  "operator": "GREATER_THAN",
+  "value": 50
 }
 ```
 
@@ -125,9 +125,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.score",
-  "Operator": "LESS_THAN",
-  "Value": 100
+  "path": "$.outputData.score",
+  "operator": "LESS_THAN",
+  "value": 100
 }
 ```
 
@@ -160,9 +160,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.riskScore",
-  "Operator": "BETWEEN",
-  "Value": {
+  "path": "$.outputData.riskScore",
+  "operator": "BETWEEN",
+  "value": {
     "min": 50,
     "max": 100
   }
@@ -187,7 +187,7 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** Value must be a JSON object with `min` and `max` keys. Both boundaries are inclusive. Numeric types required.
+> **Notes:** value must be a JSON object with `min` and `max` keys. Both boundaries are inclusive. Numeric types required.
 
 ---
 
@@ -199,9 +199,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.score",
-  "Operator": "GREATER_THAN_OR_EQUALS",
-  "Value": 50
+  "path": "$.outputData.score",
+  "operator": "GREATER_THAN_OR_EQUALS",
+  "value": 50
 }
 ```
 
@@ -234,9 +234,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.score",
-  "Operator": "LESS_THAN_OR_EQUALS",
-  "Value": 100
+  "path": "$.outputData.score",
+  "operator": "LESS_THAN_OR_EQUALS",
+  "value": 100
 }
 ```
 
@@ -269,9 +269,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.referenceId",
-  "Operator": "REGEX_MATCH",
-  "Value": "^REF-\\d{4}-\\d{5}$",
+  "path": "$.outputData.referenceId",
+  "operator": "REGEX_MATCH",
+  "value": "^REF-\\d{4}-\\d{5}$",
   "Description": "Reference ID must follow format REF-XXXX-XXXXX"
 }
 ```
@@ -294,7 +294,7 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** Uses full match (`matches()`), not partial find. Value must be a valid regex string. Case-sensitive by default. The `Description` field is optional but recommended for regex patterns to explain intent.
+> **Notes:** Uses full match (`matches()`), not partial find. value must be a valid regex string. Case-sensitive by default. The `Description` field is optional but recommended for regex patterns to explain intent.
 
 ---
 
@@ -308,9 +308,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.reference",
-  "Operator": "STARTS_WITH",
-  "Value": "REF-"
+  "path": "$.outputData.reference",
+  "operator": "STARTS_WITH",
+  "value": "REF-"
 }
 ```
 
@@ -343,9 +343,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.reference",
-  "Operator": "ENDS_WITH",
-  "Value": "-Z"
+  "path": "$.outputData.reference",
+  "operator": "ENDS_WITH",
+  "value": "-Z"
 }
 ```
 
@@ -381,9 +381,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.issueDate",
-  "Operator": "DATE_BEFORE",
-  "Value": "2025-01-01"
+  "path": "$.outputData.issueDate",
+  "operator": "DATE_BEFORE",
+  "value": "2025-01-01"
 }
 ```
 
@@ -416,9 +416,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.expiryDate",
-  "Operator": "DATE_AFTER",
-  "Value": "2025-01-01"
+  "path": "$.outputData.expiryDate",
+  "operator": "DATE_AFTER",
+  "value": "2025-01-01"
 }
 ```
 
@@ -451,9 +451,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.timestamp",
-  "Operator": "DATETIME_BEFORE",
-  "Value": "2025-01-01T12:00:00Z"
+  "path": "$.outputData.timestamp",
+  "operator": "DATETIME_BEFORE",
+  "value": "2025-01-01T12:00:00Z"
 }
 ```
 
@@ -486,9 +486,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.timestamp",
-  "Operator": "DATETIME_AFTER",
-  "Value": "2025-01-01T12:00:00Z"
+  "path": "$.outputData.timestamp",
+  "operator": "DATETIME_AFTER",
+  "value": "2025-01-01T12:00:00Z"
 }
 ```
 
@@ -514,15 +514,15 @@ Each operator section includes:
 
 ---
 
-### DATE_BEFORE_NOW
+### IS_PAST_DATE
 
 **Purpose:** Validates that the extracted date/datetime is before the current system time.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.timestamp",
-  "Operator": "DATE_BEFORE_NOW"
+  "path": "$.outputData.timestamp",
+  "operator": "IS_PAST_DATE"
 }
 ```
 
@@ -544,19 +544,19 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** No `Value` required.
+> **Notes:** No `value` required.
 
 ---
 
-### DATE_AFTER_NOW
+### IS_FUTURE_DATE
 
 **Purpose:** Validates that the extracted date/datetime is after the current system time.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.expiryDate",
-  "Operator": "DATE_AFTER_NOW"
+  "path": "$.outputData.expiryDate",
+  "operator": "IS_FUTURE_DATE"
 }
 ```
 
@@ -578,7 +578,7 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** No `Value` required.
+> **Notes:** No `value` required.
 
 ---
 
@@ -589,9 +589,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.timestamp",
-  "Operator": "DATE_WITHIN_LAST",
-  "Value": "P30D"
+  "path": "$.outputData.timestamp",
+  "operator": "DATE_WITHIN_LAST",
+  "value": "P30D"
 }
 ```
 
@@ -613,7 +613,7 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** `Value` must be an ISO-8601 duration (e.g., `P30D` for 30 days).
+> **Notes:** `value` must be an ISO-8601 duration (e.g., `P30D` for 30 days).
 
 ---
 
@@ -624,9 +624,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.expiryDate",
-  "Operator": "DATE_WITHIN_NEXT",
-  "Value": "P30D"
+  "path": "$.outputData.expiryDate",
+  "operator": "DATE_WITHIN_NEXT",
+  "value": "P30D"
 }
 ```
 
@@ -648,7 +648,7 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** `Value` must be an ISO-8601 duration.
+> **Notes:** `value` must be an ISO-8601 duration.
 
 ---
 
@@ -662,9 +662,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.times",
-  "Operator": "DURATION_BETWEEN",
-  "Value": {
+  "path": "$.outputData.times",
+  "operator": "DURATION_BETWEEN",
+  "value": {
     "min": "P1D",
     "max": "P5D"
   }
@@ -682,9 +682,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.processingTime",
-  "Operator": "DURATION_EQUALS",
-  "Value": "PT5M"
+  "path": "$.outputData.processingTime",
+  "operator": "DURATION_EQUALS",
+  "value": "PT5M"
 }
 ```
 
@@ -699,9 +699,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.processingTime",
-  "Operator": "DURATION_GREATER_THAN",
-  "Value": "PT1M"
+  "path": "$.outputData.processingTime",
+  "operator": "DURATION_GREATER_THAN",
+  "value": "PT1M"
 }
 ```
 
@@ -714,9 +714,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.processingTime",
-  "Operator": "DURATION_LESS_THAN",
-  "Value": "PT1H"
+  "path": "$.outputData.processingTime",
+  "operator": "DURATION_LESS_THAN",
+  "value": "PT1H"
 }
 ```
 
@@ -729,9 +729,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.completionDate",
-  "Operator": "DATE_AFTER_DURATION",
-  "Value": "P1D"
+  "path": "$.outputData.completionDate",
+  "operator": "DATE_AFTER_DURATION",
+  "value": "P1D"
 }
 ```
 
@@ -744,9 +744,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.completionDate",
-  "Operator": "DATE_BEFORE_DURATION",
-  "Value": "P1D"
+  "path": "$.outputData.completionDate",
+  "operator": "DATE_BEFORE_DURATION",
+  "value": "P1D"
 }
 ```
 
@@ -754,15 +754,15 @@ Each operator section includes:
 
 ## Structural Operators
 
-### EXISTS
+### PATH_EXISTS
 
-**Purpose:** Validates that the JsonPath resolves to at least one value.
+**Purpose:** Validates that the JSONPath resolves to at least one value.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.referenceId",
-  "Operator": "EXISTS"
+  "path": "$.outputData.referenceId",
+  "operator": "PATH_EXISTS"
 }
 ```
 
@@ -782,20 +782,20 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** Does not validate value content. Only checks presence. No `Value` field required.
+> **Notes:** Does not validate value content. Only checks presence. No `value` field required.
 
 ---
 
-### ARRAY_SIZE_EQUALS
+### LIST_SIZE_EQUALS
 
-**Purpose:** Validates that the extracted array has the specified length.
+**Purpose:** Validates that the extracted list has the specified length.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.reasonCodes",
-  "Operator": "ARRAY_SIZE_EQUALS",
-  "Value": 2
+  "path": "$.outputData.reasonCodes",
+  "operator": "LIST_SIZE_EQUALS",
+  "value": 2
 }
 ```
 
@@ -817,23 +817,23 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** Enforces cardinality. Prevents hidden extra elements. A null or missing array is treated as size 0.
+> **Notes:** Enforces cardinality. Prevents hidden extra elements. A null or missing list is treated as size 0.
 
 ---
 
-## Array Operators
+## List Operators
 
 
 ### CONTAINS_ANY
 
-**Purpose:** Validates that the extracted array contains at least one of the expected values.
+**Purpose:** Validates that the extracted list contains at least one of the expected values.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.statusTags",
-  "Operator": "CONTAINS_ANY",
-  "Value": ["PENDING", "APPROVED"]
+  "path": "$.outputData.statusTags",
+  "operator": "CONTAINS_ANY",
+  "value": ["PENDING", "APPROVED"]
 }
 ```
 
@@ -855,20 +855,20 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** Fails if the array lacks all the provided values.
+> **Notes:** Fails if the list lacks all the provided values.
 
 ---
 
 ### CONTAINS_ALL
 
-**Purpose:** Validates that the extracted array contains all the expected values (order independent).
+**Purpose:** Validates that the extracted list contains all the expected values (order independent).
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.roles",
-  "Operator": "CONTAINS_ALL",
-  "Value": ["ADMIN", "USER"]
+  "path": "$.outputData.roles",
+  "operator": "CONTAINS_ALL",
+  "value": ["ADMIN", "USER"]
 }
 ```
 
@@ -894,15 +894,15 @@ Each operator section includes:
 
 ---
 
-### ARRAY_IS_EMPTY
+### IS_EMPTY_LIST
 
-**Purpose:** Validates that the extracted array is empty.
+**Purpose:** Validates that the extracted list is empty.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.errors",
-  "Operator": "ARRAY_IS_EMPTY"
+  "path": "$.outputData.errors",
+  "operator": "IS_EMPTY_LIST"
 }
 ```
 
@@ -924,19 +924,19 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** No `Value` required. Null arrays may be treated as empty depending on config.
+> **Notes:** No `value` required. Null lists are treated according to the evaluator implementation.
 
 ---
 
 ### UNIQUE_ELEMENTS
 
-**Purpose:** Validates that all elements in the extracted array are unique.
+**Purpose:** Validates that all elements in the extracted list are unique.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.ids",
-  "Operator": "UNIQUE_ELEMENTS"
+  "path": "$.outputData.ids",
+  "operator": "UNIQUE_ELEMENTS"
 }
 ```
 
@@ -958,20 +958,20 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** No `Value` required.
+> **Notes:** No `value` required.
 
 ---
 
-### ARRAY_CONTAINS
+### LIST_CONTAINS
 
-**Purpose:** Validates that an array contains the specified value.
+**Purpose:** Validates that a list contains the specified value.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.reasonCodes",
-  "Operator": "ARRAY_CONTAINS",
-  "Value": "1004"
+  "path": "$.outputData.reasonCodes",
+  "operator": "LIST_CONTAINS",
+  "value": "1004"
 }
 ```
 
@@ -993,20 +993,20 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** JsonPath must resolve to an array. If a scalar is returned, the assertion fails.
+> **Notes:** JSONPath must resolve to a list. If a scalar is returned, the assertion fails.
 
 ---
 
-### ARRAY_CONTAINS_ONLY_VALUES
+### LIST_CONTAINS_ONLY_VALUES
 
-**Purpose:** Validates that the array contains exactly the specified values, in any order. The array must have the same size as the expected list, and contain all expected elements.
+**Purpose:** Validates that the list contains exactly the specified values, in any order. The list must have the same size as the expected list, and contain all expected elements.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.tags",
-  "Operator": "ARRAY_CONTAINS_ONLY_VALUES",
-  "Value": ["B", "A"]
+  "path": "$.outputData.tags",
+  "operator": "LIST_CONTAINS_ONLY_VALUES",
+  "value": ["B", "A"]
 }
 ```
 
@@ -1041,16 +1041,16 @@ Each operator section includes:
 
 ---
 
-### ARRAY_CONTAINS_ONLY_ONE_VALUE
+### LIST_CONTAINS_ONLY_ONE_VALUE
 
-**Purpose:** Validates that the array contains exactly one element, and that element equals the expected value.
+**Purpose:** Validates that the list contains exactly one element, and that element equals the expected value.
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.results",
-  "Operator": "ARRAY_CONTAINS_ONLY_ONE_VALUE",
-  "Value": "SUCCESS"
+  "path": "$.outputData.results",
+  "operator": "LIST_CONTAINS_ONLY_ONE_VALUE",
+  "value": "SUCCESS"
 }
 ```
 
@@ -1081,20 +1081,20 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** Enforces both cardinality (exactly 1) and value equality. Fails if the array has zero or more than one element, or if the single element doesn't match.
+> **Notes:** Enforces both cardinality (exactly 1) and value equality. Fails if the list has zero or more than one element, or if the single element doesn't match.
 
 ---
 
-### ARRAY_CONTAINS_OBJECT_WITH_FIELDS
+### LIST_CONTAINS_OBJECT_WITH_FIELDS
 
-**Purpose:** Validates that at least one object in the array matches the provided partial structure (subset of fields).
+**Purpose:** Validates that at least one object in the list matches the provided partial structure (subset of fields).
 
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.dataItemNeeds",
-  "Operator": "ARRAY_CONTAINS_OBJECT_WITH_FIELDS",
-  "Value": {
+  "path": "$.outputData.dataItemNeeds",
+  "operator": "LIST_CONTAINS_OBJECT_WITH_FIELDS",
+  "value": {
     "type": "1035"
   }
 }
@@ -1127,20 +1127,20 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** Performs structural subset match against each array element. Fails if no matching element is found. Extra fields on the actual object are allowed.
+> **Notes:** Performs structural subset match against each list element. Fails if no matching element is found. Extra fields on the actual object are allowed.
 
 ---
 
 ### ALL_MATCH
 
-**Purpose:** Validates that **every** element in the array matches a condition. The condition defaults to equality when a scalar value is provided.
+**Purpose:** Validates that **every** element in the list matches a condition. The condition defaults to equality when a scalar value is provided.
 
 **Equals mode** — scalar Value (defaults to equality):
 ```json
 {
-  "JsonPath": "$.outputData.penalties",
-  "Operator": "ALL_MATCH",
-  "Value": 0
+  "path": "$.outputData.penalties",
+  "operator": "ALL_MATCH",
+  "value": 0
 }
 ```
 
@@ -1165,9 +1165,9 @@ Each operator section includes:
 **greaterThan mode:**
 ```json
 {
-  "JsonPath": "$.outputData.scores",
-  "Operator": "ALL_MATCH",
-  "Value": {
+  "path": "$.outputData.scores",
+  "operator": "ALL_MATCH",
+  "value": {
     "greaterThan": 50
   }
 }
@@ -1178,9 +1178,9 @@ Each operator section includes:
 **lessThan mode:**
 ```json
 {
-  "JsonPath": "$.outputData.scores",
-  "Operator": "ALL_MATCH",
-  "Value": {
+  "path": "$.outputData.scores",
+  "operator": "ALL_MATCH",
+  "value": {
     "lessThan": 50
   }
 }
@@ -1191,9 +1191,9 @@ Each operator section includes:
 **between mode:**
 ```json
 {
-  "JsonPath": "$.outputData.scores",
-  "Operator": "ALL_MATCH",
-  "Value": {
+  "path": "$.outputData.scores",
+  "operator": "ALL_MATCH",
+  "value": {
     "between": {
       "min": 50,
       "max": 100
@@ -1204,7 +1204,7 @@ Each operator section includes:
 
 **PASS:** `{ "scores": [50, 75, 100] }` — **FAIL:** `{ "scores": [50, 110, 75] }`
 
-> **Notes:** Scalar Value → equality check. Object Value must have one of: `greaterThan`, `lessThan`, or `between`. Empty arrays pass vacuously. Error messages include the failing element's index.
+> **Notes:** Scalar value → equality check. Object value must have one of: `greaterThan`, `lessThan`, or `between`. Empty lists pass vacuously. Error messages include the failing element's index.
 
 ---
 
@@ -1218,9 +1218,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.metadata",
-  "Operator": "HAS_KEYS",
-  "Value": ["id", "timestamp"]
+  "path": "$.outputData.metadata",
+  "operator": "HAS_KEYS",
+  "value": ["id", "timestamp"]
 }
 ```
 
@@ -1248,9 +1248,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.actualTotal",
-  "Operator": "FIELD_EQUALS_OTHER_FIELD",
-  "Value": "$.outputData.expectedTotal"
+  "path": "$.outputData.actualTotal",
+  "operator": "FIELD_EQUALS_OTHER_FIELD",
+  "value": "$.outputData.expectedTotal"
 }
 ```
 
@@ -1264,7 +1264,7 @@ Each operator section includes:
 }
 ```
 
-> **Notes:** `Value` must be another valid JsonPath.
+> **Notes:** `value` must be another valid JSONPath.
 
 ---
 
@@ -1275,9 +1275,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.client",
-  "Operator": "OBJECT_CONTAINS_FIELDS",
-  "Value": {
+  "path": "$.outputData.client",
+  "operator": "OBJECT_CONTAINS_FIELDS",
+  "value": {
     "clientType": "1031",
     "riskLevel": "HIGH"
   }
@@ -1320,9 +1320,9 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "JsonPath": "$.outputData.client",
-  "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS",
-  "Value": {
+  "path": "$.outputData.client",
+  "operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS",
+  "value": {
     "clientType": "1031",
     "middleName": null
   }
@@ -1365,15 +1365,15 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "Operator": "AND",
-  "Value": [
-    { "JsonPath": "$.status", "Operator": "EQUALS", "Value": "OK" },
-    { "JsonPath": "$.code", "Operator": "EQUALS", "Value": 200 }
+  "operator": "AND",
+  "assertions": [
+    { "path": "$.status", "operator": "EQUALS", "value": "OK" },
+    { "path": "$.code", "operator": "EQUALS", "value": 200 }
   ]
 }
 ```
 
-> **Notes:** Used for compound logic. `JsonPath` might be omitted at the top level.
+> **Notes:** Used for compound logic. `path` can be omitted at the top level. `AND` accepts one or more nested assertions.
 
 ---
 
@@ -1384,13 +1384,15 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "Operator": "OR",
-  "Value": [
-    { "JsonPath": "$.status", "Operator": "EQUALS", "Value": "OK" },
-    { "JsonPath": "$.status", "Operator": "EQUALS", "Value": "ACCEPTED" }
+  "operator": "OR",
+  "assertions": [
+    { "path": "$.status", "operator": "EQUALS", "value": "OK" },
+    { "path": "$.status", "operator": "EQUALS", "value": "ACCEPTED" }
   ]
 }
 ```
+
+> **Notes:** `OR` accepts one or more nested assertions and passes as soon as one child passes.
 
 ---
 
@@ -1401,17 +1403,21 @@ Each operator section includes:
 **Assertion:**
 ```json
 {
-  "Operator": "NOT",
-  "Value": { 
-    "JsonPath": "$.status", 
-    "Operator": "EQUALS", 
-    "Value": "ERROR" 
-  }
+  "operator": "NOT",
+  "assertions": [
+    {
+      "path": "$.status",
+      "operator": "EQUALS",
+      "value": "ERROR"
+    }
+  ]
 }
 ```
+
+> **Notes:** `NOT` requires exactly one nested assertion.
 
 ---
 
 ## Design Philosophy & Architecture
 
-The `AssertionOperator` model separates JsonPath navigation from semantic validation. JsonPath extracts data; operators enforce business intent. This prevents silent coercion, enforces cardinality, and improves readability.
+The `AssertionOperator` model separates JSONPath navigation from semantic validation. JSONPath extracts data; operators enforce business intent. This prevents silent coercion, enforces cardinality, and improves readability.
