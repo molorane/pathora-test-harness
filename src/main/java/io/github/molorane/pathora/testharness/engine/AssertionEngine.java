@@ -97,11 +97,12 @@ public class AssertionEngine {
     }
 
     private void evaluateLogicalAssertion(
-            JsonAssertion assertion,
-            DocumentContext context,
-            RuleTestCase testCase,
-            String response,
-            String mutatedRequest) {
+        JsonAssertion assertion,
+        DocumentContext context,
+        RuleTestCase testCase,
+        String response,
+        String mutatedRequest
+    ) {
         if (assertion.operator() == AssertionOperator.AND) {
             evaluateAnd(assertion, context, testCase, response, mutatedRequest);
         } else if (assertion.operator() == AssertionOperator.OR) {
