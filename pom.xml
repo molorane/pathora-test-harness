@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.molorane</groupId>
 	<artifactId>pathora-test-harness</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>pathora-test-harness</name>
 	<packaging>jar</packaging>
 	<description>Pathora Test Harness — lightweight, framework-independent Java library</description>
@@ -78,26 +78,6 @@
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>tools.jackson.core</groupId>-->
-<!--            <artifactId>jackson-databind</artifactId>-->
-<!--            <version>3.2.1</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>tools.jackson.dataformat</groupId>-->
-<!--            <artifactId>jackson-dataformat-yaml</artifactId>-->
-<!--            <version>3.2.1</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>tools.jackson.dataformat</groupId>-->
-<!--            <artifactId>jackson-dataformat-xml</artifactId>-->
-<!--            <version>3.2.1</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
 
 		<!-- JUnit for testing the harness -->
 		<dependency>
