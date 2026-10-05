@@ -36,7 +36,7 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.version>2.21.4</jackson.version>
+        <jackson.version>3.2.1</jackson.version>
 		<checkstyle.version>3.6.0</checkstyle.version>
 		<maven.version>3.9.8</maven.version>
 		<maven.enforcer.version>3.6.2</maven.enforcer.version>
@@ -70,21 +70,21 @@
         <dependency>
             <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>3.2.1</version>
+            <version>${jackson.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>tools.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>3.2.1</version>
+            <version>${jackson.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>tools.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>3.2.1</version>
+            <version>${jackson.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -265,7 +265,6 @@
 						<version>1.11.0</version>
 					</dependency>
 				</dependencies>
-
 
 				<executions>
 					<execution>
