@@ -5,30 +5,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+/**
+ * Represents a test suite configuration file containing request templates and test cases.
+ *
+ * @param requestPath    the file path to the default JSON request template
+ * @param xmlRequestPath the file path to an optional XML request template
+ * @param tests          the list of test cases in this suite
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record TestSuite(
 
-        @JsonProperty("DefaultJSONRequestPath")
-        String defaultJSONRequestPath,
+        @JsonProperty("requestPath")
+        String requestPath,
 
-        @JsonProperty("DefaultXMLRequestPath")
-        String defaultXMLRequestPath,
+        @JsonProperty("xmlRequestPath")
+        String xmlRequestPath,
 
-        @JsonProperty("Tests")
+        @JsonProperty("tests")
         List<RuleTestCase> tests
 ) {
+    /**
+     * Resolves the primary request template path, preferring XML path if specified.
+     *
+     * @return the default request template path
+     */
     public String defaultRequestPath() {
-        if (defaultXMLRequestPath != null && !defaultXMLRequestPath.isBlank()) {
-            return defaultXMLRequestPath;
+        if (xmlRequestPath != null && !xmlRequestPath.isBlank()) {
+            return xmlRequestPath;
         }
-        return defaultJSONRequestPath;
+        return requestPath;
     }
 
+    /**
+     * Determines whether the test suite uses an XML request template.
+     *
+     * @return {@code true} if the request is XML-based, {@code false} otherwise
+     */
     public boolean isXmlRequest() {
-        if (defaultXMLRequestPath != null && !defaultXMLRequestPath.isBlank()) {
+        if (xmlRequestPath != null && !xmlRequestPath.isBlank()) {
             return true;
         }
         String path = defaultRequestPath();
         return path != null && path.toLowerCase().endsWith(".xml");
     }
 }
+
+

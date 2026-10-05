@@ -13,12 +13,12 @@
 
     <groupId>com.example</groupId>
     <artifactId>pathora-demo-example</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>pathora-demo-example</name>
     <description>Spring Boot demo project demonstrating Pathora Test Harness</description>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
@@ -34,15 +34,13 @@
         </dependency>
 
         <dependency>
-            <groupId>tools.jackson.dataformat</groupId>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>3.2.1</version>
         </dependency>
 
         <dependency>
-            <groupId>tools.jackson.dataformat</groupId>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>3.2.1</version>
         </dependency>
 
         <dependency>

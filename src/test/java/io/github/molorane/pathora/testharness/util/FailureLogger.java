@@ -32,9 +32,9 @@ public final class FailureLogger {
         builder.append("\n====================================================\n");
         builder.append("FAILURE TIME: ").append(timestamp).append("\n");
         builder.append("JSON FILE : ").append(testFileName.getFileName().toString()).append("\n");
-        builder.append("ENTRY POINT : ").append(testCase.entryPointName()).append("\n");
-        builder.append("TestName : ").append(testCase.testName()).append("\n");
-        builder.append("TestDescription : ").append(testCase.testDescription()).append("\n\n");
+        builder.append("OPERATION : ").append(testCase.operation()).append("\n");
+        builder.append("NAME : ").append(testCase.name()).append("\n");
+        builder.append("DESCRIPTION : ").append(testCase.description()).append("\n\n");
 
         builder.append("MUTATED REQUEST:\n");
         builder.append(pretty(mutatedRequest)).append("\n\n");

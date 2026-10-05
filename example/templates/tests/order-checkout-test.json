@@ -1,47 +1,47 @@
 {
-  "DefaultJSONRequestPath": "../requests/order-checkout-request.json",
-  "Tests": [
+  "requestPath": "../requests/order-checkout-request.json",
+  "tests": [
     {
-      "TestName": "Order Checkout Calculation Test",
-      "TestDescription": "Validates total items, subtotal, 15% tax calculation, and order status upon checkout.",
-      "EntryPointName": "order-processing-service",
-      "TestCaseParameterValues": [
+      "name": "Order Checkout Calculation Test",
+      "description": "Validates total items, subtotal, 15% tax calculation, and order status upon checkout.",
+      "operation": "order-processing-service",
+      "mutations": [
         {
-          "JsonPath": "$.customerId",
-          "Value": "CUST-99001"
+          "path": "$.customerId",
+          "value": "CUST-99001"
         },
         {
-          "JsonPath": "$.currency",
-          "Value": "USD"
+          "path": "$.currency",
+          "value": "USD"
         }
       ],
-      "ResponseAssertions": [
+      "assertions": [
         {
-          "JsonPath": "$.orderId",
-          "Operator": "STARTS_WITH",
-          "Value": "ORD-",
-          "Description": "Order ID must start with ORD-"
+          "path": "$.orderId",
+          "operator": "STARTS_WITH",
+          "value": "ORD-",
+          "description": "Order ID must start with ORD-"
         },
         {
-          "JsonPath": "$.customerId",
-          "Value": "CUST-99001",
-          "Description": "Customer ID must match request parameter"
+          "path": "$.customerId",
+          "value": "CUST-99001",
+          "description": "Customer ID must match request parameter"
         },
         {
-          "JsonPath": "$.totalItems",
-          "Value": 3,
-          "Description": "Total items count must be 3"
+          "path": "$.totalItems",
+          "value": 3,
+          "description": "Total items count must be 3"
         },
         {
-          "JsonPath": "$.subtotal",
-          "Operator": "GREATER_THAN",
-          "Value": 100.0,
-          "Description": "Subtotal must be greater than 100.0"
+          "path": "$.subtotal",
+          "operator": "GREATER_THAN",
+          "value": 100.0,
+          "description": "Subtotal must be greater than 100.0"
         },
         {
-          "JsonPath": "$.status",
-          "Value": "CREATED",
-          "Description": "Order status must be CREATED"
+          "path": "$.status",
+          "value": "CREATED",
+          "description": "Order status must be CREATED"
         }
       ]
     }

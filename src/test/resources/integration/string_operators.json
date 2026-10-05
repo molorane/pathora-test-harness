@@ -1,5 +1,15 @@
 {
   "productCode": "PRD-2026-990",
   "email": "developer@pathora.io",
-  "versionStr": "v2.1.0-RELEASE"
+  "versionStr": "v2.1.0-RELEASE",
+  "status": "APPROVED",
+  "mixedCaseText": "MixedCase123",
+  "sentence": "The quick brown fox",
+  "alphanumericCode": "Alpha123",
+  "alphaSpaceName": "John Doe",
+  "alphaOnly": "LettersOnly",
+  "emptyField": "",
+  "blankField": "   ",
+  "listWithBlank": ["apple", "  ", "banana"],
+  "nonEmptyList": ["apple", "cherry", "banana"]
 }

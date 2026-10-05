@@ -1,45 +1,45 @@
 {
-  "DefaultXMLRequestPath": "../requests/user-create-request.xml",
-  "Tests": [
+  "xmlRequestPath": "../requests/user-create-request.xml",
+  "tests": [
     {
-      "TestName": "Valid User Registration Test from XML Template",
-      "TestDescription": "Validates successful user account creation using an XML base request template.",
-      "EntryPointName": "user-registration-service",
-      "TestCaseParameterValues": [
+      "name": "Valid User Registration Test from XML Template",
+      "description": "Validates successful user account creation using an XML base request template.",
+      "operation": "user-registration-service",
+      "mutations": [
         {
-          "JsonPath": "$.username",
-          "Value": "alex_murphy"
+          "path": "$.username",
+          "value": "alex_murphy"
         },
         {
-          "JsonPath": "$.email",
-          "Value": "alex.murphy@ocp.com"
+          "path": "$.email",
+          "value": "alex.murphy@ocp.com"
         },
         {
-          "JsonPath": "$.role",
-          "Value": "ADMIN"
+          "path": "$.role",
+          "value": "ADMIN"
         }
       ],
-      "ResponseAssertions": [
+      "assertions": [
         {
-          "JsonPath": "$.userId",
-          "Operator": "STARTS_WITH",
-          "Value": "USR-",
-          "Description": "User ID must be generated with USR- prefix"
+          "path": "$.userId",
+          "operator": "STARTS_WITH",
+          "value": "USR-",
+          "description": "User ID must be generated with USR- prefix"
         },
         {
-          "JsonPath": "$.username",
-          "Value": "alex_murphy",
-          "Description": "Username must match updated parameter"
+          "path": "$.username",
+          "value": "alex_murphy",
+          "description": "Username must match updated parameter"
         },
         {
-          "JsonPath": "$.role",
-          "Value": "ADMIN",
-          "Description": "Role must match assigned ADMIN role"
+          "path": "$.role",
+          "value": "ADMIN",
+          "description": "Role must match assigned ADMIN role"
         },
         {
-          "JsonPath": "$.status",
-          "Value": "ACTIVE",
-          "Description": "Status must be ACTIVE"
+          "path": "$.status",
+          "value": "ACTIVE",
+          "description": "Status must be ACTIVE"
         }
       ]
     }

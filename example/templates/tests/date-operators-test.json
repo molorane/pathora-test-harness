@@ -1,85 +1,198 @@
 {
-  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
-  "Tests": [
+  "requestPath": "../requests/complex-policy-request.json",
+  "tests": [
     {
-      "TestName": "Date Operators Demonstration Test",
-      "TestDescription": "Validates date chronology, datetime comparisons, relative timeframes, and duration offsets.",
-      "EntryPointName": "all-operators-service",
-      "TestCaseParameterValues": [],
-      "ResponseAssertions": [
+      "name": "Date Component & Range Extraction Test",
+      "description": "Tests DATE_YEAR_EQUALS, DATE_MONTH_EQUALS, DATE_DAY_EQUALS, DATE_DAY_OF_WEEK_EQUALS, DATE_BETWEEN, DATE_EQUALS, DATE_AFTER, IS_TODAY, and DATE_WITHIN_LAST operators.",
+      "operation": "policy-evaluation-service",
+      "mutations": [],
+      "assertions": [
         {
-          "JsonPath": "$.pastDate",
-          "Operator": "DATE_BEFORE",
-          "Value": "2025-01-01",
-          "Description": "DATE_BEFORE assertion"
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_YEAR_EQUALS",
+          "value": 2026,
+          "description": "Effective date year must be 2026"
         },
         {
-          "JsonPath": "$.futureDate",
-          "Operator": "DATE_AFTER",
-          "Value": "2025-01-01",
-          "Description": "DATE_AFTER assertion"
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_MONTH_EQUALS",
+          "value": 1,
+          "description": "Effective date month must be January (1)"
         },
         {
-          "JsonPath": "$.dtEarlier",
-          "Operator": "DATETIME_BEFORE",
-          "Value": "2026-08-18T12:00:00",
-          "Description": "DATETIME_BEFORE assertion"
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_DAY_EQUALS",
+          "value": 1,
+          "description": "Effective date day must be 1"
         },
         {
-          "JsonPath": "$.dtLater",
-          "Operator": "DATETIME_AFTER",
-          "Value": "2026-08-18T12:00:00",
-          "Description": "DATETIME_AFTER assertion"
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_DAY_OF_WEEK_EQUALS",
+          "value": "THURSDAY",
+          "description": "Effective date day of week must be Thursday"
         },
         {
-          "JsonPath": "$.pastDate",
-          "Operator": "DATE_BEFORE_NOW",
-          "Description": "DATE_BEFORE_NOW assertion"
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_EQUALS",
+          "value": "2026-01-01",
+          "description": "Effective date exactly equals 2026-01-01"
         },
         {
-          "JsonPath": "$.futureDate",
-          "Operator": "DATE_AFTER_NOW",
-          "Description": "DATE_AFTER_NOW assertion"
-        },
-        {
-          "JsonPath": "$.recentPastDateTime",
-          "Operator": "DATE_WITHIN_LAST",
-          "Value": {
-            "amount": 20,
-            "unit": "YEARS"
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_BETWEEN",
+          "value": {
+            "min": "2025-01-01",
+            "max": "2027-01-01"
           },
-          "Description": "DATE_WITHIN_LAST assertion"
+          "description": "Effective date falls between 2025 and 2027"
         },
         {
-          "JsonPath": "$.distantFutureDateTime",
-          "Operator": "DATE_WITHIN_NEXT",
-          "Value": {
-            "amount": 100,
-            "unit": "YEARS"
-          },
-          "Description": "DATE_WITHIN_NEXT assertion"
+          "path": "$.expirationTimestamp",
+          "operator": "DATE_AFTER",
+          "value": "2026-01-01",
+          "description": "Expiration date is after effective date"
         },
         {
-          "Operator": "DATE_BEFORE_DURATION",
-          "Value": {
-            "basePath": "$.baseDate",
-            "comparePath": "$.earlierDate",
-            "amount": 10,
+          "path": "$.currentDate",
+          "operator": "IS_TODAY",
+          "value": null,
+          "description": "Current date equals system date today"
+        },
+        {
+          "path": "$.currentDate",
+          "operator": "DATE_WITHIN_LAST",
+          "value": {
+            "amount": 1,
             "unit": "DAYS"
           },
-          "Description": "DATE_BEFORE_DURATION assertion"
+          "description": "Current date falls within last 1 day"
+        }
+      ]
+    },
+    {
+      "name": "Time Component & Ordering Test",
+      "description": "Tests TIME_EQUALS, TIME_AFTER, TIME_BEFORE, TIME_BETWEEN, DATE_HOUR_EQUALS, DATE_MINUTE_EQUALS, and DATE_SECOND_EQUALS operators on timestamp fields.",
+      "operation": "policy-evaluation-service",
+      "mutations": [],
+      "assertions": [
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "DATE_HOUR_EQUALS",
+          "value": 12,
+          "description": "Evaluation timestamp hour component equals 12"
         },
         {
-          "Operator": "DATE_AFTER_DURATION",
-          "Value": {
-            "basePath": "$.baseDate",
-            "comparePath": "$.laterDate",
-            "amount": 10,
+          "path": "$.evaluationTimestamp",
+          "operator": "DATE_MINUTE_EQUALS",
+          "value": 30,
+          "description": "Evaluation timestamp minute component equals 30"
+        },
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "DATE_SECOND_EQUALS",
+          "value": 45,
+          "description": "Evaluation timestamp second component equals 45"
+        },
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "TIME_EQUALS",
+          "value": "12:30:45",
+          "description": "Evaluation timestamp time component equals 12:30:45"
+        },
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "TIME_AFTER",
+          "value": "08:00",
+          "description": "Evaluation timestamp is after 08:00 morning"
+        },
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "TIME_BEFORE",
+          "value": "18:00:00",
+          "description": "Evaluation timestamp is before 18:00:00 evening"
+        },
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "TIME_BETWEEN",
+          "value": {
+            "min": "08:00:00",
+            "max": "18:00:00"
+          },
+          "description": "Evaluation timestamp is between 08:00:00 and 18:00:00"
+        }
+      ]
+    },
+    {
+      "name": "DateTime Extended Operators Test",
+      "description": "Tests DATETIME_EQUALS, DATETIME_BEFORE, DATETIME_BETWEEN, DATETIME_EQUALS_WITH_TOLERANCE, IS_PAST_DATETIME, DATETIME_WITHIN_LAST, IS_FUTURE_DATETIME, and DATETIME_WITHIN_NEXT operators.",
+      "operation": "policy-evaluation-service",
+      "mutations": [],
+      "assertions": [
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "DATETIME_EQUALS",
+          "value": "2026-09-15T12:30:45",
+          "description": "Evaluation timestamp matches expected datetime"
+        },
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "DATETIME_BEFORE",
+          "value": "2030-01-01T00:00:00",
+          "description": "Evaluation timestamp is before year 2030"
+        },
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "DATETIME_BETWEEN",
+          "value": {
+            "min": "2026-01-01T00:00:00",
+            "max": "2027-01-01T00:00:00"
+          },
+          "description": "Evaluation timestamp falls between 2026 and 2027"
+        },
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "DATETIME_EQUALS_WITH_TOLERANCE",
+          "value": {
+            "expected": "2026-09-15T12:30:40",
+            "tolerance": 10,
+            "unit": "SECONDS"
+          },
+          "description": "Evaluation timestamp matches within 10 seconds tolerance"
+        },
+        {
+          "path": "$.currentDateTime",
+          "operator": "IS_PAST_DATETIME",
+          "value": null,
+          "description": "Current datetime is in the past"
+        },
+        {
+          "path": "$.currentDateTime",
+          "operator": "DATETIME_WITHIN_LAST",
+          "value": {
+            "amount": 1,
             "unit": "DAYS"
           },
-          "Description": "DATE_AFTER_DURATION assertion"
+          "description": "Current datetime is within the last 1 day"
+        },
+        {
+          "path": "$.futureDateTime",
+          "operator": "IS_FUTURE_DATETIME",
+          "value": null,
+          "description": "Future datetime is in the future"
+        },
+        {
+          "path": "$.futureDateTime",
+          "operator": "DATETIME_WITHIN_NEXT",
+          "value": {
+            "amount": 60,
+            "unit": "DAYS"
+          },
+          "description": "Future datetime is within next 60 days"
         }
       ]
     }
   ]
 }
+
+
+

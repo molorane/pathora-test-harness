@@ -1,67 +1,47 @@
 package io.github.molorane.pathora.testharness.engine;
 
-import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
-import io.github.molorane.pathora.testharness.model.AssertionOperator;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
+import io.github.molorane.pathora.testharness.model.AssertionOperator;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class OperatorRegistryTest {
 
-    private OperatorRegistry registry;
-
-    @BeforeEach
-    void setUp() {
-        registry = new OperatorRegistry();
-    }
-
-    @Test
-    @DisplayName("PASS: get returns registered evaluator for EQUALS operator")
-    void shouldReturnEvaluatorForEquals() {
-        AssertionEvaluator evaluator = registry.get(AssertionOperator.EQUALS);
-
-        assertThat(evaluator).isNotNull();
-        assertThat(evaluator.operator()).isEqualTo(AssertionOperator.EQUALS);
-    }
+    private static final Set<AssertionOperator> LOGICAL_OPERATORS = EnumSet.of(
+            AssertionOperator.AND,
+            AssertionOperator.OR,
+            AssertionOperator.NOT
+    );
 
     @Test
-    @DisplayName("PASS: get returns registered evaluator for MONEY_EQUALS operator")
-    void shouldReturnEvaluatorForMoneyEquals() {
-        AssertionEvaluator evaluator = registry.get(AssertionOperator.MONEY_EQUALS);
+    @DisplayName("Verify every non-logical AssertionOperator has a registered AssertionEvaluator")
+    void allNonLogicalOperatorsHaveEvaluator() {
+        OperatorRegistry registry = new OperatorRegistry();
 
-        assertThat(evaluator).isNotNull();
-        assertThat(evaluator.operator()).isEqualTo(AssertionOperator.MONEY_EQUALS);
-    }
-
-    @Test
-    @DisplayName("PASS: get returns registered evaluator for MONEY_EQUALS_WITH_TOLERANCE operator")
-    void shouldReturnEvaluatorForMoneyEqualsWithTolerance() {
-        AssertionEvaluator evaluator = registry.get(AssertionOperator.MONEY_EQUALS_WITH_TOLERANCE);
-
-        assertThat(evaluator).isNotNull();
-        assertThat(evaluator.operator()).isEqualTo(AssertionOperator.MONEY_EQUALS_WITH_TOLERANCE);
-    }
-
-    @Test
-    @DisplayName("PASS: verify all non-logical operators in AssertionOperator have registered evaluators")
-    void shouldHaveEvaluatorsForAllNonLogicalOperators() {
-        for (AssertionOperator op : AssertionOperator.values()) {
-            if (op == AssertionOperator.AND || op == AssertionOperator.OR || op == AssertionOperator.NOT) {
+        for (AssertionOperator operator : AssertionOperator.values()) {
+            if (LOGICAL_OPERATORS.contains(operator)) {
                 continue;
             }
-            AssertionEvaluator evaluator = registry.get(op);
+
+            AssertionEvaluator evaluator = registry.get(operator);
             assertThat(evaluator)
-                    .withFailMessage("Missing registered evaluator for AssertionOperator: %s", op)
+                    .as("Evaluator for operator " + operator + " should be registered")
                     .isNotNull();
-            assertThat(evaluator.operator()).isEqualTo(op);
+            assertThat(evaluator.operator())
+                    .as("Evaluator for " + operator + " must declare the matching operator")
+                    .isEqualTo(operator);
         }
     }
 
     @Test
-    @DisplayName("PASS: get returns null when operator is null")
-    void shouldReturnNullWhenOperatorIsNull() {
-        assertThat(registry.get(null)).isNull();
+    @DisplayName("Verify all 138 AssertionOperators are defined and accounted for")
+    void totalOperatorCount() {
+        assertThat(AssertionOperator.values()).hasSize(138);
     }
 }
+

@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utility functions for parsing monetary figures, amounts, currency codes, and evaluating monetary tolerances.
+ */
 public final class MoneyUtils {
 
     private static final Pattern CURRENCY_PATTERN = Pattern.compile("([A-Za-z]{3})");
@@ -16,6 +19,12 @@ public final class MoneyUtils {
     private MoneyUtils() {
     }
 
+    /**
+     * Extracts a {@link BigDecimal} amount from various representations (BigDecimal, Number, Map with amount/value/price key, String).
+     *
+     * @param value the raw monetary value
+     * @return the extracted {@link BigDecimal}, or {@code null} if it cannot be extracted
+     */
     public static BigDecimal extractAmount(Object value) {
         if (value == null) {
             return null;
@@ -60,6 +69,12 @@ public final class MoneyUtils {
         }
     }
 
+    /**
+     * Extracts a 3-letter currency code (e.g., "USD", "ZAR", "EUR") from a Map or String.
+     *
+     * @param value the raw object containing currency information
+     * @return the uppercase 3-letter currency code, or {@code null} if not found
+     */
     public static String extractCurrency(Object value) {
         if (value instanceof Map<?, ?> map) {
             Object currObj = map.get("currency");
@@ -79,6 +94,15 @@ public final class MoneyUtils {
         return null;
     }
 
+    /**
+     * Validates that both actual and expected monetary values share the same currency code if both specify currency.
+     *
+     * @param path     the JSONPath being evaluated
+     * @param actual   the actual monetary value
+     * @param expected the expected monetary value
+     * @param operator the assertion operator being executed
+     * @throws HarnessAssertionException if currency codes are present and do not match
+     */
     public static void validateCurrencyMatch(String path, Object actual, Object expected, AssertionOperator operator) {
         String actualCurrency = extractCurrency(actual);
         String expectedCurrency = extractCurrency(expected);
@@ -94,6 +118,14 @@ public final class MoneyUtils {
         }
     }
 
+    /**
+     * Extracts a {@link BigDecimal} amount or throws an {@link IllegalArgumentException} if extraction fails.
+     *
+     * @param path  the JSONPath being evaluated
+     * @param value the raw monetary value
+     * @return the extracted {@link BigDecimal}
+     * @throws IllegalArgumentException if the monetary figure cannot be parsed
+     */
     public static BigDecimal requireAmount(String path, Object value) {
         BigDecimal bd = extractAmount(value);
         if (bd == null) {
@@ -102,6 +134,14 @@ public final class MoneyUtils {
         return bd;
     }
 
+    /**
+     * Checks if actual and expected amounts differ by no more than tolerance inclusive.
+     *
+     * @param actual    the actual amount
+     * @param expected  the expected amount
+     * @param tolerance the maximum permitted absolute difference
+     * @return {@code true} if within tolerance, {@code false} otherwise
+     */
     public static boolean isWithinTolerance(BigDecimal actual, BigDecimal expected, BigDecimal tolerance) {
         if (actual == null || expected == null || tolerance == null) {
             return false;
@@ -110,3 +150,5 @@ public final class MoneyUtils {
         return diff.compareTo(tolerance) <= 0;
     }
 }
+
+

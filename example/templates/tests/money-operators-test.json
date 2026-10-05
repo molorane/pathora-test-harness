@@ -1,70 +1,69 @@
 {
-  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
-  "Tests": [
+  "requestPath": "../requests/complex-policy-request.json",
+  "tests": [
     {
-      "TestName": "Money Operators Demonstration Test",
-      "TestDescription": "Validates monetary equality, tolerances, currency codes, limits, and ranges.",
-      "EntryPointName": "all-operators-service",
-      "TestCaseParameterValues": [],
-      "ResponseAssertions": [
+      "name": "Money Comparison & Scale Test",
+      "description": "Tests MONEY_EQUALS, MONEY_GREATER_THAN, MONEY_GREATER_THAN_OR_EQUALS, MONEY_LESS_THAN, MONEY_LESS_THAN_OR_EQUALS, MONEY_BETWEEN, and MONEY_EQUALS_WITH_TOLERANCE operators on calculated totals.",
+      "operation": "policy-evaluation-service",
+      "mutations": [
         {
-          "JsonPath": "$.exactAmount",
-          "Operator": "MONEY_EQUALS",
-          "Value": "100.5",
-          "Description": "MONEY_EQUALS scalar assertion"
+          "path": "$.coverageDetails.basePremium",
+          "value": 15000.00
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.basePremium",
+          "operator": "MONEY_EQUALS",
+          "value": 15000.00,
+          "description": "Base premium matches exact monetary value"
         },
         {
-          "JsonPath": "$.currencyAmount",
-          "Operator": "MONEY_EQUALS",
-          "Value": {
-            "amount": 250.75,
-            "currency": "USD"
+          "path": "$.basePremium",
+          "operator": "MONEY_GREATER_THAN_OR_EQUALS",
+          "value": 15000.00,
+          "description": "Base premium is greater than or equal to 15000.00"
+        },
+        {
+          "path": "$.totalPremium",
+          "operator": "MONEY_GREATER_THAN",
+          "value": 10000.00,
+          "description": "Total premium is greater than 10000.00"
+        },
+        {
+          "path": "$.discountAmount",
+          "operator": "MONEY_LESS_THAN",
+          "value": 2000.00,
+          "description": "Discount amount is less than 2000.00"
+        },
+        {
+          "path": "$.discountAmount",
+          "operator": "MONEY_LESS_THAN_OR_EQUALS",
+          "value": 1000.00,
+          "description": "Discount amount is less than or equal to 1000.00"
+        },
+        {
+          "path": "$.finalPrice",
+          "operator": "MONEY_BETWEEN",
+          "value": {
+            "min": 10000.00,
+            "max": 20000.00
           },
-          "Description": "MONEY_EQUALS currency map assertion"
+          "description": "Final price falls within expected monetary range"
         },
         {
-          "JsonPath": "$.interestAccrual",
-          "Operator": "MONEY_EQUALS_WITH_TOLERANCE",
-          "Value": {
-            "expected": 100.00,
-            "tolerance": 0.01
+          "path": "$.basePremium",
+          "operator": "MONEY_EQUALS_WITH_TOLERANCE",
+          "value": {
+            "expected": 15000.00,
+            "tolerance": 50.00
           },
-          "Description": "MONEY_EQUALS_WITH_TOLERANCE assertion"
-        },
-        {
-          "JsonPath": "$.largeBalance",
-          "Operator": "MONEY_GREATER_THAN",
-          "Value": 10000.00,
-          "Description": "MONEY_GREATER_THAN assertion"
-        },
-        {
-          "JsonPath": "$.thresholdAmount",
-          "Operator": "MONEY_GREATER_THAN_OR_EQUALS",
-          "Value": 1000.00,
-          "Description": "MONEY_GREATER_THAN_OR_EQUALS assertion"
-        },
-        {
-          "JsonPath": "$.smallFee",
-          "Operator": "MONEY_LESS_THAN",
-          "Value": 10.00,
-          "Description": "MONEY_LESS_THAN assertion"
-        },
-        {
-          "JsonPath": "$.exactAmount",
-          "Operator": "MONEY_LESS_THAN_OR_EQUALS",
-          "Value": 100.50,
-          "Description": "MONEY_LESS_THAN_OR_EQUALS assertion"
-        },
-        {
-          "JsonPath": "$.currencyAmount",
-          "Operator": "MONEY_BETWEEN",
-          "Value": {
-            "min": 200.00,
-            "max": 300.00
-          },
-          "Description": "MONEY_BETWEEN assertion"
+          "description": "Base premium matches within 50.00 tolerance"
         }
       ]
     }
   ]
 }
+
+
+

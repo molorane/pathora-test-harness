@@ -1,12 +1,12 @@
 package io.github.molorane.pathora.testharness.engine;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -59,7 +59,7 @@ class AssertionEngineIntegrationTest {
                 assertion("$.balance", AssertionOperator.MONEY_EQUALS, Map.of("amount", 15420.50, "currency", "USD")),
                 assertion("$.balance", AssertionOperator.MONEY_GREATER_THAN, 10000.00),
                 assertion("$.balance", AssertionOperator.MONEY_BETWEEN, Map.of("min", 10000.00, "max", 20000.00)),
-                assertion("$.transactions", AssertionOperator.ARRAY_SIZE_EQUALS, 3),
+                assertion("$.transactions", AssertionOperator.LIST_SIZE_EQUALS, 3),
                 assertion("$.transactions[*].id", AssertionOperator.UNIQUE_ELEMENTS, null),
                 assertion("$.openingDate", AssertionOperator.DATE_BEFORE, "2025-01-01")
         );
@@ -96,7 +96,7 @@ class AssertionEngineIntegrationTest {
         String jsonPayload = loadJsonResource("/integration/user_profile.json");
 
         List<JsonAssertion> assertions = List.of(
-                assertion("$.userId", AssertionOperator.EXISTS, null),
+                assertion("$.userId", AssertionOperator.PATH_EXISTS, null),
                 assertion("$.profile.securityFlags.twoFactorEnabled", AssertionOperator.EQUALS, true),
                 assertion("$.roles", AssertionOperator.CONTAINS_ALL, List.of("USER", "ADMIN")),
                 assertion("$.profile.age", AssertionOperator.GREATER_THAN, 18),

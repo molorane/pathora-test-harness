@@ -1,31 +1,283 @@
 {
-  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
-  "Tests": [
+  "requestPath": "../requests/user-create-request.json",
+  "tests": [
     {
-      "TestName": "String Operators Demonstration Test",
-      "TestDescription": "Validates string prefixes, suffixes, and regex pattern assertion operators.",
-      "EntryPointName": "all-operators-service",
-      "TestCaseParameterValues": [],
-      "ResponseAssertions": [
+      "name": "String Content & Case Sensitivity Test",
+      "description": "Tests STRING_CONTAINS, STRING_CONTAINS_IGNORE_CASE, STRING_EQUALS_IGNORE_CASE, IS_STRING_UPPER_CASE, IS_STRING_LOWER_CASE, STRING_DOES_NOT_CONTAIN, STRING_DOES_NOT_CONTAIN_IGNORE_CASE, STRING_STARTS_WITH_ANY, STRING_STARTS_WITH_IGNORE_CASE, STRING_ENDS_WITH_ANY, STRING_ENDS_WITH_ANY_IGNORE_CASE, and STRING_EQUALS_ANY_IGNORE_CASE.",
+      "operation": "user-registration-service",
+      "mutations": [
         {
-          "JsonPath": "$.productCode",
-          "Operator": "STARTS_WITH",
-          "Value": "PRD-",
-          "Description": "STARTS_WITH assertion"
+          "path": "$.username",
+          "value": "johndoe"
         },
         {
-          "JsonPath": "$.versionStr",
-          "Operator": "ENDS_WITH",
-          "Value": "-RELEASE",
-          "Description": "ENDS_WITH assertion"
+          "path": "$.email",
+          "value": "john.doe@enterprise.org"
         },
         {
-          "JsonPath": "$.email",
-          "Operator": "REGEX_MATCH",
-          "Value": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$",
-          "Description": "REGEX_MATCH assertion"
+          "path": "$.role",
+          "value": "ADMINISTRATOR"
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.username",
+          "operator": "STRING_CONTAINS",
+          "value": "john",
+          "description": "Username contains substring 'john'"
+        },
+        {
+          "path": "$.username",
+          "operator": "STRING_CONTAINS_IGNORE_CASE",
+          "value": "DOE",
+          "description": "Username contains 'DOE' ignoring case"
+        },
+        {
+          "path": "$.role",
+          "operator": "STRING_EQUALS_IGNORE_CASE",
+          "value": "administrator",
+          "description": "Role matches ignoring case"
+        },
+        {
+          "path": "$.role",
+          "operator": "STRING_EQUALS_ANY_IGNORE_CASE",
+          "value": [
+            "administrator",
+            "manager"
+          ],
+          "description": "Role matches any candidate ignoring case"
+        },
+        {
+          "path": "$.role",
+          "operator": "IS_STRING_UPPER_CASE",
+          "value": null,
+          "description": "Role is fully uppercase"
+        },
+        {
+          "path": "$.username",
+          "operator": "IS_STRING_LOWER_CASE",
+          "value": null,
+          "description": "Username is fully lowercase"
+        },
+        {
+          "path": "$.email",
+          "operator": "STRING_DOES_NOT_CONTAIN",
+          "value": "spam",
+          "description": "Email does not contain 'spam'"
+        },
+        {
+          "path": "$.email",
+          "operator": "STRING_DOES_NOT_CONTAIN_IGNORE_CASE",
+          "value": "SPAM",
+          "description": "Email does not contain 'SPAM' ignoring case"
+        },
+        {
+          "path": "$.userId",
+          "operator": "STRING_STARTS_WITH_ANY",
+          "value": [
+            "USR-",
+            "ACC-"
+          ],
+          "description": "User ID starts with one of the allowed prefixes"
+        },
+        {
+          "path": "$.userId",
+          "operator": "STRING_STARTS_WITH_IGNORE_CASE",
+          "value": "usr-",
+          "description": "User ID starts with usr- ignoring case"
+        },
+        {
+          "path": "$.email",
+          "operator": "STRING_ENDS_WITH_ANY",
+          "value": [
+            ".org",
+            ".com"
+          ],
+          "description": "Email ends with one of allowed domain suffixes"
+        },
+        {
+          "path": "$.email",
+          "operator": "STRING_ENDS_WITH_ANY_IGNORE_CASE",
+          "value": [
+            ".ORG",
+            ".NET"
+          ],
+          "description": "Email ends with allowed domain suffix ignoring case"
+        }
+      ]
+    },
+    {
+      "name": "String Length & Format Validation Test",
+      "description": "Tests STRING_LENGTH_GREATER_THAN, STRING_LENGTH_LESS_THAN, STRING_LENGTH_EQUALS, STRING_LENGTH_BETWEEN, IS_STRING_NOT_BLANK, IS_STRING_ALPHA_NUMERIC, IS_STRING_ALPHA, IS_STRING_ALPHA_SPACE, STRING_CONTAINS_WHITESPACE, IS_STRING_MIXED_CASE, IS_STRING_NUMERIC, IS_STRING_BLANK, IS_STRING_EMPTY, IS_STRING_NOT_EMPTY, and IS_EMAIL operators.",
+      "operation": "user-registration-service",
+      "mutations": [
+        {
+          "path": "$.username",
+          "value": "alice99"
+        },
+        {
+          "path": "$.email",
+          "value": "alice@security.com"
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.username",
+          "operator": "STRING_LENGTH_GREATER_THAN",
+          "value": 5,
+          "description": "Username length is greater than 5"
+        },
+        {
+          "path": "$.postalCode",
+          "operator": "STRING_LENGTH_LESS_THAN",
+          "value": 10,
+          "description": "Postal code length is less than 10"
+        },
+        {
+          "path": "$.postalCode",
+          "operator": "STRING_LENGTH_EQUALS",
+          "value": 5,
+          "description": "Postal code length is exactly 5"
+        },
+        {
+          "path": "$.username",
+          "operator": "STRING_LENGTH_BETWEEN",
+          "value": {
+            "min": 4,
+            "max": 15
+          },
+          "description": "Username length is between 4 and 15"
+        },
+        {
+          "path": "$.username",
+          "operator": "IS_STRING_ALPHA_NUMERIC",
+          "value": null,
+          "description": "Username contains only alphanumeric characters"
+        },
+        {
+          "path": "$.firstName",
+          "operator": "IS_STRING_ALPHA",
+          "value": null,
+          "description": "First name contains only alphabetic characters"
+        },
+        {
+          "path": "$.fullName",
+          "operator": "IS_STRING_ALPHA_SPACE",
+          "value": null,
+          "description": "Full name contains only alphabetic characters and spaces"
+        },
+        {
+          "path": "$.fullName",
+          "operator": "STRING_CONTAINS_WHITESPACE",
+          "value": null,
+          "description": "Full name contains whitespace"
+        },
+        {
+          "path": "$.mixedCaseNotes",
+          "operator": "IS_STRING_MIXED_CASE",
+          "value": null,
+          "description": "Mixed case notes contain upper and lower case"
+        },
+        {
+          "path": "$.blankBio",
+          "operator": "IS_STRING_BLANK",
+          "value": null,
+          "description": "Blank bio contains only whitespace"
+        },
+        {
+          "path": "$.emptyNotes",
+          "operator": "IS_STRING_EMPTY",
+          "value": null,
+          "description": "Empty notes is an empty string"
+        },
+        {
+          "path": "$.userId",
+          "operator": "IS_STRING_NOT_EMPTY",
+          "value": null,
+          "description": "User ID is not empty"
+        },
+        {
+          "path": "$.postalCode",
+          "operator": "IS_STRING_NUMERIC",
+          "value": null,
+          "description": "Postal code is strictly numeric"
+        },
+        {
+          "path": "$.email",
+          "operator": "IS_EMAIL",
+          "value": null,
+          "description": "Email conforms to standard email format"
+        },
+        {
+          "path": "$.email",
+          "operator": "IS_STRING_NOT_BLANK",
+          "value": null,
+          "description": "Email is non-blank"
+        },
+        {
+          "path": "$.status",
+          "operator": "STRING_EQUALS_ANY",
+          "value": [
+            "ACTIVE",
+            "PENDING",
+            "INITIAL"
+          ],
+          "description": "Status matches one of the candidate values"
+        }
+      ]
+    },
+    {
+      "name": "String Network & Array Blankness Test",
+      "description": "Tests IS_IP_ADDRESS, IS_URL, IS_UUID, IS_ALL_STRING_BLANK, IS_ANY_STRING_BLANK, IS_NONE_STRING_BLANK, and IS_STRING_NONE_EMPTY.",
+      "operation": "user-registration-service",
+      "mutations": [],
+      "assertions": [
+        {
+          "path": "$.ipAddress",
+          "operator": "IS_IP_ADDRESS",
+          "value": null,
+          "description": "IP address is valid IPv4"
+        },
+        {
+          "path": "$.websiteUrl",
+          "operator": "IS_URL",
+          "value": null,
+          "description": "Website URL is valid web address"
+        },
+        {
+          "path": "$.trackingUuid",
+          "operator": "IS_UUID",
+          "value": null,
+          "description": "Tracking UUID is a valid UUID format"
+        },
+        {
+          "path": "$.allBlankTags",
+          "operator": "IS_ALL_STRING_BLANK",
+          "value": null,
+          "description": "All elements in allBlankTags are blank strings"
+        },
+        {
+          "path": "$.anyBlankTags",
+          "operator": "IS_ANY_STRING_BLANK",
+          "value": null,
+          "description": "At least one element in anyBlankTags is blank"
+        },
+        {
+          "path": "$.noneBlankTags",
+          "operator": "IS_NONE_STRING_BLANK",
+          "value": null,
+          "description": "No element in noneBlankTags is blank"
+        },
+        {
+          "path": "$.noneBlankTags",
+          "operator": "IS_STRING_NONE_EMPTY",
+          "value": null,
+          "description": "No element in noneBlankTags is empty"
         }
       ]
     }
   ]
 }
+
+
+

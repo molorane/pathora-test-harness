@@ -1,6 +1,11 @@
 package com.example.demo;
 
 import com.example.demo.config.TestHarnessConfig;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.EntryPointDispatcher;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
@@ -8,11 +13,6 @@ import io.github.molorane.pathora.testharness.loader.TestSuiteLoader;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
 import io.github.molorane.pathora.testharness.model.TestSuite;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -83,17 +83,17 @@ class XmlTemplateDemoTest {
             assertDoesNotThrow(() -> {
                 String mutatedRequest = mutationEngine.apply(
                         rawRequest,
-                        testCase.testCaseParameterValues(),
+                        testCase.mutations(),
                         suitePath.getFileName().toString(),
-                        testCase.entryPointName(),
+                        testCase.operation(),
                         suite.isXmlRequest()
                 );
 
-                String responseJson = dispatcher.dispatch(testCase.entryPointName(), mutatedRequest, suite.isXmlRequest());
+                String responseJson = dispatcher.dispatch(testCase.operation(), mutatedRequest, suite.isXmlRequest());
                 assertThat(responseJson).isNotNull().isNotEmpty();
 
                 assertionEngine.assertResponse(responseJson, testCase, mutatedRequest);
-            }, "Test case '" + testCase.testName() + "' failed execution or assertions");
+            }, "Test case '" + testCase.name() + "' failed execution or assertions");
         }
     }
 }

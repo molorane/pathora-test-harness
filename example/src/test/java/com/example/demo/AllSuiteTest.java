@@ -1,17 +1,16 @@
 package com.example.demo;
 
 import com.example.demo.adapter.DynamicTestAdapter;
+import com.example.demo.config.TestHarnessConfig;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.stream.Stream;
-
-import com.example.demo.config.TestHarnessConfig;
-import org.springframework.context.annotation.Import;
 
 /**
  * Demonstrates executing all test suite files in a directory dynamically using @TestFactory.

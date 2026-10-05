@@ -2,13 +2,13 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.InventoryRequest;
 import com.example.demo.dto.InventoryResponse;
-import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
+import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 
 import java.time.Instant;
 
 @Component
-public class InventoryUpdateExecutor implements EntryPointExecutor {
+public class InventoryUpdateExecutor implements EntryPointExecutor<InventoryRequest, InventoryResponse> {
 
     @Override
     public String getEntryPointName() {
@@ -16,13 +16,12 @@ public class InventoryUpdateExecutor implements EntryPointExecutor {
     }
 
     @Override
-    public Class<?> getRequestType() {
+    public Class<InventoryRequest> getRequestType() {
         return InventoryRequest.class;
     }
 
     @Override
-    public Object execute(Object request) {
-        InventoryRequest inventoryRequest = (InventoryRequest) request;
+    public InventoryResponse execute(InventoryRequest inventoryRequest) {
         int newStockLevel = Math.max(0, inventoryRequest.addQuantity());
         String stockStatus = newStockLevel > 0 ? "IN_STOCK" : "OUT_OF_STOCK";
 

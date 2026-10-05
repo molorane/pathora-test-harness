@@ -6,6 +6,13 @@ public record LoanResponse(
         double approvedAmount,
         double interestRate,
         String decisionStatus,
-        String evaluatedAt
+        String evaluatedAt,
+        boolean eligible,
+        boolean requiresManualReview,
+        Integer riskPenalty,
+        int creditTierScore,
+        String coSignerId
 ) {
 }
+
+

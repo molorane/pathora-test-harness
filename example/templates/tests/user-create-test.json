@@ -1,51 +1,51 @@
 {
-  "DefaultJSONRequestPath": "../requests/user-create-request.json",
-  "Tests": [
+  "requestPath": "../requests/user-create-request.json",
+  "tests": [
     {
-      "TestName": "Valid User Registration Test",
-      "TestDescription": "Validates successful user account creation, userId generation, role assignment, and active status.",
-      "EntryPointName": "user-registration-service",
-      "TestCaseParameterValues": [
+      "name": "Valid User Registration Test",
+      "description": "Validates successful user account creation, userId generation, role assignment, and active status.",
+      "operation": "user-registration-service",
+      "mutations": [
         {
-          "JsonPath": "$.username",
-          "Value": "sarah_connor"
+          "path": "$.username",
+          "value": "sarah_connor"
         },
         {
-          "JsonPath": "$.email",
-          "Value": "sarah.connor@cyberdyne.org"
+          "path": "$.email",
+          "value": "sarah.connor@cyberdyne.org"
         },
         {
-          "JsonPath": "$.role",
-          "Value": "MANAGER"
+          "path": "$.role",
+          "value": "MANAGER"
         }
       ],
-      "ResponseAssertions": [
+      "assertions": [
         {
-          "JsonPath": "$.userId",
-          "Operator": "STARTS_WITH",
-          "Value": "USR-",
-          "Description": "User ID must be generated with USR- prefix"
+          "path": "$.userId",
+          "operator": "STARTS_WITH",
+          "value": "USR-",
+          "description": "User ID must be generated with USR- prefix"
         },
         {
-          "JsonPath": "$.username",
-          "Value": "sarah_connor",
-          "Description": "Username must match updated request parameter"
+          "path": "$.username",
+          "value": "sarah_connor",
+          "description": "Username must match updated request parameter"
         },
         {
-          "JsonPath": "$.email",
-          "Operator": "REGEX_MATCH",
-          "Value": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$",
-          "Description": "Email must be a valid email format"
+          "path": "$.email",
+          "operator": "REGEX_MATCH",
+          "value": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$",
+          "description": "Email must be a valid email format"
         },
         {
-          "JsonPath": "$.role",
-          "Value": "MANAGER",
-          "Description": "Role must match assigned role"
+          "path": "$.role",
+          "value": "MANAGER",
+          "description": "Role must match assigned role"
         },
         {
-          "JsonPath": "$.status",
-          "Value": "ACTIVE",
-          "Description": "Status must be ACTIVE"
+          "path": "$.status",
+          "value": "ACTIVE",
+          "description": "Status must be ACTIVE"
         }
       ]
     }

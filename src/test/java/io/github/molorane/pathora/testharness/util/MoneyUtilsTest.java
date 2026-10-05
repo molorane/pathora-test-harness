@@ -1,16 +1,14 @@
 package io.github.molorane.pathora.testharness.util;
 
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
-import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
+import io.github.molorane.pathora.testharness.model.AssertionOperator;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class MoneyUtilsTest {
 

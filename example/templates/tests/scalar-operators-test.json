@@ -1,58 +1,113 @@
 {
-  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
-  "Tests": [
+  "requestPath": "../requests/loan-application-request.json",
+  "tests": [
     {
-      "TestName": "Scalar Operators Demonstration Test",
-      "TestDescription": "Validates scalar equality, comparison, and range assertion operators.",
-      "EntryPointName": "all-operators-service",
-      "TestCaseParameterValues": [],
-      "ResponseAssertions": [
+      "name": "Scalar Number Classification Test",
+      "description": "Tests IS_NUMBER, IS_DECIMAL, IS_INTEGER, IS_POSITIVE, IS_NEGATIVE, and IS_TRUE operators on monetary rates and amounts.",
+      "operation": "loan-application-service",
+      "mutations": [
         {
-          "JsonPath": "$.score",
-          "Operator": "EQUALS",
-          "Value": 85,
-          "Description": "EQUALS assertion"
+          "path": "$.creditScore",
+          "value": 750
         },
         {
-          "JsonPath": "$.status",
-          "Operator": "NOT_EQUALS",
-          "Value": "REJECTED",
-          "Description": "NOT_EQUALS assertion"
+          "path": "$.requestedAmount",
+          "value": 50000.00
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.approvedAmount",
+          "operator": "IS_NUMBER",
+          "value": null,
+          "description": "Approved amount must be a number"
         },
         {
-          "JsonPath": "$.score",
-          "Operator": "GREATER_THAN",
-          "Value": 80,
-          "Description": "GREATER_THAN assertion"
+          "path": "$.approvedAmount",
+          "operator": "IS_POSITIVE",
+          "value": null,
+          "description": "Approved amount must be strictly positive"
         },
         {
-          "JsonPath": "$.score",
-          "Operator": "GREATER_THAN_OR_EQUALS",
-          "Value": 85,
-          "Description": "GREATER_THAN_OR_EQUALS assertion"
+          "path": "$.interestRate",
+          "operator": "IS_DECIMAL",
+          "description": "Interest rate has fractional decimal component"
         },
         {
-          "JsonPath": "$.negativeScore",
-          "Operator": "LESS_THAN",
-          "Value": 0,
-          "Description": "LESS_THAN assertion"
-        },
-        {
-          "JsonPath": "$.temperature",
-          "Operator": "LESS_THAN_OR_EQUALS",
-          "Value": 36.6,
-          "Description": "LESS_THAN_OR_EQUALS assertion"
-        },
-        {
-          "JsonPath": "$.rating",
-          "Operator": "BETWEEN",
-          "Value": {
-            "min": 4.0,
-            "max": 5.0
+          "path": "$.interestRate",
+          "operator": "EQUALS_WITH_TOLERANCE",
+          "value": {
+            "value": 6.5,
+            "tolerance": 0.1
           },
-          "Description": "BETWEEN assertion"
+          "description": "Interest rate should equal 6.5 within 0.1 tolerance"
+        },
+        {
+          "path": "$.creditTierScore",
+          "operator": "IS_INTEGER",
+          "value": null,
+          "description": "Credit tier score must be an integer"
+        },
+        {
+          "path": "$.riskPenalty",
+          "operator": "IS_NEGATIVE",
+          "value": null,
+          "description": "Risk penalty must be a negative integer"
+        },
+        {
+          "path": "$.eligible",
+          "operator": "IS_TRUE",
+          "value": null,
+          "description": "Eligible flag must be true"
+        }
+      ]
+    },
+    {
+      "name": "Scalar Nullability & Tolerance Test",
+      "description": "Tests IS_NOT_NULL, IS_NULL, IS_FALSE, and IS_ZERO operators on conditional/rejection paths.",
+      "operation": "loan-application-service",
+      "mutations": [
+        {
+          "path": "$.creditScore",
+          "value": 500
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.applicationId",
+          "operator": "IS_NOT_NULL",
+          "description": "Application ID must not be null"
+        },
+        {
+          "path": "$.coSignerId",
+          "operator": "IS_NULL",
+          "description": "Co-signer ID must be null"
+        },
+        {
+          "path": "$.requiresManualReview",
+          "operator": "IS_FALSE",
+          "description": "Requires manual review must be false"
+        },
+        {
+          "path": "$.approvedAmount",
+          "operator": "IS_ZERO",
+          "description": "Approved amount must be zero for rejected loan"
+        },
+        {
+          "path": "$.interestRate",
+          "operator": "IS_ZERO",
+          "description": "Interest rate must be zero for rejected loan"
+        },
+        {
+          "path": "$.decisionStatus",
+          "operator": "EQUALS",
+          "value": "REJECTED",
+          "description": "Decision status must be REJECTED"
         }
       ]
     }
   ]
 }
+
+
+

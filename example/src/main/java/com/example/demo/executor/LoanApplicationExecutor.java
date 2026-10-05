@@ -2,14 +2,14 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.LoanRequest;
 import com.example.demo.dto.LoanResponse;
-import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
+import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Component
-public class LoanApplicationExecutor implements EntryPointExecutor {
+public class LoanApplicationExecutor implements EntryPointExecutor<LoanRequest, LoanResponse> {
 
     @Override
     public String getEntryPointName() {
@@ -17,13 +17,12 @@ public class LoanApplicationExecutor implements EntryPointExecutor {
     }
 
     @Override
-    public Class<?> getRequestType() {
+    public Class<LoanRequest> getRequestType() {
         return LoanRequest.class;
     }
 
     @Override
-    public Object execute(Object request) {
-        LoanRequest loanRequest = (LoanRequest) request;
+    public LoanResponse execute(LoanRequest loanRequest) {
         String applicationId = "APP-" + UUID.randomUUID().toString().substring(0, 8);
 
         String decisionStatus;
@@ -44,13 +43,23 @@ public class LoanApplicationExecutor implements EntryPointExecutor {
             approvedAmount = 0.0;
         }
 
+        boolean eligible = "APPROVED".equals(decisionStatus) || "APPROVED_CONDITIONAL".equals(decisionStatus);
+        boolean requiresManualReview = "APPROVED_CONDITIONAL".equals(decisionStatus);
+
         return new LoanResponse(
                 applicationId,
                 loanRequest.applicantId(),
                 approvedAmount,
                 interestRate,
                 decisionStatus,
-                Instant.now().toString()
+                Instant.now().toString(),
+                eligible,
+                requiresManualReview,
+                -10,
+                loanRequest.creditScore(),
+                null
         );
     }
 }
+
+

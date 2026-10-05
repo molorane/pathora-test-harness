@@ -1,45 +1,45 @@
 {
-  "DefaultJSONRequestPath": "../requests/inventory-update-request.json",
-  "Tests": [
+  "requestPath": "../requests/inventory-update-request.json",
+  "tests": [
     {
-      "TestName": "Inventory Stock Restock Test",
-      "TestDescription": "Validates stock level increase, stock status IN_STOCK, and product unit price.",
-      "EntryPointName": "inventory-update-service",
-      "TestCaseParameterValues": [
+      "name": "Inventory Stock Restock Test",
+      "description": "Validates stock level increase, stock status IN_STOCK, and product unit price.",
+      "operation": "inventory-update-service",
+      "mutations": [
         {
-          "JsonPath": "$.productId",
-          "Value": "SKU-90882"
+          "path": "$.productId",
+          "value": "SKU-90882"
         },
         {
-          "JsonPath": "$.addQuantity",
-          "Value": 250
+          "path": "$.addQuantity",
+          "value": 250
         },
         {
-          "JsonPath": "$.unitPrice",
-          "Value": 18.75
+          "path": "$.unitPrice",
+          "value": 18.75
         }
       ],
-      "ResponseAssertions": [
+      "assertions": [
         {
-          "JsonPath": "$.productId",
-          "Value": "SKU-90882",
-          "Description": "Product ID must match updated value"
+          "path": "$.productId",
+          "value": "SKU-90882",
+          "description": "Product ID must match updated value"
         },
         {
-          "JsonPath": "$.stockLevel",
-          "Operator": "GREATER_THAN_OR_EQUALS",
-          "Value": 200,
-          "Description": "Stock level must be at least 200 units"
+          "path": "$.stockLevel",
+          "operator": "GREATER_THAN_OR_EQUALS",
+          "value": 200,
+          "description": "Stock level must be at least 200 units"
         },
         {
-          "JsonPath": "$.stockStatus",
-          "Value": "IN_STOCK",
-          "Description": "Stock status must be IN_STOCK"
+          "path": "$.stockStatus",
+          "value": "IN_STOCK",
+          "description": "Stock status must be IN_STOCK"
         },
         {
-          "JsonPath": "$.unitPrice",
-          "Value": 18.75,
-          "Description": "Unit price must match input unit price"
+          "path": "$.unitPrice",
+          "value": 18.75,
+          "description": "Unit price must match input unit price"
         }
       ]
     }

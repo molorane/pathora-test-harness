@@ -2,14 +2,14 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.OrderRequest;
 import com.example.demo.dto.OrderResponse;
-import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
+import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Component
-public class OrderProcessingExecutor implements EntryPointExecutor {
+public class OrderProcessingExecutor implements EntryPointExecutor<OrderRequest, OrderResponse> {
 
     @Override
     public String getEntryPointName() {
@@ -17,13 +17,12 @@ public class OrderProcessingExecutor implements EntryPointExecutor {
     }
 
     @Override
-    public Class<?> getRequestType() {
+    public Class<OrderRequest> getRequestType() {
         return OrderRequest.class;
     }
 
     @Override
-    public Object execute(Object request) {
-        OrderRequest orderRequest = (OrderRequest) request;
+    public OrderResponse execute(OrderRequest orderRequest) {
         String orderId = "ORD-" + UUID.randomUUID().toString().substring(0, 8);
 
         double subtotal = 0.0;

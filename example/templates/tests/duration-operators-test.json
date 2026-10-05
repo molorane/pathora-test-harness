@@ -1,54 +1,89 @@
 {
-  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
-  "Tests": [
+  "requestPath": "../requests/complex-policy-request.json",
+  "tests": [
     {
-      "TestName": "Duration Operators Demonstration Test",
-      "TestDescription": "Validates calculated durations between timestamps and ISO-8601 duration values.",
-      "EntryPointName": "all-operators-service",
-      "TestCaseParameterValues": [],
-      "ResponseAssertions": [
+      "name": "Duration Calculation & Range Bounds Test",
+      "description": "Tests DURATION_EQUALS, DURATION_GREATER_THAN, DURATION_LESS_THAN, and DURATION_BETWEEN operators across start and end dates.",
+      "operation": "policy-evaluation-service",
+      "mutations": [],
+      "assertions": [
         {
-          "Operator": "DURATION_EQUALS",
-          "Value": {
-            "startPath": "$.startDate",
-            "endPath": "$.endDate",
-            "unit": "MINUTES",
-            "expected": 120
+          "path": "$.evaluationTimestamp",
+          "operator": "DURATION_EQUALS",
+          "value": {
+            "startPath": "$.evaluationTimestamp",
+            "endPath": "$.expirationTimestamp",
+            "unit": "DAYS",
+            "expected": 365
           },
-          "Description": "DURATION_EQUALS assertion"
+          "description": "Duration between evaluation and expiration is exactly 365 days"
         },
         {
-          "Operator": "DURATION_GREATER_THAN",
-          "Value": {
-            "startPath": "$.startDate",
-            "endPath": "$.endDate",
-            "unit": "HOURS",
-            "value": 1
+          "path": "$.evaluationTimestamp",
+          "operator": "DURATION_BETWEEN",
+          "value": {
+            "startPath": "$.evaluationTimestamp",
+            "endPath": "$.expirationTimestamp",
+            "unit": "DAYS",
+            "min": 300,
+            "max": 400
           },
-          "Description": "DURATION_GREATER_THAN assertion"
+          "description": "Duration in days falls between 300 and 400"
         },
         {
-          "Operator": "DURATION_LESS_THAN",
-          "Value": {
-            "startPath": "$.startDate",
-            "endPath": "$.endDate",
-            "unit": "HOURS",
-            "value": 5
+          "path": "$.evaluationTimestamp",
+          "operator": "DURATION_GREATER_THAN",
+          "value": {
+            "startPath": "$.evaluationTimestamp",
+            "endPath": "$.expirationTimestamp",
+            "unit": "MONTHS",
+            "value": 10
           },
-          "Description": "DURATION_LESS_THAN assertion"
+          "description": "Duration between dates exceeds 10 months"
         },
         {
-          "Operator": "DURATION_BETWEEN",
-          "Value": {
-            "startPath": "$.startDate",
-            "endPath": "$.endDate",
-            "unit": "HOURS",
-            "min": 1,
-            "max": 3
+          "path": "$.evaluationTimestamp",
+          "operator": "DURATION_LESS_THAN",
+          "value": {
+            "startPath": "$.evaluationTimestamp",
+            "endPath": "$.expirationTimestamp",
+            "unit": "YEARS",
+            "value": 2
           },
-          "Description": "DURATION_BETWEEN assertion"
+          "description": "Duration between dates is less than 2 years"
+        }
+      ]
+    },
+    {
+      "name": "Relative Date Duration Offset Test",
+      "description": "Tests DATE_AFTER_DURATION and DATE_BEFORE_DURATION offset operators.",
+      "operation": "policy-evaluation-service",
+      "mutations": [],
+      "assertions": [
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "DATE_AFTER_DURATION",
+          "value": {
+            "basePath": "$.evaluationTimestamp",
+            "comparePath": "$.expirationTimestamp",
+            "amount": 350,
+            "unit": "DAYS"
+          },
+          "description": "Expiration date is after evaluation timestamp + 350 days"
+        },
+        {
+          "path": "$.evaluationTimestamp",
+          "operator": "DATE_BEFORE_DURATION",
+          "value": {
+            "basePath": "$.evaluationTimestamp",
+            "comparePath": "$.expirationTimestamp",
+            "amount": 380,
+            "unit": "DAYS"
+          },
+          "description": "Expiration date is before evaluation timestamp + 380 days"
         }
       ]
     }
   ]
 }
+

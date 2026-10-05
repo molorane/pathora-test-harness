@@ -36,7 +36,7 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jackson.version>3.2.1</jackson.version>
+        <jackson.version>2.21.4</jackson.version>
 		<checkstyle.version>3.6.0</checkstyle.version>
 		<maven.version>3.9.8</maven.version>
 		<maven.enforcer.version>3.6.2</maven.enforcer.version>
@@ -60,27 +60,44 @@
 			<version>3.0.0</version>
 		</dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.18.0</version>
+        </dependency>
+
 		<!-- Jackson 3.x -->
         <dependency>
-            <groupId>tools.jackson.core</groupId>
+            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>3.2.1</version>
-            <scope>compile</scope>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>tools.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>3.2.1</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>tools.jackson.dataformat</groupId>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>3.2.1</version>
-            <scope>compile</scope>
+            <version>${jackson.version}</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>tools.jackson.core</groupId>-->
+<!--            <artifactId>jackson-databind</artifactId>-->
+<!--            <version>3.2.1</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>tools.jackson.dataformat</groupId>-->
+<!--            <artifactId>jackson-dataformat-yaml</artifactId>-->
+<!--            <version>3.2.1</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>tools.jackson.dataformat</groupId>-->
+<!--            <artifactId>jackson-dataformat-xml</artifactId>-->
+<!--            <version>3.2.1</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
 
 		<!-- JUnit for testing the harness -->
 		<dependency>
@@ -109,7 +126,6 @@
 	</distributionManagement>
 
 	<build>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -207,6 +223,21 @@
                     </execution>
                 </executions>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-gpg-plugin</artifactId>-->
+<!--                <version>3.2.7</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>sign-artifacts</id>-->
+<!--                        <phase>verify</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>sign</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -1,42 +1,42 @@
 {
-  "DefaultJSONRequestPath": "../requests/payment-process-request.json",
-  "Tests": [
+  "requestPath": "../requests/payment-process-request.json",
+  "tests": [
     {
-      "TestName": "Successful Payment Processing Test",
-      "TestDescription": "Validates successful payment gateway response, transaction reference, and positive amount.",
-      "EntryPointName": "payment-gateway-service",
-      "TestCaseParameterValues": [
+      "name": "Successful Payment Processing Test",
+      "description": "Validates successful payment gateway response, transaction reference, and positive amount.",
+      "operation": "payment-gateway-service",
+      "mutations": [
         {
-          "JsonPath": "$.amount",
-          "Value": 499.99
+          "path": "$.amount",
+          "value": 499.99
         },
         {
-          "JsonPath": "$.paymentMethod",
-          "Value": "DEBIT_CARD"
+          "path": "$.paymentMethod",
+          "value": "DEBIT_CARD"
         }
       ],
-      "ResponseAssertions": [
+      "assertions": [
         {
-          "JsonPath": "$.paymentId",
-          "Operator": "STARTS_WITH",
-          "Value": "PAY-",
-          "Description": "Payment ID must be generated with PAY- prefix"
+          "path": "$.paymentId",
+          "operator": "STARTS_WITH",
+          "value": "PAY-",
+          "description": "Payment ID must be generated with PAY- prefix"
         },
         {
-          "JsonPath": "$.transactionId",
-          "Value": "TXN-998811",
-          "Description": "Transaction ID must match input request"
+          "path": "$.transactionId",
+          "value": "TXN-998811",
+          "description": "Transaction ID must match input request"
         },
         {
-          "JsonPath": "$.amount",
-          "Operator": "GREATER_THAN",
-          "Value": 0.0,
-          "Description": "Payment amount must be greater than zero"
+          "path": "$.amount",
+          "operator": "GREATER_THAN",
+          "value": 0.0,
+          "description": "Payment amount must be greater than zero"
         },
         {
-          "JsonPath": "$.status",
-          "Value": "SUCCESS",
-          "Description": "Payment status must be SUCCESS"
+          "path": "$.status",
+          "value": "SUCCESS",
+          "description": "Payment status must be SUCCESS"
         }
       ]
     }

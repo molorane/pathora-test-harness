@@ -1,0 +1,101 @@
+{
+  "requestPath": "../requests/complex-policy-request.json",
+  "tests": [
+    {
+      "name": "List Size & Sorting Order Test",
+      "description": "Tests LIST_SIZE_EQUALS, LIST_SIZE_GREATER_THAN, LIST_SIZE_LESS_THAN, LIST_SIZE_BETWEEN, IS_NOT_EMPTY_LIST, LIST_IS_SORTED_ASC, and LIST_IS_SORTED_DESC operators.",
+      "operation": "policy-evaluation-service",
+      "mutations": [],
+      "assertions": [
+        {
+          "path": "$.approvedClauses",
+          "operator": "LIST_SIZE_EQUALS",
+          "value": 2,
+          "description": "Approved clauses array size is exactly 2"
+        },
+        {
+          "path": "$.approvedClauses",
+          "operator": "LIST_SIZE_GREATER_THAN",
+          "value": 1,
+          "description": "Approved clauses array size is greater than 1"
+        },
+        {
+          "path": "$.approvedClauses",
+          "operator": "LIST_SIZE_LESS_THAN",
+          "value": 5,
+          "description": "Approved clauses array size is less than 5"
+        },
+        {
+          "path": "$.approvedClauses",
+          "operator": "LIST_SIZE_BETWEEN",
+          "value": {
+            "min": 1,
+            "max": 5
+          },
+          "description": "Approved clauses array size falls between 1 and 5"
+        },
+        {
+          "path": "$.approvedClauses",
+          "operator": "IS_NOT_EMPTY_LIST",
+          "value": null,
+          "description": "Approved clauses is a non-empty list"
+        },
+        {
+          "path": "$.uniqueReferenceCodes",
+          "operator": "LIST_IS_SORTED_ASC",
+          "value": null,
+          "description": "Reference codes REF-101, REF-102, REF-103 are sorted ascending"
+        },
+        {
+          "path": "$.descendingCodes",
+          "operator": "LIST_IS_SORTED_DESC",
+          "value": null,
+          "description": "Reference codes REF-999, REF-888, REF-777 are sorted descending"
+        }
+      ]
+    },
+    {
+      "name": "List Membership & Element Matching Test",
+      "description": "Tests LIST_CONTAINS, LIST_DOES_NOT_CONTAIN, ANY_MATCH, NONE_MATCH, and LIST_CONTAINS_PARTIAL_OBJECT_WITH_FIELDS operators.",
+      "operation": "policy-evaluation-service",
+      "mutations": [],
+      "assertions": [
+        {
+          "path": "$.requiredDocs",
+          "operator": "LIST_CONTAINS",
+          "value": "AUDIT_REPORT",
+          "description": "Required docs contains AUDIT_REPORT"
+        },
+        {
+          "path": "$.requiredDocs",
+          "operator": "LIST_DOES_NOT_CONTAIN",
+          "value": "INVOICE_COPY",
+          "description": "Required docs does not contain INVOICE_COPY"
+        },
+        {
+          "path": "$.approvedClauses[*].status",
+          "operator": "ANY_MATCH",
+          "value": "APPROVED",
+          "description": "At least one clause status matches APPROVED"
+        },
+        {
+          "path": "$.approvedClauses[*].status",
+          "operator": "NONE_MATCH",
+          "value": "REJECTED",
+          "description": "No clause status matches REJECTED"
+        },
+        {
+          "path": "$.approvedClauses",
+          "operator": "LIST_CONTAINS_PARTIAL_OBJECT_WITH_FIELDS",
+          "value": {
+            "status": "APPROVED"
+          },
+          "description": "Array contains an object matching partial field status=APPROVED"
+        }
+      ]
+    }
+  ]
+}
+
+
+

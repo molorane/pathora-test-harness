@@ -5,22 +5,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+/**
+ * Represents a discrete test case containing mutations to apply to the request and assertions to evaluate on the response.
+ *
+ * @param name        the unique name or identifier of the test case
+ * @param description a human-readable description of what this test case verifies
+ * @param operation   the target operation or entry point name to invoke
+ * @param mutations   the list of input payload mutations to apply before execution
+ * @param assertions  the list of assertions to validate against the response
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record RuleTestCase(
 
-        @JsonProperty("TestName")
-        String testName,
+        @JsonProperty("name")
+        String name,
 
-        @JsonProperty("TestDescription")
-        String testDescription,
+        @JsonProperty("description")
+        String description,
 
-        @JsonProperty("EntryPointName")
-        String entryPointName,
+        @JsonProperty("operation")
+        String operation,
 
-        @JsonProperty("TestCaseParameterValues")
-        List<JsonMutation> testCaseParameterValues,
+        @JsonProperty("mutations")
+        List<JsonMutation> mutations,
 
-        @JsonProperty("ResponseAssertions")
-        List<JsonAssertion> responseAssertions
+        @JsonProperty("assertions")
+        List<JsonAssertion> assertions
 ) {
 }
+

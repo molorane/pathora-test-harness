@@ -1,45 +1,72 @@
 {
-  "DefaultJSONRequestPath": "../requests/all-operators-request.json",
-  "Tests": [
+  "requestPath": "../requests/complex-policy-request.json",
+  "tests": [
     {
-      "TestName": "Object Operators Demonstration Test",
-      "TestDescription": "Validates object field containment, key presence, and cross-field comparisons.",
-      "EntryPointName": "all-operators-service",
-      "TestCaseParameterValues": [],
-      "ResponseAssertions": [
+      "name": "Object Emptiness & Partial Fields Test",
+      "description": "Tests IS_EMPTY_OBJECT, IS_NOT_EMPTY_OBJECT, OBJECT_CONTAINS_PARTIAL_FIELDS, DOES_NOT_HAVE_KEYS, FIELD_NOT_EQUALS_OTHER_FIELD, FIELD_GREATER_THAN_OTHER_FIELD, and FIELD_LESS_THAN_OTHER_FIELD operators.",
+      "operation": "policy-evaluation-service",
+      "mutations": [],
+      "assertions": [
         {
-          "JsonPath": "$.userInfo",
-          "Operator": "OBJECT_CONTAINS_FIELDS",
-          "Value": {
-            "id": 101,
-            "name": "Jane Doe"
-          },
-          "Description": "OBJECT_CONTAINS_FIELDS assertion"
+          "path": "$.emptyMetadata",
+          "operator": "IS_EMPTY_OBJECT",
+          "value": null,
+          "description": "Empty metadata is an empty object"
         },
         {
-          "JsonPath": "$.userInfo",
-          "Operator": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS",
-          "Value": {
-            "id": 101,
-            "optionalNote": null
-          },
-          "Description": "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS assertion"
+          "path": "$.underwritingSummary",
+          "operator": "IS_NOT_EMPTY_OBJECT",
+          "value": null,
+          "description": "Underwriting summary is a non-empty object"
         },
         {
-          "JsonPath": "$.userInfo",
-          "Operator": "HAS_KEYS",
-          "Value": ["id", "name"],
-          "Description": "HAS_KEYS assertion"
+          "path": "$.underwritingSummary",
+          "operator": "OBJECT_CONTAINS_PARTIAL_FIELDS",
+          "value": {
+            "tier": "PREMIUM"
+          },
+          "description": "Underwriting summary contains partial field tier=PREMIUM"
         },
         {
-          "Operator": "FIELD_EQUALS_OTHER_FIELD",
-          "Value": {
-            "leftPath": "$.metrics.total",
-            "rightPath": "$.metrics.calculatedTotal"
+          "path": "$.underwritingSummary",
+          "operator": "DOES_NOT_HAVE_KEYS",
+          "value": [
+            "suspended",
+            "blacklisted"
+          ],
+          "description": "Underwriting summary does not contain blacklisted keys"
+        },
+        {
+          "path": "$.basePremium",
+          "operator": "FIELD_NOT_EQUALS_OTHER_FIELD",
+          "value": {
+            "leftPath": "$.basePremium",
+            "rightPath": "$.discountAmount"
           },
-          "Description": "FIELD_EQUALS_OTHER_FIELD assertion"
+          "description": "Base premium does not equal discount amount"
+        },
+        {
+          "path": "$.totalPremium",
+          "operator": "FIELD_GREATER_THAN_OTHER_FIELD",
+          "value": {
+            "leftPath": "$.totalPremium",
+            "rightPath": "$.finalPrice"
+          },
+          "description": "Total premium is strictly greater than final discounted price"
+        },
+        {
+          "path": "$.discountAmount",
+          "operator": "FIELD_LESS_THAN_OTHER_FIELD",
+          "value": {
+            "leftPath": "$.discountAmount",
+            "rightPath": "$.basePremium"
+          },
+          "description": "Discount amount is strictly less than base premium"
         }
       ]
     }
   ]
 }
+
+
+

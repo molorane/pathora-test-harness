@@ -1,0 +1,38 @@
+package io.github.molorane.pathora.testharness.engine.operator.string;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+class StringEndsWithAnyIgnoreCaseEvaluatorTest {
+
+    private StringEndsWithAnyIgnoreCaseEvaluator operator;
+
+    @BeforeEach
+    void setUp() {
+        operator = new StringEndsWithAnyIgnoreCaseEvaluator();
+    }
+
+    @Test
+    @DisplayName("PASS: string ends with one of the suffixes ignoring case")
+    void shouldPassWhenEndsWithAnyIgnoreCase() {
+        assertThatNoException().isThrownBy(() ->
+                operator.apply("$.filename", "document.PDF", List.of(".png", ".jpg", ".pdf"), true));
+    }
+
+    @Test
+    @DisplayName("FAIL: string does not end with any suffix")
+    void shouldFailWhenDoesNotEndWithAny() {
+        assertThatThrownBy(() ->
+                operator.apply("$.filename", "document.txt", List.of(".png", ".jpg", ".pdf"), true))
+                .isInstanceOf(HarnessAssertionException.class)
+                .hasMessageContaining("STRING_ENDS_WITH_ANY_IGNORE_CASE failed");
+    }
+}
+

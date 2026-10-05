@@ -4,8 +4,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Loader responsible for resolving and reading request template files from the file system.
+ */
 public class RequestTemplateLoader {
 
+    /**
+     * Resolves and loads the request template string.
+     *
+     * @param suitePath          the path of the test suite file referencing the template
+     * @param defaultRequestPath the relative or absolute path of the request template
+     * @return the string content of the request template
+     * @throws IOException              if reading the file fails
+     * @throws IllegalArgumentException if the file does not exist
+     */
     public String loadTemplate(Path suitePath,
                                String defaultRequestPath) throws IOException {
 
@@ -13,7 +25,7 @@ public class RequestTemplateLoader {
 
         if (Files.notExists(resolvedPath)) {
             throw new IllegalArgumentException(
-                "Request template not found: " + resolvedPath.toAbsolutePath()
+                    "Request template not found: " + resolvedPath.toAbsolutePath()
             );
         }
 
@@ -38,3 +50,4 @@ public class RequestTemplateLoader {
         return candidate;
     }
 }
+

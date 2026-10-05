@@ -1,6 +1,6 @@
 package io.github.molorane.pathora.testharness.engine.operator;
 
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestJsonHelper {
     private static final ObjectMapper MAPPER = new ObjectMapper();

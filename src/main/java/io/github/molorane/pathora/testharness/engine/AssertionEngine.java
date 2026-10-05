@@ -2,21 +2,36 @@ package io.github.molorane.pathora.testharness.engine;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import io.github.molorane.pathora.testharness.engine.operator.DocumentContextAwareEvaluator;
 import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
+import io.github.molorane.pathora.testharness.engine.operator.DocumentContextAwareEvaluator;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
 
-
+/**
+ * Core engine responsible for evaluating assertion rules against response payloads.
+ *
+ * <p>Supports standard JSONPath leaf assertions, document-context-aware cross-field assertions,
+ * and composable logical operators ({@code AND}, {@code OR}, {@code NOT}).</p>
+ */
 public class AssertionEngine {
 
     private final OperatorRegistry operatorRegistry;
 
+    /**
+     * Constructs a new {@code AssertionEngine} with a default {@link OperatorRegistry}.
+     */
     public AssertionEngine() {
         this.operatorRegistry = new OperatorRegistry();
     }
 
+    /**
+     * Asserts that a response string satisfies all assertions defined in the test case.
+     *
+     * @param response the response payload string
+     * @param testCase the rule test case specifying assertions
+     */
     public void assertResponse(
             String response,
             RuleTestCase testCase) {
@@ -24,17 +39,31 @@ public class AssertionEngine {
         assertResponse(response, testCase, null);
     }
 
+    /**
+     * Asserts that a response string satisfies all assertions defined in the test case, recording the mutated request on failure.
+     *
+     * @param response       the response payload string
+     * @param testCase       the rule test case specifying assertions
+     * @param mutatedRequest the mutated request string sent to produce the response
+     */
     public void assertResponse(
             String response,
             RuleTestCase testCase,
             String mutatedRequest
     ) {
 
-        var assertions = testCase.responseAssertions();
+        var assertions = testCase.assertions();
         DocumentContext context = JsonPath.parse(response);
 
         for (JsonAssertion assertion : assertions) {
-            evaluateAssertion(assertion, context, testCase, response, mutatedRequest);
+            try {
+                evaluateAssertion(assertion, context, testCase, response, mutatedRequest);
+            } catch (HarnessAssertionException e) {
+                if (e.testName() == null && e.testDescription() == null) {
+                    throw e.withTestDetails(testCase.name(), testCase.description());
+                }
+                throw e;
+            }
         }
     }
 
@@ -139,7 +168,7 @@ public class AssertionEngine {
         throw new AssertionError(
                 "LOGICAL_NOT_FAILED\n" +
                         "Nested assertion passed, but NOT expects it to fail.\n" +
-                        "Nested JsonPath: " + nested.jsonPath());
+                        "Nested JsonPath: " + nested.path());
     }
 
     private void evaluatePathAssertion(
@@ -152,7 +181,7 @@ public class AssertionEngine {
         boolean pathExists = true;
 
         try {
-            actual = context.read(assertion.jsonPath());
+            actual = context.read(assertion.path());
         } catch (com.jayway.jsonpath.PathNotFoundException e) {
             pathExists = false;
             handlePathNotFound(assertion, testCase, response, mutatedRequest, e);
@@ -169,8 +198,7 @@ public class AssertionEngine {
             String response,
             String mutatedRequest,
             com.jayway.jsonpath.PathNotFoundException e) {
-        if (assertion.operator() != AssertionOperator.EXISTS
-                && assertion.operator() != AssertionOperator.PATH_EXISTS
+        if (assertion.operator() != AssertionOperator.PATH_EXISTS
                 && assertion.operator() != AssertionOperator.PATH_NOT_EXISTS) {
             throw new AssertionError(
                     """
@@ -179,19 +207,19 @@ public class AssertionEngine {
                             JsonPath: %s
                             Expected Value: %s
                             Operator: %s
-                            Entry Point: %s
-
+                            Operation: %s
+                            
                             Path does not exist in response.
-
+                            
                             Response:
                             %s
                             Mutated Request:
                             %s
                             """.formatted(
-                            assertion.jsonPath(),
+                            assertion.path(),
                             assertion.value(),
                             assertion.operator(),
-                            testCase.entryPointName(),
+                            testCase.operation(),
                             response,
                             mutatedRequest),
                     e);
@@ -211,7 +239,7 @@ public class AssertionEngine {
                         JsonPath: %s
                         Expected Value: %s
                         Operator: %s
-                        Entry Point: %s
+                        Operation: %s
                         
                         Error: %s
                         
@@ -220,16 +248,23 @@ public class AssertionEngine {
                         Mutated Request:
                         %s
                         """.formatted(
-                        assertion.jsonPath(),
+                        assertion.path(),
                         assertion.value(),
                         assertion.operator(),
-                        testCase.entryPointName(),
+                        testCase.operation(),
                         e.getMessage(),
                         response,
                         mutatedRequest),
                 e);
     }
 
+    /**
+     * Applies a single assertion against an extracted actual value and path existence indicator.
+     *
+     * @param assertion  the assertion definition
+     * @param actual     the actual value read from JSONPath
+     * @param pathExists whether the target JSONPath was found in the document
+     */
     public void applyAssertion(JsonAssertion assertion, Object actual, boolean pathExists) {
 
         AssertionEvaluator handler = operatorRegistry.get(assertion.operator());
@@ -240,9 +275,10 @@ public class AssertionEngine {
         }
 
         handler.apply(
-                assertion.jsonPath(),
+                assertion.path(),
                 actual,
                 assertion.value(),
                 pathExists);
     }
 }
+

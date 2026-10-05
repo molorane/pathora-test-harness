@@ -2,17 +2,16 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.PolicyRequest;
 import com.example.demo.dto.PolicyResponse;
-import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
+import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Component
-public class ComplexPolicyExecutor implements EntryPointExecutor {
+public class ComplexPolicyExecutor implements EntryPointExecutor<PolicyRequest, PolicyResponse> {
 
     @Override
     public String getEntryPointName() {
@@ -20,14 +19,12 @@ public class ComplexPolicyExecutor implements EntryPointExecutor {
     }
 
     @Override
-    public Class<?> getRequestType() {
+    public Class<PolicyRequest> getRequestType() {
         return PolicyRequest.class;
     }
 
     @Override
-    public Object execute(Object request) {
-        PolicyRequest req = (PolicyRequest) request;
-
+    public PolicyResponse execute(PolicyRequest req) {
         String policyNumber = req.policyHeader() != null && req.policyHeader().policyNumber() != null
                 ? req.policyHeader().policyNumber()
                 : "POL-2026-DEFAULT";
@@ -110,16 +107,32 @@ public class ComplexPolicyExecutor implements EntryPointExecutor {
         return new PolicyResponse(
                 policyNumber,
                 "APPROVED",
-                "2026-09-15T12:00:00",
-                "2027-09-15T12:00:00",
+                "2026-09-15T12:30:45",
+                "2027-09-15T12:30:45",
                 "2026-01-01",
+                LocalDate.now().toString(),
+                LocalDateTime.now().minusMinutes(5).truncatedTo(ChronoUnit.SECONDS).toString(),
+                LocalDateTime.now().plusDays(30).truncatedTo(ChronoUnit.SECONDS).toString(),
                 basePremium,
                 totalPremium,
                 discountAmount,
                 finalPrice,
                 approvedClauses.size(),
                 riskScore,
+                -50,
                 riskScore,
+                true,
+                false,
+                null,
+                "550e8400-e29b-41d4-a716-446655440000",
+                "https://portal.pathora.co.za/policies",
+                "192.168.1.100",
+                "Pathora Enterprise",
+                "COMMERCIAL",
+                "Approved With Condition",
+                "   ",
+                "",
+                "2000",
                 legalName,
                 creditRating,
                 underwriterRegion,
@@ -130,9 +143,16 @@ public class ComplexPolicyExecutor implements EntryPointExecutor {
                 tags,
                 Collections.emptyList(),
                 List.of("REF-101", "REF-102", "REF-103"),
+                List.of("REF-999", "REF-888", "REF-777"),
+                List.of("   ", ""),
+                List.of("VALID", "  "),
+                List.of("DOC1", "DOC2"),
                 riskFlags,
                 underwritingSummary,
-                underwriterSummary
+                underwriterSummary,
+                Collections.emptyMap()
         );
     }
 }
+
+
