@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.molorane</groupId>
 	<artifactId>pathora-test-harness</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>pathora-test-harness</name>
 	<packaging>jar</packaging>
 	<description>Pathora Test Harness — lightweight, framework-independent Java library</description>
@@ -37,7 +37,7 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.21.4</jackson.version>
-        <jway.version>3.0.0</jway.version>
+        <jway.version>2.10.0</jway.version>
 		<checkstyle.version>3.6.0</checkstyle.version>
 		<maven.version>3.9.8</maven.version>
 		<maven.enforcer.version>3.6.2</maven.enforcer.version>
