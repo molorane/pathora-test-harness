@@ -22,10 +22,10 @@ This project provides a comprehensive, production-ready demonstration of **Patho
 ## Overview
 
 Pathora Test Harness allows developers and QA engineers to define service test scenarios in declarative JSON/XML files. Tests can:
-1. Load base JSON or XML request templates (`DefaultJSONRequestPath` or `DefaultXMLRequestPath`).
-2. Override specific payload fields using JSONPath syntax (`TestCaseParameterValues`).
+1. Load base JSON or XML request templates (`requestPath` or `xmlRequestPath`).
+2. Override specific payload fields using JSONPath syntax (`mutations`).
 3. Dispatch mutated requests to Spring domain services via registered **EntryPoint Executors**.
-4. Validate service responses using rich assertion rules (`ResponseAssertions`).
+4. Validate service responses using rich assertion rules (`assertions`).
 
 ---
 
@@ -44,7 +44,7 @@ It acts as the **bridge/adapter** between Pathora Test Harness and your applicat
              │
              ▼
 ┌─────────────────────────┐
-│   EntryPointDispatcher  │ (Matches "EntryPointName" from JSON test file)
+│   EntryPointDispatcher  │ (Matches "operation" from JSON test file)
 └────────────┬────────────┘
              │
              ▼
@@ -66,7 +66,7 @@ It acts as the **bridge/adapter** between Pathora Test Harness and your applicat
 ## XML Request Template Support
 
 Pathora Test Harness natively supports **XML request templates** (`.xml`) alongside JSON templates:
-- **`DefaultXMLRequestPath`**: Specify your base XML template file in the test suite JSON file (`"DefaultXMLRequestPath": "../requests/user-create-request.xml"`).
+- **`xmlRequestPath`**: Specify your base XML template file in the test suite JSON file (`"xmlRequestPath": "../requests/user-create-request.xml"`).
 - **Automatic Payload Format Detection**: `EntryPointDispatcher` automatically detects XML payloads and uses Jackson `XmlMapper` to deserialize XML into your Java DTOs.
 - **JSONPath Parameter Mutations on XML**: `JsonMutationEngine` automatically converts XML templates to an in-memory representation so you can use standard JSONPath mutations (`$.username`, `$.role`) seamlessly on XML requests.
 
@@ -131,20 +131,20 @@ example/
 ### Test Suite referencing XML (`templates/tests/user-create-xml-test.json`)
 ```json
 {
-  "DefaultXMLRequestPath": "../requests/user-create-request.xml",
-  "Tests": [
+  "xmlRequestPath": "../requests/user-create-request.xml",
+  "tests": [
     {
-      "TestName": "Valid User Registration Test from XML Template",
-      "TestDescription": "Validates user account creation using an XML base request template.",
-      "EntryPointName": "user-registration-service",
-      "TestCaseParameterValues": [
-        { "JsonPath": "$.username", "Value": "alex_murphy" },
-        { "JsonPath": "$.role", "Value": "ADMIN" }
+      "name": "Valid User Registration Test from XML Template",
+      "description": "Validates user account creation using an XML base request template.",
+      "operation": "user-registration-service",
+      "mutations": [
+        { "path": "$.username", "value": "alex_murphy" },
+        { "path": "$.role", "value": "ADMIN" }
       ],
-      "ResponseAssertions": [
-        { "JsonPath": "$.userId", "Operator": "STARTS_WITH", "Value": "USR-" },
-        { "JsonPath": "$.username", "Value": "alex_murphy" },
-        { "JsonPath": "$.role", "Value": "ADMIN" }
+      "assertions": [
+        { "path": "$.userId", "operator": "STARTS_WITH", "value": "USR-" },
+        { "path": "$.username", "value": "alex_murphy" },
+        { "path": "$.role", "value": "ADMIN" }
       ]
     }
   ]
@@ -195,7 +195,8 @@ Pathora Test Harness provides comprehensive operators for validating JSON respon
 | | `REGEX_MATCH` | Matches regular expression | `"^[A-Z0-9]+$"` |
 | **Date & Time** | `DATE_BEFORE` / `DATE_AFTER` | Date comparison (yyyy-MM-dd) | `"2030-01-01"` |
 | | `DATETIME_BEFORE` / `DATETIME_AFTER` | DateTime comparison (ISO-8601) | `"2025-01-01T00:00:00"` |
-| | `DATE_BEFORE_NOW` / `DATE_AFTER_NOW` | Compare against current system time | `null` |
+| | `IS_PAST_DATE` / `IS_FUTURE_DATE` | Compare date against current system time | `null` |
+| | `IS_PAST_DATETIME` / `IS_FUTURE_DATETIME` | Compare datetime against current system time | `null` |
 | | `DATE_WITHIN_NEXT` / `DATE_WITHIN_LAST` | Time window check | `{"amount": 30, "unit": "DAYS"}` |
 | **Duration** | `DURATION_EQUALS` | Exact duration between two date paths | `{"startPath": "$.start", "endPath": "$.end", "unit": "DAYS", "expected": 365}` |
 | | `DURATION_GREATER_THAN` | Duration > threshold | `{"startPath": "$.start", "endPath": "$.end", "unit": "MONTHS", "value": 11}` |
@@ -204,19 +205,19 @@ Pathora Test Harness provides comprehensive operators for validating JSON respon
 | | `DATE_BEFORE_DURATION` | End date is before start date + duration | `{"basePath": "$.start", "comparePath": "$.end", "amount": 400, "unit": "DAYS"}` |
 | **Structural** | `PATH_EXISTS` | JSONPath exists in response | `null` |
 | | `PATH_NOT_EXISTS` | JSONPath absent or empty in response | `null` |
-| | `ARRAY_SIZE_EQUALS` | Array length matches exact size | `2` |
-| **Array** | `ARRAY_CONTAINS` | Array contains specific item | `"AUDIT_REPORT"` |
-| | `ARRAY_CONTAINS_ONLY_VALUES` | Array contains exact set of values | `["REF-101", "REF-102"]` |
-| | `ARRAY_CONTAINS_ONLY_ONE_VALUE` | Array contains exactly one element equal to value | `"PRIMARY_AUDITOR"` |
-| | `ARRAY_CONTAINS_OBJECT_WITH_FIELDS` | Array contains object with matching fields | `{"clauseId": "CLS-01", "status": "APPROVED"}` |
+| | `LIST_SIZE_EQUALS` | List length matches exact size | `2` |
+| **List** | `LIST_CONTAINS` | List contains specific item | `"AUDIT_REPORT"` |
+| | `LIST_CONTAINS_ONLY_VALUES` | List contains exact set of values | `["REF-101", "REF-102"]` |
+| | `LIST_CONTAINS_ONLY_ONE_VALUE` | List contains exactly one element equal to value | `"PRIMARY_AUDITOR"` |
+| | `LIST_CONTAINS_OBJECT_WITH_FIELDS` | List contains object with matching fields | `{"clauseId": "CLS-01", "status": "APPROVED"}` |
 | | `ALL_MATCH` | All array elements match condition | `{"greaterThan": 0}` |
 | | `CONTAINS_ALL` / `CONTAINS_ANY` | Array contains all or any of expected values | `["TAG1", "TAG2"]` |
 | | `DOES_NOT_CONTAIN_ANY` / `DOES_NOT_CONTAIN_ALL` | Exclusion checks | `["FRAUD", "BANKRUPTCY"]` |
-| | `ARRAY_IS_EMPTY` | Array is empty | `null` |
+| | `IS_EMPTY_LIST` / `IS_NOT_EMPTY_LIST` | List emptiness checks | `null` |
 | | `UNIQUE_ELEMENTS` | Array has no duplicate elements | `null` |
 | | `VALUE_IN` / `VALUE_NOT_IN` | Scalar value is / isn't in allowed list | `["OPTION_A", "OPTION_B"]` |
 | **Object** | `OBJECT_CONTAINS_FIELDS` | Actual object contains expected fields | `{"code": "UW-01", "region": "NORTH"}` |
 | | `OBJECT_CONTAINS_FIELDS_IGNORE_NULLS` | Same as above, ignoring null expected fields | `{"code": "UW-01"}` |
 | | `HAS_KEYS` | Object contains keys (values ignored) | `["key1", "key2"]` |
 | | `FIELD_EQUALS_OTHER_FIELD` | Compare two fields in response | `{"leftPath": "$.fieldA", "rightPath": "$.fieldB"}` |
-| **Logical** | `AND` / `OR` / `NOT` | Composite logical assertions | `{"Assertions": [...]}` |
+| **Logical** | `AND` / `OR` / `NOT` | Composite logical assertions | `{"assertions": [...]}` |

@@ -52,11 +52,11 @@ Pathora Test Harness introduces a **data-driven, SPI-powered testing paradigm**:
 │                           PATHORA TEST HARNESS                              │
 │                                                                             │
 │   1. Read Base Request JSON ─────► 2. Apply JSONPath Parameter Mutations   │
-│      (templates/requests/)            (TestCaseParameterValues)             │
+│      (templates/requests/)            (mutations)                           │
 │                                                   │                         │
 │                                                   ▼                         │
 │   4. Evaluate Path Assertions ◄──── 3. Dispatch to EntryPointExecutor SPI  │
-│      (ResponseAssertions)             (In-process Java DTO execution)       │
+│      (assertions)                     (In-process Java DTO execution)       │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -68,21 +68,21 @@ Pathora Test Harness introduces a **data-driven, SPI-powered testing paradigm**:
 
 ---
 
-## 3. Why Pathora Uses JayWay JsonPath
+## 3. Why Pathora Uses JayWay JSONPath
 
 Pathora Test Harness relies on [JayWay JsonPath](https://github.com/json-path/JsonPath) (`com.jayway.jsonpath:json-path`) as its core engine for payload manipulation and assertion evaluation.
 
-### Why JayWay JsonPath?
+### Why JayWay JSONPath?
 
 #### 1. Expressive Path Navigation Across Deeply Nested JSON
-JayWay JsonPath provides XPath-like query syntax tailored for JSON documents:
+JayWay JSONPath provides XPath-like query syntax tailored for JSON documents:
 - **Direct Property Navigation**: `$.policyHeader.underwriter.code`
 - **Array Slicing & Indexing**: `$.items[0].price`
 - **Wildcard Evaluation**: `$.approvedClauses[*].limit`
 - **Filter Expressions**: `$.clauses[?(@.mandatory == true)].clauseId`
 
 #### 2. In-Memory JSON Mutation via `DocumentContext`
-JayWay JsonPath includes a high-performance, fluent `DocumentContext` API:
+JayWay JSONPath includes a high-performance, fluent `DocumentContext` API:
 ```java
 DocumentContext context = JsonPath.parse(baseJsonRequest);
 context.set("$.insuredParty.riskMetrics.score", 900);
@@ -91,10 +91,10 @@ String mutatedJson = context.jsonString();
 This allows Pathora's `JsonMutationEngine` to take a raw template JSON string and dynamically mutate any property in milliseconds, without requiring custom Java reflection code.
 
 #### 3. Automatic Type Extraction and Conversion
-JayWay JsonPath handles type extraction seamlessly. Whether a node is a String, Integer, Double, Boolean, Map, or List, JayWay extracts the object accurately for Pathora's `AssertionUtils` to perform type-normalized comparisons.
+JayWay JSONPath handles type extraction seamlessly. Whether a node is a String, Integer, Double, Boolean, Map, or List, JayWay extracts the object accurately for Pathora's `AssertionUtils` to perform type-normalized comparisons.
 
 #### 4. High Performance and Thread Safety
-JayWay JsonPath uses an optimized `ParseContext` and supports pre-compiled `JsonPath` expressions. This ensures that executing hundreds of test cases per second in CI/CD build pipelines incurs minimal latency.
+JayWay JSONPath uses an optimized `ParseContext` and supports pre-compiled `JsonPath` expressions. This ensures that executing hundreds of test cases per second in CI/CD build pipelines incurs minimal latency.
 
 ---
 
@@ -116,4 +116,4 @@ JayWay JsonPath uses an optimized `ParseContext` and supports pre-compiled `Json
 
 Pathora Test Harness bridges the gap between **code-first Java unit testing** and **declarative API testing**. 
 
-By leveraging **JayWay JsonPath** for payload mutation and path assertions alongside a simple **SPI (`EntryPointExecutor`)** for in-process execution, Pathora allows teams to write clean, maintainable, data-driven tests for complex enterprise applications with **zero boilerplate, zero HTTP overhead, and maximum execution speed.**
+By leveraging **JayWay JSONPath** for payload mutation and path assertions alongside a simple **SPI (`EntryPointExecutor`)** for in-process execution, Pathora allows teams to write clean, maintainable, data-driven tests for complex enterprise applications with **zero boilerplate, zero HTTP overhead, and maximum execution speed.**

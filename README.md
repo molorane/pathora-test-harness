@@ -6,7 +6,7 @@
 
 ## 📚 Documentation & Guides
 
-- **[Why Pathora Test Harness Exists (Design Rationale)](WHY_PATHORA.md)**: Explains the problem Pathora solves, why traditional Java DTO builders and HTTP testing tools fall short, and why Pathora relies on JayWay JsonPath for in-memory payload mutations and assertions.
+- **[Why Pathora Test Harness Exists (Design Rationale)](WHY_PATHORA.md)**: Explains the problem Pathora solves, why traditional Java DTO builders and HTTP testing tools fall short, and why Pathora relies on JayWay JSONPath for in-memory payload mutations and assertions.
 - **[Spring Boot Demo Application & Executor Guide](example/README.md)**: A complete, working Spring Boot 3.4.1 demo project showcasing how to write `EntryPointExecutor` SPI adapters, JSON request templates, and JSON test suite definitions.
 
 ---
@@ -14,9 +14,9 @@
 ## 🌟 Key Features
 
 - 📄 **Declarative JSON Test Suites**: Store base JSON request templates and test definitions in human-readable JSON files.
-- ⚡ **Surgical Parameter Mutation**: Mutate specific JSON properties using JSONPath expressions (`TestCaseParameterValues`), eliminating duplicate test data files.
+- ⚡ **Surgical Parameter Mutation**: Mutate specific JSON properties using JSONPath expressions (`mutations`), eliminating duplicate test data files.
 - 🔌 **In-Process SPI Execution (`EntryPointExecutor`)**: Dispatches mutated requests directly to Java DTOs and Spring `@Service` beans in-memory. **Zero HTTP network latency, zero web server startup overhead.**
-- 🎯 **Rich JsonPath Assertions**: Validate response nodes using Scalar, String, Date/Time, Duration, Structural, Array, Object, and Logical operators.
+- 🎯 **Rich JSONPath Assertions**: Validate response nodes using Scalar, String, Date/Time, Duration, Structural, Array, Object, and Logical operators.
 - 🧪 **Flexible Test Runners**: Supports both individual test file execution (`SingleTestSuiteDemoTest`) and dynamic directory batch execution (`AllSuiteTest` via JUnit 5 `@TestFactory`).
 
 ---
@@ -29,7 +29,7 @@
 <dependency>
     <groupId>io.github.molorane</groupId>
     <artifactId>pathora-test-harness</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -44,7 +44,7 @@ import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderProcessingExecutor implements EntryPointExecutor {
+public class OrderProcessingExecutor implements EntryPointExecutor<OrderRequest, OrderResponse> {
 
     @Override
     public String getEntryPointName() {
@@ -52,15 +52,14 @@ public class OrderProcessingExecutor implements EntryPointExecutor {
     }
 
     @Override
-    public Class<?> getRequestType() {
+    public Class<OrderRequest> getRequestType() {
         return OrderRequest.class;
     }
 
     @Override
-    public Object execute(Object request) {
-        OrderRequest orderReq = (OrderRequest) request;
+    public OrderResponse execute(OrderRequest request) {
         // Invoke domain service logic and return response DTO
-        return new OrderResponse("ORD-1001", orderReq.customerId(), 150.00, "CREATED");
+        return new OrderResponse("ORD-1001", request.customerId(), 150.00, "CREATED");
     }
 }
 ```
@@ -78,24 +77,24 @@ public class OrderProcessingExecutor implements EntryPointExecutor {
 **Test Suite (`templates/tests/order-test.json`)**:
 ```json
 {
-  "DefaultJSONRequestPath": "../requests/order-request.json",
-  "Tests": [
+  "requestPath": "../requests/order-request.json",
+  "tests": [
     {
-      "TestName": "Order Checkout Calculation Test",
-      "TestDescription": "Validates customer ID and CREATED status.",
-      "EntryPointName": "order-processing-service",
-      "TestCaseParameterValues": [
-        { "JsonPath": "$.customerId", "Value": "CUST-99001" }
+      "name": "Order Checkout Calculation Test",
+      "description": "Validates customer ID and CREATED status.",
+      "operation": "order-processing-service",
+      "mutations": [
+        { "path": "$.customerId", "value": "CUST-99001" }
       ],
-      "ResponseAssertions": [
+      "assertions": [
         {
-          "JsonPath": "$.orderId",
-          "Operator": "STARTS_WITH",
-          "Value": "ORD-"
+          "path": "$.orderId",
+          "operator": "STARTS_WITH",
+          "value": "ORD-"
         },
         {
-          "JsonPath": "$.status",
-          "Value": "CREATED"
+          "path": "$.status",
+          "value": "CREATED"
         }
       ]
     }
