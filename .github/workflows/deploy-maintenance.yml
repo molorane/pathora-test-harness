@@ -19,9 +19,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify tag is on main
+      - name: Verify tag is on feature/old-jackson
         run: |
-          git fetch origin main
+          git fetch origin feature/old-jackson
 
           if ! git merge-base --is-ancestor "$GITHUB_SHA" "feature/old-jackson"; then
             echo "ERROR: This tag does not point to a commit on main."
