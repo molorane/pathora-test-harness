@@ -2,13 +2,18 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.InventoryRequest;
 import com.example.demo.dto.InventoryResponse;
-import org.springframework.stereotype.Component;
+import com.example.demo.service.InventoryUpdateService;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
-
-import java.time.Instant;
+import org.springframework.stereotype.Component;
 
 @Component
 public class InventoryUpdateExecutor implements EntryPointExecutor<InventoryRequest, InventoryResponse> {
+
+    private final InventoryUpdateService inventoryUpdateService;
+
+    public InventoryUpdateExecutor(InventoryUpdateService inventoryUpdateService) {
+        this.inventoryUpdateService = inventoryUpdateService;
+    }
 
     @Override
     public String getEntryPointName() {
@@ -22,15 +27,6 @@ public class InventoryUpdateExecutor implements EntryPointExecutor<InventoryRequ
 
     @Override
     public InventoryResponse execute(InventoryRequest inventoryRequest) {
-        int newStockLevel = Math.max(0, inventoryRequest.addQuantity());
-        String stockStatus = newStockLevel > 0 ? "IN_STOCK" : "OUT_OF_STOCK";
-
-        return new InventoryResponse(
-                inventoryRequest.productId(),
-                newStockLevel,
-                stockStatus,
-                inventoryRequest.unitPrice(),
-                Instant.now().toString()
-        );
+        return inventoryUpdateService.updateInventory(inventoryRequest);
     }
 }
