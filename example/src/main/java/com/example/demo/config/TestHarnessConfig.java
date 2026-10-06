@@ -12,6 +12,7 @@ import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.dataformat.xml.XmlMapper;
 
 import java.util.List;
@@ -26,12 +27,14 @@ public class TestHarnessConfig {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper();
+        return JsonMapper.builder()
+            .build();
     }
 
     @Bean
     public XmlMapper xmlMapper() {
-        return new XmlMapper();
+        return XmlMapper.builder()
+            .build();
     }
 
     @Bean
@@ -61,7 +64,8 @@ public class TestHarnessConfig {
     @Bean
     public JsonMutationEngine jsonMutationEngine(
         ObjectMapper objectMapper,
-        XmlMapper xmlMapper) {
+        XmlMapper xmlMapper
+    ) {
         return new JsonMutationEngine(objectMapper, xmlMapper);
     }
 

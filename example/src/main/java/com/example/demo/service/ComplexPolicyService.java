@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
 import com.example.demo.dto.PolicyRequest;
 import com.example.demo.dto.PolicyResponse;
@@ -12,7 +12,11 @@ import java.util.*;
 @Service
 public class ComplexPolicyService {
 
-    public PolicyResponse execute(PolicyRequest req) {
+    private static final LocalDateTime EVALUATION_TIMESTAMP = LocalDateTime.of(2026, 9, 15, 12, 30, 45);
+    private static final LocalDateTime EXPIRATION_TIMESTAMP = LocalDateTime.of(2027, 9, 15, 12, 30, 45);
+    private static final LocalDate DEFAULT_POLICY_EFFECTIVE_DATE = LocalDate.of(2026, 1, 1);
+
+    public PolicyResponse evaluatePolicy(PolicyRequest req) {
         String policyNumber = req.policyHeader() != null && req.policyHeader().policyNumber() != null
             ? req.policyHeader().policyNumber()
             : "POL-2026-DEFAULT";
@@ -95,12 +99,14 @@ public class ComplexPolicyService {
         return new PolicyResponse(
             policyNumber,
             "APPROVED",
-            "2026-09-15T12:30:45",
-            "2027-09-15T12:30:45",
-            "2026-01-01",
-            LocalDate.now().toString(),
-            LocalDateTime.now().minusMinutes(5).truncatedTo(ChronoUnit.SECONDS).toString(),
-            LocalDateTime.now().plusDays(30).truncatedTo(ChronoUnit.SECONDS).toString(),
+            EVALUATION_TIMESTAMP,
+            EXPIRATION_TIMESTAMP,
+            req.policyHeader() != null && req.policyHeader().effectiveDate() != null
+                ? req.policyHeader().effectiveDate().toLocalDate()
+                : DEFAULT_POLICY_EFFECTIVE_DATE,
+            LocalDate.now(),
+            LocalDateTime.now().minusMinutes(5).truncatedTo(ChronoUnit.SECONDS),
+            LocalDateTime.now().plusDays(30).truncatedTo(ChronoUnit.SECONDS),
             basePremium,
             totalPremium,
             discountAmount,
@@ -142,3 +148,4 @@ public class ComplexPolicyService {
         );
     }
 }
+

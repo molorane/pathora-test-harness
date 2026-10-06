@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
 import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserResponse;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Service
 public class UserRegistrationService {
 
-    public UserResponse execute(UserRequest userRequest) {
+    public UserResponse registerUser(UserRequest userRequest) {
         String userId = "USR-" + UUID.randomUUID().toString().substring(0, 8);
         String status = userRequest.status() != null ? userRequest.status() : "ACTIVE";
 
@@ -21,7 +21,7 @@ public class UserRegistrationService {
             userRequest.email(),
             userRequest.role(),
             status,
-            Instant.now().toString(),
+            Instant.now(),
             "192.168.1.1",
             "https://example.com/user/profile",
             "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
@@ -37,3 +37,4 @@ public class UserRegistrationService {
         );
     }
 }
+

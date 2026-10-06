@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import java.time.Instant;
+
 public record OrderResponse(
     String orderId,
     String customerId,
@@ -8,6 +10,6 @@ public record OrderResponse(
     double tax,
     double totalAmount,
     String status,
-    String createdAt
+    Instant createdAt
 ) {
 }

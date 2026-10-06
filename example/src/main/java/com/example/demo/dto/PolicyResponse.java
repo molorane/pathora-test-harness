@@ -1,17 +1,19 @@
 package com.example.demo.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 public record PolicyResponse(
     String policyNumber,
     String status,
-    String evaluationTimestamp,
-    String expirationTimestamp,
-    String policyHeaderEffectiveDate,
-    String currentDate,
-    String currentDateTime,
-    String futureDateTime,
+    LocalDateTime evaluationTimestamp,
+    LocalDateTime expirationTimestamp,
+    LocalDate policyHeaderEffectiveDate,
+    LocalDate currentDate,
+    LocalDateTime currentDateTime,
+    LocalDateTime futureDateTime,
     double basePremium,
     double totalPremium,
     double discountAmount,

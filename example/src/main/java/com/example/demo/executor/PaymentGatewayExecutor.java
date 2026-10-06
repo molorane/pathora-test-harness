@@ -2,7 +2,7 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.PaymentRequest;
 import com.example.demo.dto.PaymentResponse;
-import com.example.demo.services.PaymentGatewayService;
+import com.example.demo.service.PaymentGatewayService;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +27,6 @@ public class PaymentGatewayExecutor implements EntryPointExecutor<PaymentRequest
 
     @Override
     public PaymentResponse execute(PaymentRequest paymentRequest) {
-        return paymentGatewayService.execute(paymentRequest);
+        return paymentGatewayService.processPayment(paymentRequest);
     }
 }

@@ -2,7 +2,7 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.PolicyRequest;
 import com.example.demo.dto.PolicyResponse;
-import com.example.demo.services.ComplexPolicyService;
+import com.example.demo.service.ComplexPolicyService;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class ComplexPolicyExecutor implements EntryPointExecutor<PolicyRequest, 
 
     @Override
     public PolicyResponse execute(PolicyRequest req) {
-        return complexPolicyService.execute(req);
+        return complexPolicyService.evaluatePolicy(req);
     }
 }
 

@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
 import com.example.demo.dto.LoanRequest;
 import com.example.demo.dto.LoanResponse;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Service
 public class LoanApplicationService {
 
-    public LoanResponse execute(LoanRequest loanRequest) {
+    public LoanResponse processApplication(LoanRequest loanRequest) {
         String applicationId = "APP-" + UUID.randomUUID().toString().substring(0, 8);
 
         String decisionStatus;
@@ -40,7 +40,7 @@ public class LoanApplicationService {
             approvedAmount,
             interestRate,
             decisionStatus,
-            Instant.now().toString(),
+            Instant.now(),
             eligible,
             requiresManualReview,
             -10,
@@ -49,3 +49,4 @@ public class LoanApplicationService {
         );
     }
 }
+

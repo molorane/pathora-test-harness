@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record PolicyRequest(
@@ -9,8 +10,8 @@ public record PolicyRequest(
 ) {
     public record PolicyHeader(
         String policyNumber,
-        String effectiveDate,
-        String expiryDate,
+        LocalDateTime effectiveDate,
+        LocalDateTime expiryDate,
         Underwriter underwriter
     ) {
     }

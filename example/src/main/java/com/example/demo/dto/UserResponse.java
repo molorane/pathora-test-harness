@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import java.time.Instant;
 import java.util.List;
 
 public record UserResponse(
@@ -8,7 +9,7 @@ public record UserResponse(
     String email,
     String role,
     String status,
-    String createdAt,
+    Instant createdAt,
     String ipAddress,
     String websiteUrl,
     String trackingUuid,

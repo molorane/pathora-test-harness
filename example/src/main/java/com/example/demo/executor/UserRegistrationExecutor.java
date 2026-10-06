@@ -2,7 +2,7 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserResponse;
-import com.example.demo.services.UserRegistrationService;
+import com.example.demo.service.UserRegistrationService;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class UserRegistrationExecutor implements EntryPointExecutor<UserRequest,
 
     @Override
     public UserResponse execute(UserRequest userRequest) {
-        return userRegistrationService.execute(userRequest);
+        return userRegistrationService.registerUser(userRequest);
     }
 }
 
