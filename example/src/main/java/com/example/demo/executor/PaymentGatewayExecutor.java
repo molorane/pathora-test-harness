@@ -2,14 +2,18 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.PaymentRequest;
 import com.example.demo.dto.PaymentResponse;
-import org.springframework.stereotype.Component;
+import com.example.demo.services.PaymentGatewayService;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
-
-import java.time.Instant;
-import java.util.UUID;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PaymentGatewayExecutor implements EntryPointExecutor<PaymentRequest, PaymentResponse> {
+
+    private final PaymentGatewayService paymentGatewayService;
+
+    public PaymentGatewayExecutor(PaymentGatewayService paymentGatewayService) {
+        this.paymentGatewayService = paymentGatewayService;
+    }
 
     @Override
     public String getEntryPointName() {
@@ -23,16 +27,6 @@ public class PaymentGatewayExecutor implements EntryPointExecutor<PaymentRequest
 
     @Override
     public PaymentResponse execute(PaymentRequest paymentRequest) {
-        String paymentId = "PAY-" + UUID.randomUUID().toString().substring(0, 8);
-
-        String status = paymentRequest.amount() > 0 ? "SUCCESS" : "FAILED";
-
-        return new PaymentResponse(
-                paymentId,
-                paymentRequest.transactionId(),
-                paymentRequest.amount(),
-                status,
-                Instant.now().toString()
-        );
+        return paymentGatewayService.execute(paymentRequest);
     }
 }
