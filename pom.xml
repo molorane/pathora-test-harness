@@ -38,7 +38,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>3.2.1</jackson.version>
 		<checkstyle.version>3.6.0</checkstyle.version>
-		<maven.version>3.9.8</maven.version>
+		<maven.version>3.9.16</maven.version>
 		<maven.enforcer.version>3.6.2</maven.enforcer.version>
 		<!-- Fallback for IDE only; override at built time -->
 		<git.commit.time>2026-01-01T00:00:09Z</git.commit.time>
