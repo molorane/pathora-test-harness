@@ -2,7 +2,7 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.InventoryRequest;
 import com.example.demo.dto.InventoryResponse;
-import com.example.demo.services.InventoryUpdateService;
+import com.example.demo.service.InventoryUpdateService;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +27,6 @@ public class InventoryUpdateExecutor implements EntryPointExecutor<InventoryRequ
 
     @Override
     public InventoryResponse execute(InventoryRequest inventoryRequest) {
-        return inventoryUpdateService.execute(inventoryRequest);
+        return inventoryUpdateService.updateInventory(inventoryRequest);
     }
 }

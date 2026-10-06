@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
 import com.example.demo.dto.PolicyRequest;
 import com.example.demo.dto.PolicyResponse;
@@ -7,15 +7,23 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ComplexPolicyService {
 
-    public PolicyResponse execute(PolicyRequest req) {
+    private static final LocalDateTime EVALUATION_TIMESTAMP = LocalDateTime.of(2026, 9, 15, 12, 30, 45);
+    private static final LocalDateTime EXPIRATION_TIMESTAMP = LocalDateTime.of(2027, 9, 15, 12, 30, 45);
+    private static final LocalDate DEFAULT_POLICY_EFFECTIVE_DATE = LocalDate.of(2026, 1, 1);
+
+    public PolicyResponse evaluatePolicy(PolicyRequest req) {
         String policyNumber = req.policyHeader() != null && req.policyHeader().policyNumber() != null
-            ? req.policyHeader().policyNumber()
-            : "POL-2026-DEFAULT";
+                ? req.policyHeader().policyNumber()
+                : "POL-2026-DEFAULT";
 
         int riskScore = 820;
         List<String> riskFlags = Collections.emptyList();
@@ -54,7 +62,7 @@ public class ComplexPolicyService {
             if (req.coverageDetails().clauses() != null) {
                 for (PolicyRequest.Clause clause : req.coverageDetails().clauses()) {
                     approvedClauses.add(new PolicyResponse.ApprovedClause(
-                        clause.clauseId(), "APPROVED", clause.limit()
+                            clause.clauseId(), "APPROVED", clause.limit()
                     ));
                     if (clause.tags() != null) {
                         tags.addAll(clause.tags());
@@ -93,52 +101,55 @@ public class ComplexPolicyService {
         underwriterSummary.put("region", underwriterRegion);
 
         return new PolicyResponse(
-            policyNumber,
-            "APPROVED",
-            "2026-09-15T12:30:45",
-            "2027-09-15T12:30:45",
-            "2026-01-01",
-            LocalDate.now().toString(),
-            LocalDateTime.now().minusMinutes(5).truncatedTo(ChronoUnit.SECONDS).toString(),
-            LocalDateTime.now().plusDays(30).truncatedTo(ChronoUnit.SECONDS).toString(),
-            basePremium,
-            totalPremium,
-            discountAmount,
-            finalPrice,
-            approvedClauses.size(),
-            riskScore,
-            -50,
-            riskScore,
-            true,
-            false,
-            null,
-            "550e8400-e29b-41d4-a716-446655440000",
-            "https://portal.pathora.co.za/policies",
-            "192.168.1.100",
-            "Pathora Enterprise",
-            "COMMERCIAL",
-            "Approved With Condition",
-            "   ",
-            "",
-            "2000",
-            legalName,
-            creditRating,
-            underwriterRegion,
-            contactEmail,
-            approvedClauses,
-            List.of("PROOF_OF_REGISTER", "AUDIT_REPORT", "TAX_CLEARANCE"),
-            List.of("SENIOR_AUDITOR_SMITH"),
-            tags,
-            Collections.emptyList(),
-            List.of("REF-101", "REF-102", "REF-103"),
-            List.of("REF-999", "REF-888", "REF-777"),
-            List.of("   ", ""),
-            List.of("VALID", "  "),
-            List.of("DOC1", "DOC2"),
-            riskFlags,
-            underwritingSummary,
-            underwriterSummary,
-            Collections.emptyMap()
+                policyNumber,
+                "APPROVED",
+                EVALUATION_TIMESTAMP,
+                EXPIRATION_TIMESTAMP,
+                req.policyHeader() != null && req.policyHeader().effectiveDate() != null
+                        ? req.policyHeader().effectiveDate().toLocalDate()
+                        : DEFAULT_POLICY_EFFECTIVE_DATE,
+                LocalDate.now(),
+                LocalDateTime.now().minusMinutes(5).truncatedTo(ChronoUnit.SECONDS),
+                LocalDateTime.now().plusDays(30).truncatedTo(ChronoUnit.SECONDS),
+                basePremium,
+                totalPremium,
+                discountAmount,
+                finalPrice,
+                approvedClauses.size(),
+                riskScore,
+                -50,
+                riskScore,
+                true,
+                false,
+                null,
+                "550e8400-e29b-41d4-a716-446655440000",
+                "https://portal.pathora.co.za/policies",
+                "192.168.1.100",
+                "Pathora Enterprise",
+                "COMMERCIAL",
+                "Approved With Condition",
+                "   ",
+                "",
+                "2000",
+                legalName,
+                creditRating,
+                underwriterRegion,
+                contactEmail,
+                approvedClauses,
+                List.of("PROOF_OF_REGISTER", "AUDIT_REPORT", "TAX_CLEARANCE"),
+                List.of("SENIOR_AUDITOR_SMITH"),
+                tags,
+                Collections.emptyList(),
+                List.of("REF-101", "REF-102", "REF-103"),
+                List.of("REF-999", "REF-888", "REF-777"),
+                List.of("   ", ""),
+                List.of("VALID", "  "),
+                List.of("DOC1", "DOC2"),
+                riskFlags,
+                underwritingSummary,
+                underwriterSummary,
+                Collections.emptyMap()
         );
     }
 }
+

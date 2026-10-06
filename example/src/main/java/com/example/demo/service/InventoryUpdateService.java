@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
 import com.example.demo.dto.InventoryRequest;
 import com.example.demo.dto.InventoryResponse;
@@ -9,16 +9,17 @@ import java.time.Instant;
 @Service
 public class InventoryUpdateService {
 
-    public InventoryResponse execute(InventoryRequest inventoryRequest) {
+    public InventoryResponse updateInventory(InventoryRequest inventoryRequest) {
         int newStockLevel = Math.max(0, inventoryRequest.addQuantity());
         String stockStatus = newStockLevel > 0 ? "IN_STOCK" : "OUT_OF_STOCK";
 
         return new InventoryResponse(
-            inventoryRequest.productId(),
-            newStockLevel,
-            stockStatus,
-            inventoryRequest.unitPrice(),
-            Instant.now().toString()
+                inventoryRequest.productId(),
+                newStockLevel,
+                stockStatus,
+                inventoryRequest.unitPrice(),
+                Instant.now()
         );
     }
 }
+

@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
 import com.example.demo.dto.OrderRequest;
 import com.example.demo.dto.OrderResponse;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Service
 public class OrderProcessingService {
 
-    public OrderResponse execute(OrderRequest orderRequest) {
+    public OrderResponse processOrder(OrderRequest orderRequest) {
         String orderId = "ORD-" + UUID.randomUUID().toString().substring(0, 8);
 
         double subtotal = 0.0;
@@ -26,14 +26,15 @@ public class OrderProcessingService {
         double totalAmount = Math.round((subtotal + tax) * 100.0) / 100.0;
 
         return new OrderResponse(
-            orderId,
-            orderRequest.customerId(),
-            totalItems,
-            subtotal,
-            tax,
-            totalAmount,
-            "CREATED",
-            Instant.now().toString()
+                orderId,
+                orderRequest.customerId(),
+                totalItems,
+                subtotal,
+                tax,
+                totalAmount,
+                "CREATED",
+                Instant.now()
         );
     }
 }
+

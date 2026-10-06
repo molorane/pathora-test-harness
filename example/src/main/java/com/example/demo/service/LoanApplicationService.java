@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
 import com.example.demo.dto.LoanRequest;
 import com.example.demo.dto.LoanResponse;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Service
 public class LoanApplicationService {
 
-    public LoanResponse execute(LoanRequest loanRequest) {
+    public LoanResponse processApplication(LoanRequest loanRequest) {
         String applicationId = "APP-" + UUID.randomUUID().toString().substring(0, 8);
 
         String decisionStatus;
@@ -35,17 +35,18 @@ public class LoanApplicationService {
         boolean requiresManualReview = "APPROVED_CONDITIONAL".equals(decisionStatus);
 
         return new LoanResponse(
-            applicationId,
-            loanRequest.applicantId(),
-            approvedAmount,
-            interestRate,
-            decisionStatus,
-            Instant.now().toString(),
-            eligible,
-            requiresManualReview,
-            -10,
-            loanRequest.creditScore(),
-            null
+                applicationId,
+                loanRequest.applicantId(),
+                approvedAmount,
+                interestRate,
+                decisionStatus,
+                Instant.now(),
+                eligible,
+                requiresManualReview,
+                -10,
+                loanRequest.creditScore(),
+                null
         );
     }
 }
+
