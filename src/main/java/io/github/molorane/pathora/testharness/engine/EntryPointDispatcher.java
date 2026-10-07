@@ -22,9 +22,9 @@ public class EntryPointDispatcher {
      * @param xmlMapper    the XML object mapper
      */
     public EntryPointDispatcher(
-            EntryPointRegistry registry,
-            ObjectMapper objectMapper,
-            XmlMapper xmlMapper) {
+        EntryPointRegistry registry,
+        ObjectMapper objectMapper,
+        XmlMapper xmlMapper) {
         this.registry = registry;
         this.objectMapper = objectMapper;
         this.xmlMapper = xmlMapper;
@@ -54,7 +54,7 @@ public class EntryPointDispatcher {
     @SuppressWarnings("unchecked")
     public String dispatch(String entryPointName, String requestPayload, boolean isXml) throws Exception {
         EntryPointExecutor<Object, Object> executor =
-                (EntryPointExecutor<Object, Object>) registry.get(entryPointName);
+            (EntryPointExecutor<Object, Object>) registry.get(entryPointName);
 
         Object request;
         if (isXml && requestPayload != null && requestPayload.trim().startsWith("<")) {

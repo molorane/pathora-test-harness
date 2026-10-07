@@ -1,23 +1,7 @@
 package com.example.demo.traditional;
 
-import com.example.demo.dto.InventoryRequest;
-import com.example.demo.dto.InventoryResponse;
-import com.example.demo.dto.LoanRequest;
-import com.example.demo.dto.LoanResponse;
-import com.example.demo.dto.OrderRequest;
-import com.example.demo.dto.OrderResponse;
-import com.example.demo.dto.PaymentRequest;
-import com.example.demo.dto.PaymentResponse;
-import com.example.demo.dto.PolicyRequest;
-import com.example.demo.dto.PolicyResponse;
-import com.example.demo.dto.UserRequest;
-import com.example.demo.dto.UserResponse;
-import com.example.demo.service.ComplexPolicyService;
-import com.example.demo.service.InventoryUpdateService;
-import com.example.demo.service.LoanApplicationService;
-import com.example.demo.service.OrderProcessingService;
-import com.example.demo.service.PaymentGatewayService;
-import com.example.demo.service.UserRegistrationService;
+import com.example.demo.dto.*;
+import com.example.demo.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

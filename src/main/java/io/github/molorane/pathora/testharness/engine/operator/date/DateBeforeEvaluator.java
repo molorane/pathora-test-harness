@@ -41,13 +41,13 @@ public class DateBeforeEvaluator implements AssertionEvaluator {
 
         if (!actualDate.isBefore(expectedDate)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_BEFORE,
-                    path,
-                    expected,
-                    actual,
-                    "DATE_BEFORE failed at " + path +
-                            ". Expected before: " + expectedDate +
-                            ", Actual: " + actualDate);
+                AssertionOperator.DATE_BEFORE,
+                path,
+                expected,
+                actual,
+                "DATE_BEFORE failed at " + path +
+                    ". Expected before: " + expectedDate +
+                    ", Actual: " + actualDate);
         }
     }
 }

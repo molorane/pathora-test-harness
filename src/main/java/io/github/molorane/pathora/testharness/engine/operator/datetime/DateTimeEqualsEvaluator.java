@@ -40,13 +40,13 @@ public class DateTimeEqualsEvaluator implements AssertionEvaluator {
 
         if (!actualDate.isEqual(expectedDate)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATETIME_EQUALS,
-                    path,
-                    expectedDate,
-                    actualDate,
-                    "DATETIME_EQUALS failed at " + path +
-                            ". Expected datetime: " + expectedDate +
-                            ", Actual: " + actualDate);
+                AssertionOperator.DATETIME_EQUALS,
+                path,
+                expectedDate,
+                actualDate,
+                "DATETIME_EQUALS failed at " + path +
+                    ". Expected datetime: " + expectedDate +
+                    ", Actual: " + actualDate);
         }
     }
 }

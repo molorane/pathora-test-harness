@@ -8,6 +8,11 @@ import io.github.molorane.pathora.testharness.exception.HarnessAssertionExceptio
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
+import io.github.molorane.pathora.testharness.util.DateExpressionResolver;
+import io.github.molorane.pathora.testharness.util.PathoraClock;
+
+import java.time.Clock;
+import java.time.ZoneId;
 
 /**
  * Core engine responsible for evaluating assertion rules against response payloads.
@@ -33,8 +38,8 @@ public class AssertionEngine {
      * @param testCase the rule test case specifying assertions
      */
     public void assertResponse(
-            String response,
-            RuleTestCase testCase) {
+        String response,
+        RuleTestCase testCase) {
 
         assertResponse(response, testCase, null);
     }
@@ -47,32 +52,43 @@ public class AssertionEngine {
      * @param mutatedRequest the mutated request string sent to produce the response
      */
     public void assertResponse(
-            String response,
-            RuleTestCase testCase,
-            String mutatedRequest
+        String response,
+        RuleTestCase testCase,
+        String mutatedRequest
     ) {
 
         var assertions = testCase.assertions();
         DocumentContext context = JsonPath.parse(response);
 
-        for (JsonAssertion assertion : assertions) {
-            try {
-                evaluateAssertion(assertion, context, testCase, response, mutatedRequest);
-            } catch (HarnessAssertionException e) {
-                if (e.testName() == null && e.testDescription() == null) {
-                    throw e.withTestDetails(testCase.name(), testCase.description());
+        boolean customTimezone = testCase.timezone() != null && !testCase.timezone().isBlank();
+        if (customTimezone) {
+            PathoraClock.setThreadClock(Clock.system(ZoneId.of(testCase.timezone().trim())));
+        }
+
+        try {
+            for (JsonAssertion assertion : assertions) {
+                try {
+                    evaluateAssertion(assertion, context, testCase, response, mutatedRequest);
+                } catch (HarnessAssertionException e) {
+                    if (e.testName() == null && e.testDescription() == null) {
+                        throw e.withTestDetails(testCase.name(), testCase.description());
+                    }
+                    throw e;
                 }
-                throw e;
+            }
+        } finally {
+            if (customTimezone) {
+                PathoraClock.clearThreadClock();
             }
         }
     }
 
     private void evaluateAssertion(
-            JsonAssertion assertion,
-            DocumentContext context,
-            RuleTestCase testCase,
-            String response,
-            String mutatedRequest) {
+        JsonAssertion assertion,
+        DocumentContext context,
+        RuleTestCase testCase,
+        String response,
+        String mutatedRequest) {
 
         // Handle logical composition operators first
         if (isLogicalOperator(assertion.operator())) {
@@ -83,7 +99,8 @@ public class AssertionEngine {
         // Context-aware operators resolve their own paths
         AssertionEvaluator handler = operatorRegistry.get(assertion.operator());
         if (handler instanceof DocumentContextAwareEvaluator contextAware) {
-            contextAware.apply(context, assertion.value());
+            Object resolvedValue = DateExpressionResolver.resolve(assertion.value());
+            contextAware.apply(context, resolvedValue);
             return;
         }
 
@@ -92,8 +109,8 @@ public class AssertionEngine {
 
     private boolean isLogicalOperator(AssertionOperator operator) {
         return operator == AssertionOperator.AND
-                || operator == AssertionOperator.OR
-                || operator == AssertionOperator.NOT;
+            || operator == AssertionOperator.OR
+            || operator == AssertionOperator.NOT;
     }
 
     private void evaluateLogicalAssertion(
@@ -101,8 +118,7 @@ public class AssertionEngine {
         DocumentContext context,
         RuleTestCase testCase,
         String response,
-        String mutatedRequest
-    ) {
+        String mutatedRequest) {
         if (assertion.operator() == AssertionOperator.AND) {
             evaluateAnd(assertion, context, testCase, response, mutatedRequest);
         } else if (assertion.operator() == AssertionOperator.OR) {
@@ -113,11 +129,11 @@ public class AssertionEngine {
     }
 
     private void evaluateAnd(
-            JsonAssertion assertion,
-            DocumentContext context,
-            RuleTestCase testCase,
-            String response,
-            String mutatedRequest) {
+        JsonAssertion assertion,
+        DocumentContext context,
+        RuleTestCase testCase,
+        String response,
+        String mutatedRequest) {
         if (assertion.assertions() == null || assertion.assertions().isEmpty()) {
             throw new IllegalArgumentException("AND operator requires 'Assertions' list");
         }
@@ -127,11 +143,11 @@ public class AssertionEngine {
     }
 
     private void evaluateOr(
-            JsonAssertion assertion,
-            DocumentContext context,
-            RuleTestCase testCase,
-            String response,
-            String mutatedRequest) {
+        JsonAssertion assertion,
+        DocumentContext context,
+        RuleTestCase testCase,
+        String response,
+        String mutatedRequest) {
         if (assertion.assertions() == null || assertion.assertions().isEmpty()) {
             throw new IllegalArgumentException("OR operator requires 'Assertions' list");
         }
@@ -145,18 +161,18 @@ public class AssertionEngine {
             }
         }
         throw new AssertionError(
-                "LOGICAL_OR_FAILED\n" +
-                        "None of the nested assertions passed.\n" +
-                        "Last error was: " + (lastError != null ? lastError.getMessage() : "null"),
-                lastError);
+            "LOGICAL_OR_FAILED\n" +
+                "None of the nested assertions passed.\n" +
+                "Last error was: " + (lastError != null ? lastError.getMessage() : "null"),
+            lastError);
     }
 
     private void evaluateNot(
-            JsonAssertion assertion,
-            DocumentContext context,
-            RuleTestCase testCase,
-            String response,
-            String mutatedRequest) {
+        JsonAssertion assertion,
+        DocumentContext context,
+        RuleTestCase testCase,
+        String response,
+        String mutatedRequest) {
         if (assertion.assertions() == null || assertion.assertions().size() != 1) {
             throw new IllegalArgumentException("NOT operator requires exactly one 'Assertions' configured");
         }
@@ -167,17 +183,17 @@ public class AssertionEngine {
             return; // The nested assertion failed, so NOT passes
         }
         throw new AssertionError(
-                "LOGICAL_NOT_FAILED\n" +
-                        "Nested assertion passed, but NOT expects it to fail.\n" +
-                        "Nested JsonPath: " + nested.path());
+            "LOGICAL_NOT_FAILED\n" +
+                "Nested assertion passed, but NOT expects it to fail.\n" +
+                "Nested JsonPath: " + nested.path());
     }
 
     private void evaluatePathAssertion(
-            JsonAssertion assertion,
-            DocumentContext context,
-            RuleTestCase testCase,
-            String response,
-            String mutatedRequest) {
+        JsonAssertion assertion,
+        DocumentContext context,
+        RuleTestCase testCase,
+        String response,
+        String mutatedRequest) {
         Object actual = null;
         boolean pathExists = true;
 
@@ -194,69 +210,69 @@ public class AssertionEngine {
     }
 
     private void handlePathNotFound(
-            JsonAssertion assertion,
-            RuleTestCase testCase,
-            String response,
-            String mutatedRequest,
-            com.jayway.jsonpath.PathNotFoundException e) {
+        JsonAssertion assertion,
+        RuleTestCase testCase,
+        String response,
+        String mutatedRequest,
+        com.jayway.jsonpath.PathNotFoundException e) {
         if (assertion.operator() != AssertionOperator.PATH_EXISTS
-                && assertion.operator() != AssertionOperator.PATH_NOT_EXISTS) {
+            && assertion.operator() != AssertionOperator.PATH_NOT_EXISTS) {
             throw new AssertionError(
-                    """
-                            JSON_PATH_EVALUATION_FAILED
-                            -----------------------------------------
-                            JsonPath: %s
-                            Expected Value: %s
-                            Operator: %s
-                            Operation: %s
-                            
-                            Path does not exist in response.
-                            
-                            Response:
-                            %s
-                            Mutated Request:
-                            %s
-                            """.formatted(
-                            assertion.path(),
-                            assertion.value(),
-                            assertion.operator(),
-                            testCase.operation(),
-                            response,
-                            mutatedRequest),
-                    e);
+                """
+                    JSON_PATH_EVALUATION_FAILED
+                    -----------------------------------------
+                    JsonPath: %s
+                    Expected Value: %s
+                    Operator: %s
+                    Operation: %s
+                    
+                    Path does not exist in response.
+                    
+                    Response:
+                    %s
+                    Mutated Request:
+                    %s
+                    """.formatted(
+                    assertion.path(),
+                    assertion.value(),
+                    assertion.operator(),
+                    testCase.operation(),
+                    response,
+                    mutatedRequest),
+                e);
         }
     }
 
     private void handlePathException(
-            JsonAssertion assertion,
-            RuleTestCase testCase,
-            String response,
-            String mutatedRequest,
-            Exception e) {
+        JsonAssertion assertion,
+        RuleTestCase testCase,
+        String response,
+        String mutatedRequest,
+        Exception e) {
         throw new AssertionError(
-                """
-                        JSON_PATH_RUNTIME_ERROR
-                        -----------------------------------------
-                        JsonPath: %s
-                        Expected Value: %s
-                        Operator: %s
-                        Operation: %s
-                        
-                        Error: %s
-                        
-                        Response:
-                        %s
-                        Mutated Request:
-                        %s
-                        """.formatted(
-                        assertion.path(),
-                        assertion.value(),
-                        assertion.operator(),
-                        testCase.operation(),
-                        e.getMessage(),
-                        response,
-                        mutatedRequest),
-                e);
+            """
+                JSON_PATH_RUNTIME_ERROR
+                -----------------------------------------
+                JsonPath: %s
+                Expected Value: %s
+                Operator: %s
+                Operation: %s
+                
+                Error: %s
+                
+                Response:
+                %s
+                Mutated Request:
+                %s
+                """.formatted(
+                assertion.path(),
+                assertion.value(),
+                assertion.operator(),
+                testCase.operation(),
+                e.getMessage(),
+                response,
+                mutatedRequest),
+            e);
     }
 
     /**
@@ -272,14 +288,15 @@ public class AssertionEngine {
 
         if (handler == null) {
             throw new IllegalArgumentException(
-                    "No handler registered for operator: " + assertion.operator());
+                "No handler registered for operator: " + assertion.operator());
         }
 
+        Object resolvedValue = DateExpressionResolver.resolve(assertion.value());
         handler.apply(
-                assertion.path(),
-                actual,
-                assertion.value(),
-                pathExists);
+            assertion.path(),
+            actual,
+            resolvedValue,
+            pathExists);
     }
 }
 

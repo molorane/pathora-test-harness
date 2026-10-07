@@ -29,6 +29,22 @@
         },
         {
           "path": "$.underwritingSummary",
+          "operator": "OBJECT_CONTAINS_PARTIAL_FIELDS",
+          "value": {
+            "profile": {
+              "classification": {
+                "tier": "PREMIUM",
+                "details": {
+                  "score": 820,
+                  "band": "A"
+                }
+              }
+            }
+          },
+          "description": "Underwriting summary contains nested partial field profile.classification.details.score=820"
+        },
+        {
+          "path": "$.underwritingSummary",
           "operator": "DOES_NOT_HAVE_KEYS",
           "value": [
             "suspended",

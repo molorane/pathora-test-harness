@@ -42,12 +42,12 @@ public class IsDecimalEvaluator implements AssertionEvaluator {
 
         if (!isDecimal) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_DECIMAL,
-                    path,
-                    "a decimal number",
-                    actual,
-                    "IS_DECIMAL failed at " + path +
-                            ". Expected decimal value but was: " + normalized);
+                AssertionOperator.IS_DECIMAL,
+                path,
+                "a decimal number",
+                actual,
+                "IS_DECIMAL failed at " + path +
+                    ". Expected decimal value but was: " + normalized);
         }
     }
 }

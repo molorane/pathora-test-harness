@@ -41,13 +41,13 @@ public class DateAfterEvaluator implements AssertionEvaluator {
 
         if (!actualDate.isAfter(expectedDate)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_AFTER,
-                    path,
-                    expected,
-                    actual,
-                    "DATE_AFTER failed at " + path +
-                            ". Expected after: " + expectedDate +
-                            ", Actual: " + actualDate);
+                AssertionOperator.DATE_AFTER,
+                path,
+                expected,
+                actual,
+                "DATE_AFTER failed at " + path +
+                    ". Expected after: " + expectedDate +
+                    ", Actual: " + actualDate);
         }
     }
 }

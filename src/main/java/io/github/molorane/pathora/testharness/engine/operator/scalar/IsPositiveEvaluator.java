@@ -34,12 +34,12 @@ public class IsPositiveEvaluator implements AssertionEvaluator {
 
         if (val <= 0.0) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_POSITIVE,
-                    path,
-                    "positive number (> 0)",
-                    actual,
-                    "IS_POSITIVE failed at " + path +
-                            ". Expected positive (> 0) but was: " + val);
+                AssertionOperator.IS_POSITIVE,
+                path,
+                "positive number (> 0)",
+                actual,
+                "IS_POSITIVE failed at " + path +
+                    ". Expected positive (> 0) but was: " + val);
         }
     }
 

@@ -48,7 +48,7 @@ public class MoneyEqualsWithToleranceEvaluator implements AssertionEvaluator {
 
         if (expObj == null || tolObj == null) {
             throw new IllegalArgumentException(
-                    "MONEY_EQUALS_WITH_TOLERANCE requires 'expected' (or 'value') and 'tolerance' in Value at " + path);
+                "MONEY_EQUALS_WITH_TOLERANCE requires 'expected' (or 'value') and 'tolerance' in Value at " + path);
         }
 
         MoneyUtils.validateCurrencyMatch(path, normalizedActual, expected, AssertionOperator.MONEY_EQUALS_WITH_TOLERANCE);
@@ -59,13 +59,13 @@ public class MoneyEqualsWithToleranceEvaluator implements AssertionEvaluator {
 
         if (!MoneyUtils.isWithinTolerance(actualAmount, expectedAmount, tolerance)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.MONEY_EQUALS_WITH_TOLERANCE,
-                    path,
-                    expectedAmount + " (±" + tolerance + ")",
-                    actualAmount,
-                    "MONEY_EQUALS_WITH_TOLERANCE failed at " + path +
-                            ". Expected: " + expectedAmount + " ±" + tolerance +
-                            ", Actual: " + actualAmount);
+                AssertionOperator.MONEY_EQUALS_WITH_TOLERANCE,
+                path,
+                expectedAmount + " (±" + tolerance + ")",
+                actualAmount,
+                "MONEY_EQUALS_WITH_TOLERANCE failed at " + path +
+                    ". Expected: " + expectedAmount + " ±" + tolerance +
+                    ", Actual: " + actualAmount);
         }
     }
 }

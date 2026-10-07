@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.util.AssertionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * Operator: {@code IS_NUMBER}
@@ -33,16 +33,16 @@ public class IsNumberEvaluator implements AssertionEvaluator {
         Object normalized = AssertionUtils.normalizeResult(actual, path);
 
         boolean isNumber = normalized instanceof Number
-                || normalized instanceof String str && NumberUtils.isCreatable(str.trim());
+            || normalized instanceof String str && NumberUtils.isCreatable(str.trim());
 
         if (!isNumber) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_NUMBER,
-                    path,
-                    "a number",
-                    actual,
-                    "IS_NUMBER failed at " + path +
-                            ". Expected a number but was: " + normalized);
+                AssertionOperator.IS_NUMBER,
+                path,
+                "a number",
+                actual,
+                "IS_NUMBER failed at " + path +
+                    ". Expected a number but was: " + normalized);
         }
     }
 }

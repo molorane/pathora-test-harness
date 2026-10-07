@@ -45,13 +45,13 @@ public class ValueInEvaluator implements AssertionEvaluator {
         }
 
         throw new HarnessAssertionException(
-                AssertionOperator.VALUE_IN,
-                path,
-                expected,
-                actual,
-                "VALUE_IN failed at " + path +
-                        ". Expected value to be in: " + expectedList +
-                        ", Actual: " + normalizedActual);
+            AssertionOperator.VALUE_IN,
+            path,
+            expected,
+            actual,
+            "VALUE_IN failed at " + path +
+                ". Expected value to be in: " + expectedList +
+                ", Actual: " + normalizedActual);
     }
 }
 

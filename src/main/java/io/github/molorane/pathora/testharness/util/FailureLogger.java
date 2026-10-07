@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 public final class FailureLogger {
 
     private static final DateTimeFormatter FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private FailureLogger() {
     }
@@ -30,11 +30,11 @@ public final class FailureLogger {
      * @param error          the assertion error that caused the failure
      */
     public static synchronized void logFailure(
-            RuleTestCase testCase,
-            Path testFileName,
-            String mutatedRequest,
-            Object response,
-            AssertionError error
+        RuleTestCase testCase,
+        Path testFileName,
+        String mutatedRequest,
+        Object response,
+        AssertionError error
     ) {
 
         String timestamp = LocalDateTime.now().format(FORMATTER);
@@ -61,10 +61,10 @@ public final class FailureLogger {
         try {
             Files.createDirectories(testFileName.getParent());
             Files.writeString(
-                    testFileName,
-                    builder.toString(),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND
+                testFileName,
+                builder.toString(),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.APPEND
             );
         } catch (IOException e) {
             throw new RuntimeException("Failed to write failure log", e);

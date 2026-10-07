@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
-import org.apache.commons.lang3.StringUtils;
 import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Operator: {@code IS_STRING_NOT_BLANK}
@@ -33,12 +33,12 @@ public class IsStringNotBlankEvaluator implements AssertionEvaluator {
 
         if (!StringUtils.isNotBlank(actualStr)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_STRING_NOT_BLANK,
-                    path,
-                    "not blank string",
-                    actual,
-                    "IS_STRING_NOT_BLANK failed at " + path +
-                            ". Expected not blank string, Actual: " + actualStr);
+                AssertionOperator.IS_STRING_NOT_BLANK,
+                path,
+                "not blank string",
+                actual,
+                "IS_STRING_NOT_BLANK failed at " + path +
+                    ". Expected not blank string, Actual: " + actualStr);
         }
     }
 }

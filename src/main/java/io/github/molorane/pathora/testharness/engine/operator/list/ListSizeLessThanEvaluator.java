@@ -37,13 +37,13 @@ public class ListSizeLessThanEvaluator implements AssertionEvaluator {
 
         if (list.size() >= threshold) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_SIZE_LESS_THAN,
-                    path,
-                    "< " + threshold,
-                    list.size(),
-                    "LIST_SIZE_LESS_THAN failed at " + path +
-                            ". Expected size < " + threshold +
-                            ", but found size " + list.size());
+                AssertionOperator.LIST_SIZE_LESS_THAN,
+                path,
+                "< " + threshold,
+                list.size(),
+                "LIST_SIZE_LESS_THAN failed at " + path +
+                    ". Expected size < " + threshold +
+                    ", but found size " + list.size());
         }
     }
 

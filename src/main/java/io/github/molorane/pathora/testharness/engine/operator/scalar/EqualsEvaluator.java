@@ -42,13 +42,13 @@ public class EqualsEvaluator implements AssertionEvaluator {
 
         if (!Objects.equals(finalActual, finalExpected)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.EQUALS,
-                    path,
-                    finalExpected,
-                    finalActual,
-                    "EQUALS failed at " + path +
-                            ". Expected: " + finalExpected +
-                            ", Actual: " + finalActual);
+                AssertionOperator.EQUALS,
+                path,
+                finalExpected,
+                finalActual,
+                "EQUALS failed at " + path +
+                    ". Expected: " + finalExpected +
+                    ", Actual: " + finalActual);
         }
     }
 }

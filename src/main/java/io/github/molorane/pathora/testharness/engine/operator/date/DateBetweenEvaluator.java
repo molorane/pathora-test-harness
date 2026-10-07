@@ -47,7 +47,7 @@ public class DateBetweenEvaluator implements AssertionEvaluator {
 
         if (minObj == null || maxObj == null) {
             throw new IllegalArgumentException(
-                    "DATE_BETWEEN operator requires 'min' and 'max' in Value at " + path);
+                "DATE_BETWEEN operator requires 'min' and 'max' in Value at " + path);
         }
 
         LocalDate minDate = parseDate(String.valueOf(minObj), path + " (min)");
@@ -55,13 +55,13 @@ public class DateBetweenEvaluator implements AssertionEvaluator {
 
         if (actualDate.isBefore(minDate) || actualDate.isAfter(maxDate)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_BETWEEN,
-                    path,
-                    "date between " + minDate + " and " + maxDate,
-                    actualDate,
-                    "DATE_BETWEEN failed at " + path +
-                            ". Expected date between " + minDate + " and " + maxDate +
-                            ", Actual: " + actualDate);
+                AssertionOperator.DATE_BETWEEN,
+                path,
+                "date between " + minDate + " and " + maxDate,
+                actualDate,
+                "DATE_BETWEEN failed at " + path +
+                    ". Expected date between " + minDate + " and " + maxDate +
+                    ", Actual: " + actualDate);
         }
     }
 }

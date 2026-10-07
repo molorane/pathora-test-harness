@@ -41,12 +41,12 @@ public class NotEqualsEvaluator implements AssertionEvaluator {
 
         if (Objects.equals(finalActual, finalExpected)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.NOT_EQUALS,
-                    path,
-                    finalExpected,
-                    finalActual,
-                    "NOT_EQUALS failed at " + path +
-                            ". Value: " + finalActual);
+                AssertionOperator.NOT_EQUALS,
+                path,
+                finalExpected,
+                finalActual,
+                "NOT_EQUALS failed at " + path +
+                    ". Value: " + finalActual);
         }
     }
 }

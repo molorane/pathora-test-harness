@@ -40,13 +40,13 @@ public class DateHourEqualsEvaluator implements AssertionEvaluator {
 
         if (actualHour != expectedHour) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_HOUR_EQUALS,
-                    path,
-                    expectedHour,
-                    actualHour,
-                    "DATE_HOUR_EQUALS failed at " + path +
-                            ". Expected hour: " + expectedHour +
-                            ", Actual hour: " + actualHour + " (from " + normalizedActual + ")");
+                AssertionOperator.DATE_HOUR_EQUALS,
+                path,
+                expectedHour,
+                actualHour,
+                "DATE_HOUR_EQUALS failed at " + path +
+                    ". Expected hour: " + expectedHour +
+                    ", Actual hour: " + actualHour + " (from " + normalizedActual + ")");
         }
     }
 }

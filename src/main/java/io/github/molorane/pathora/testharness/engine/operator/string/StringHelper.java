@@ -41,13 +41,13 @@ final class StringHelper {
         }
         if (value instanceof List<?> list) {
             return list.stream()
-                    .map(item -> item == null ? null : String.valueOf(item))
-                    .toArray(CharSequence[]::new);
+                .map(item -> item == null ? null : String.valueOf(item))
+                .toArray(CharSequence[]::new);
         }
         if (value instanceof Object[] array) {
             return Arrays.stream(array)
-                    .map(item -> item == null ? null : String.valueOf(item))
-                    .toArray(CharSequence[]::new);
+                .map(item -> item == null ? null : String.valueOf(item))
+                .toArray(CharSequence[]::new);
         }
         return new CharSequence[]{String.valueOf(value)};
     }
@@ -116,8 +116,8 @@ final class StringHelper {
             return false;
         }
         return Arrays.stream(prefixes)
-                .filter(Objects::nonNull)
-                .anyMatch(p -> str.startsWith(p.toString()));
+            .filter(Objects::nonNull)
+            .anyMatch(p -> str.startsWith(p.toString()));
     }
 
     /**
@@ -149,8 +149,8 @@ final class StringHelper {
             return false;
         }
         return Arrays.stream(suffixes)
-                .filter(Objects::nonNull)
-                .anyMatch(s -> str.endsWith(s.toString()));
+            .filter(Objects::nonNull)
+            .anyMatch(s -> str.endsWith(s.toString()));
     }
 
     /**
@@ -165,8 +165,8 @@ final class StringHelper {
             return false;
         }
         return Arrays.stream(suffixes)
-                .filter(Objects::nonNull)
-                .anyMatch(s -> endsWithIgnoreCase(str, s.toString()));
+            .filter(Objects::nonNull)
+            .anyMatch(s -> endsWithIgnoreCase(str, s.toString()));
     }
 
     /**
@@ -195,7 +195,7 @@ final class StringHelper {
             return false;
         }
         return Arrays.stream(searchStrings)
-                .anyMatch(s -> Objects.equals(str, s == null ? null : s.toString()));
+            .anyMatch(s -> Objects.equals(str, s == null ? null : s.toString()));
     }
 
     /**
@@ -210,7 +210,7 @@ final class StringHelper {
             return false;
         }
         return Arrays.stream(searchStrings)
-                .anyMatch(s -> s != null && str.equalsIgnoreCase(s.toString()));
+            .anyMatch(s -> s != null && str.equalsIgnoreCase(s.toString()));
     }
 }
 

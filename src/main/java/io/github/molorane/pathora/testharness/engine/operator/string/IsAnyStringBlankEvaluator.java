@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
-import org.apache.commons.lang3.StringUtils;
 import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -41,12 +41,12 @@ public class IsAnyStringBlankEvaluator implements AssertionEvaluator {
 
         if (!StringUtils.isAnyBlank(charSequences)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_ANY_STRING_BLANK,
-                    path,
-                    "at least one blank string",
-                    actual,
-                    "IS_ANY_STRING_BLANK failed at " + path +
-                            ". Expected at least one blank string, Actual: " + actual);
+                AssertionOperator.IS_ANY_STRING_BLANK,
+                path,
+                "at least one blank string",
+                actual,
+                "IS_ANY_STRING_BLANK failed at " + path +
+                    ". Expected at least one blank string, Actual: " + actual);
         }
     }
 }

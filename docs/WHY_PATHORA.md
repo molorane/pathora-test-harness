@@ -4,7 +4,16 @@ Pathora Test Harness was created to solve a fundamental challenge in enterprise 
 
 ---
 
-## 1. The Problem: Limitations of Traditional Testing Approaches
+## 1. The Core Benefits at a Glance
+
+1. **Non-Developer Friendly (Empowers Business & QA)**: Anyone who understands the business domain (QA automation engineers, Business Analysts, domain experts) can write, review, and maintain comprehensive test scenarios using intuitive JSON files—without knowing Java or touching compiled test code.
+2. **Massive Productivity Boost**: Eliminates hundreds of lines of repetitive DTO instantiation and brittle assertion plumbing. Developers and QA can craft new test cases in seconds by mutating single fields against base templates rather than writing Java test methods from scratch.
+3. **In-Process SPI Execution**: Dispatches mutated DTOs directly to Spring beans and internal domain services with zero HTTP network overhead, zero port binding, and sub-millisecond execution times.
+4. **Resilient, Declarative Assertions**: Powerful JSONPath assertions with detailed diagnostic reporting replace brittle Java getter chains that frequently throw `NullPointerException`.
+
+---
+
+## 2. The Problem: Limitations of Traditional Testing Approaches
 
 ### Problem A: Verbose Java Test Data Construction (The "DTO Boilerplate" Trap)
 In enterprise applications (such as banking, insurance, healthcare, or e-commerce), domain request payloads are often deeply nested objects with dozens or hundreds of fields. 
@@ -35,15 +44,15 @@ assertThat(response.getPolicyHeader().getUnderwriter().getContact().getEmail())
 ```
 If `getUnderwriter()` is `null`, the test throws a cryptic `NullPointerException` instead of giving a clean assertion error describing which field failed and why.
 
-### Problem D: Network Overhead of HTTP-Based API Testing Tools
-Tools like Postman, Karate, or REST-Assured allow JSON-based testing, but they rely on **HTTP wire network calls**:
-- Require starting embedded web servers (Tomcat, Netty) on open TCP ports.
-- Slower execution speeds due to HTTP serialization/deserialization over sockets.
-- Cannot easily test internal `@Service` beans or non-web SPI entry points.
+### Problem D: Web/HTTP Coupling of Declarative Testing Tools
+Tools like Postman, Karate, or standard REST-Assured allow JSON-based testing, but they are built around the **HTTP/Web layer**:
+- Often require starting embedded web servers (Tomcat, Netty) on TCP ports with network and serialization overhead.
+- HTTP-centric mock tools (like Spring `MockMvc` or `rest-assured-mock-mvc`) still require HTTP controller semantics (routes, verbs, status codes, query parameters).
+- Cannot test pure internal `@Service` beans, calculation/rule engines, event consumers, or non-web SPI entry points directly with in-memory DTOs.
 
 ---
 
-## 2. What Pathora Test Harness Solves
+## 3. What Pathora Test Harness Solves
 
 Pathora Test Harness introduces a **data-driven, SPI-powered testing paradigm**:
 
@@ -51,24 +60,26 @@ Pathora Test Harness introduces a **data-driven, SPI-powered testing paradigm**:
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           PATHORA TEST HARNESS                              │
 │                                                                             │
-│   1. Read Base Request JSON ─────► 2. Apply JSONPath Parameter Mutations   │
-│      (templates/requests/)            (TestCaseParameterValues)             │
+│   1. Read Base Request JSON ─────► 2. Apply JSONPath Parameter Mutations    │
+│      (templates/requests/)            (mutations)                           │
 │                                                   │                         │
 │                                                   ▼                         │
-│   4. Evaluate Path Assertions ◄──── 3. Dispatch to EntryPointExecutor SPI  │
-│      (ResponseAssertions)             (In-process Java DTO execution)       │
+│   4. Evaluate Path Assertions ◄──── 3. Dispatch to EntryPointExecutor SPI   │
+│      (assertions)             (In-process Java DTO execution)               │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Key Solutions Provided by Pathora:
-1. **Base JSON Templates**: Keep canonical, valid request payloads in standard JSON files (`templates/requests/*.json`).
-2. **Surgical Parameter Mutations**: Specify *only* the fields you want to override for a particular test case using JSONPath (`$.insuredParty.riskMetrics.score = 900`), leaving the rest of the payload intact.
-3. **In-Process SPI Execution (`EntryPointExecutor`)**: Dispatches the mutated request directly to your Spring domain services via Java DTOs in-memory. **Zero HTTP network calls, zero web server startup overhead, maximum performance.**
-4. **Declarative Path Assertions**: Validate any response node using intuitive JSONPath expressions (`$.approvedClauses[*].limit GREATER_THAN 0`), complete with rich diagnostic failure reporting.
+1. **Empower Non-Developers & BAs**: Business Analysts and QA specialists define scenarios directly in declarative JSON, eliminating the bottleneck on Java developers.
+2. **Exponential Developer Productivity**: Eliminates test boilerplate. Parameterize only what varies; canonical templates handle the rest.
+3. **Base JSON Templates**: Keep canonical, valid request payloads in standard JSON files (`templates/requests/*.json`).
+4. **Surgical Parameter Mutations**: Specify *only* the fields you want to override for a particular test case using JSONPath (`$.insuredParty.riskMetrics.score = 900`), leaving the rest of the payload intact.
+5. **In-Process SPI Execution (`EntryPointExecutor`)**: Dispatches the mutated request directly to your Spring domain services via Java DTOs in-memory. **Zero HTTP network calls, zero web server startup overhead, maximum performance.**
+6. **Declarative Path Assertions**: Validate any response node using intuitive JSONPath expressions (`$.approvedClauses[*].limit GREATER_THAN 0`), complete with rich diagnostic failure reporting.
 
 ---
 
-## 3. Why Pathora Uses JayWay JsonPath
+## 4. Why Pathora Uses JayWay JsonPath
 
 Pathora Test Harness relies on [JayWay JsonPath](https://github.com/json-path/JsonPath) (`com.jayway.jsonpath:json-path`) as its core engine for payload manipulation and assertion evaluation.
 
@@ -98,21 +109,23 @@ JayWay JsonPath uses an optimized `ParseContext` and supports pre-compiled `Json
 
 ---
 
-## 4. Why Pathora Test Harness is Unique
+## 5. Why Pathora Test Harness is Unique
 
 | Feature | Traditional JUnit Unit Tests | Postman / REST-Assured / Karate | **Pathora Test Harness** |
 | :--- | :--- | :--- | :--- |
 | **Test Scenario Format** | Compiled Java Code | JSON / Feature Files | **Declarative JSON Files** |
+| **Target Author** | Java Developers Only | QA / Developers | **Non-Developers, BAs, QA & Developers** |
+| **Developer Productivity** | Low (Heavy DTO & Mock boilerplate) | Moderate | **Maximum (Template + Delta Mutation)** |
 | **Request Data Setup** | Verbose Java Builders | Hardcoded / Environment Vars | **Base Template + JSONPath Mutations** |
-| **Execution Medium** | In-Memory Method Calls | HTTP Wire Network Socket | **In-Memory SPI (`EntryPointExecutor`)** |
-| **Execution Speed** | Fast (~ms) | Slow (HTTP socket latency) | **Blazing Fast (~ms, In-Memory DTOs)** |
-| **Web Server Required?** | No | Yes (Tomcat/Netty required) | **No (Direct Spring Bean Execution)** |
+| **Execution Medium** | In-Memory Method Calls | HTTP Wire / MockMvc Controller | **In-Memory SPI (`EntryPointExecutor`)** |
+| **Execution Speed** | Fast (~ms) | Slower (HTTP stack / socket latency) | **Blazing Fast (~ms, In-Memory DTOs)** |
+| **Web Server Required?** | No | Often (Tomcat/Netty or MockMvc) | **No (Direct Spring Bean Execution)** |
 | **Assertion Failure Diagnostics** | Standard Java Stack Trace | HTTP Status & Response Body | **Detailed JSONPath Assertion Reports** |
 | **Non-Java Friendly?** | No (Requires Java Developers) | Yes | **Yes (JSON-based test creation)** |
 
 ---
 
-## 5. Summary
+## 6. Summary
 
 Pathora Test Harness bridges the gap between **code-first Java unit testing** and **declarative API testing**. 
 

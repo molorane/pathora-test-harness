@@ -38,13 +38,13 @@ public class ObjectContainsFieldsEvaluator implements AssertionEvaluator {
 
         if (!AssertionUtils.objectContainsFields(normalizedActual, expected, false)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.OBJECT_CONTAINS_FIELDS,
-                    path,
-                    expected,
-                    normalizedActual,
-                    "OBJECT_CONTAINS_FIELDS failed at " + path +
-                            ". Expected fields: " + expected +
-                            ", Actual: " + normalizedActual);
+                AssertionOperator.OBJECT_CONTAINS_FIELDS,
+                path,
+                expected,
+                normalizedActual,
+                "OBJECT_CONTAINS_FIELDS failed at " + path +
+                    ". Expected fields: " + expected +
+                    ", Actual: " + normalizedActual);
         }
     }
 }

@@ -33,7 +33,7 @@ public class IsIntegerEvaluator implements AssertionEvaluator {
 
         boolean isInt = false;
         if (normalized instanceof Integer || normalized instanceof Long
-                || normalized instanceof Short || normalized instanceof Byte) {
+            || normalized instanceof Short || normalized instanceof Byte) {
             isInt = true;
         } else if (normalized instanceof Number num) {
             double d = num.doubleValue();
@@ -44,12 +44,12 @@ public class IsIntegerEvaluator implements AssertionEvaluator {
 
         if (!isInt) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_INTEGER,
-                    path,
-                    "an integer",
-                    actual,
-                    "IS_INTEGER failed at " + path +
-                            ". Expected integer value but was: " + normalized);
+                AssertionOperator.IS_INTEGER,
+                path,
+                "an integer",
+                actual,
+                "IS_INTEGER failed at " + path +
+                    ". Expected integer value but was: " + normalized);
         }
     }
 }

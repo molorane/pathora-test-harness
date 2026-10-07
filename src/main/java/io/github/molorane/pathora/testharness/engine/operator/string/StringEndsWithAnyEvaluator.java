@@ -34,13 +34,13 @@ public class StringEndsWithAnyEvaluator implements AssertionEvaluator {
 
         if (!StringHelper.endsWithAny(actualStr, suffixes)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_ENDS_WITH_ANY,
-                    path,
-                    expected,
-                    actual,
-                    "STRING_ENDS_WITH_ANY failed at " + path +
-                            ". Expected to end with any of: " + expected +
-                            ", Actual: " + actualStr);
+                AssertionOperator.STRING_ENDS_WITH_ANY,
+                path,
+                expected,
+                actual,
+                "STRING_ENDS_WITH_ANY failed at " + path +
+                    ". Expected to end with any of: " + expected +
+                    ", Actual: " + actualStr);
         }
     }
 }

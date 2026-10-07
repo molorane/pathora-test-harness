@@ -1,0 +1,117 @@
+{
+  "requestPath": "../requests/complex-policy-request.json",
+  "timezone": "Africa/Johannesburg",
+  "tests": [
+    {
+      "name": "Dynamic Date Token Mutation & Evaluation (Suite Timezone)",
+      "description": "Demonstrates suite-level timezone (Africa/Johannesburg) with dynamic date tokens {{$CURRENT_DATE}} and {{$CURRENT_DATE + 15d}} in request mutations and response assertions.",
+      "operation": "policy-evaluation-service",
+      "mutations": [
+        {
+          "path": "$.policyHeader.effectiveDate",
+          "value": "{{$CURRENT_DATE + 15d}}T00:00:00"
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_EQUALS",
+          "value": "{{$CURRENT_DATE + 15d}}",
+          "description": "Effective date must equal current date + 15 days"
+        },
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_AFTER",
+          "value": "{{$CURRENT_DATE}}",
+          "description": "Effective date must be after today"
+        },
+        {
+          "path": "$.currentDate",
+          "operator": "IS_TODAY",
+          "value": null,
+          "description": "Current date must be recognized as today"
+        }
+      ]
+    },
+    {
+      "name": "Dynamic Date Range Assertion with Bounded Tokens",
+      "description": "Validates DATE_BETWEEN using dynamic min and max token expressions.",
+      "operation": "policy-evaluation-service",
+      "mutations": [
+        {
+          "path": "$.policyHeader.effectiveDate",
+          "value": "{{$CURRENT_DATE + 10d}}T00:00:00"
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_BETWEEN",
+          "value": {
+            "min": "{{$CURRENT_DATE}}",
+            "max": "{{$CURRENT_DATE + 20d}}"
+          },
+          "description": "Effective date falls within dynamic window (today to +20d)"
+        },
+        {
+          "path": "$.currentDate",
+          "operator": "DATE_EQUALS",
+          "value": "{{$CURRENT_DATE}}",
+          "description": "Current date matches {{$CURRENT_DATE}} expression"
+        }
+      ]
+    },
+    {
+      "name": "Test-Case Specific Timezone Override (Asia/Tokyo)",
+      "description": "Demonstrates test-case-level timezone override (Asia/Tokyo), overriding the suite-level timezone.",
+      "operation": "policy-evaluation-service",
+      "timezone": "Asia/Tokyo",
+      "mutations": [
+        {
+          "path": "$.policyHeader.effectiveDate",
+          "value": "{{$CURRENT_DATE + 5d}}T00:00:00"
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_EQUALS",
+          "value": "{{$CURRENT_DATE + 5d}}",
+          "description": "Effective date equals +5 days evaluated in Tokyo timezone"
+        },
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_AFTER",
+          "value": "{{$CURRENT_DATE}}",
+          "description": "Effective date is in the future relative to Tokyo today"
+        }
+      ]
+    },
+    {
+      "name": "Test-Case Specific Timezone Override (America/New_York)",
+      "description": "Demonstrates test-case-level timezone override (America/New_York) with dynamic past date mutations and comparisons.",
+      "operation": "policy-evaluation-service",
+      "timezone": "America/New_York",
+      "mutations": [
+        {
+          "path": "$.policyHeader.effectiveDate",
+          "value": "{{$CURRENT_DATE - 30d}}T00:00:00"
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_BEFORE",
+          "value": "{{$CURRENT_DATE}}",
+          "description": "Effective date is in the past relative to New York today"
+        },
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_EQUALS",
+          "value": "{{$CURRENT_DATE - 30d}}",
+          "description": "Effective date matches exact -30d dynamic token"
+        }
+      ]
+    }
+  ]
+}

@@ -10,19 +10,33 @@ import io.github.molorane.pathora.testharness.model.AssertionOperator;
  */
 public class HarnessAssertionException extends AssertionError {
 
-    /** The name of the failing test case. */
+    /**
+     * The name of the failing test case.
+     */
     private final String testName;
-    /** The description of the failing test case. */
+    /**
+     * The description of the failing test case.
+     */
     private final String testDescription;
-    /** The assertion operator that failed. */
+    /**
+     * The assertion operator that failed.
+     */
     private final AssertionOperator operator;
-    /** The JSONPath evaluated. */
+    /**
+     * The JSONPath evaluated.
+     */
     private final String path;
-    /** The expected value. */
+    /**
+     * The expected value.
+     */
     private final Object expected;
-    /** The actual value extracted from the response. */
+    /**
+     * The actual value extracted from the response.
+     */
     private final Object actual;
-    /** The detailed failure message. */
+    /**
+     * The detailed failure message.
+     */
     private final String detailMessage;
 
     /**
@@ -35,11 +49,11 @@ public class HarnessAssertionException extends AssertionError {
      * @param message  a descriptive failure message
      */
     public HarnessAssertionException(
-            AssertionOperator operator,
-            String path,
-            Object expected,
-            Object actual,
-            String message) {
+        AssertionOperator operator,
+        String path,
+        Object expected,
+        Object actual,
+        String message) {
         this(null, null, operator, path, expected, actual, message);
     }
 
@@ -55,13 +69,13 @@ public class HarnessAssertionException extends AssertionError {
      * @param message         a descriptive failure message
      */
     public HarnessAssertionException(
-            String testName,
-            String testDescription,
-            AssertionOperator operator,
-            String path,
-            Object expected,
-            Object actual,
-            String message) {
+        String testName,
+        String testDescription,
+        AssertionOperator operator,
+        String path,
+        Object expected,
+        Object actual,
+        String message) {
         super(formatMessage(testName, testDescription, operator, path, expected, actual, message));
 
         this.testName = testName;
@@ -74,24 +88,24 @@ public class HarnessAssertionException extends AssertionError {
     }
 
     private static String formatMessage(
-            String testName,
-            String testDescription,
-            AssertionOperator operator,
-            String path,
-            Object expected,
-            Object actual,
-            String message) {
+        String testName,
+        String testDescription,
+        AssertionOperator operator,
+        String path,
+        Object expected,
+        Object actual,
+        String message) {
         return """
-                
-                TestName:        %s
-                TestDescription: %s
-                Assertion:       %s
-                Path:            %s
-                Expected:        %s
-                Actual:          %s
-                
-                %s
-                """.formatted(testName, testDescription, operator, path, expected, actual, message);
+            
+            TestName:        %s
+            TestDescription: %s
+            Assertion:       %s
+            Path:            %s
+            Expected:        %s
+            Actual:          %s
+            
+            %s
+            """.formatted(testName, testDescription, operator, path, expected, actual, message);
     }
 
     /**
@@ -166,13 +180,13 @@ public class HarnessAssertionException extends AssertionError {
      */
     public HarnessAssertionException withTestDetails(String testName, String testDescription) {
         return new HarnessAssertionException(
-                testName,
-                testDescription,
-                this.operator,
-                this.path,
-                this.expected,
-                this.actual,
-                this.detailMessage != null ? this.detailMessage : getMessage());
+            testName,
+            testDescription,
+            this.operator,
+            this.path,
+            this.expected,
+            this.actual,
+            this.detailMessage != null ? this.detailMessage : getMessage());
     }
 }
 

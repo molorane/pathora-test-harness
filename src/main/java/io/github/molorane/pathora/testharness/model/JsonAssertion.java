@@ -16,20 +16,20 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record JsonAssertion(
-        @JsonProperty("path")
-        String path,
+    @JsonProperty("path")
+    String path,
 
-        @JsonProperty("operator")
-        AssertionOperator operator,
+    @JsonProperty("operator")
+    AssertionOperator operator,
 
-        @JsonProperty("value")
-        Object value,
+    @JsonProperty("value")
+    Object value,
 
-        @JsonProperty("description")
-        String description,
+    @JsonProperty("description")
+    String description,
 
-        @JsonProperty("assertions")
-        List<JsonAssertion> assertions
+    @JsonProperty("assertions")
+    List<JsonAssertion> assertions
 ) {
     /**
      * Compact constructor ensuring default operator is {@link AssertionOperator#EQUALS} when null.

@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
-import org.apache.commons.lang3.StringUtils;
 import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Operator: {@code STRING_CONTAINS_WHITESPACE}
@@ -33,12 +33,12 @@ public class StringContainsWhitespaceEvaluator implements AssertionEvaluator {
 
         if (!StringUtils.containsWhitespace(actualStr)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_CONTAINS_WHITESPACE,
-                    path,
-                    "contains whitespace",
-                    actual,
-                    "STRING_CONTAINS_WHITESPACE failed at " + path +
-                            ". Expected to contain whitespace, Actual: " + actualStr);
+                AssertionOperator.STRING_CONTAINS_WHITESPACE,
+                path,
+                "contains whitespace",
+                actual,
+                "STRING_CONTAINS_WHITESPACE failed at " + path +
+                    ". Expected to contain whitespace, Actual: " + actualStr);
         }
     }
 }

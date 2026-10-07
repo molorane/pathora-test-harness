@@ -42,25 +42,25 @@ public class ListSizeEqualsEvaluator implements AssertionEvaluator {
             list = (List<?>) actual;
         } else {
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_SIZE_EQUALS,
-                    path,
-                    expected,
-                    actual,
-                    "Expected array at path " + path +
-                            " but got: " + actual);
+                AssertionOperator.LIST_SIZE_EQUALS,
+                path,
+                expected,
+                actual,
+                "Expected array at path " + path +
+                    " but got: " + actual);
         }
 
         int expectedSize = ((Number) AssertionUtils.normalizeExpected(expected)).intValue();
 
         if (list.size() != expectedSize) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_SIZE_EQUALS,
-                    path,
-                    expectedSize,
-                    list.size(),
-                    "LIST_SIZE_EQUALS failed at " + path +
-                            ". Expected size: " + expectedSize +
-                            ", Actual size: " + list.size()
+                AssertionOperator.LIST_SIZE_EQUALS,
+                path,
+                expectedSize,
+                list.size(),
+                "LIST_SIZE_EQUALS failed at " + path +
+                    ". Expected size: " + expectedSize +
+                    ", Actual size: " + list.size()
             );
         }
     }

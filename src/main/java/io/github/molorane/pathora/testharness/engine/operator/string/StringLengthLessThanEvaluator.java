@@ -35,13 +35,13 @@ public class StringLengthLessThanEvaluator implements AssertionEvaluator {
 
         if (actualLength >= threshold) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_LENGTH_LESS_THAN,
-                    path,
-                    "< " + threshold,
-                    actualLength,
-                    "STRING_LENGTH_LESS_THAN failed at " + path +
-                            ". Expected length < " + threshold +
-                            ", but found length " + actualLength + " for value: " + actualStr);
+                AssertionOperator.STRING_LENGTH_LESS_THAN,
+                path,
+                "< " + threshold,
+                actualLength,
+                "STRING_LENGTH_LESS_THAN failed at " + path +
+                    ". Expected length < " + threshold +
+                    ", but found length " + actualLength + " for value: " + actualStr);
         }
     }
 

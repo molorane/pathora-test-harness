@@ -39,13 +39,13 @@ public class LessThanEvaluator implements AssertionEvaluator {
 
         if (!(a < e)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LESS_THAN,
-                    path,
-                    e,
-                    a,
-                    "LESS_THAN failed at " + path +
-                            ". Expected < " + e +
-                            ", Actual: " + a);
+                AssertionOperator.LESS_THAN,
+                path,
+                e,
+                a,
+                "LESS_THAN failed at " + path +
+                    ". Expected < " + e +
+                    ", Actual: " + a);
         }
     }
 }

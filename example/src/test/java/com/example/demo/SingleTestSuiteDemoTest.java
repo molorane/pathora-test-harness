@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.config.TestHarnessConfig;
+import io.github.molorane.pathora.testharness.util.PathoraClock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Clock;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -98,6 +101,12 @@ class SingleTestSuiteDemoTest {
         runTestSuite("templates/tests/policy-risk-assessment-test.json");
     }
 
+    @Test
+    @DisplayName("Execute Dynamic Date & Timezone Test Suite")
+    void testDynamicDateTimezoneSuite() throws Exception {
+        runTestSuite("templates/tests/dynamic-date-timezone-test.json");
+    }
+
     private void runTestSuite(String testSuiteRelativePath) throws Exception {
         Path suitePath = Paths.get(testSuiteRelativePath);
         assertThat(Files.exists(suitePath))
@@ -117,18 +126,35 @@ class SingleTestSuiteDemoTest {
 
         for (RuleTestCase testCase : suite.tests()) {
             assertDoesNotThrow(() -> {
-                String mutatedRequest = mutationEngine.apply(
+                String effectiveTimezone = (testCase.timezone() != null && !testCase.timezone().isBlank())
+                    ? testCase.timezone()
+                    : suite.timezone();
+                boolean customTimezone = effectiveTimezone != null && !effectiveTimezone.isBlank();
+                RuleTestCase effectiveTestCase = customTimezone && (testCase.timezone() == null || testCase.timezone().isBlank())
+                    ? new RuleTestCase(testCase.name(), testCase.description(), testCase.operation(), testCase.mutations(), testCase.assertions(), effectiveTimezone)
+                    : testCase;
+
+                if (customTimezone) {
+                    PathoraClock.setThreadClock(Clock.system(ZoneId.of(effectiveTimezone.trim())));
+                }
+                try {
+                    String mutatedRequest = mutationEngine.apply(
                         rawRequest,
-                        testCase.mutations(),
+                        effectiveTestCase.mutations(),
                         suitePath.getFileName().toString(),
-                        testCase.operation(),
+                        effectiveTestCase.operation(),
                         suite.isXmlRequest()
-                );
+                    );
 
-                String responseJson = dispatcher.dispatch(testCase.operation(), mutatedRequest, suite.isXmlRequest());
-                assertThat(responseJson).isNotNull().isNotEmpty();
+                    String responseJson = dispatcher.dispatch(effectiveTestCase.operation(), mutatedRequest, suite.isXmlRequest());
+                    assertThat(responseJson).isNotNull().isNotEmpty();
 
-                assertionEngine.assertResponse(responseJson, testCase, mutatedRequest);
+                    assertionEngine.assertResponse(responseJson, effectiveTestCase, mutatedRequest);
+                } finally {
+                    if (customTimezone) {
+                        PathoraClock.clearThreadClock();
+                    }
+                }
             }, "Test case '" + testCase.name() + "' failed execution or assertions");
         }
     }

@@ -4,6 +4,9 @@ This guide demonstrates how to configure and use every assertion operator availa
 
 > **Note on Null Values:**
 > For unary, structural, and flag-based operators where an expected value is not required, omit the `"value"` field entirely. The test harness engine defaults unassigned fields to `null`.
+>
+> **💡 Temporal Testing & Dynamic Expressions Guide:**
+> For an in-depth reference on dynamic date tokens (`{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`), relative offsets (`+30d`, `-25y`, `+2h`), custom formats, 6 timezone configuration methods, and `PathoraClock` deterministic time-travel testing, see **[DATE_EXPRESSIONS_AND_TIMEZONES.md](DATE_EXPRESSIONS_AND_TIMEZONES.md)**.
 
 ---
 
@@ -786,6 +789,47 @@ Validates that string is a valid IPv4 or IPv6 address.
 ## 3. Date Operators
 
 Date operators evaluate calendar dates, timestamps, components (year, month, day, hour, minute, second), relative past/future checks, and time windows.
+
+### 💡 Dynamic Date Expressions & Clock Management
+
+Pathora supports dynamic date expressions in both **payload mutations** and **assertion expected values**:
+
+#### Supported Dynamic Tokens
+
+| Token Expression | Meaning | Example Output |
+| :--- | :--- | :--- |
+| `{{$CURRENT_DATE}}` / `{{$TODAY}}` | Current calendar date | `2026-10-07` |
+| `{{$CURRENT_DATETIME}}` / `{{$NOW}}` | Current ISO-8601 UTC timestamp | `2026-10-07T12:00:00Z` |
+| `{{$EPOCH_MILLIS}}` / `{{$TIMESTAMP}}` | Current epoch timestamp in milliseconds | `1791374400000` |
+| `{{$EPOCH_SECONDS}}` | Current epoch timestamp in seconds | `1791374400` |
+
+#### Relative Temporal Offsets
+Append offsets directly to tokens:
+* Days: `{{$CURRENT_DATE + 30d}}`, `{{$CURRENT_DATE - 10d}}`
+* Weeks: `{{$CURRENT_DATE + 2w}}`
+* Months: `{{$CURRENT_DATE + 3m}}`
+* Years: `{{$CURRENT_DATE - 25y}}` *(ideal for Date of Birth)*
+* Hours/Minutes/Seconds: `{{$CURRENT_DATETIME + 2h}}`, `{{$NOW - 30min}}`, `{{$NOW + 45s}}`
+
+#### Custom Formatting Patterns
+Format date tokens using `:pattern`:
+* `{{$CURRENT_DATE:dd/MM/yyyy}}` → `07/10/2026`
+* `{{$CURRENT_DATE + 5d:dd-MM-yyyy}}` → `12-10-2026`
+
+#### Dynamic Date vs Datetime Assertions Best Practices
+* **For calendar dates**: Use `DATE_EQUALS` with `{{$CURRENT_DATE}}` or `IS_TODAY`.
+* **For recent timestamps**: Avoid exact equality with `CURRENT_DATETIME` (which is prone to millisecond timing jitter). Instead, use `DATETIME_WITHIN_LAST` (e.g. within 1 minute).
+* **For future timestamps**: Use `DATETIME_EQUALS_WITH_TOLERANCE` with `{{$CURRENT_DATETIME + 1h}}` and a tolerance (e.g. $\pm 5$ minutes).
+
+#### Deterministic Time-Travel Testing with `PathoraClock`
+```java
+// Freeze time during test execution
+PathoraClock.freeze(LocalDate.of(2028, 2, 29)); // leap year testing
+PathoraClock.freeze(Instant.parse("2026-12-31T23:59:59Z")); // year-end testing
+
+// Reset to system clock
+PathoraClock.reset();
+```
 
 ### DATE_BEFORE
 Validates that actual date is strictly before expected date (`YYYY-MM-DD`).

@@ -41,12 +41,12 @@ public class IsNotNullEvaluator implements AssertionEvaluator {
 
         if (value == null) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_NOT_NULL,
-                    path,
-                    "not null",
-                    null,
-                    "IS_NOT_NULL failed at " + path +
-                            ". Expected not null but was null");
+                AssertionOperator.IS_NOT_NULL,
+                path,
+                "not null",
+                null,
+                "IS_NOT_NULL failed at " + path +
+                    ". Expected not null but was null");
         }
     }
 }

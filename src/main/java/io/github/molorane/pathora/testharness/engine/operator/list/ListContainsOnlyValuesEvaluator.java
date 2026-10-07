@@ -37,16 +37,16 @@ public class ListContainsOnlyValuesEvaluator implements AssertionEvaluator {
         List<?> expectedList = AssertionUtils.requireList(expected, path);
 
         if (list.size() != expectedList.size() ||
-                !list.containsAll(expectedList)) {
+            !list.containsAll(expectedList)) {
 
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_CONTAINS_ONLY_VALUES,
-                    path,
-                    expectedList,
-                    list,
-                    "LIST_CONTAINS_ONLY_VALUES failed at " + path +
-                            ". Expected: " + expectedList +
-                            ", Actual: " + list);
+                AssertionOperator.LIST_CONTAINS_ONLY_VALUES,
+                path,
+                expectedList,
+                list,
+                "LIST_CONTAINS_ONLY_VALUES failed at " + path +
+                    ". Expected: " + expectedList +
+                    ", Actual: " + list);
         }
     }
 }

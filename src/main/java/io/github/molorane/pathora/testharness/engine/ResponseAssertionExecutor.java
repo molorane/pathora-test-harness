@@ -26,9 +26,9 @@ public class ResponseAssertionExecutor {
      * @param testCase       the test case definition
      */
     public void execute(
-            String mutatedRequest,
-            String response,
-            RuleTestCase testCase) {
+        String mutatedRequest,
+        String response,
+        RuleTestCase testCase) {
         assertionEngine.assertResponse(response, testCase, mutatedRequest);
     }
 }

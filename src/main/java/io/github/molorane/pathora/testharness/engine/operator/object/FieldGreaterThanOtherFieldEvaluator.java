@@ -42,7 +42,7 @@ public class FieldGreaterThanOtherFieldEvaluator implements DocumentContextAware
 
         if (leftPath == null || rightPath == null) {
             throw new IllegalArgumentException(
-                    "FIELD_GREATER_THAN_OTHER_FIELD requires 'leftPath' and 'rightPath' in Value");
+                "FIELD_GREATER_THAN_OTHER_FIELD requires 'leftPath' and 'rightPath' in Value");
         }
 
         Object leftValue = context.read(leftPath);
@@ -52,7 +52,7 @@ public class FieldGreaterThanOtherFieldEvaluator implements DocumentContextAware
 
         if (!(normalized[0] instanceof Number) || !(normalized[1] instanceof Number)) {
             throw new IllegalArgumentException(
-                    "FIELD_GREATER_THAN_OTHER_FIELD requires numeric values. Left: " + leftValue + ", Right: " + rightValue);
+                "FIELD_GREATER_THAN_OTHER_FIELD requires numeric values. Left: " + leftValue + ", Right: " + rightValue);
         }
 
         double leftNum = ((Number) normalized[0]).doubleValue();
@@ -60,14 +60,14 @@ public class FieldGreaterThanOtherFieldEvaluator implements DocumentContextAware
 
         if (leftNum <= rightNum) {
             throw new HarnessAssertionException(
-                    AssertionOperator.FIELD_GREATER_THAN_OTHER_FIELD,
-                    leftPath + " vs " + rightPath,
-                    "> " + rightValue,
-                    leftValue,
-                    "FIELD_GREATER_THAN_OTHER_FIELD failed. " +
-                            leftPath + " = " + leftValue +
-                            ", " + rightPath + " = " + rightValue +
-                            ". Expected left to be greater than right.");
+                AssertionOperator.FIELD_GREATER_THAN_OTHER_FIELD,
+                leftPath + " vs " + rightPath,
+                "> " + rightValue,
+                leftValue,
+                "FIELD_GREATER_THAN_OTHER_FIELD failed. " +
+                    leftPath + " = " + leftValue +
+                    ", " + rightPath + " = " + rightValue +
+                    ". Expected left to be greater than right.");
         }
     }
 }

@@ -70,9 +70,10 @@ public AssertionEngine() {
 
 **Implementation**:
 ```java
-public interface EntryPointExecutor {
+public interface EntryPointExecutor<REQ, RES> {
     String getEntryPointName();
-    String execute(String request);
+    Class<REQ> getRequestType();
+    RES execute(REQ request);
 }
 
 // Discovered via:
@@ -113,7 +114,7 @@ if (handler instanceof DocumentContextAwareOperator) {
 
 **Examples of Context-Aware Operators**:
 - `AllMatchOperator` — needs to evaluate conditions on each array element
-- `ArrayContainsObjectWithFieldsOperator` — needs to query nested objects
+- `ListContainsObjectWithFieldsOperator` — needs to query nested objects
 
 **Benefits**:
 - Cleanly separates concerns:
@@ -316,9 +317,10 @@ public interface DocumentContextAwareOperator extends OperatorAssertion {
 }
 
 // Third interface for rule engine entry points
-public interface EntryPointExecutor {
+public interface EntryPointExecutor<REQ, RES> {
     String getEntryPointName();
-    String execute(String request);
+    Class<REQ> getRequestType();
+    RES execute(REQ request);
 }
 ```
 
@@ -361,7 +363,7 @@ OperatorAssertion (interface)
 ├── ContainsAllOperator (implements)
 └── DocumentContextAwareOperator (extends interface)
     ├── AllMatchOperator (implements)
-    └── ArrayContainsObjectWithFieldsOperator (implements)
+    └── ListContainsObjectWithFieldsOperator (implements)
 ```
 
 **No deep hierarchies** like:

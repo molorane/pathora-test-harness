@@ -54,13 +54,13 @@ public class DoesNotContainAllEvaluator implements AssertionEvaluator {
 
         // All expected values are present, which means it DOES contain all, so this fails
         throw new HarnessAssertionException(
-                AssertionOperator.DOES_NOT_CONTAIN_ALL,
-                path,
-                expected,
-                actual,
-                "DOES_NOT_CONTAIN_ALL failed at " + path +
-                        ". Array contains all of: " + expectedList +
-                        ", Actual: " + actualList);
+            AssertionOperator.DOES_NOT_CONTAIN_ALL,
+            path,
+            expected,
+            actual,
+            "DOES_NOT_CONTAIN_ALL failed at " + path +
+                ". Array contains all of: " + expectedList +
+                ", Actual: " + actualList);
     }
 }
 

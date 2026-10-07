@@ -7,11 +7,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ComplexPolicyService {
@@ -95,6 +91,21 @@ public class ComplexPolicyService {
         underwritingSummary.put("approved", true);
         underwritingSummary.put("score", riskScore);
         underwritingSummary.put("tier", "PREMIUM");
+
+        Map<String, Object> classificationSummary = new HashMap<>();
+        classificationSummary.put("tier", "PREMIUM");
+        classificationSummary.put("score", riskScore);
+
+        Map<String, Object> classificationDetails = new HashMap<>();
+        classificationDetails.put("score", riskScore);
+        classificationDetails.put("band", "A");
+
+        classificationSummary.put("details", classificationDetails);
+
+        Map<String, Object> profileSummary = new HashMap<>();
+        profileSummary.put("classification", classificationSummary);
+
+        underwritingSummary.put("profile", profileSummary);
 
         Map<String, Object> underwriterSummary = new HashMap<>();
         underwriterSummary.put("code", underwriterCode);

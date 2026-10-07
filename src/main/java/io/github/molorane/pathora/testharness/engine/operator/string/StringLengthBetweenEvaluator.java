@@ -44,7 +44,7 @@ public class StringLengthBetweenEvaluator implements AssertionEvaluator {
 
         if (minObj == null || maxObj == null) {
             throw new IllegalArgumentException(
-                    "STRING_LENGTH_BETWEEN operator requires 'min' and 'max' in Value at " + path);
+                "STRING_LENGTH_BETWEEN operator requires 'min' and 'max' in Value at " + path);
         }
 
         int min = toInt(minObj, path + " (min)");
@@ -52,13 +52,13 @@ public class StringLengthBetweenEvaluator implements AssertionEvaluator {
 
         if (length < min || length > max) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_LENGTH_BETWEEN,
-                    path,
-                    "length between " + min + " and " + max,
-                    length,
-                    "STRING_LENGTH_BETWEEN failed at " + path +
-                            ". Expected length between " + min + " and " + max +
-                            ", but found length " + length + " for: " + actualStr);
+                AssertionOperator.STRING_LENGTH_BETWEEN,
+                path,
+                "length between " + min + " and " + max,
+                length,
+                "STRING_LENGTH_BETWEEN failed at " + path +
+                    ". Expected length between " + min + " and " + max +
+                    ", but found length " + length + " for: " + actualStr);
         }
     }
 

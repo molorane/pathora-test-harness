@@ -34,13 +34,13 @@ public class StringContainsIgnoreCaseEvaluator implements AssertionEvaluator {
 
         if (!StringHelper.containsIgnoreCase(actualStr, searchStr)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_CONTAINS_IGNORE_CASE,
-                    path,
-                    expected,
-                    actual,
-                    "STRING_CONTAINS_IGNORE_CASE failed at " + path +
-                            ". Expected to contain (ignore case): " + expected +
-                            ", Actual: " + actualStr);
+                AssertionOperator.STRING_CONTAINS_IGNORE_CASE,
+                path,
+                expected,
+                actual,
+                "STRING_CONTAINS_IGNORE_CASE failed at " + path +
+                    ". Expected to contain (ignore case): " + expected +
+                    ", Actual: " + actualStr);
         }
     }
 }

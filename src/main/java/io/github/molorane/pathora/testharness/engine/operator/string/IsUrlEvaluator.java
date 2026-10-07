@@ -46,12 +46,12 @@ public class IsUrlEvaluator implements AssertionEvaluator {
 
         if (!validUrl) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_URL,
-                    path,
-                    "valid URL",
-                    actual,
-                    "IS_URL failed at " + path +
-                            ". Expected valid URL format, Actual: " + actualStr);
+                AssertionOperator.IS_URL,
+                path,
+                "valid URL",
+                actual,
+                "IS_URL failed at " + path +
+                    ". Expected valid URL format, Actual: " + actualStr);
         }
     }
 }

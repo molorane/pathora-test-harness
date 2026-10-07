@@ -40,13 +40,13 @@ public class UniqueElementsEvaluator implements AssertionEvaluator {
         for (int i = 0; i < list.size(); i++) {
             if (!seen.add(list.get(i))) {
                 throw new HarnessAssertionException(
-                        AssertionOperator.UNIQUE_ELEMENTS,
-                        path,
-                        "all unique elements",
-                        actual,
-                        "UNIQUE_ELEMENTS failed at " + path +
-                                ". Duplicate found: " + list.get(i) +
-                                " at index " + i);
+                    AssertionOperator.UNIQUE_ELEMENTS,
+                    path,
+                    "all unique elements",
+                    actual,
+                    "UNIQUE_ELEMENTS failed at " + path +
+                        ". Duplicate found: " + list.get(i) +
+                        " at index " + i);
             }
         }
     }

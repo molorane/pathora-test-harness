@@ -124,12 +124,13 @@ public record JsonAssertion(
 
 1. `SCALAR`     — EQUALS, NOT_EQUALS, GREATER_THAN, LESS_THAN, BETWEEN, …
 2. `STRING`     — REGEX_MATCH, STARTS_WITH, ENDS_WITH
-3. `DATE`       — DATE_BEFORE, DATE_AFTER, DATETIME_*, DATE_*_NOW, …
-4. `DURATION`   — DURATION_*, DATE_*_DURATION
-5. `STRUCTURAL` — PATH_EXISTS, PATH_NOT_EXISTS, ARRAY_SIZE_EQUALS
-6. `ARRAY`      — ARRAY_CONTAINS, ALL_MATCH, CONTAINS_ANY, …
-7. `OBJECT`     — OBJECT_CONTAINS_FIELDS, HAS_KEYS, FIELD_EQUALS_OTHER_FIELD
-8. `LOGICAL`    — AND, OR, NOT
+3. `DATE`       — DATE_BEFORE, DATE_AFTER, DATE_EQUALS, DATE_YEAR_EQUALS, DATE_MONTH_EQUALS, DATE_DAY_EQUALS, DATE_DAY_OF_WEEK_EQUALS, DATE_HOUR_EQUALS, DATE_MINUTE_EQUALS, DATE_SECOND_EQUALS, DATE_BETWEEN, IS_TODAY, IS_PAST_DATE, IS_FUTURE_DATE, DATE_WITHIN_LAST, DATE_WITHIN_NEXT
+4. `DATETIME`   — DATETIME_BEFORE, DATETIME_AFTER, DATETIME_EQUALS, DATETIME_EQUALS_WITH_TOLERANCE, DATETIME_BETWEEN, IS_PAST_DATETIME, IS_FUTURE_DATETIME, DATETIME_WITHIN_LAST, DATETIME_WITHIN_NEXT, TIME_EQUALS, TIME_BEFORE, TIME_AFTER, TIME_BETWEEN
+5. `DURATION`   — DURATION_*, DATE_*_DURATION
+6. `STRUCTURAL` — PATH_EXISTS, PATH_NOT_EXISTS, LIST_SIZE_EQUALS
+7. `ARRAY`      — LIST_CONTAINS, LIST_CONTAINS_OBJECT_WITH_FIELDS, LIST_CONTAINS_PARTIAL_OBJECT_WITH_FIELDS, ALL_MATCH, CONTAINS_ANY, …
+8. `OBJECT`     — OBJECT_CONTAINS_FIELDS, OBJECT_CONTAINS_PARTIAL_FIELDS, HAS_KEYS, FIELD_EQUALS_OTHER_FIELD
+9. `LOGICAL`    — AND, OR, NOT
 
 `AND`, `OR`, `NOT` are **not** registered in the operator map.
 They are handled exclusively inside `AssertionEngine.evaluateAssertion()`.
@@ -310,21 +311,22 @@ a pre-resolved `actual` value.
 Consumer projects implement this interface to plug in their rule engine.
 
 ```java
-public interface EntryPointExecutor {
+public interface EntryPointExecutor<REQ, RES> {
     String getEntryPointName();   // must match "EntryPointName" in suite JSON
-    Class<?> getRequestType();    // Jackson deserialisation target type
-    Object execute(Object request);
+    Class<REQ> getRequestType();  // Jackson deserialisation target type
+    RES execute(REQ request);
 }
 ```
 
 Rules:
 - `getEntryPointName()` must exactly match the `EntryPointName` value
   used in test suite JSON files.
-- `execute()` must return a serialisable object. The dispatcher serialises
+- `getRequestType()` returns the `Class<REQ>` target for deserializing the raw JSON/XML payload.
+- `execute()` accepts typed `REQ` and returns a serialisable `RES` object. The dispatcher serialises
   it with `ObjectMapper` using `NON_NULL` inclusion.
 - Never return `null` from `execute()`.
 - The consumer project registers all executors by constructing
-  `EntryPointRegistry(List<EntryPointExecutor>)`.
+  `EntryPointRegistry(List<EntryPointExecutor<?, ?>>)`.
 
 ------------------------------------------------------------------------
 

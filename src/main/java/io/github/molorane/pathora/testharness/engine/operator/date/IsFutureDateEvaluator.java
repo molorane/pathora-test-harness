@@ -4,6 +4,7 @@ import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.util.AssertionUtils;
+import io.github.molorane.pathora.testharness.util.PathoraClock;
 
 import java.time.LocalDate;
 
@@ -35,16 +36,16 @@ public class IsFutureDateEvaluator implements AssertionEvaluator {
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);
         LocalDate actualDate = parseDate(String.valueOf(normalizedActual), path);
-        LocalDate today = LocalDate.now();
+        LocalDate today = PathoraClock.today();
 
         if (!actualDate.isAfter(today)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_FUTURE_DATE,
-                    path,
-                    "after " + today,
-                    actualDate,
-                    "IS_FUTURE_DATE failed at " + path +
-                            ". Value " + actualDate + " is not after today (" + today + ")");
+                AssertionOperator.IS_FUTURE_DATE,
+                path,
+                "after " + today,
+                actualDate,
+                "IS_FUTURE_DATE failed at " + path +
+                    ". Value " + actualDate + " is not after today (" + today + ")");
         }
     }
 }
