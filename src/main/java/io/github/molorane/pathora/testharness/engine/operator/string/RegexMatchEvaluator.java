@@ -38,8 +38,8 @@ public class RegexMatchEvaluator implements AssertionEvaluator {
 
         if (!(expected instanceof String regex)) {
             throw new IllegalArgumentException(
-                    "REGEX_MATCH requires a string pattern as Value at " + path +
-                            ". Got: " + expected);
+                "REGEX_MATCH requires a string pattern as Value at " + path +
+                    ". Got: " + expected);
         }
 
         String actualStr = String.valueOf(normalizedActual);
@@ -49,20 +49,20 @@ public class RegexMatchEvaluator implements AssertionEvaluator {
             pattern = Pattern.compile(regex);
         } catch (PatternSyntaxException e) {
             throw new IllegalArgumentException(
-                    "REGEX_MATCH has invalid regex pattern at " + path +
-                            ": " + regex,
-                    e);
+                "REGEX_MATCH has invalid regex pattern at " + path +
+                    ": " + regex,
+                e);
         }
 
         if (!pattern.matcher(actualStr).matches()) {
             throw new HarnessAssertionException(
-                    AssertionOperator.REGEX_MATCH,
-                    path,
-                    regex,
-                    actualStr,
-                    "REGEX_MATCH failed at " + path +
-                            ". Pattern: " + regex +
-                            ", Actual: " + actualStr);
+                AssertionOperator.REGEX_MATCH,
+                path,
+                regex,
+                actualStr,
+                "REGEX_MATCH failed at " + path +
+                    ". Pattern: " + regex +
+                    ", Actual: " + actualStr);
         }
     }
 }

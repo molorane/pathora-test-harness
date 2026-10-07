@@ -10,13 +10,11 @@
         {
           "path": "$.emptyMetadata",
           "operator": "IS_EMPTY_OBJECT",
-          "value": null,
           "description": "Empty metadata is an empty object"
         },
         {
           "path": "$.underwritingSummary",
           "operator": "IS_NOT_EMPTY_OBJECT",
-          "value": null,
           "description": "Underwriting summary is a non-empty object"
         },
         {
@@ -26,6 +24,22 @@
             "tier": "PREMIUM"
           },
           "description": "Underwriting summary contains partial field tier=PREMIUM"
+        },
+        {
+          "path": "$.underwritingSummary",
+          "operator": "OBJECT_CONTAINS_PARTIAL_FIELDS",
+          "value": {
+            "profile": {
+              "classification": {
+                "tier": "PREMIUM",
+                "details": {
+                  "score": 820,
+                  "band": "A"
+                }
+              }
+            }
+          },
+          "description": "Underwriting summary contains nested partial field profile.classification.details.score=820"
         },
         {
           "path": "$.underwritingSummary",

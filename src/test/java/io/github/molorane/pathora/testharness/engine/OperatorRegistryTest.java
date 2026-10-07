@@ -8,7 +8,7 @@ import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import java.util.EnumSet;
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class OperatorRegistryTest {
 

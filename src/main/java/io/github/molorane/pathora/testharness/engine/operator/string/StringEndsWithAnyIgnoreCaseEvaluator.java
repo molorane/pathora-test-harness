@@ -36,13 +36,13 @@ public class StringEndsWithAnyIgnoreCaseEvaluator implements AssertionEvaluator 
 
         if (!matched) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_ENDS_WITH_ANY_IGNORE_CASE,
-                    path,
-                    expected,
-                    actual,
-                    "STRING_ENDS_WITH_ANY_IGNORE_CASE failed at " + path +
-                            ". Expected to end with any of (ignore case): " + expected +
-                            ", Actual: " + actualStr);
+                AssertionOperator.STRING_ENDS_WITH_ANY_IGNORE_CASE,
+                path,
+                expected,
+                actual,
+                "STRING_ENDS_WITH_ANY_IGNORE_CASE failed at " + path +
+                    ". Expected to end with any of (ignore case): " + expected +
+                    ", Actual: " + actualStr);
         }
     }
 }

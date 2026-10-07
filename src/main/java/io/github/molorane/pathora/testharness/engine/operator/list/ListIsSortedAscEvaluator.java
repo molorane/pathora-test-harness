@@ -43,13 +43,13 @@ public class ListIsSortedAscEvaluator implements AssertionEvaluator {
 
             if (compare(current, next) > 0) {
                 throw new HarnessAssertionException(
-                        AssertionOperator.LIST_IS_SORTED_ASC,
-                        path,
-                        "sorted in ascending order",
-                        list,
-                        "LIST_IS_SORTED_ASC failed at " + path +
-                                ". Element at index " + i + " (" + current +
-                                ") is greater than element at index " + (i + 1) + " (" + next + ")");
+                    AssertionOperator.LIST_IS_SORTED_ASC,
+                    path,
+                    "sorted in ascending order",
+                    list,
+                    "LIST_IS_SORTED_ASC failed at " + path +
+                        ". Element at index " + i + " (" + current +
+                        ") is greater than element at index " + (i + 1) + " (" + next + ")");
             }
         }
     }
@@ -68,7 +68,7 @@ public class ListIsSortedAscEvaluator implements AssertionEvaluator {
         Object[] normalized = AssertionUtils.normalizeTypes(a, b);
         if (normalized[0] instanceof Comparable compA && normalized[1] instanceof Comparable compB) {
             if (compA.getClass().isAssignableFrom(compB.getClass())
-                    || compB.getClass().isAssignableFrom(compA.getClass())) {
+                || compB.getClass().isAssignableFrom(compA.getClass())) {
                 return compA.compareTo(compB);
             }
         }

@@ -34,12 +34,12 @@ public class IsZeroEvaluator implements AssertionEvaluator {
 
         if (Double.compare(val, 0.0) != 0) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_ZERO,
-                    path,
-                    0,
-                    actual,
-                    "IS_ZERO failed at " + path +
-                            ". Expected zero but was: " + val);
+                AssertionOperator.IS_ZERO,
+                path,
+                0,
+                actual,
+                "IS_ZERO failed at " + path +
+                    ". Expected zero but was: " + val);
         }
     }
 

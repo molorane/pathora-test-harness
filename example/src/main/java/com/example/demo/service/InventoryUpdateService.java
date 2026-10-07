@@ -14,11 +14,11 @@ public class InventoryUpdateService {
         String stockStatus = newStockLevel > 0 ? "IN_STOCK" : "OUT_OF_STOCK";
 
         return new InventoryResponse(
-            inventoryRequest.productId(),
-            newStockLevel,
-            stockStatus,
-            inventoryRequest.unitPrice(),
-            Instant.now()
+                inventoryRequest.productId(),
+                newStockLevel,
+                stockStatus,
+                inventoryRequest.unitPrice(),
+                Instant.now()
         );
     }
 }

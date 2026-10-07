@@ -38,7 +38,6 @@
         {
           "path": "$.evaluationTimestamp",
           "operator": "PATH_EXISTS",
-          "value": null,
           "description": "Evaluation timestamp path must exist in response"
         }
       ]
@@ -121,13 +120,11 @@
         {
           "path": "$.uniqueReferenceCodes",
           "operator": "UNIQUE_ELEMENTS",
-          "value": null,
           "description": "Reference codes must contain no duplicates"
         },
         {
           "path": "$.emptyExclusions",
           "operator": "IS_EMPTY_LIST",
-          "value": null,
           "description": "Exclusions list must be empty"
         }
       ]
@@ -194,7 +191,6 @@
         {
           "path": "$",
           "operator": "AND",
-          "value": null,
           "description": "Status must be APPROVED AND riskScore > 800",
           "assertions": [
             {
@@ -211,7 +207,6 @@
         {
           "path": "$",
           "operator": "OR",
-          "value": null,
           "description": "Region must be AFRICA_SOUTH or EUROPE",
           "assertions": [
             {
@@ -227,7 +222,6 @@
         {
           "path": "$",
           "operator": "NOT",
-          "value": null,
           "description": "Status must NOT be CANCELLED",
           "assertions": [
             {

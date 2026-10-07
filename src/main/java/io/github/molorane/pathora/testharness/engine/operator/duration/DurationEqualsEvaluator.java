@@ -46,18 +46,18 @@ public class DurationEqualsEvaluator implements DocumentContextAwareEvaluator {
         var unit = DurationHelper.parseUnit(String.valueOf(config.get("unit")));
 
         long actual = DurationHelper.calculateDuration(
-                String.valueOf((Object) context.read(startPath)),
-                String.valueOf((Object) context.read(endPath)),
-                unit, startPath);
+            String.valueOf((Object) context.read(startPath)),
+            String.valueOf((Object) context.read(endPath)),
+            unit, startPath);
 
         if (actual != expectedDuration) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DURATION_EQUALS,
-                    startPath + " → " + endPath,
-                    expectedDuration + " " + unit,
-                    actual + " " + unit,
-                    "DURATION_EQUALS failed. Expected " + expectedDuration +
-                            " " + unit + " but was " + actual + " " + unit);
+                AssertionOperator.DURATION_EQUALS,
+                startPath + " → " + endPath,
+                expectedDuration + " " + unit,
+                actual + " " + unit,
+                "DURATION_EQUALS failed. Expected " + expectedDuration +
+                    " " + unit + " but was " + actual + " " + unit);
         }
     }
 }

@@ -38,12 +38,12 @@ public class ListContainsOnlyOneValueEvaluator implements AssertionEvaluator {
 
         if (list.size() != 1) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_CONTAINS_ONLY_ONE_VALUE,
-                    path,
-                    expected,
-                    list,
-                    "LIST_CONTAINS_ONLY_ONE_VALUE failed at " + path +
-                            ". Expected exactly one element, Actual: " + list);
+                AssertionOperator.LIST_CONTAINS_ONLY_ONE_VALUE,
+                path,
+                expected,
+                list,
+                "LIST_CONTAINS_ONLY_ONE_VALUE failed at " + path +
+                    ". Expected exactly one element, Actual: " + list);
         }
 
         Object actualValue = AssertionUtils.normalizeResult(list.get(0), path);
@@ -51,13 +51,13 @@ public class ListContainsOnlyOneValueEvaluator implements AssertionEvaluator {
 
         if (!Objects.equals(normalized[0], normalized[1])) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_CONTAINS_ONLY_ONE_VALUE,
-                    path,
-                    normalized[1],
-                    normalized[0],
-                    "LIST_CONTAINS_ONLY_ONE_VALUE failed at " + path +
-                            ". Expected: " + normalized[1] +
-                            ", Actual: " + normalized[0]);
+                AssertionOperator.LIST_CONTAINS_ONLY_ONE_VALUE,
+                path,
+                normalized[1],
+                normalized[0],
+                "LIST_CONTAINS_ONLY_ONE_VALUE failed at " + path +
+                    ". Expected: " + normalized[1] +
+                    ", Actual: " + normalized[0]);
         }
     }
 }

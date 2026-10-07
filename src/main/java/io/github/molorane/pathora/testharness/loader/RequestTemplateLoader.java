@@ -25,7 +25,7 @@ public class RequestTemplateLoader {
 
         if (Files.notExists(resolvedPath)) {
             throw new IllegalArgumentException(
-                    "Request template not found: " + resolvedPath.toAbsolutePath()
+                "Request template not found: " + resolvedPath.toAbsolutePath()
             );
         }
 

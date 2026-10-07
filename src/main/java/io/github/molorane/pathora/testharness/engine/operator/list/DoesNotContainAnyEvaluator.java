@@ -43,13 +43,13 @@ public class DoesNotContainAnyEvaluator implements AssertionEvaluator {
                 if (Objects.equals(normalized[0], normalized[1])) {
                     // Found a match, so it DOES contain something, which means this fails
                     throw new HarnessAssertionException(
-                            AssertionOperator.DOES_NOT_CONTAIN_ANY,
-                            path,
-                            expected,
-                            actual,
-                            "DOES_NOT_CONTAIN_ANY failed at " + path +
-                                    ". Array contains at least one of: " + expectedList +
-                                    ", Actual: " + actualList);
+                        AssertionOperator.DOES_NOT_CONTAIN_ANY,
+                        path,
+                        expected,
+                        actual,
+                        "DOES_NOT_CONTAIN_ANY failed at " + path +
+                            ". Array contains at least one of: " + expectedList +
+                            ", Actual: " + actualList);
                 }
             }
         }

@@ -52,7 +52,7 @@ public class DateTimeEqualsWithToleranceEvaluator implements AssertionEvaluator 
 
         if (expObj == null || tolObj == null) {
             throw new IllegalArgumentException(
-                    "DATETIME_EQUALS_WITH_TOLERANCE requires 'expected' (or 'value') and 'tolerance' in Value at " + path);
+                "DATETIME_EQUALS_WITH_TOLERANCE requires 'expected' (or 'value') and 'tolerance' in Value at " + path);
         }
 
         long tolerance = DurationHelper.toLong(tolObj);
@@ -66,13 +66,13 @@ public class DateTimeEqualsWithToleranceEvaluator implements AssertionEvaluator 
 
         if (actualDt.isBefore(minBound) || actualDt.isAfter(maxBound)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATETIME_EQUALS_WITH_TOLERANCE,
-                    path,
-                    expectedDt + " (±" + tolerance + " " + unit + ")",
-                    actualDt,
-                    "DATETIME_EQUALS_WITH_TOLERANCE failed at " + path +
-                            ". Expected: " + expectedDt + " ±" + tolerance + " " + unit +
-                            ", Actual: " + actualDt);
+                AssertionOperator.DATETIME_EQUALS_WITH_TOLERANCE,
+                path,
+                expectedDt + " (±" + tolerance + " " + unit + ")",
+                actualDt,
+                "DATETIME_EQUALS_WITH_TOLERANCE failed at " + path +
+                    ". Expected: " + expectedDt + " ±" + tolerance + " " + unit +
+                    ", Actual: " + actualDt);
         }
     }
 }

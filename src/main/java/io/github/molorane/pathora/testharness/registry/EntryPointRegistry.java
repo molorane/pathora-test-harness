@@ -22,9 +22,9 @@ public class EntryPointRegistry {
      */
     public EntryPointRegistry(List<EntryPointExecutor<?, ?>> executors) {
         this.executors = executors.stream()
-                .collect(Collectors.toMap(
-                        EntryPointExecutor::getEntryPointName,
-                        Function.identity()));
+            .collect(Collectors.toMap(
+                EntryPointExecutor::getEntryPointName,
+                Function.identity()));
     }
 
     /**
@@ -36,8 +36,8 @@ public class EntryPointRegistry {
      */
     public EntryPointExecutor<?, ?> get(String name) {
         return Optional.ofNullable(executors.get(name))
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "No executor for entry point: " + name));
+            .orElseThrow(() -> new IllegalArgumentException(
+                "No executor for entry point: " + name));
     }
 }
 

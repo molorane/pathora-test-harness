@@ -57,7 +57,6 @@
         {
           "path": "$.expirationTimestamp",
           "operator": "IS_FUTURE_DATE",
-          "value": null,
           "description": "Expiration timestamp must be in the future relative to current time"
         },
         {
@@ -84,7 +83,6 @@
         {
           "path": "$.policyHeaderEffectiveDate",
           "operator": "IS_PAST_DATE",
-          "value": null,
           "description": "Effective date must be in the past or present"
         }
       ]
@@ -181,7 +179,6 @@
         {
           "path": "$.nonExistentField",
           "operator": "PATH_NOT_EXISTS",
-          "value": null,
           "description": "nonExistentField must not exist in response"
         },
         {
@@ -207,7 +204,6 @@
         {
           "path": "$",
           "operator": "AND",
-          "value": null,
           "description": "Status is APPROVED AND legalName is Pathora Enterprise Solutions",
           "assertions": [
             {
@@ -223,7 +219,6 @@
         {
           "path": "$",
           "operator": "OR",
-          "value": null,
           "description": "Credit rating is AA+ or AAA",
           "assertions": [
             {
@@ -239,7 +234,6 @@
         {
           "path": "$",
           "operator": "NOT",
-          "value": null,
           "description": "Status is NOT SUSPENDED",
           "assertions": [
             {

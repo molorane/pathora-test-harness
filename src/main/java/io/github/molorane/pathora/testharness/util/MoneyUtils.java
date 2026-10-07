@@ -109,12 +109,12 @@ public final class MoneyUtils {
 
         if (actualCurrency != null && expectedCurrency != null && !actualCurrency.equals(expectedCurrency)) {
             throw new HarnessAssertionException(
-                    operator,
-                    path,
-                    expectedCurrency,
-                    actualCurrency,
-                    "Currency mismatch at " + path + ". Expected currency: " + expectedCurrency +
-                            ", Actual currency: " + actualCurrency);
+                operator,
+                path,
+                expectedCurrency,
+                actualCurrency,
+                "Currency mismatch at " + path + ". Expected currency: " + expectedCurrency +
+                    ", Actual currency: " + actualCurrency);
         }
     }
 

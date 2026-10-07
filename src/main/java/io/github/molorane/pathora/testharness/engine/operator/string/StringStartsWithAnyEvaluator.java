@@ -34,13 +34,13 @@ public class StringStartsWithAnyEvaluator implements AssertionEvaluator {
 
         if (!StringHelper.startsWithAny(actualStr, prefixes)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_STARTS_WITH_ANY,
-                    path,
-                    expected,
-                    actual,
-                    "STRING_STARTS_WITH_ANY failed at " + path +
-                            ". Expected to start with any of: " + expected +
-                            ", Actual: " + actualStr);
+                AssertionOperator.STRING_STARTS_WITH_ANY,
+                path,
+                expected,
+                actual,
+                "STRING_STARTS_WITH_ANY failed at " + path +
+                    ". Expected to start with any of: " + expected +
+                    ", Actual: " + actualStr);
         }
     }
 }

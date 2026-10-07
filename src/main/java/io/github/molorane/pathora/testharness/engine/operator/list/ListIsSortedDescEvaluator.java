@@ -43,13 +43,13 @@ public class ListIsSortedDescEvaluator implements AssertionEvaluator {
 
             if (ListIsSortedAscEvaluator.compare(current, next) < 0) {
                 throw new HarnessAssertionException(
-                        AssertionOperator.LIST_IS_SORTED_DESC,
-                        path,
-                        "sorted in descending order",
-                        list,
-                        "LIST_IS_SORTED_DESC failed at " + path +
-                                ". Element at index " + i + " (" + current +
-                                ") is less than element at index " + (i + 1) + " (" + next + ")");
+                    AssertionOperator.LIST_IS_SORTED_DESC,
+                    path,
+                    "sorted in descending order",
+                    list,
+                    "LIST_IS_SORTED_DESC failed at " + path +
+                        ". Element at index " + i + " (" + current +
+                        ") is less than element at index " + (i + 1) + " (" + next + ")");
             }
         }
     }

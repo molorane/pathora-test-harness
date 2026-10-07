@@ -40,13 +40,13 @@ public class DateMinuteEqualsEvaluator implements AssertionEvaluator {
 
         if (actualMinute != expectedMinute) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_MINUTE_EQUALS,
-                    path,
-                    expectedMinute,
-                    actualMinute,
-                    "DATE_MINUTE_EQUALS failed at " + path +
-                            ". Expected minute: " + expectedMinute +
-                            ", Actual minute: " + actualMinute + " (from " + normalizedActual + ")");
+                AssertionOperator.DATE_MINUTE_EQUALS,
+                path,
+                expectedMinute,
+                actualMinute,
+                "DATE_MINUTE_EQUALS failed at " + path +
+                    ". Expected minute: " + expectedMinute +
+                    ", Actual minute: " + actualMinute + " (from " + normalizedActual + ")");
         }
     }
 }

@@ -34,13 +34,13 @@ public class StringContainsEvaluator implements AssertionEvaluator {
 
         if (!StringHelper.contains(actualStr, searchStr)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_CONTAINS,
-                    path,
-                    expected,
-                    actual,
-                    "STRING_CONTAINS failed at " + path +
-                            ". Expected to contain: " + expected +
-                            ", Actual: " + actualStr);
+                AssertionOperator.STRING_CONTAINS,
+                path,
+                expected,
+                actual,
+                "STRING_CONTAINS failed at " + path +
+                    ". Expected to contain: " + expected +
+                    ", Actual: " + actualStr);
         }
     }
 }

@@ -46,13 +46,13 @@ public class TimeBetweenEvaluator implements AssertionEvaluator {
 
         if (actualTime.isBefore(min) || actualTime.isAfter(max)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.TIME_BETWEEN,
-                    path,
-                    min + " - " + max,
-                    actualTime,
-                    "TIME_BETWEEN failed at " + path +
-                            ". Expected between " + min + " and " + max +
-                            ", Actual time: " + actualTime + " (from " + normalizedActual + ")");
+                AssertionOperator.TIME_BETWEEN,
+                path,
+                min + " - " + max,
+                actualTime,
+                "TIME_BETWEEN failed at " + path +
+                    ". Expected between " + min + " and " + max +
+                    ", Actual time: " + actualTime + " (from " + normalizedActual + ")");
         }
     }
 }

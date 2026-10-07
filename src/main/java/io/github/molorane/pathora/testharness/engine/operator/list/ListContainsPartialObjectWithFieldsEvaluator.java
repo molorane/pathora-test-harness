@@ -39,17 +39,17 @@ public class ListContainsPartialObjectWithFieldsEvaluator implements AssertionEv
         List<?> list = AssertionUtils.requireList(actual, path);
 
         boolean found = list.stream()
-                .anyMatch(item -> AssertionUtils.objectContainsPartialFields(item, expected, false));
+            .anyMatch(item -> AssertionUtils.objectContainsPartialFields(item, expected, false));
 
         if (!found) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_CONTAINS_PARTIAL_OBJECT_WITH_FIELDS,
-                    path,
-                    expected,
-                    list,
-                    "LIST_CONTAINS_PARTIAL_OBJECT_WITH_FIELDS failed at " + path +
-                            ". Expected partial object fields: " + expected +
-                            ", Actual: " + list);
+                AssertionOperator.LIST_CONTAINS_PARTIAL_OBJECT_WITH_FIELDS,
+                path,
+                expected,
+                list,
+                "LIST_CONTAINS_PARTIAL_OBJECT_WITH_FIELDS failed at " + path +
+                    ". Expected partial object fields: " + expected +
+                    ", Actual: " + list);
         }
     }
 }

@@ -43,13 +43,13 @@ public class DateMonthEqualsEvaluator implements AssertionEvaluator {
             Month expMonthEnum = Month.of(expectedMonth);
             Month actMonthEnum = actualDate.getMonth();
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_MONTH_EQUALS,
-                    path,
-                    expected,
-                    actMonthEnum.name(),
-                    "DATE_MONTH_EQUALS failed at " + path +
-                            ". Expected month: " + expected + " (" + expMonthEnum.name() + ")" +
-                            ", Actual month: " + actMonthEnum.name() + " (" + actualMonth + ") from " + normalizedActual);
+                AssertionOperator.DATE_MONTH_EQUALS,
+                path,
+                expected,
+                actMonthEnum.name(),
+                "DATE_MONTH_EQUALS failed at " + path +
+                    ". Expected month: " + expected + " (" + expMonthEnum.name() + ")" +
+                    ", Actual month: " + actMonthEnum.name() + " (" + actualMonth + ") from " + normalizedActual);
         }
     }
 }

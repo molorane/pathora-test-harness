@@ -44,7 +44,7 @@ public class ListSizeBetweenEvaluator implements AssertionEvaluator {
 
         if (minObj == null || maxObj == null) {
             throw new IllegalArgumentException(
-                    "LIST_SIZE_BETWEEN operator requires 'min' and 'max' in Value at " + path);
+                "LIST_SIZE_BETWEEN operator requires 'min' and 'max' in Value at " + path);
         }
 
         int min = toInt(minObj, path + " (min)");
@@ -53,13 +53,13 @@ public class ListSizeBetweenEvaluator implements AssertionEvaluator {
 
         if (size < min || size > max) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_SIZE_BETWEEN,
-                    path,
-                    "size between " + min + " and " + max,
-                    size,
-                    "LIST_SIZE_BETWEEN failed at " + path +
-                            ". Expected size between " + min + " and " + max +
-                            ", but found size " + size);
+                AssertionOperator.LIST_SIZE_BETWEEN,
+                path,
+                "size between " + min + " and " + max,
+                size,
+                "LIST_SIZE_BETWEEN failed at " + path +
+                    ". Expected size between " + min + " and " + max +
+                    ", but found size " + size);
         }
     }
 

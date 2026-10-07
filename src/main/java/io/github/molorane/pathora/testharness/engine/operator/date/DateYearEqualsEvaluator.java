@@ -40,13 +40,13 @@ public class DateYearEqualsEvaluator implements AssertionEvaluator {
 
         if (actualYear != expectedYear) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_YEAR_EQUALS,
-                    path,
-                    expectedYear,
-                    actualYear,
-                    "DATE_YEAR_EQUALS failed at " + path +
-                            ". Expected year: " + expectedYear +
-                            ", Actual year: " + actualYear + " (from " + normalizedActual + ")");
+                AssertionOperator.DATE_YEAR_EQUALS,
+                path,
+                expectedYear,
+                actualYear,
+                "DATE_YEAR_EQUALS failed at " + path +
+                    ". Expected year: " + expectedYear +
+                    ", Actual year: " + actualYear + " (from " + normalizedActual + ")");
         }
     }
 }

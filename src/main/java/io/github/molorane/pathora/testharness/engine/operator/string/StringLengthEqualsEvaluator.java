@@ -35,13 +35,13 @@ public class StringLengthEqualsEvaluator implements AssertionEvaluator {
 
         if (actualLength != expectedLength) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_LENGTH_EQUALS,
-                    path,
-                    expectedLength,
-                    actualLength,
-                    "STRING_LENGTH_EQUALS failed at " + path +
-                            ". Expected length " + expectedLength +
-                            ", but found length " + actualLength + " for value: " + actualStr);
+                AssertionOperator.STRING_LENGTH_EQUALS,
+                path,
+                expectedLength,
+                actualLength,
+                "STRING_LENGTH_EQUALS failed at " + path +
+                    ". Expected length " + expectedLength +
+                    ", but found length " + actualLength + " for value: " + actualStr);
         }
     }
 

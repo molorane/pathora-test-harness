@@ -19,7 +19,7 @@ public interface DocumentContextAwareEvaluator extends AssertionEvaluator {
     @Override
     default void apply(String path, Object actual, Object expected, boolean pathExists) {
         throw new UnsupportedOperationException(
-                "This evaluator requires a DocumentContext. Use apply(DocumentContext, Object) instead.");
+            "This evaluator requires a DocumentContext. Use apply(DocumentContext, Object) instead.");
     }
 }
 

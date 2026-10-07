@@ -39,13 +39,13 @@ public class ListDoesNotContainEvaluator implements AssertionEvaluator {
             Object[] normalized = AssertionUtils.normalizeTypes(item, expected);
             if (Objects.equals(normalized[0], normalized[1])) {
                 throw new HarnessAssertionException(
-                        AssertionOperator.LIST_DOES_NOT_CONTAIN,
-                        path,
-                        expected,
-                        actual,
-                        "LIST_DOES_NOT_CONTAIN failed at " + path +
-                                ". Expected list NOT to contain: " + expected +
-                                ", but it was found in: " + list);
+                    AssertionOperator.LIST_DOES_NOT_CONTAIN,
+                    path,
+                    expected,
+                    actual,
+                    "LIST_DOES_NOT_CONTAIN failed at " + path +
+                        ". Expected list NOT to contain: " + expected +
+                        ", but it was found in: " + list);
             }
         }
     }

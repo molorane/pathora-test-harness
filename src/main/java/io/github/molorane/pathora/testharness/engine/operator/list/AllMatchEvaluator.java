@@ -57,13 +57,13 @@ public class AllMatchEvaluator implements AssertionEvaluator {
 
             if (!Objects.equals(normalized[0], normalized[1])) {
                 throw new HarnessAssertionException(
-                        AssertionOperator.ALL_MATCH,
-                        path,
-                        expected,
-                        element,
-                        "ALL_MATCH failed at " + path +
-                                "[" + i + "]. Expected all elements to equal: " + expected +
-                                ", but element at index " + i + " was: " + element);
+                    AssertionOperator.ALL_MATCH,
+                    path,
+                    expected,
+                    element,
+                    "ALL_MATCH failed at " + path +
+                        "[" + i + "]. Expected all elements to equal: " + expected +
+                        ", but element at index " + i + " was: " + element);
             }
         }
     }
@@ -77,13 +77,13 @@ public class AllMatchEvaluator implements AssertionEvaluator {
                 double value = toDouble(list.get(i));
                 if (!(value > threshold)) {
                     throw new HarnessAssertionException(
-                            AssertionOperator.ALL_MATCH,
-                            path,
-                            "all > " + threshold,
-                            value,
-                            "ALL_MATCH failed at " + path +
-                                    "[" + i + "]. Expected all elements > " + threshold +
-                                    ", but element at index " + i + " was: " + value);
+                        AssertionOperator.ALL_MATCH,
+                        path,
+                        "all > " + threshold,
+                        value,
+                        "ALL_MATCH failed at " + path +
+                            "[" + i + "]. Expected all elements > " + threshold +
+                            ", but element at index " + i + " was: " + value);
                 }
             }
 
@@ -94,13 +94,13 @@ public class AllMatchEvaluator implements AssertionEvaluator {
                 double value = toDouble(list.get(i));
                 if (!(value < threshold)) {
                     throw new HarnessAssertionException(
-                            AssertionOperator.ALL_MATCH,
-                            path,
-                            "all < " + threshold,
-                            value,
-                            "ALL_MATCH failed at " + path +
-                                    "[" + i + "]. Expected all elements < " + threshold +
-                                    ", but element at index " + i + " was: " + value);
+                        AssertionOperator.ALL_MATCH,
+                        path,
+                        "all < " + threshold,
+                        value,
+                        "ALL_MATCH failed at " + path +
+                            "[" + i + "]. Expected all elements < " + threshold +
+                            ", but element at index " + i + " was: " + value);
                 }
             }
 
@@ -113,20 +113,20 @@ public class AllMatchEvaluator implements AssertionEvaluator {
                 double value = toDouble(list.get(i));
                 if (value < min || value > max) {
                     throw new HarnessAssertionException(
-                            AssertionOperator.ALL_MATCH,
-                            path,
-                            "all between " + min + " and " + max,
-                            value,
-                            "ALL_MATCH failed at " + path +
-                                    "[" + i + "]. Expected all elements between " + min + " and " + max +
-                                    ", but element at index " + i + " was: " + value);
+                        AssertionOperator.ALL_MATCH,
+                        path,
+                        "all between " + min + " and " + max,
+                        value,
+                        "ALL_MATCH failed at " + path +
+                            "[" + i + "]. Expected all elements between " + min + " and " + max +
+                            ", but element at index " + i + " was: " + value);
                 }
             }
 
         } else {
             throw new IllegalArgumentException(
-                    "ALL_MATCH condition must contain 'greaterThan', 'lessThan', or 'between' at " + path +
-                            ". Got: " + condition.keySet());
+                "ALL_MATCH condition must contain 'greaterThan', 'lessThan', or 'between' at " + path +
+                    ". Got: " + condition.keySet());
         }
     }
 
@@ -138,6 +138,6 @@ public class AllMatchEvaluator implements AssertionEvaluator {
             return Double.parseDouble(str);
         }
         throw new IllegalArgumentException(
-                "Expected numeric value but got: " + value);
+            "Expected numeric value but got: " + value);
     }
 }

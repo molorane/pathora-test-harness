@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 public class IsIpAddressEvaluator implements AssertionEvaluator {
 
     private static final Pattern IPV4_PATTERN = Pattern.compile(
-            "^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$"
+        "^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$"
     );
     private static final Pattern IPV6_HEX_PATTERN = Pattern.compile("^[0-9a-fA-F:]+$");
 
@@ -58,12 +58,12 @@ public class IsIpAddressEvaluator implements AssertionEvaluator {
 
         if (!validIp) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_IP_ADDRESS,
-                    path,
-                    "valid IP address",
-                    actual,
-                    "IS_IP_ADDRESS failed at " + path +
-                            ". Expected valid IPv4 or IPv6 address, Actual: " + actualStr);
+                AssertionOperator.IS_IP_ADDRESS,
+                path,
+                "valid IP address",
+                actual,
+                "IS_IP_ADDRESS failed at " + path +
+                    ". Expected valid IPv4 or IPv6 address, Actual: " + actualStr);
         }
     }
 }

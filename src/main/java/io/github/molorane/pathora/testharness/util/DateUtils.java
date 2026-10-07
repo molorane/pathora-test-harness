@@ -20,13 +20,14 @@ public class DateUtils {
         if (value == null) {
             throw new IllegalArgumentException("Cannot parse date at " + path + ": null");
         }
-        LocalDate parsed = tryParseDateString(value.trim());
+        String resolved = DateExpressionResolver.resolveToString(value).trim();
+        LocalDate parsed = tryParseDateString(resolved);
         if (parsed != null) {
             return parsed;
         }
         throw new IllegalArgumentException(
-                "Cannot parse date at " + path + ": " + value +
-                        ". Expected ISO date format (yyyy-MM-dd)");
+            "Cannot parse date at " + path + ": " + value +
+                ". Expected ISO date format (yyyy-MM-dd)");
     }
 
     /**
@@ -38,12 +39,24 @@ public class DateUtils {
      * @throws IllegalArgumentException if value cannot be parsed
      */
     public static LocalDateTime parseDateTime(String value, String path) {
+        if (value == null) {
+            throw new IllegalArgumentException("Cannot parse datetime at " + path + ": null");
+        }
+        String resolved = DateExpressionResolver.resolveToString(value).trim();
         try {
-            return LocalDateTime.parse(value);
+            return LocalDateTime.parse(resolved);
+        } catch (DateTimeParseException ignored) {
+        }
+        try {
+            return OffsetDateTime.parse(resolved).toLocalDateTime();
+        } catch (DateTimeParseException ignored) {
+        }
+        try {
+            return ZonedDateTime.parse(resolved).toLocalDateTime();
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(
-                    "Cannot parse datetime at " + path + ": " + value +
-                            ". Expected ISO datetime format (yyyy-MM-dd'T'HH:mm:ss)");
+                "Cannot parse datetime at " + path + ": " + value +
+                    ". Expected ISO datetime format (yyyy-MM-dd'T'HH:mm:ss)");
         }
     }
 
@@ -65,14 +78,14 @@ public class DateUtils {
         if (value instanceof LocalDateTime localDateTime) {
             return localDateTime.toLocalDate();
         }
-        String str = String.valueOf(value).trim();
+        String str = DateExpressionResolver.resolveToString(String.valueOf(value)).trim();
         LocalDate parsed = tryParseDateString(str);
         if (parsed != null) {
             return parsed;
         }
         throw new IllegalArgumentException(
-                "Cannot parse date/datetime at " + path + ": " + value +
-                        ". Expected ISO date or datetime format (e.g. yyyy-MM-dd or yyyy-MM-dd'T'HH:mm:ss)");
+            "Cannot parse date/datetime at " + path + ": " + value +
+                ". Expected ISO date or datetime format (e.g. yyyy-MM-dd or yyyy-MM-dd'T'HH:mm:ss)");
     }
 
     private static LocalDate tryParseDateString(String str) {
@@ -112,8 +125,8 @@ public class DateUtils {
             return parsed;
         }
         throw new IllegalArgumentException(
-                "Cannot parse time at " + path + ": " + value +
-                        ". Expected ISO time format (e.g. HH:mm or HH:mm:ss)");
+            "Cannot parse time at " + path + ": " + value +
+                ". Expected ISO time format (e.g. HH:mm or HH:mm:ss)");
     }
 
     /**
@@ -140,8 +153,8 @@ public class DateUtils {
             return parsed;
         }
         throw new IllegalArgumentException(
-                "Cannot parse time at " + path + ": " + value +
-                        ". Expected ISO time or datetime format (e.g. HH:mm, HH:mm:ss, or yyyy-MM-dd'T'HH:mm:ss)");
+            "Cannot parse time at " + path + ": " + value +
+                ". Expected ISO time or datetime format (e.g. HH:mm, HH:mm:ss, or yyyy-MM-dd'T'HH:mm:ss)");
     }
 
     private static LocalTime tryParseTimeString(String str) {
@@ -182,8 +195,8 @@ public class DateUtils {
             return Integer.parseInt(expected.toString().trim());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
-                    "Invalid year value at " + path + ": " + expected +
-                            ". Expected a valid integer year (e.g. 2025)");
+                "Invalid year value at " + path + ": " + expected +
+                    ". Expected a valid integer year (e.g. 2025)");
         }
     }
 
@@ -211,14 +224,14 @@ public class DateUtils {
             return monthVal;
         }
         throw new IllegalArgumentException(
-                "Invalid month value at " + path + ": " + expected +
-                        ". Expected month number (1-12) or month name (e.g. JUNE, June, JUN)");
+            "Invalid month value at " + path + ": " + expected +
+                ". Expected month number (1-12) or month name (e.g. JUNE, June, JUN)");
     }
 
     private static int validateMonthNumber(int month, String path) {
         if (month < 1 || month > 12) {
             throw new IllegalArgumentException(
-                    "Invalid month number at " + path + ": " + month + ". Must be between 1 and 12");
+                "Invalid month number at " + path + ": " + month + ". Must be between 1 and 12");
         }
         return month;
     }
@@ -254,15 +267,15 @@ public class DateUtils {
             return validateDayNumber(Integer.parseInt(expected.toString().trim()), path);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
-                    "Invalid day value at " + path + ": " + expected +
-                            ". Expected a valid day of month (1-31)");
+                "Invalid day value at " + path + ": " + expected +
+                    ". Expected a valid day of month (1-31)");
         }
     }
 
     private static int validateDayNumber(int day, String path) {
         if (day < 1 || day > 31) {
             throw new IllegalArgumentException(
-                    "Invalid day of month at " + path + ": " + day + ". Must be between 1 and 31");
+                "Invalid day of month at " + path + ": " + day + ". Must be between 1 and 31");
         }
         return day;
     }
@@ -291,15 +304,15 @@ public class DateUtils {
             return dow;
         }
         throw new IllegalArgumentException(
-                "Invalid day of week value at " + path + ": " + expected +
-                        ". Expected day of week number (1-7) or name (e.g. MONDAY, Monday, MON)");
+            "Invalid day of week value at " + path + ": " + expected +
+                ". Expected day of week number (1-7) or name (e.g. MONDAY, Monday, MON)");
     }
 
     private static DayOfWeek validateDayOfWeekNumber(int dow, String path) {
         if (dow < 1 || dow > 7) {
             throw new IllegalArgumentException(
-                    "Invalid day of week number at " + path + ": " + dow +
-                            ". Must be between 1 (Monday) and 7 (Sunday)");
+                "Invalid day of week number at " + path + ": " + dow +
+                    ". Must be between 1 (Monday) and 7 (Sunday)");
         }
         return DayOfWeek.of(dow);
     }
@@ -332,15 +345,15 @@ public class DateUtils {
             return validateHourNumber(Integer.parseInt(expected.toString().trim()), path);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
-                    "Invalid hour value at " + path + ": " + expected +
-                            ". Expected a valid hour (0-23)");
+                "Invalid hour value at " + path + ": " + expected +
+                    ". Expected a valid hour (0-23)");
         }
     }
 
     private static int validateHourNumber(int hour, String path) {
         if (hour < 0 || hour > 23) {
             throw new IllegalArgumentException(
-                    "Invalid hour at " + path + ": " + hour + ". Must be between 0 and 23");
+                "Invalid hour at " + path + ": " + hour + ". Must be between 0 and 23");
         }
         return hour;
     }
@@ -364,15 +377,15 @@ public class DateUtils {
             return validateMinuteOrSecondNumber(Integer.parseInt(expected.toString().trim()), name, path);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
-                    "Invalid " + name + " value at " + path + ": " + expected +
-                            ". Expected a valid " + name + " (0-59)");
+                "Invalid " + name + " value at " + path + ": " + expected +
+                    ". Expected a valid " + name + " (0-59)");
         }
     }
 
     private static int validateMinuteOrSecondNumber(int val, String name, String path) {
         if (val < 0 || val > 59) {
             throw new IllegalArgumentException(
-                    "Invalid " + name + " at " + path + ": " + val + ". Must be between 0 and 59");
+                "Invalid " + name + " at " + path + ": " + val + ". Must be between 0 and 59");
         }
         return val;
     }

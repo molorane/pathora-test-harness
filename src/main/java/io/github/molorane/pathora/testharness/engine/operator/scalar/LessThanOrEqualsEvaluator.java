@@ -39,13 +39,13 @@ public class LessThanOrEqualsEvaluator implements AssertionEvaluator {
 
         if (actualValue > expectedValue) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LESS_THAN_OR_EQUALS,
-                    path,
-                    expected,
-                    actual,
-                    "LESS_THAN_OR_EQUALS failed at " + path +
-                            ". Expected <= " + expectedValue +
-                            ", Actual: " + actualValue);
+                AssertionOperator.LESS_THAN_OR_EQUALS,
+                path,
+                expected,
+                actual,
+                "LESS_THAN_OR_EQUALS failed at " + path +
+                    ". Expected <= " + expectedValue +
+                    ", Actual: " + actualValue);
         }
     }
 }

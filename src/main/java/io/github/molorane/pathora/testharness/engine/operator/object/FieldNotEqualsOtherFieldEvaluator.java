@@ -43,7 +43,7 @@ public class FieldNotEqualsOtherFieldEvaluator implements DocumentContextAwareEv
 
         if (leftPath == null || rightPath == null) {
             throw new IllegalArgumentException(
-                    "FIELD_NOT_EQUALS_OTHER_FIELD requires 'leftPath' and 'rightPath' in Value");
+                "FIELD_NOT_EQUALS_OTHER_FIELD requires 'leftPath' and 'rightPath' in Value");
         }
 
         Object leftValue = context.read(leftPath);
@@ -53,14 +53,14 @@ public class FieldNotEqualsOtherFieldEvaluator implements DocumentContextAwareEv
 
         if (Objects.equals(normalized[0], normalized[1])) {
             throw new HarnessAssertionException(
-                    AssertionOperator.FIELD_NOT_EQUALS_OTHER_FIELD,
-                    leftPath + " vs " + rightPath,
-                    "not equal to " + rightValue,
-                    leftValue,
-                    "FIELD_NOT_EQUALS_OTHER_FIELD failed. " +
-                            leftPath + " = " + leftValue +
-                            ", " + rightPath + " = " + rightValue +
-                            ". Expected them NOT to be equal.");
+                AssertionOperator.FIELD_NOT_EQUALS_OTHER_FIELD,
+                leftPath + " vs " + rightPath,
+                "not equal to " + rightValue,
+                leftValue,
+                "FIELD_NOT_EQUALS_OTHER_FIELD failed. " +
+                    leftPath + " = " + leftValue +
+                    ", " + rightPath + " = " + rightValue +
+                    ". Expected them NOT to be equal.");
         }
     }
 }

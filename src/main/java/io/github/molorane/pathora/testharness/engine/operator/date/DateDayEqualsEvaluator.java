@@ -40,13 +40,13 @@ public class DateDayEqualsEvaluator implements AssertionEvaluator {
 
         if (actualDay != expectedDay) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_DAY_EQUALS,
-                    path,
-                    expectedDay,
-                    actualDay,
-                    "DATE_DAY_EQUALS failed at " + path +
-                            ". Expected day: " + expectedDay +
-                            ", Actual day: " + actualDay + " (from " + normalizedActual + ")");
+                AssertionOperator.DATE_DAY_EQUALS,
+                path,
+                expectedDay,
+                actualDay,
+                "DATE_DAY_EQUALS failed at " + path +
+                    ". Expected day: " + expectedDay +
+                    ", Actual day: " + actualDay + " (from " + normalizedActual + ")");
         }
     }
 }

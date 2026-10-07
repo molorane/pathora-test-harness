@@ -45,7 +45,7 @@ public class MoneyBetweenEvaluator implements AssertionEvaluator {
 
         if (minObj == null || maxObj == null) {
             throw new IllegalArgumentException(
-                    "MONEY_BETWEEN operator requires 'min' and 'max' in Value at " + path);
+                "MONEY_BETWEEN operator requires 'min' and 'max' in Value at " + path);
         }
 
         MoneyUtils.validateCurrencyMatch(path, normalizedActual, minObj, AssertionOperator.MONEY_BETWEEN);
@@ -57,13 +57,13 @@ public class MoneyBetweenEvaluator implements AssertionEvaluator {
 
         if (actualAmount.compareTo(minAmount) < 0 || actualAmount.compareTo(maxAmount) > 0) {
             throw new HarnessAssertionException(
-                    AssertionOperator.MONEY_BETWEEN,
-                    path,
-                    "between " + minAmount + " and " + maxAmount,
-                    actualAmount,
-                    "MONEY_BETWEEN failed at " + path +
-                            ". Expected amount between " + minAmount + " and " + maxAmount +
-                            ", Actual amount: " + actualAmount);
+                AssertionOperator.MONEY_BETWEEN,
+                path,
+                "between " + minAmount + " and " + maxAmount,
+                actualAmount,
+                "MONEY_BETWEEN failed at " + path +
+                    ". Expected amount between " + minAmount + " and " + maxAmount +
+                    ", Actual amount: " + actualAmount);
         }
     }
 }

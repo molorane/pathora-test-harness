@@ -34,13 +34,13 @@ public class StringDoesNotContainEvaluator implements AssertionEvaluator {
 
         if (StringHelper.contains(actualStr, seq)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_DOES_NOT_CONTAIN,
-                    path,
-                    expected,
-                    actual,
-                    "STRING_DOES_NOT_CONTAIN failed at " + path +
-                            ". Expected not to contain: " + seq +
-                            ", Actual: " + actualStr);
+                AssertionOperator.STRING_DOES_NOT_CONTAIN,
+                path,
+                expected,
+                actual,
+                "STRING_DOES_NOT_CONTAIN failed at " + path +
+                    ". Expected not to contain: " + seq +
+                    ", Actual: " + actualStr);
         }
     }
 }
