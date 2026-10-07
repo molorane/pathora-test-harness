@@ -37,19 +37,16 @@
         {
           "path": "$.approvedClauses",
           "operator": "IS_NOT_EMPTY_LIST",
-          "value": null,
           "description": "Approved clauses is a non-empty list"
         },
         {
           "path": "$.uniqueReferenceCodes",
           "operator": "LIST_IS_SORTED_ASC",
-          "value": null,
           "description": "Reference codes REF-101, REF-102, REF-103 are sorted ascending"
         },
         {
           "path": "$.descendingCodes",
           "operator": "LIST_IS_SORTED_DESC",
-          "value": null,
           "description": "Reference codes REF-999, REF-888, REF-777 are sorted descending"
         }
       ]

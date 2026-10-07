@@ -19,6 +19,9 @@ public final class PathoraClock {
 
     private static Clock initDefaultClock() {
         String sysZone = System.getProperty(TIMEZONE_PROPERTY);
+        if (sysZone == null || sysZone.isBlank()) {
+            sysZone = System.getenv("PATHORA_TIMEZONE");
+        }
         if (sysZone != null && !sysZone.isBlank()) {
             try {
                 return Clock.system(ZoneId.of(sysZone.trim()));
@@ -51,10 +54,36 @@ public final class PathoraClock {
     /**
      * Sets the global clock used by default across all threads.
      *
-     * @param clock the clock to use, or {@code null} to restore UTC
+     * @param clock the clock to use, or {@code null} to restore default
      */
     public static void setClock(Clock clock) {
         globalClock = (clock != null) ? clock : initDefaultClock();
+    }
+
+    /**
+     * Sets the global timezone for PathoraClock by timezone identifier string.
+     *
+     * @param timezone the timezone identifier (e.g. "Africa/Johannesburg", "Asia/Tokyo"), or {@code null} to reset
+     */
+    public static void setTimezone(String timezone) {
+        if (timezone != null && !timezone.isBlank()) {
+            setClock(Clock.system(ZoneId.of(timezone.trim())));
+        } else {
+            setClock(null);
+        }
+    }
+
+    /**
+     * Sets the global timezone for PathoraClock by {@link ZoneId}.
+     *
+     * @param zoneId the timezone ID, or {@code null} to reset
+     */
+    public static void setTimezone(ZoneId zoneId) {
+        if (zoneId != null) {
+            setClock(Clock.system(zoneId));
+        } else {
+            setClock(null);
+        }
     }
 
     /**

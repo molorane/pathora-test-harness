@@ -10,13 +10,11 @@
         {
           "path": "$.emptyMetadata",
           "operator": "IS_EMPTY_OBJECT",
-          "value": null,
           "description": "Empty metadata is an empty object"
         },
         {
           "path": "$.underwritingSummary",
           "operator": "IS_NOT_EMPTY_OBJECT",
-          "value": null,
           "description": "Underwriting summary is a non-empty object"
         },
         {

@@ -82,5 +82,80 @@ class PathoraClockTest {
         PathoraClock.setClock(null);
         assertEquals(originalZone, PathoraClock.getZoneId());
     }
+
+    @Test
+    void testSetTimezoneString() {
+        PathoraClock.setTimezone("Asia/Singapore");
+        assertEquals(ZoneId.of("Asia/Singapore"), PathoraClock.getZoneId());
+
+        PathoraClock.setTimezone((String) null);
+        assertNotNull(PathoraClock.getZoneId());
+    }
+
+    @Test
+    void testSetTimezoneZoneId() {
+        ZoneId zone = ZoneId.of("America/Chicago");
+        PathoraClock.setTimezone(zone);
+        assertEquals(zone, PathoraClock.getZoneId());
+
+        PathoraClock.setTimezone((ZoneId) null);
+        assertNotNull(PathoraClock.getZoneId());
+    }
+
+    @Test
+    void testSystemPropertyTimezoneLoadedOnReset() {
+        String originalProp = System.getProperty("pathora.timezone");
+        try {
+            System.setProperty("pathora.timezone", "Africa/Cairo");
+            PathoraClock.reset();
+
+            assertEquals(ZoneId.of("Africa/Cairo"), PathoraClock.getZoneId());
+        } finally {
+            if (originalProp != null) {
+                System.setProperty("pathora.timezone", originalProp);
+            } else {
+                System.clearProperty("pathora.timezone");
+            }
+            PathoraClock.reset();
+        }
+    }
+
+    @Test
+    void testSystemPropertyInvalidTimezoneFallsBackToDefault() {
+        String originalProp = System.getProperty("pathora.timezone");
+        try {
+            System.setProperty("pathora.timezone", "Invalid/Unknown_Timezone_123");
+            PathoraClock.reset();
+
+            assertNotNull(PathoraClock.getZoneId());
+            assertEquals(ZoneId.systemDefault(), PathoraClock.getZoneId());
+        } finally {
+            if (originalProp != null) {
+                System.setProperty("pathora.timezone", originalProp);
+            } else {
+                System.clearProperty("pathora.timezone");
+            }
+            PathoraClock.reset();
+        }
+    }
+
+    @Test
+    void testSystemPropertyBlankTimezoneFallsBackToDefault() {
+        String originalProp = System.getProperty("pathora.timezone");
+        try {
+            System.setProperty("pathora.timezone", "   ");
+            PathoraClock.reset();
+
+            assertNotNull(PathoraClock.getZoneId());
+            assertEquals(ZoneId.systemDefault(), PathoraClock.getZoneId());
+        } finally {
+            if (originalProp != null) {
+                System.setProperty("pathora.timezone", originalProp);
+            } else {
+                System.clearProperty("pathora.timezone");
+            }
+            PathoraClock.reset();
+        }
+    }
 }
 

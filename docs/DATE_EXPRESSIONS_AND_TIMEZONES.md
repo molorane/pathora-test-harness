@@ -18,7 +18,7 @@ This guide provides a comprehensive reference on dynamic date/datetime expressio
    - [DateTime Assertions with Tolerances](#datetime-assertions-with-tolerances)
    - [Assertion Best Practices (Date vs DateTime)](#assertion-best-practices-date-vs-datetime)
 5. [Timezone Architecture & Precedence Hierarchy](#5-timezone-architecture--precedence-hierarchy)
-   - [6 Ways to Configure Timezones & Clocks](#6-ways-to-configure-timezones--clocks)
+   - [7 Ways to Configure Timezones & Clocks](#7-ways-to-configure-timezones--clocks)
    - [How Timezone Override Works Internally](#how-timezone-override-works-internally)
 6. [Deterministic Time-Travel Testing with `PathoraClock`](#6-deterministic-time-travel-testing-with-pathoraclock)
    - [Global Freezing (`freeze`)](#global-freezing-freeze)
@@ -166,7 +166,6 @@ The `AssertionEngine` evaluates dynamic expressions inside assertion `value` def
     {
       "path": "$.currentDate",
       "operator": "IS_TODAY",
-      "value": null,
       "description": "Current date must match system today"
     }
   ]
@@ -225,7 +224,7 @@ Because live services execute with clock skew, strict equality on seconds/millis
 
 ## 5. Timezone Architecture & Precedence Hierarchy
 
-Pathora Test Harness provides a 6-tier hierarchy to determine the active timezone:
+Pathora Test Harness provides a 7-tier hierarchy to determine the active timezone:
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -237,15 +236,17 @@ Pathora Test Harness provides a 6-tier hierarchy to determine the active timezon
 ├────────────────────────────────────────────────────────┤
 │ 4. Programmatic Global Clock (PathoraClock)            │  <-- Suite setup
 ├────────────────────────────────────────────────────────┤
-│ 5. JVM System Property (-Dpathora.timezone=...)        │  <-- CI/CD parameter
+│ 5. Spring Environment / application.yml                │  <-- pathora.timezone property
 ├────────────────────────────────────────────────────────┤
-│ 6. System Default Timezone (Clock.systemDefaultZone()) │  <-- Fallback
+│ 6. JVM System Property (-Dpathora.timezone=...)        │  <-- CI/CD parameter
+├────────────────────────────────────────────────────────┤
+│ 7. System Default Timezone (Clock.systemDefaultZone()) │  <-- Fallback
 └────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### 6 Ways to Configure Timezones & Clocks
+### 7 Ways to Configure Timezones & Clocks
 
 #### Way 1: Test Suite Level JSON
 Configured at the root of the test suite file. All test cases in the file inherit this zone:
@@ -298,6 +299,9 @@ try {
 ```java
 Clock customClock = Clock.system(ZoneId.of("Europe/London"));
 PathoraClock.setClock(customClock);
+
+// Or by timezone ID / ZoneId directly:
+PathoraClock.setTimezone("Europe/London");
 ```
 
 #### Way 6: JVM System Property Configuration
@@ -309,6 +313,32 @@ Or in Java:
 ```java
 System.setProperty("pathora.timezone", "Australia/Sydney");
 PathoraClock.reset();
+```
+
+#### Way 7: Spring Environment / `application.yml` Configuration
+Configure the global default timezone declaratively in Spring Boot `application.yml` or `application.properties`:
+
+```yaml
+# application.yml
+pathora:
+  timezone: "Africa/Johannesburg"
+```
+
+In your Spring configuration class:
+```java
+@Configuration
+public class TestHarnessConfig {
+
+    @Value("${pathora.timezone:}")
+    private String configuredTimezone;
+
+    @PostConstruct
+    public void initTimezone() {
+        if (configuredTimezone != null && !configuredTimezone.isBlank()) {
+            PathoraClock.setTimezone(configuredTimezone);
+        }
+    }
+}
 ```
 
 ---
@@ -407,7 +437,6 @@ void resetClock() {
         {
           "path": "$.currentDate",
           "operator": "IS_TODAY",
-          "value": null,
           "description": "Current date is today"
         }
       ]
@@ -431,10 +460,10 @@ void resetClock() {
           "description": "Effective date equals +5 days evaluated in Tokyo timezone"
         },
         {
-          "path": "$.currentDate",
-          "operator": "IS_TODAY",
-          "value": null,
-          "description": "Current date is today in Tokyo"
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_AFTER",
+          "value": "{{$CURRENT_DATE}}",
+          "description": "Effective date is after today in Tokyo"
         }
       ]
     }

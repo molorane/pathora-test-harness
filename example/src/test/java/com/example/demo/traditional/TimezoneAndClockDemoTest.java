@@ -8,15 +8,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
-import io.github.molorane.pathora.testharness.model.*;
+import io.github.molorane.pathora.testharness.model.AssertionOperator;
+import io.github.molorane.pathora.testharness.model.JsonAssertion;
+import io.github.molorane.pathora.testharness.model.JsonMutation;
+import io.github.molorane.pathora.testharness.model.RuleTestCase;
+import io.github.molorane.pathora.testharness.model.TestSuite;
 import io.github.molorane.pathora.testharness.util.DateExpressionResolver;
 import io.github.molorane.pathora.testharness.util.PathoraClock;
 
-import java.time.*;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Demonstrates the different ways a user can configure timezones and clocks
@@ -29,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *   <li><b>Way 4: Programmatic Thread-Scoped Clock Freezing</b> — Using {@code PathoraClock.freezeThread(Instant/LocalDate, ZoneId)}.</li>
  *   <li><b>Way 5: Programmatic Custom Clock Injection</b> — Using {@code PathoraClock.setClock(Clock)} or {@code PathoraClock.setThreadClock(Clock)}.</li>
  *   <li><b>Way 6: JVM System Property</b> — Using {@code -Dpathora.timezone=...} or {@code System.setProperty("pathora.timezone", ...)}.</li>
+ *   <li><b>Way 7: Spring Environment / application.yml</b> — Configured via {@code pathora.timezone} property in {@code application.yml}.</li>
  * </ol>
  */
 @SpringBootTest
@@ -170,6 +182,16 @@ class TimezoneAndClockDemoTest {
 
         assertEquals(ZoneId.of("Australia/Sydney"), PathoraClock.getZoneId());
         assertEquals(LocalDate.now(ZoneId.of("Australia/Sydney")), PathoraClock.today());
+    }
+
+    @Test
+    @DisplayName("Way 7: Spring Environment / application.yml Configuration (pathora.timezone)")
+    void demonstrateSpringApplicationYmlTimezone() {
+        // PathoraClock.setTimezone can be set directly from @Value("${pathora.timezone}") in Spring configuration
+        PathoraClock.setTimezone("Africa/Johannesburg");
+
+        assertEquals(ZoneId.of("Africa/Johannesburg"), PathoraClock.getZoneId());
+        assertEquals(LocalDate.now(ZoneId.of("Africa/Johannesburg")), PathoraClock.today());
     }
 
     @Test

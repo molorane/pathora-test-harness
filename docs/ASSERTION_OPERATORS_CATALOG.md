@@ -86,18 +86,15 @@ Scalar operators assert equality, numeric ranges, sign, nullability, type classi
     },
     {
       "path": "$.deletedAt",
-      "operator": "IS_NULL",
-      "value": null
+      "operator": "IS_NULL"
     },
     {
       "path": "$.active",
-      "operator": "IS_TRUE",
-      "value": null
+      "operator": "IS_TRUE"
     },
     {
       "path": "$.approvedAmount",
-      "operator": "IS_POSITIVE",
-      "value": null
+      "operator": "IS_POSITIVE"
     }
   ]
 }
@@ -159,8 +156,7 @@ String operators evaluate substrings, regex patterns, casing, formatting, blankn
   "assertions": [
     {
       "path": "$.email",
-      "operator": "IS_EMAIL",
-      "value": null
+      "operator": "IS_EMAIL"
     },
     {
       "path": "$.orderId",
@@ -182,8 +178,7 @@ String operators evaluate substrings, regex patterns, casing, formatting, blankn
     },
     {
       "path": "$.trackingCode",
-      "operator": "IS_UUID",
-      "value": null
+      "operator": "IS_UUID"
     }
   ]
 }
@@ -282,8 +277,7 @@ Datetime and Time operators handle ISO-8601 timestamps, hours, minutes, seconds,
   "assertions": [
     {
       "path": "$.createdAt",
-      "operator": "IS_PAST_DATETIME",
-      "value": null
+      "operator": "IS_PAST_DATETIME"
     },
     {
       "path": "$.scheduledTime",
@@ -387,13 +381,11 @@ Structural operators assert the presence, absence, and collection sizes of JSONP
   "assertions": [
     {
       "path": "$.auditHeader",
-      "operator": "PATH_EXISTS",
-      "value": null
+      "operator": "PATH_EXISTS"
     },
     {
       "path": "$.legacyError",
-      "operator": "PATH_NOT_EXISTS",
-      "value": null
+      "operator": "PATH_NOT_EXISTS"
     },
     {
       "path": "$.items",
@@ -455,13 +447,11 @@ Array operators evaluate element membership, uniqueness, predicates across eleme
     },
     {
       "path": "$.tags",
-      "operator": "UNIQUE_ELEMENTS",
-      "value": null
+      "operator": "UNIQUE_ELEMENTS"
     },
     {
       "path": "$.referenceCodes",
-      "operator": "LIST_IS_SORTED_ASC",
-      "value": null
+      "operator": "LIST_IS_SORTED_ASC"
     },
     {
       "path": "$.approvedClauses",
@@ -610,7 +600,6 @@ Logical operators combine nested assertion rules with boolean logic (`AND`, `OR`
     {
       "path": "$",
       "operator": "AND",
-      "value": null,
       "description": "Status is APPROVED and legalName matches",
       "assertions": [
         {
@@ -626,7 +615,6 @@ Logical operators combine nested assertion rules with boolean logic (`AND`, `OR`
     {
       "path": "$",
       "operator": "OR",
-      "value": null,
       "description": "Credit rating is either AA+ or AAA",
       "assertions": [
         {
@@ -642,7 +630,6 @@ Logical operators combine nested assertion rules with boolean logic (`AND`, `OR`
     {
       "path": "$",
       "operator": "NOT",
-      "value": null,
       "description": "Status must NOT be CANCELLED or SUSPENDED",
       "assertions": [
         {

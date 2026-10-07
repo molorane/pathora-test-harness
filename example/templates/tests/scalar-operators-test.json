@@ -19,13 +19,11 @@
         {
           "path": "$.approvedAmount",
           "operator": "IS_NUMBER",
-          "value": null,
           "description": "Approved amount must be a number"
         },
         {
           "path": "$.approvedAmount",
           "operator": "IS_POSITIVE",
-          "value": null,
           "description": "Approved amount must be strictly positive"
         },
         {
@@ -45,19 +43,16 @@
         {
           "path": "$.creditTierScore",
           "operator": "IS_INTEGER",
-          "value": null,
           "description": "Credit tier score must be an integer"
         },
         {
           "path": "$.riskPenalty",
           "operator": "IS_NEGATIVE",
-          "value": null,
           "description": "Risk penalty must be a negative integer"
         },
         {
           "path": "$.eligible",
           "operator": "IS_TRUE",
-          "value": null,
           "description": "Eligible flag must be true"
         }
       ]

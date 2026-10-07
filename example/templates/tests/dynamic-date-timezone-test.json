@@ -28,7 +28,6 @@
         {
           "path": "$.currentDate",
           "operator": "IS_TODAY",
-          "value": null,
           "description": "Current date must be recognized as today"
         }
       ]
@@ -115,3 +114,4 @@
     }
   ]
 }
+

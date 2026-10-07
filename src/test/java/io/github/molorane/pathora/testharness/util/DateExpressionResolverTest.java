@@ -108,5 +108,27 @@ class DateExpressionResolverTest {
                 DateExpressionResolver.resolve("{{$INVALID_TOKEN}}")
         );
     }
+
+    @Test
+    void testSystemPropertyTimezoneResolvesCorrectDate() {
+        String originalProp = System.getProperty("pathora.timezone");
+        try {
+            System.setProperty("pathora.timezone", "Asia/Tokyo"); // UTC+9
+            PathoraClock.reset();
+
+            // When UTC is 2026-10-07 23:30, in Tokyo it is 2026-10-08 08:30
+            PathoraClock.freeze(Instant.parse("2026-10-07T23:30:00Z"), PathoraClock.getZoneId());
+
+            assertEquals("2026-10-08", DateExpressionResolver.resolve("{{$CURRENT_DATE}}"));
+            assertEquals("2026-10-09", DateExpressionResolver.resolve("{{$CURRENT_DATE + 1d}}"));
+        } finally {
+            if (originalProp != null) {
+                System.setProperty("pathora.timezone", originalProp);
+            } else {
+                System.clearProperty("pathora.timezone");
+            }
+            PathoraClock.reset();
+        }
+    }
 }
 
