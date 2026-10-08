@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,8 +28,8 @@ class StringContainsIgnoreCaseEvaluatorTest {
     @DisplayName("FAIL: string does not contain substring")
     void shouldFailWhenNotContains() {
         assertThatThrownBy(() -> operator.apply("$.message", "Hello World", "Universe", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("STRING_CONTAINS_IGNORE_CASE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("STRING_CONTAINS_IGNORE_CASE failed");
     }
 }
 

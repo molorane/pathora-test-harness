@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.UserRequest;
-import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.user.UserRequest;
+import com.example.demo.dto.user.UserResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -37,4 +37,5 @@ public class UserRegistrationService {
         );
     }
 }
+
 

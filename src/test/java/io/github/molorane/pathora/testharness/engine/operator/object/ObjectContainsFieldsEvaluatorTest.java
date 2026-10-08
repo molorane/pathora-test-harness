@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.object;
 
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,19 +27,19 @@ class ObjectContainsFieldsEvaluatorTest {
     @DisplayName("PASS: actual contains all expected fields")
     void shouldPassWhenAllFieldsMatch() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "riskLevel": "HIGH",
-                  "segment": "Retail"
-                }
-                """);
+            {
+              "clientType": "1031",
+              "riskLevel": "HIGH",
+              "segment": "Retail"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "riskLevel": "HIGH"
-                }
-                """);
+            {
+              "clientType": "1031",
+              "riskLevel": "HIGH"
+            }
+            """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.client", actual, expected, true));
     }
@@ -53,15 +53,15 @@ class ObjectContainsFieldsEvaluatorTest {
     @DisplayName("PASS: exact match — no extra fields")
     void shouldPassWithExactMatch() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "status": "APPROVED"
-                }
-                """);
+            {
+              "status": "APPROVED"
+            }
+            """);
         Object expected = TestJsonHelper.parse("""
-                {
-                  "status": "APPROVED"
-                }
-                """);
+            {
+              "status": "APPROVED"
+            }
+            """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.result", actual, expected, true));
     }
@@ -75,20 +75,20 @@ class ObjectContainsFieldsEvaluatorTest {
     @DisplayName("PASS: nested map matches")
     void shouldPassWithNestedMap() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "nested": {
-                    "code": "X"
-                  }
-                }
-                """);
+            {
+              "nested": {
+                "code": "X"
+              }
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "nested": {
-                    "code": "X"
-                  }
-                }
-                """);
+            {
+              "nested": {
+                "code": "X"
+              }
+            }
+            """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
@@ -102,22 +102,22 @@ class ObjectContainsFieldsEvaluatorTest {
     @DisplayName("FAIL: field value mismatch")
     void shouldFailWhenFieldValueDiffers() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "riskLevel": "LOW"
-                }
-                """);
+            {
+              "clientType": "1031",
+              "riskLevel": "LOW"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "riskLevel": "HIGH"
-                }
-                """);
+            {
+              "clientType": "1031",
+              "riskLevel": "HIGH"
+            }
+            """);
 
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("OBJECT_CONTAINS_FIELDS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("OBJECT_CONTAINS_FIELDS failed");
     }
 
     /**
@@ -129,21 +129,21 @@ class ObjectContainsFieldsEvaluatorTest {
     @DisplayName("FAIL: expected field missing in actual")
     void shouldFailWhenFieldMissing() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031"
-                }
-                """);
+            {
+              "clientType": "1031"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "riskLevel": "HIGH"
-                }
-                """);
+            {
+              "clientType": "1031",
+              "riskLevel": "HIGH"
+            }
+            """);
 
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("OBJECT_CONTAINS_FIELDS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("OBJECT_CONTAINS_FIELDS failed");
     }
 
     /**
@@ -155,21 +155,21 @@ class ObjectContainsFieldsEvaluatorTest {
     @DisplayName("FAIL: null expected field does NOT match missing")
     void shouldFailWhenExpectedNullButFieldMissing() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031"
-                }
-                """);
+            {
+              "clientType": "1031"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "middleName": null
-                }
-                """);
+            {
+              "clientType": "1031",
+              "middleName": null
+            }
+            """);
 
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("OBJECT_CONTAINS_FIELDS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("OBJECT_CONTAINS_FIELDS failed");
     }
 
     /**
@@ -181,13 +181,13 @@ class ObjectContainsFieldsEvaluatorTest {
     @DisplayName("FAIL: actual is not a map")
     void shouldFailWhenActualIsNotMap() {
         Object expected = TestJsonHelper.parse("""
-                {
-                  "field": "value"
-                }
-                """);
+            {
+              "field": "value"
+            }
+            """);
 
         assertThatThrownBy(() -> operator.apply("$.client", "not-a-map", expected, true))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Expected object but got");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Expected object but got");
     }
 }

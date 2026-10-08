@@ -1,10 +1,10 @@
 package com.example.demo.executor;
 
-import com.example.demo.dto.PaymentRequest;
-import com.example.demo.dto.PaymentResponse;
+import com.example.demo.dto.payment.PaymentRequest;
+import com.example.demo.dto.payment.PaymentResponse;
 import com.example.demo.service.PaymentGatewayService;
-import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
+import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 
 @Component
 public class PaymentGatewayExecutor implements EntryPointExecutor<PaymentRequest, PaymentResponse> {
@@ -30,3 +30,4 @@ public class PaymentGatewayExecutor implements EntryPointExecutor<PaymentRequest
         return paymentGatewayService.processPayment(paymentRequest);
     }
 }
+

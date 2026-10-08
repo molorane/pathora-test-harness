@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,8 +33,8 @@ class ListIsSortedDescEvaluatorTest {
     @DisplayName("FAIL: list is not sorted descending")
     void shouldFailWhenNotSortedDesc() {
         assertThatThrownBy(() -> operator.apply("$.numbers", List.of(5, 2, 3), null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LIST_IS_SORTED_DESC failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LIST_IS_SORTED_DESC failed");
     }
 }
 

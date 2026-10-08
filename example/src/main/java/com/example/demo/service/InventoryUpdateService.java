@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.InventoryRequest;
-import com.example.demo.dto.InventoryResponse;
+import com.example.demo.dto.inventory.InventoryRequest;
+import com.example.demo.dto.inventory.InventoryResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -22,4 +22,5 @@ public class InventoryUpdateService {
         );
     }
 }
+
 

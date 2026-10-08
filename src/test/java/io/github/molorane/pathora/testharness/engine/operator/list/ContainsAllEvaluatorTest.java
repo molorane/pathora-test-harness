@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,11 +27,11 @@ class ContainsAllEvaluatorTest {
     @DisplayName("PASS: array contains all expected values")
     void shouldPassWhenAllFound() {
         Object actual = TestJsonHelper.parse("""
-                ["1004", "1011", "1020" ]
-                """);
+            ["1004", "1011", "1020" ]
+            """);
         Object expected = TestJsonHelper.parse("""
-                ["1004", "1011" ]
-                """);
+            ["1004", "1011" ]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", actual, expected, true));
     }
 
@@ -44,11 +44,11 @@ class ContainsAllEvaluatorTest {
     @DisplayName("PASS: exact match")
     void shouldPassWithExactMatch() {
         Object actual = TestJsonHelper.parse("""
-                ["A", "B" ]
-                """);
+            ["A", "B" ]
+            """);
         Object expected = TestJsonHelper.parse("""
-                ["A", "B" ]
-                """);
+            ["A", "B" ]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
 
@@ -61,11 +61,11 @@ class ContainsAllEvaluatorTest {
     @DisplayName("PASS: different order")
     void shouldPassWithDifferentOrder() {
         Object actual = TestJsonHelper.parse("""
-                ["B", "A" ]
-                """);
+            ["B", "A" ]
+            """);
         Object expected = TestJsonHelper.parse("""
-                ["A", "B" ]
-                """);
+            ["A", "B" ]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
 
@@ -78,15 +78,15 @@ class ContainsAllEvaluatorTest {
     @DisplayName("FAIL: one expected value missing")
     void shouldFailWhenOneMissing() {
         Object actual = TestJsonHelper.parse("""
-                ["1004", "1020" ]
-                """);
+            ["1004", "1020" ]
+            """);
         Object expected = TestJsonHelper.parse("""
-                ["1004", "1011" ]
-                """);
+            ["1004", "1011" ]
+            """);
         assertThatThrownBy(() -> operator.apply("$.codes", actual, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("CONTAINS_ALL failed")
-                .hasMessageContaining("Missing value: 1011");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("CONTAINS_ALL failed")
+            .hasMessageContaining("Missing value: 1011");
     }
 
     /**
@@ -98,14 +98,14 @@ class ContainsAllEvaluatorTest {
     @DisplayName("FAIL: none of the expected values found")
     void shouldFailWhenNoneFound() {
         Object actual = TestJsonHelper.parse("""
-                ["X", "Y" ]
-                """);
+            ["X", "Y" ]
+            """);
         Object expected = TestJsonHelper.parse("""
-                ["A", "B" ]
-                """);
+            ["A", "B" ]
+            """);
         assertThatThrownBy(() -> operator.apply("$.items", actual, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("CONTAINS_ALL failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("CONTAINS_ALL failed");
     }
 
     /**
@@ -117,14 +117,14 @@ class ContainsAllEvaluatorTest {
     @DisplayName("FAIL: empty actual array")
     void shouldFailWithEmptyActual() {
         Object actual = TestJsonHelper.parse("""
-                []
-                """);
+            []
+            """);
         Object expected = TestJsonHelper.parse("""
-                ["A", "B" ]
-                """);
+            ["A", "B" ]
+            """);
         assertThatThrownBy(() -> operator.apply("$.items", actual, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("CONTAINS_ALL failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("CONTAINS_ALL failed");
     }
 
     /**
@@ -136,11 +136,11 @@ class ContainsAllEvaluatorTest {
     @DisplayName("PASS: empty expected — vacuously true")
     void shouldPassWithEmptyExpected() {
         Object actual = TestJsonHelper.parse("""
-                ["A", "B" ]
-                """);
+            ["A", "B" ]
+            """);
         Object expected = TestJsonHelper.parse("""
-                []
-                """);
+            []
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", actual, expected, true));
     }
 }

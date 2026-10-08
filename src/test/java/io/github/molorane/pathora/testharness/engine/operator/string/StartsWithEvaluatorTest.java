@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -82,8 +82,8 @@ class StartsWithEvaluatorTest {
     @DisplayName("FAIL: string does not start with prefix")
     void shouldFailWhenDoesNotStartWith() {
         assertThatThrownBy(() -> operator.apply("$.refId", "INV-1234", "REF-", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("STARTS_WITH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("STARTS_WITH failed");
     }
 
     /**
@@ -95,8 +95,8 @@ class StartsWithEvaluatorTest {
     @DisplayName("FAIL: case mismatch")
     void shouldFailOnCaseMismatch() {
         assertThatThrownBy(() -> operator.apply("$.refId", "ref-1234", "REF-", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("STARTS_WITH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("STARTS_WITH failed");
     }
 
     /**
@@ -108,8 +108,8 @@ class StartsWithEvaluatorTest {
     @DisplayName("FAIL: prefix longer than actual")
     void shouldFailWhenPrefixLongerThanActual() {
         assertThatThrownBy(() -> operator.apply("$.code", "AB", "ABCDEF", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("STARTS_WITH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("STARTS_WITH failed");
     }
 
     /**
@@ -121,7 +121,7 @@ class StartsWithEvaluatorTest {
     @DisplayName("FAIL: empty actual with non-empty prefix")
     void shouldFailWhenActualIsEmpty() {
         assertThatThrownBy(() -> operator.apply("$.field", "", "REF-", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("STARTS_WITH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("STARTS_WITH failed");
     }
 }

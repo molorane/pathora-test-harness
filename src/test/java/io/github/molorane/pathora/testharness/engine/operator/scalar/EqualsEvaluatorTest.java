@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -109,8 +109,8 @@ class EqualsEvaluatorTest {
     @DisplayName("PASS: boolean equals boolean")
     void shouldFailWhenExpectedIsBooleanAndActualIsString() {
         assertThatThrownBy(() -> operator.apply("$.active", "true", true, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("EQUALS failed");
     }
 
     /**
@@ -122,8 +122,8 @@ class EqualsEvaluatorTest {
     @DisplayName("PASS: boolean equals boolean")
     void shouldFailWhenActualIsBooleanAndExpectedIsString() {
         assertThatThrownBy(() -> operator.apply("$.active", true, "true", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("EQUALS failed");
     }
 
     /**
@@ -135,8 +135,8 @@ class EqualsEvaluatorTest {
     @DisplayName("FAIL: string mismatch")
     void shouldFailWhenStringsMismatch() {
         assertThatThrownBy(() -> operator.apply("$.status", "PENDING", "APPROVED", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("EQUALS failed");
     }
 
     /**
@@ -148,8 +148,8 @@ class EqualsEvaluatorTest {
     @DisplayName("FAIL: number mismatch")
     void shouldFailWhenNumbersMismatch() {
         assertThatThrownBy(() -> operator.apply("$.score", 50, 100, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("EQUALS failed");
     }
 
     /**
@@ -161,8 +161,8 @@ class EqualsEvaluatorTest {
     @DisplayName("FAIL: null vs non-null")
     void shouldFailWhenActualIsNullButExpectedIsNot() {
         assertThatThrownBy(() -> operator.apply("$.field", null, "value", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("EQUALS failed");
     }
 
     /**
@@ -174,8 +174,8 @@ class EqualsEvaluatorTest {
     @DisplayName("FAIL: non-null vs null")
     void shouldFailWhenActualIsNotNullButExpectedIsNull() {
         assertThatThrownBy(() -> operator.apply("$.field", "value", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("EQUALS failed");
     }
 
     /**
@@ -187,7 +187,7 @@ class EqualsEvaluatorTest {
     @DisplayName("FAIL: different types that cannot coerce")
     void shouldFailWhenTypesCannotCoerce() {
         assertThatThrownBy(() -> operator.apply("$.field", "hello", 42, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("EQUALS failed");
     }
 }

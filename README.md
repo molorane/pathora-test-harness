@@ -34,9 +34,9 @@
 
 ```xml
 <dependency>
-    <groupId>za.co.pathora.testharness</groupId>
+    <groupId>io.github.molorane</groupId>
     <artifactId>pathora-test-harness</artifactId>
-    <version>0.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 
@@ -47,7 +47,7 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.OrderRequest;
 import com.example.demo.dto.OrderResponse;
-import za.co.pathora.testharness.spi.EntryPointExecutor;
+import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -138,10 +138,10 @@ Pathora provides built-in expression resolution for date mutations and assertion
 ```java
 // Freeze time globally or per-thread during tests
 PathoraClock.freeze(LocalDate.of(2028, 2, 29)); // leap day
-    PathoraClock.freeze(Instant.parse("2026-12-31T23:59:59Z"));
+PathoraClock.freeze(Instant.parse("2026-12-31T23:59:59Z"));
 
 // Reset when done
-    PathoraClock.reset();
+PathoraClock.reset();
 ```
 
 ### 5. Run the Demo

@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.List;
 
@@ -29,8 +29,8 @@ class IsAllStringBlankEvaluatorTest {
     @DisplayName("FAIL: at least one string is non-blank")
     void shouldFailWhenNotAllBlank() {
         assertThatThrownBy(() -> operator.apply("$.list", List.of(" ", "hello", " "), null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_ALL_STRING_BLANK failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_ALL_STRING_BLANK failed");
     }
 }
 

@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,8 +28,8 @@ class IsStringNotEmptyEvaluatorTest {
     @DisplayName("FAIL: empty string or null")
     void shouldFailWhenEmpty() {
         assertThatThrownBy(() -> operator.apply("$.text", "", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_STRING_NOT_EMPTY failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_STRING_NOT_EMPTY failed");
     }
 }
 

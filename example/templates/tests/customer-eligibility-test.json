@@ -1,0 +1,36 @@
+{
+  "requestPath": "../requests/customer-eligibility-request.json",
+  "tests": [
+    {
+      "name": "Customer eligibility custom operator check",
+      "description": "Demonstrates custom operators HAS_ACTIVE_SUBSCRIPTION and IN_REGION with a dedicated service and executor.",
+      "operation": "customer-eligibility-service",
+      "mutations": [
+        { "path": "$.customerId", "value": "CUST-1001" },
+        { "path": "$.subscriptionStatus", "value": "ACTIVE" },
+        { "path": "$.region", "value": "EU" }
+      ],
+      "assertions": [
+        {
+          "path": "$.customerId",
+          "operator": "EQUALS",
+          "value": "CUST-1001",
+          "description": "Customer identifier must match the mutated value."
+        },
+        {
+          "path": "$.customerId",
+          "operator": "HAS_ACTIVE_SUBSCRIPTION",
+          "value": "ACTIVE",
+          "description": "Customer is expected to have an active subscription status."
+        },
+        {
+          "path": "$.customerId",
+          "operator": "IN_REGION",
+          "value": ["EU", "APAC"],
+          "description": "Customer must be in an approved region for the offer."
+        }
+      ]
+    }
+  ]
+}
+

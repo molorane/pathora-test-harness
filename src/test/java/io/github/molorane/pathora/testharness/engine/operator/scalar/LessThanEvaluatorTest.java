@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -71,8 +71,8 @@ class LessThanEvaluatorTest {
     @DisplayName("FAIL: actual greater than expected")
     void shouldFailWhenActualIsGreater() {
         assertThatThrownBy(() -> operator.apply("$.score", 120, 100, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LESS_THAN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LESS_THAN failed");
     }
 
     /**
@@ -84,8 +84,8 @@ class LessThanEvaluatorTest {
     @DisplayName("FAIL: actual equals expected — not strictly less")
     void shouldFailWhenEqual() {
         assertThatThrownBy(() -> operator.apply("$.score", 100, 100, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LESS_THAN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LESS_THAN failed");
     }
 
     /**
@@ -108,8 +108,8 @@ class LessThanEvaluatorTest {
     @DisplayName("FAIL: negative numbers — actual greater")
     void shouldFailWithNegativeNumbers() {
         assertThatThrownBy(() -> operator.apply("$.temp", -1, -10, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LESS_THAN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LESS_THAN failed");
     }
 
     /**

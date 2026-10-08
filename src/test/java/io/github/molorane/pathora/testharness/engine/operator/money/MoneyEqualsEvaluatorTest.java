@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.money;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -25,7 +25,7 @@ class MoneyEqualsEvaluatorTest {
     @DisplayName("PASS: money equals irrespective of trailing scale")
     void shouldPassWhenMoneyAmountsAreEqual() {
         assertThatNoException().isThrownBy(() ->
-                operator.apply("$.amount", new BigDecimal("100.50"), "100.5", true));
+            operator.apply("$.amount", new BigDecimal("100.50"), "100.5", true));
     }
 
     @Test
@@ -41,8 +41,8 @@ class MoneyEqualsEvaluatorTest {
     @DisplayName("FAIL: money amounts differ")
     void shouldFailWhenMoneyAmountsDiffer() {
         assertThatThrownBy(() -> operator.apply("$.amount", 100.50, 100.51, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("MONEY_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("MONEY_EQUALS failed");
     }
 
     @Test
@@ -52,7 +52,7 @@ class MoneyEqualsEvaluatorTest {
         Map<String, Object> expected = Map.of("amount", 100.50, "currency", "EUR");
 
         assertThatThrownBy(() -> operator.apply("$.amount", actual, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("Currency mismatch");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("Currency mismatch");
     }
 }

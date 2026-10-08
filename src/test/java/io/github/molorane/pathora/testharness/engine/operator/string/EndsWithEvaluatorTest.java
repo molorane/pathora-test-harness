@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -82,8 +82,8 @@ class EndsWithEvaluatorTest {
     @DisplayName("FAIL: string does not end with suffix")
     void shouldFailWhenDoesNotEndWith() {
         assertThatThrownBy(() -> operator.apply("$.refId", "REF-1234", "5678", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("ENDS_WITH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("ENDS_WITH failed");
     }
 
     /**
@@ -95,8 +95,8 @@ class EndsWithEvaluatorTest {
     @DisplayName("FAIL: case mismatch")
     void shouldFailOnCaseMismatch() {
         assertThatThrownBy(() -> operator.apply("$.file", "report.PDF", ".pdf", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("ENDS_WITH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("ENDS_WITH failed");
     }
 
     /**
@@ -108,7 +108,7 @@ class EndsWithEvaluatorTest {
     @DisplayName("FAIL: suffix longer than actual")
     void shouldFailWhenSuffixLongerThanActual() {
         assertThatThrownBy(() -> operator.apply("$.code", "AB", "ABCDEF", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("ENDS_WITH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("ENDS_WITH failed");
     }
 }

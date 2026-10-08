@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.List;
 import java.util.Map;
@@ -30,15 +30,15 @@ class AnyMatchEvaluatorTest {
     @DisplayName("PASS: at least one element satisfies condition")
     void shouldPassWhenAnyConditionMatches() {
         assertThatNoException().isThrownBy(() ->
-                operator.apply("$.scores", List.of(10, 20, 30), Map.of("greaterThan", 25), true));
+            operator.apply("$.scores", List.of(10, 20, 30), Map.of("greaterThan", 25), true));
     }
 
     @Test
     @DisplayName("FAIL: no elements match")
     void shouldFailWhenNoneMatches() {
         assertThatThrownBy(() -> operator.apply("$.scores", List.of(10, 20, 30), 99, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("ANY_MATCH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("ANY_MATCH failed");
     }
 }
 

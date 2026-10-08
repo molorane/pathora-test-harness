@@ -15,9 +15,9 @@ This project provides a comprehensive, production-ready demonstration of **Patho
 - [Dynamic Date Expressions & Offsets](#dynamic-date-expressions--offsets)
 - [Timezone & Clock Configuration (7 Ways)](#timezone--clock-configuration-7-ways)
 - [Testing Approaches](#testing-approaches)
-    - [Approach A: Individual File Testing](#approach-a-individual-file-testing)
-    - [Approach B: Dynamic Directory Batch Execution](#approach-b-dynamic-directory-batch-execution)
-    - [Approach C: Timezone & Deterministic Clock Demo (`TimezoneAndClockDemoTest`)](#approach-c-timezone--deterministic-clock-demo-timezoneandclockdemotest)
+  - [Approach A: Individual File Testing](#approach-a-individual-file-testing)
+  - [Approach B: Dynamic Directory Batch Execution](#approach-b-dynamic-directory-batch-execution)
+  - [Approach C: Timezone & Deterministic Clock Demo (`TimezoneAndClockDemoTest`)](#approach-c-timezone--deterministic-clock-demo-timezoneandclockdemotest)
 - [Assertion Operators Reference](#assertion-operators-reference)
 
 ---
@@ -40,7 +40,7 @@ Current suite shape:
 
 ## Role of EntryPoint Executors (`EntryPointExecutor` SPI)
 
-An `EntryPointExecutor` is a Service Provider Interface (SPI) contract provided by Pathora Test Harness (`za.co.pathora.testharness.spi.EntryPointExecutor`).
+An `EntryPointExecutor` is a Service Provider Interface (SPI) contract provided by Pathora Test Harness (`io.github.molorane.pathora.testharness.spi.EntryPointExecutor`).
 
 It acts as the **bridge/adapter** between Pathora Test Harness and your application's domain services, REST clients, gRPC endpoints, or internal business components.
 
@@ -79,7 +79,7 @@ package com.example.demo.executor;
 
 import com.example.demo.dto.LoanRequest;
 import com.example.demo.dto.LoanResponse;
-import za.co.pathora.testharness.spi.EntryPointExecutor;
+import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -289,7 +289,7 @@ LocalDate leapDay = LocalDate.of(2028, 2, 29);
 PathoraClock.freeze(leapDay, ZoneId.of("Africa/Johannesburg"));
 
 // All expressions and date operators now evaluate against 2028-02-29
-    DateExpressionResolver.resolveToString("{{$CURRENT_DATE}}"); // "2028-02-29"
+DateExpressionResolver.resolveToString("{{$CURRENT_DATE}}"); // "2028-02-29"
 DateExpressionResolver.resolveToString("{{$CURRENT_DATE + 30d}}"); // "2028-03-30"
 ```
 
@@ -299,10 +299,10 @@ Isolate deterministic time overrides per test thread so parallel tests never col
 Instant threadInstant = Instant.parse("2030-07-04T16:00:00Z");
 PathoraClock.freezeThread(threadInstant, ZoneId.of("America/New_York"));
 
-    try {
+try {
     // Current thread sees America/New_York (2030-07-04)
     // Other concurrent threads still see the global clock
-    } finally {
+} finally {
     PathoraClock.clearThreadClock();
 }
 ```

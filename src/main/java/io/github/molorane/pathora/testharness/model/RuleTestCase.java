@@ -18,23 +18,23 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record RuleTestCase(
 
-        @JsonProperty("name")
-        String name,
+    @JsonProperty("name")
+    String name,
 
-        @JsonProperty("description")
-        String description,
+    @JsonProperty("description")
+    String description,
 
-        @JsonProperty("operation")
-        String operation,
+    @JsonProperty("operation")
+    String operation,
 
-        @JsonProperty("mutations")
-        List<JsonMutation> mutations,
+    @JsonProperty("mutations")
+    List<JsonMutation> mutations,
 
-        @JsonProperty("assertions")
-        List<JsonAssertion> assertions,
+    @JsonProperty("assertions")
+    List<JsonAssertion> assertions,
 
-        @JsonProperty("timezone")
-        String timezone
+    @JsonProperty("timezone")
+    String timezone
 ) {
 
     /**
@@ -47,11 +47,11 @@ public record RuleTestCase(
      * @param assertions  the list of assertions to validate against the response
      */
     public RuleTestCase(
-            String name,
-            String description,
-            String operation,
-            List<JsonMutation> mutations,
-            List<JsonAssertion> assertions
+        String name,
+        String description,
+        String operation,
+        List<JsonMutation> mutations,
+        List<JsonAssertion> assertions
     ) {
         this(name, description, operation, mutations, assertions, null);
     }

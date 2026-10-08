@@ -59,9 +59,9 @@ class PathExistsEvaluatorTest {
     @DisplayName("FAIL: path does not exist")
     void shouldFailWhenPathDoesNotExist() {
         assertThatThrownBy(() -> operator.apply("$.missing", null, null, false))
-                .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("PATH_EXISTS_FAILED")
-                .hasMessageContaining("$.missing");
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("PATH_EXISTS_FAILED")
+            .hasMessageContaining("$.missing");
     }
 
     /**
@@ -71,8 +71,8 @@ class PathExistsEvaluatorTest {
     @DisplayName("FAIL: nested path does not exist")
     void shouldFailForNestedMissingPath() {
         assertThatThrownBy(() -> operator.apply("$.outputData.nested.field", null, null, false))
-                .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("PATH_EXISTS_FAILED");
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("PATH_EXISTS_FAILED");
     }
 }
 

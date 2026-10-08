@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,8 +29,8 @@ class IsStringBlankEvaluatorTest {
     @DisplayName("FAIL: string has non-whitespace characters")
     void shouldFailWhenNotBlank() {
         assertThatThrownBy(() -> operator.apply("$.text", "hello", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_STRING_BLANK failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_STRING_BLANK failed");
     }
 }
 

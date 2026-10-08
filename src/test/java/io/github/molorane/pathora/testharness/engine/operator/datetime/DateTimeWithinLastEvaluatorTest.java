@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.datetime;
 
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,13 +30,13 @@ class DateTimeWithinLastEvaluatorTest {
     @DisplayName("PASS: datetime within last 24 hours")
     void shouldPassWhenWithinLast24Hours() {
         String recent = LocalDateTime.now().minusHours(5)
-                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Object value = TestJsonHelper.parse("""
-                {
-                  "amount": 24,
-                  "unit": "HOURS"
-                }
-                """);
+            {
+              "amount": 24,
+              "unit": "HOURS"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.createdAt", recent, value, true));
     }
 
@@ -49,13 +49,13 @@ class DateTimeWithinLastEvaluatorTest {
     @DisplayName("PASS: datetime just now")
     void shouldPassWhenJustNow() {
         String now = LocalDateTime.now()
-                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Object value = TestJsonHelper.parse("""
-                {
-                  "amount": 1,
-                  "unit": "HOURS"
-                }
-                """);
+            {
+              "amount": 1,
+              "unit": "HOURS"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.createdAt", now, value, true));
     }
 
@@ -68,13 +68,13 @@ class DateTimeWithinLastEvaluatorTest {
     @DisplayName("PASS: date within last 7 days")
     void shouldPassWithDateWithinDays() {
         String recent = LocalDateTime.now().minusDays(3)
-                .toLocalDate().toString();
+            .toLocalDate().toString();
         Object value = TestJsonHelper.parse("""
-                {
-                  "amount": 7,
-                  "unit": "DAYS"
-                }
-                """);
+            {
+              "amount": 7,
+              "unit": "DAYS"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.createdAt", recent, value, true));
     }
 
@@ -87,16 +87,16 @@ class DateTimeWithinLastEvaluatorTest {
     @DisplayName("FAIL: datetime too old")
     void shouldFailWhenTooOld() {
         String old = LocalDateTime.now().minusDays(10)
-                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Object value = TestJsonHelper.parse("""
-                {
-                  "amount": 24,
-                  "unit": "HOURS"
-                }
-                """);
+            {
+              "amount": 24,
+              "unit": "HOURS"
+            }
+            """);
         assertThatThrownBy(() -> operator.apply("$.createdAt", old, value, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("DATETIME_WITHIN_LAST failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DATETIME_WITHIN_LAST failed");
     }
 
     /**
@@ -108,15 +108,15 @@ class DateTimeWithinLastEvaluatorTest {
     @DisplayName("FAIL: invalid unit")
     void shouldFailWithInvalidUnit() {
         String now = LocalDateTime.now()
-                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Object value = TestJsonHelper.parse("""
-                {
-                  "amount": 1,
-                  "unit": "INVALID"
-                }
-                """);
+            {
+              "amount": 1,
+              "unit": "INVALID"
+            }
+            """);
         assertThatThrownBy(() -> operator.apply("$.createdAt", now, value, true))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Invalid duration unit");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Invalid duration unit");
     }
 }

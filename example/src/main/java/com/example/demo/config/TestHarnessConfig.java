@@ -1,5 +1,13 @@
 package com.example.demo.config;
 
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.dataformat.xml.XmlMapper;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.EntryPointDispatcher;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
@@ -10,17 +18,11 @@ import io.github.molorane.pathora.testharness.loader.TestSuiteLoader;
 import io.github.molorane.pathora.testharness.registry.EntryPointRegistry;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import io.github.molorane.pathora.testharness.util.PathoraClock;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.json.JsonMapper;
-import tools.jackson.dataformat.xml.XmlMapper;
 
 import java.util.List;
 
 @Configuration
+@Import(CustomOperatorConfig.class)
 public class TestHarnessConfig {
 
     @Value("${pathora.timezone:}")
@@ -77,8 +79,7 @@ public class TestHarnessConfig {
     @Bean
     public JsonMutationEngine jsonMutationEngine(
         ObjectMapper objectMapper,
-        XmlMapper xmlMapper
-    ) {
+        XmlMapper xmlMapper) {
         return new JsonMutationEngine(objectMapper, xmlMapper);
     }
 

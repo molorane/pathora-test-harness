@@ -22,6 +22,12 @@ library**. Its job is to:
 There is **no Spring context**. There are **no annotations**. All wiring
 is done via plain constructors.
 
+> Note: examples such as `MyNewOperator`, `MyMultiPathOperator`, and
+> `MyNewOperatorTest` are intentionally placeholder names. They are not
+> real classes in the library; they illustrate the required pattern.
+> Substitute the actual operator/class name when implementing a real
+> operator.
+
 ------------------------------------------------------------------------
 
 # 🏗 Architecture Overview
@@ -74,20 +80,20 @@ Do **not** create sub-packages inside `operator/`.
 ```java
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record JsonAssertion(
-    @JsonProperty("path")
-    String path,
+        @JsonProperty("path")
+        String path,
 
-    @JsonProperty("operator")
-    AssertionOperator operator,
+        @JsonProperty("operator")
+        AssertionOperator operator,
 
-    @JsonProperty("value")
-    Object value,
+        @JsonProperty("value")
+        Object value,
 
-    @JsonProperty("description")
-    String description,
+        @JsonProperty("description")
+        String description,
 
-    @JsonProperty("assertions")
-    List<JsonAssertion> assertions
+        @JsonProperty("assertions")
+        List<JsonAssertion> assertions
 ) {
     public JsonAssertion {
         if (operator == null) {
@@ -152,12 +158,17 @@ They are handled exclusively inside `AssertionEngine.evaluateAssertion()`.
 
 # 3️⃣ Operator Pattern (MANDATORY)
 
+The examples below use placeholder names such as `ExampleOperator` and
+`ExampleMultiPathOperator` to illustrate the required pattern. They are
+not real classes in the library and are meant to be replaced with the
+actual operator name when you implement a real operator.
+
 ## Standard operator — implements `OperatorAssertion`
 
 Use this for every operator that works on a single resolved JSON value.
 
 ```java
-public class MyNewOperator implements OperatorAssertion {
+public class ExampleOperator implements OperatorAssertion {
 
     @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
@@ -170,13 +181,13 @@ public class MyNewOperator implements OperatorAssertion {
         // 3. Business check
         if (/* condition fails */) {
             throw new HarnessAssertionException(
-                AssertionOperator.MY_NEW_OPERATOR,
-                path,
-                expected,
-                actual,
-                "MY_NEW_OPERATOR failed at " + path +
-                    ". Expected: " + expected +
-                    ", Actual: " + actual);
+                    AssertionOperator.MY_NEW_OPERATOR,
+                    path,
+                    expected,
+                    actual,
+                    "MY_NEW_OPERATOR failed at " + path +
+                            ". Expected: " + expected +
+                            ", Actual: " + actual);
         }
     }
 }
@@ -188,7 +199,7 @@ Use this **only** when the operator must resolve more than one JsonPath
 from the same response (e.g. `FIELD_EQUALS_OTHER_FIELD`).
 
 ```java
-public class MyMultiPathOperator implements DocumentContextAwareOperator {
+public class ExampleMultiPathOperator implements DocumentContextAwareOperator {
 
     @Override
     public void apply(DocumentContext context, Object expected) {
@@ -201,11 +212,11 @@ public class MyMultiPathOperator implements DocumentContextAwareOperator {
 
         if (/* condition fails */) {
             throw new HarnessAssertionException(
-                AssertionOperator.MY_MULTI_PATH_OPERATOR,
-                pathA + " vs " + pathB,
-                b,
-                a,
-                "MY_MULTI_PATH_OPERATOR failed …");
+                    AssertionOperator.MY_MULTI_PATH_OPERATOR,
+                    pathA + " vs " + pathB,
+                    b,
+                    a,
+                    "MY_MULTI_PATH_OPERATOR failed …");
         }
     }
 }
@@ -220,7 +231,7 @@ public class MyMultiPathOperator implements DocumentContextAwareOperator {
 Every new operator **must** be registered in `AssertionEngine` constructor:
 
 ```java
-operators.put(AssertionOperator.MY_NEW_OPERATOR, new MyNewOperator());
+operators.put(AssertionOperator.MY_NEW_OPERATOR, new ExampleOperator());
 ```
 
 Operators that implement `DocumentContextAwareOperator` are dispatched
@@ -253,13 +264,13 @@ Never throw a raw `AssertionError` from inside an operator.
 
 ```java
 throw new HarnessAssertionException(
-    AssertionOperator.<OPERATOR>,   // the enum value
-    path,                           // the JsonPath string
-    expected,                       // expected value (raw, before normalisation)
-    actual,                         // actual value (raw, before normalisation)
+        AssertionOperator.<OPERATOR>,   // the enum value
+        path,                           // the JsonPath string
+        expected,                       // expected value (raw, before normalisation)
+        actual,                         // actual value (raw, before normalisation)
         "<OPERATOR_NAME> failed at " + path +
-        ". Expected: " + expected +
-        ", Actual: " + actual);
+                ". Expected: " + expected +
+                ", Actual: " + actual);
 ```
 
 `HarnessAssertionException` extends `AssertionError` and formats a
@@ -311,7 +322,7 @@ Before resolving the JsonPath, `evaluateAssertion()` checks:
 if (handler instanceof DocumentContextAwareOperator contextAware) {
     contextAware.apply(context, assertion.value());
     return;
-    }
+}
 ```
 
 This means `DocumentContextAwareOperator` implementations never receive
@@ -432,16 +443,16 @@ class MyNewOperatorTest {
     @DisplayName("PASS: <scenario description>")
     void shouldPassWhen<Condition>() {
         assertThatNoException().isThrownBy(
-            () -> operator.apply("$.field", actualValue, expectedValue, true));
+                () -> operator.apply("$.field", actualValue, expectedValue, true));
     }
 
     @Test
     @DisplayName("FAIL: <scenario description>")
     void shouldFailWhen<Condition>() {
         assertThatThrownBy(
-            () -> operator.apply("$.field", wrongValue, expectedValue, true))
-            .isInstanceOf(HarnessAssertionException.class)
-            .hasMessageContaining("MY_NEW_OPERATOR failed");
+                () -> operator.apply("$.field", wrongValue, expectedValue, true))
+                .isInstanceOf(HarnessAssertionException.class)
+                .hasMessageContaining("MY_NEW_OPERATOR failed");
     }
 }
 ```
@@ -473,8 +484,8 @@ Integration tests for `AssertionEngine` must:
 - Build `JsonAssertion` and `RuleTestCase` inline — no file I/O.
 - Call `engine.assertResponse(response, testCase, mutatedRequest)`.
 - For logical operator tests use these message fragments:
-    - `"LOGICAL_OR_FAILED"`
-    - `"LOGICAL_NOT_FAILED"`
+  - `"LOGICAL_OR_FAILED"`
+  - `"LOGICAL_NOT_FAILED"`
 
 ------------------------------------------------------------------------
 
@@ -502,14 +513,14 @@ Integration tests for `AssertionEngine` must:
 
 1. Add the new value to `AssertionOperator` enum in the correct category group.
 2. Create `MyNewOperator.java` in `engine/operator/`.
-    - Implement `OperatorAssertion` (single path) or
-      `DocumentContextAwareOperator` (multi-path).
-    - Use `AssertionUtils` helpers.
-    - Throw `HarnessAssertionException` on failure.
+   - Implement `OperatorAssertion` (single path) or
+     `DocumentContextAwareOperator` (multi-path).
+   - Use `AssertionUtils` helpers.
+   - Throw `HarnessAssertionException` on failure.
 3. Register in `AssertionEngine` constructor:
    `operators.put(AssertionOperator.MY_NEW_OPERATOR, new MyNewOperator());`
 4. Create `MyNewOperatorTest.java` in the matching test package.
-    - Cover: pass, fail, null, type coercion, and edge cases.
+   - Cover: pass, fail, null, type coercion, and edge cases.
 5. Run `mvn test` — all existing tests must still pass.
 
 ------------------------------------------------------------------------
@@ -543,8 +554,8 @@ Integration tests for `AssertionEngine` must:
 - Build `JsonAssertion` and `RuleTestCase` inline — no file I/O.
 - Call `engine.assertResponse(response, testCase, mutatedRequest)`.
 - For logical operator tests use these message fragments:
-    - `"LOGICAL_OR_FAILED"`
-    - `"LOGICAL_NOT_FAILED"`
+  - `"LOGICAL_OR_FAILED"`
+  - `"LOGICAL_NOT_FAILED"`
 
 ------------------------------------------------------------------------
 
@@ -559,3 +570,4 @@ An operator is complete only when:
 5. No `AssertionUtils` logic duplicated inside the operator.
 6. Error message produced by the operator contains operator name, path,
    expected value, and actual value.
+

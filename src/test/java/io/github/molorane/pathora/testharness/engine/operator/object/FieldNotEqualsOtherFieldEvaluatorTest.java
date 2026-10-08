@@ -2,11 +2,11 @@ package io.github.molorane.pathora.testharness.engine.operator.object;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,14 +28,14 @@ class FieldNotEqualsOtherFieldEvaluatorTest {
     @DisplayName("PASS: left field != right field")
     void shouldPassWhenFieldsDiffer() {
         DocumentContext ctx = parse("""
-                {"outputData": {"status": "APPROVED", "previousStatus": "PENDING"}}
-                """);
+            {"outputData": {"status": "APPROVED", "previousStatus": "PENDING"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "leftPath": "$.outputData.status",
-                  "rightPath": "$.outputData.previousStatus"
-                }
-                """);
+            {
+              "leftPath": "$.outputData.status",
+              "rightPath": "$.outputData.previousStatus"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -43,17 +43,17 @@ class FieldNotEqualsOtherFieldEvaluatorTest {
     @DisplayName("FAIL: left field == right field")
     void shouldFailWhenFieldsEqual() {
         DocumentContext ctx = parse("""
-                {"outputData": {"status": "APPROVED", "previousStatus": "APPROVED"}}
-                """);
+            {"outputData": {"status": "APPROVED", "previousStatus": "APPROVED"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "leftPath": "$.outputData.status",
-                  "rightPath": "$.outputData.previousStatus"
-                }
-                """);
+            {
+              "leftPath": "$.outputData.status",
+              "rightPath": "$.outputData.previousStatus"
+            }
+            """);
         assertThatThrownBy(() -> operator.apply(ctx, value))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("FIELD_NOT_EQUALS_OTHER_FIELD failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("FIELD_NOT_EQUALS_OTHER_FIELD failed");
     }
 }
 

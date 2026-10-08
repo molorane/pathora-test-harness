@@ -30,3 +30,4 @@ class AllSuiteTest {
         return adapter.generate("templates/tests");
     }
 }
+

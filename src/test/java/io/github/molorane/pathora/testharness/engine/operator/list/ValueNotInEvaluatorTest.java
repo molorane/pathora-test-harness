@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,8 +27,8 @@ class ValueNotInEvaluatorTest {
     @DisplayName("PASS: scalar value is not in the expected list")
     void shouldPassWhenValueNotInList() {
         Object expected = TestJsonHelper.parse("""
-                ["APPROVED", "PENDING"]
-                """);
+            ["APPROVED", "PENDING"]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.status", "DECLINED", expected, true));
     }
 
@@ -41,8 +41,8 @@ class ValueNotInEvaluatorTest {
     @DisplayName("PASS: numeric scalar value is not in the expected list")
     void shouldPassWhenNumericValueNotInList() {
         Object expected = TestJsonHelper.parse("""
-                [1004, 1011, 1020]
-                """);
+            [1004, 1011, 1020]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.code", 1099, expected, true));
     }
 
@@ -55,8 +55,8 @@ class ValueNotInEvaluatorTest {
     @DisplayName("PASS: value not in list — different values")
     void shouldPassWhenValueNotInListDifferentValues() {
         Object expected = TestJsonHelper.parse("""
-                ["A", "B"]
-                """);
+            ["A", "B"]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", "C", expected, true));
     }
 
@@ -69,8 +69,8 @@ class ValueNotInEvaluatorTest {
     @DisplayName("PASS: empty expected list (value is vacuously not in empty list)")
     void shouldPassWithEmptyExpectedList() {
         Object expected = TestJsonHelper.parse("""
-                []
-                """);
+            []
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.status", "APPROVED", expected, true));
     }
 
@@ -83,11 +83,11 @@ class ValueNotInEvaluatorTest {
     @DisplayName("FAIL: scalar value is in the expected list")
     void shouldFailWhenValueInList() {
         Object expected = TestJsonHelper.parse("""
-                ["APPROVED", "PENDING"]
-                """);
+            ["APPROVED", "PENDING"]
+            """);
         assertThatThrownBy(() -> operator.apply("$.status", "APPROVED", expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("VALUE_NOT_IN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("VALUE_NOT_IN failed");
     }
 
     /**
@@ -99,11 +99,11 @@ class ValueNotInEvaluatorTest {
     @DisplayName("FAIL: numeric value is in the expected list")
     void shouldFailWhenNumericValueInList() {
         Object expected = TestJsonHelper.parse("""
-                [100, 200, 300]
-                """);
+            [100, 200, 300]
+            """);
         assertThatThrownBy(() -> operator.apply("$.code", 200, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("VALUE_NOT_IN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("VALUE_NOT_IN failed");
     }
 
     /**
@@ -115,8 +115,8 @@ class ValueNotInEvaluatorTest {
     @DisplayName("FAIL: expected is not a list")
     void shouldFailWhenExpectedIsNotList() {
         assertThatThrownBy(() -> operator.apply("$.status", "APPROVED", "not-a-list", true))
-                .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("Expected array at path");
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("Expected array at path");
     }
 }
 

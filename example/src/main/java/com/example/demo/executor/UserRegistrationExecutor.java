@@ -1,10 +1,10 @@
 package com.example.demo.executor;
 
-import com.example.demo.dto.UserRequest;
-import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.user.UserRequest;
+import com.example.demo.dto.user.UserResponse;
 import com.example.demo.service.UserRegistrationService;
-import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
+import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 
 @Component
 public class UserRegistrationExecutor implements EntryPointExecutor<UserRequest, UserResponse> {
@@ -30,5 +30,6 @@ public class UserRegistrationExecutor implements EntryPointExecutor<UserRequest,
         return userRegistrationService.registerUser(userRequest);
     }
 }
+
 
 
