@@ -5,6 +5,7 @@ import io.github.molorane.pathora.testharness.engine.operator.duration.DurationH
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.util.AssertionUtils;
+import io.github.molorane.pathora.testharness.util.PathoraClock;
 
 import java.time.LocalDateTime;
 
@@ -35,16 +36,16 @@ public class IsFutureDateTimeEvaluator implements AssertionEvaluator {
 
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);
         LocalDateTime actualDt = DurationHelper.parseDateTime(String.valueOf(normalizedActual), path);
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = PathoraClock.now();
 
         if (!actualDt.isAfter(now)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_FUTURE_DATETIME,
-                    path,
-                    "after " + now,
-                    actualDt,
-                    "IS_FUTURE_DATETIME failed at " + path +
-                            ". Value " + actualDt + " is not after now (" + now + ")");
+                AssertionOperator.IS_FUTURE_DATETIME,
+                path,
+                "after " + now,
+                actualDt,
+                "IS_FUTURE_DATETIME failed at " + path +
+                    ". Value " + actualDt + " is not after now (" + now + ")");
         }
     }
 }

@@ -41,13 +41,13 @@ public class ValueNotInEvaluator implements AssertionEvaluator {
             Object[] normalized = AssertionUtils.normalizeTypes(normalizedActual, exp);
             if (Objects.equals(normalized[0], normalized[1])) {
                 throw new HarnessAssertionException(
-                        AssertionOperator.VALUE_NOT_IN,
-                        path,
-                        expected,
-                        actual,
-                        "VALUE_NOT_IN failed at " + path +
-                                ". Expected value not to be in: " + expectedList +
-                                ", Actual: " + normalizedActual);
+                    AssertionOperator.VALUE_NOT_IN,
+                    path,
+                    expected,
+                    actual,
+                    "VALUE_NOT_IN failed at " + path +
+                        ". Expected value not to be in: " + expectedList +
+                        ", Actual: " + normalizedActual);
             }
         }
     }

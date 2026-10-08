@@ -50,13 +50,11 @@
         {
           "path": "$.role",
           "operator": "IS_STRING_UPPER_CASE",
-          "value": null,
           "description": "Role is fully uppercase"
         },
         {
           "path": "$.username",
           "operator": "IS_STRING_LOWER_CASE",
-          "value": null,
           "description": "Username is fully lowercase"
         },
         {
@@ -151,67 +149,56 @@
         {
           "path": "$.username",
           "operator": "IS_STRING_ALPHA_NUMERIC",
-          "value": null,
           "description": "Username contains only alphanumeric characters"
         },
         {
           "path": "$.firstName",
           "operator": "IS_STRING_ALPHA",
-          "value": null,
           "description": "First name contains only alphabetic characters"
         },
         {
           "path": "$.fullName",
           "operator": "IS_STRING_ALPHA_SPACE",
-          "value": null,
           "description": "Full name contains only alphabetic characters and spaces"
         },
         {
           "path": "$.fullName",
           "operator": "STRING_CONTAINS_WHITESPACE",
-          "value": null,
           "description": "Full name contains whitespace"
         },
         {
           "path": "$.mixedCaseNotes",
           "operator": "IS_STRING_MIXED_CASE",
-          "value": null,
           "description": "Mixed case notes contain upper and lower case"
         },
         {
           "path": "$.blankBio",
           "operator": "IS_STRING_BLANK",
-          "value": null,
           "description": "Blank bio contains only whitespace"
         },
         {
           "path": "$.emptyNotes",
           "operator": "IS_STRING_EMPTY",
-          "value": null,
           "description": "Empty notes is an empty string"
         },
         {
           "path": "$.userId",
           "operator": "IS_STRING_NOT_EMPTY",
-          "value": null,
           "description": "User ID is not empty"
         },
         {
           "path": "$.postalCode",
           "operator": "IS_STRING_NUMERIC",
-          "value": null,
           "description": "Postal code is strictly numeric"
         },
         {
           "path": "$.email",
           "operator": "IS_EMAIL",
-          "value": null,
           "description": "Email conforms to standard email format"
         },
         {
           "path": "$.email",
           "operator": "IS_STRING_NOT_BLANK",
-          "value": null,
           "description": "Email is non-blank"
         },
         {
@@ -235,43 +222,36 @@
         {
           "path": "$.ipAddress",
           "operator": "IS_IP_ADDRESS",
-          "value": null,
           "description": "IP address is valid IPv4"
         },
         {
           "path": "$.websiteUrl",
           "operator": "IS_URL",
-          "value": null,
           "description": "Website URL is valid web address"
         },
         {
           "path": "$.trackingUuid",
           "operator": "IS_UUID",
-          "value": null,
           "description": "Tracking UUID is a valid UUID format"
         },
         {
           "path": "$.allBlankTags",
           "operator": "IS_ALL_STRING_BLANK",
-          "value": null,
           "description": "All elements in allBlankTags are blank strings"
         },
         {
           "path": "$.anyBlankTags",
           "operator": "IS_ANY_STRING_BLANK",
-          "value": null,
           "description": "At least one element in anyBlankTags is blank"
         },
         {
           "path": "$.noneBlankTags",
           "operator": "IS_NONE_STRING_BLANK",
-          "value": null,
           "description": "No element in noneBlankTags is blank"
         },
         {
           "path": "$.noneBlankTags",
           "operator": "IS_STRING_NONE_EMPTY",
-          "value": null,
           "description": "No element in noneBlankTags is empty"
         }
       ]

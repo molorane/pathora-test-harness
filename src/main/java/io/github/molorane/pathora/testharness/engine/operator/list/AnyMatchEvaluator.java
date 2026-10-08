@@ -38,11 +38,11 @@ public class AnyMatchEvaluator implements AssertionEvaluator {
 
         if (list.isEmpty()) {
             throw new HarnessAssertionException(
-                    AssertionOperator.ANY_MATCH,
-                    path,
-                    expected,
-                    actual,
-                    "ANY_MATCH failed at " + path + ". List is empty.");
+                AssertionOperator.ANY_MATCH,
+                path,
+                expected,
+                actual,
+                "ANY_MATCH failed at " + path + ". List is empty.");
         }
 
         boolean matched = false;
@@ -62,13 +62,13 @@ public class AnyMatchEvaluator implements AssertionEvaluator {
 
         if (!matched) {
             throw new HarnessAssertionException(
-                    AssertionOperator.ANY_MATCH,
-                    path,
-                    expected,
-                    actual,
-                    "ANY_MATCH failed at " + path +
-                            ". Expected at least one element to match: " + expected +
-                            ", but found elements: " + list);
+                AssertionOperator.ANY_MATCH,
+                path,
+                expected,
+                actual,
+                "ANY_MATCH failed at " + path +
+                    ". Expected at least one element to match: " + expected +
+                    ", but found elements: " + list);
         }
     }
 
@@ -102,7 +102,7 @@ public class AnyMatchEvaluator implements AssertionEvaluator {
             return false;
         }
         throw new IllegalArgumentException(
-                "ANY_MATCH condition must contain 'greaterThan', 'lessThan', or 'between'. Got: " + condition.keySet());
+            "ANY_MATCH condition must contain 'greaterThan', 'lessThan', or 'between'. Got: " + condition.keySet());
     }
 
     private double toDouble(Object value) {

@@ -42,13 +42,13 @@ public class MoneyLessThanEvaluator implements AssertionEvaluator {
 
         if (actualAmount.compareTo(expectedAmount) >= 0) {
             throw new HarnessAssertionException(
-                    AssertionOperator.MONEY_LESS_THAN,
-                    path,
-                    expected,
-                    actual,
-                    "MONEY_LESS_THAN failed at " + path +
-                            ". Expected amount < " + expectedAmount +
-                            ", Actual amount: " + actualAmount);
+                AssertionOperator.MONEY_LESS_THAN,
+                path,
+                expected,
+                actual,
+                "MONEY_LESS_THAN failed at " + path +
+                    ". Expected amount < " + expectedAmount +
+                    ", Actual amount: " + actualAmount);
         }
     }
 }

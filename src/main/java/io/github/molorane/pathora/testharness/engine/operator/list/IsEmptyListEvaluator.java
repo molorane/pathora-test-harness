@@ -36,12 +36,12 @@ public class IsEmptyListEvaluator implements AssertionEvaluator {
 
         if (!list.isEmpty()) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_EMPTY_LIST,
-                    path,
-                    "empty list",
-                    actual,
-                    "IS_EMPTY_LIST failed at " + path +
-                            ". Expected empty list but found " + list.size() + " elements: " + list);
+                AssertionOperator.IS_EMPTY_LIST,
+                path,
+                "empty list",
+                actual,
+                "IS_EMPTY_LIST failed at " + path +
+                    ". Expected empty list but found " + list.size() + " elements: " + list);
         }
     }
 }

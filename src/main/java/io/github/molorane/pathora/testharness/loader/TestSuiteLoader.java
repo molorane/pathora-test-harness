@@ -1,7 +1,7 @@
 package io.github.molorane.pathora.testharness.loader;
 
-import tools.jackson.databind.ObjectMapper;
 import io.github.molorane.pathora.testharness.model.TestSuite;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +35,7 @@ public class TestSuiteLoader {
 
         if (Files.notExists(suitePath)) {
             throw new IllegalArgumentException(
-                    "Test suite file does not exist: " + suitePath.toAbsolutePath()
+                "Test suite file does not exist: " + suitePath.toAbsolutePath()
             );
         }
 

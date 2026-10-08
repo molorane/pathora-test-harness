@@ -48,22 +48,22 @@ public class DateAfterDurationEvaluator implements DocumentContextAwareEvaluator
         ChronoUnit unit = DurationHelper.parseUnit(String.valueOf(config.get("unit")));
 
         LocalDateTime baseDt = DurationHelper.parseDateTime(
-                String.valueOf((Object) context.read(basePath)), basePath);
+            String.valueOf((Object) context.read(basePath)), basePath);
         LocalDateTime compareDt = DurationHelper.parseDateTime(
-                String.valueOf((Object) context.read(comparePath)), comparePath);
+            String.valueOf((Object) context.read(comparePath)), comparePath);
         LocalDateTime threshold = baseDt.plus(amount, unit);
 
         if (compareDt.isBefore(threshold)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_AFTER_DURATION,
-                    basePath + " + " + amount + " " + unit,
-                    "after " + threshold,
-                    compareDt,
-                    "DATE_AFTER_DURATION failed. " +
-                            comparePath + " (" + compareDt + ") is not at least " +
-                            amount + " " + unit + " after " +
-                            basePath + " (" + baseDt + "). " +
-                            "Threshold: " + threshold);
+                AssertionOperator.DATE_AFTER_DURATION,
+                basePath + " + " + amount + " " + unit,
+                "after " + threshold,
+                compareDt,
+                "DATE_AFTER_DURATION failed. " +
+                    comparePath + " (" + compareDt + ") is not at least " +
+                    amount + " " + unit + " after " +
+                    basePath + " (" + baseDt + "). " +
+                    "Threshold: " + threshold);
         }
     }
 }

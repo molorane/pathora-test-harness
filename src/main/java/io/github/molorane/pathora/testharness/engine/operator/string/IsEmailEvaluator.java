@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 public class IsEmailEvaluator implements AssertionEvaluator {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
-            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+        "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
 
     @Override
     public AssertionOperator operator() {
@@ -37,12 +37,12 @@ public class IsEmailEvaluator implements AssertionEvaluator {
 
         if (actualStr == null || !EMAIL_PATTERN.matcher(actualStr.trim()).matches()) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_EMAIL,
-                    path,
-                    "valid email address",
-                    actual,
-                    "IS_EMAIL failed at " + path +
-                            ". Expected valid email format, Actual: " + actualStr);
+                AssertionOperator.IS_EMAIL,
+                path,
+                "valid email address",
+                actual,
+                "IS_EMAIL failed at " + path +
+                    ". Expected valid email format, Actual: " + actualStr);
         }
     }
 }

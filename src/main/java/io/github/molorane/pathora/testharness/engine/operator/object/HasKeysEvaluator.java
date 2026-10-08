@@ -48,13 +48,13 @@ public class HasKeysEvaluator implements AssertionEvaluator {
 
         if (!missing.isEmpty()) {
             throw new HarnessAssertionException(
-                    AssertionOperator.HAS_KEYS,
-                    path,
-                    expected,
-                    actualMap.keySet(),
-                    "HAS_KEYS failed at " + path +
-                            ". Missing keys: " + missing +
-                            ", Actual keys: " + actualMap.keySet());
+                AssertionOperator.HAS_KEYS,
+                path,
+                expected,
+                actualMap.keySet(),
+                "HAS_KEYS failed at " + path +
+                    ". Missing keys: " + missing +
+                    ", Actual keys: " + actualMap.keySet());
         }
     }
 }

@@ -37,13 +37,13 @@ public class StartsWithEvaluator implements AssertionEvaluator {
 
         if (!actualStr.startsWith(prefix)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STARTS_WITH,
-                    path,
-                    prefix,
-                    actualStr,
-                    "STARTS_WITH failed at " + path +
-                            ". Expected to start with: " + prefix +
-                            ", Actual: " + actualStr);
+                AssertionOperator.STARTS_WITH,
+                path,
+                prefix,
+                actualStr,
+                "STARTS_WITH failed at " + path +
+                    ". Expected to start with: " + prefix +
+                    ", Actual: " + actualStr);
         }
     }
 }

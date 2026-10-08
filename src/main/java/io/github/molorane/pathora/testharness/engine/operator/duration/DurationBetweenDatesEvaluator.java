@@ -50,18 +50,18 @@ public class DurationBetweenDatesEvaluator implements DocumentContextAwareEvalua
         String endStr = String.valueOf((Object) context.read(endPath));
 
         long duration = DurationHelper.calculateDuration(startStr, endStr,
-                DurationHelper.parseUnit(String.valueOf(config.get("unit"))), startPath);
+            DurationHelper.parseUnit(String.valueOf(config.get("unit"))), startPath);
 
         if (duration < min || duration > max) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DURATION_BETWEEN,
-                    startPath + " → " + endPath,
-                    "between " + min + " and " + max,
-                    duration,
-                    "DURATION_BETWEEN failed. Duration from " +
-                            startPath + " (" + startStr + ") to " +
-                            endPath + " (" + endStr + ") is " +
-                            duration + ". Expected between " + min + " and " + max);
+                AssertionOperator.DURATION_BETWEEN,
+                startPath + " → " + endPath,
+                "between " + min + " and " + max,
+                duration,
+                "DURATION_BETWEEN failed. Duration from " +
+                    startPath + " (" + startStr + ") to " +
+                    endPath + " (" + endStr + ") is " +
+                    duration + ". Expected between " + min + " and " + max);
         }
     }
 }

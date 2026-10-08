@@ -2,6 +2,7 @@ package io.github.molorane.pathora.testharness.engine.operator.duration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
@@ -45,11 +46,15 @@ public final class DurationHelper {
         } catch (DateTimeParseException ignored) {
         }
         try {
+            return OffsetDateTime.parse(value).toLocalDateTime();
+        } catch (DateTimeParseException ignored) {
+        }
+        try {
             return LocalDate.parse(value).atStartOfDay();
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(
-                    "Cannot parse date/datetime at " + path + ": " + value +
-                            ". Expected ISO format (yyyy-MM-dd or yyyy-MM-dd'T'HH:mm:ss)");
+                "Cannot parse date/datetime at " + path + ": " + value +
+                    ". Expected ISO format (yyyy-MM-dd or yyyy-MM-dd'T'HH:mm:ss)");
         }
     }
 
@@ -64,8 +69,8 @@ public final class DurationHelper {
             return ChronoUnit.valueOf(unit.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(
-                    "Invalid duration unit: " + unit +
-                            ". Supported: DAYS, HOURS, MINUTES, SECONDS, MONTHS, YEARS");
+                "Invalid duration unit: " + unit +
+                    ". Supported: DAYS, HOURS, MINUTES, SECONDS, MONTHS, YEARS");
         }
     }
 

@@ -41,13 +41,13 @@ public class DateDayOfWeekEqualsEvaluator implements AssertionEvaluator {
 
         if (actualDow != expectedDow) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_DAY_OF_WEEK_EQUALS,
-                    path,
-                    expected,
-                    actualDow.name(),
-                    "DATE_DAY_OF_WEEK_EQUALS failed at " + path +
-                            ". Expected day of week: " + expected + " (" + expectedDow.name() + ")" +
-                            ", Actual day of week: " + actualDow.name() + " from " + normalizedActual);
+                AssertionOperator.DATE_DAY_OF_WEEK_EQUALS,
+                path,
+                expected,
+                actualDow.name(),
+                "DATE_DAY_OF_WEEK_EQUALS failed at " + path +
+                    ". Expected day of week: " + expected + " (" + expectedDow.name() + ")" +
+                    ", Actual day of week: " + actualDow.name() + " from " + normalizedActual);
         }
     }
 }

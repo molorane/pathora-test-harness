@@ -72,12 +72,12 @@ public final class AssertionUtils {
 
             if (list.isEmpty()) {
                 throw new RuntimeException(
-                        "No match found for path: " + path);
+                    "No match found for path: " + path);
             }
 
             if (list.size() > 1) {
                 throw new RuntimeException(
-                        "Multiple matches found for path: " + path);
+                    "Multiple matches found for path: " + path);
             }
 
             return list.get(0);
@@ -96,8 +96,8 @@ public final class AssertionUtils {
     public static List<?> requireList(Object value, String path) {
         if (!(value instanceof List<?> list)) {
             throw new AssertionError(
-                    "Expected array at path " + path +
-                            " but got: " + value);
+                "Expected array at path " + path +
+                    " but got: " + value);
         }
         return list;
     }
@@ -254,7 +254,7 @@ public final class AssertionUtils {
 
         for (Object expectedItem : expectedList) {
             boolean matched = actualList.stream()
-                    .anyMatch(actualItem -> deepPartialEquals(actualItem, expectedItem));
+                .anyMatch(actualItem -> deepPartialEquals(actualItem, expectedItem));
             if (!matched) {
                 return false;
             }
@@ -313,7 +313,7 @@ public final class AssertionUtils {
             return (Map<String, Object>) map;
         }
         throw new IllegalArgumentException(
-                "Expected object but got: " + value);
+            "Expected object but got: " + value);
     }
 
     /**

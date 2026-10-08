@@ -39,13 +39,13 @@ public class TimeAfterEvaluator implements AssertionEvaluator {
 
         if (!actualTime.isAfter(expectedTime)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.TIME_AFTER,
-                    path,
-                    expectedTime,
-                    actualTime,
-                    "TIME_AFTER failed at " + path +
-                            ". Expected time after: " + expectedTime +
-                            ", Actual time: " + actualTime + " (from " + normalizedActual + ")");
+                AssertionOperator.TIME_AFTER,
+                path,
+                expectedTime,
+                actualTime,
+                "TIME_AFTER failed at " + path +
+                    ". Expected time after: " + expectedTime +
+                    ", Actual time: " + actualTime + " (from " + normalizedActual + ")");
         }
     }
 }

@@ -38,13 +38,13 @@ public class ObjectContainsPartialFieldsEvaluator implements AssertionEvaluator 
 
         if (!AssertionUtils.objectContainsPartialFields(normalizedActual, expected, false)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.OBJECT_CONTAINS_PARTIAL_FIELDS,
-                    path,
-                    expected,
-                    normalizedActual,
-                    "OBJECT_CONTAINS_PARTIAL_FIELDS failed at " + path +
-                            ". Expected partial fields: " + expected +
-                            ", Actual: " + normalizedActual);
+                AssertionOperator.OBJECT_CONTAINS_PARTIAL_FIELDS,
+                path,
+                expected,
+                normalizedActual,
+                "OBJECT_CONTAINS_PARTIAL_FIELDS failed at " + path +
+                    ". Expected partial fields: " + expected +
+                    ", Actual: " + normalizedActual);
         }
     }
 }

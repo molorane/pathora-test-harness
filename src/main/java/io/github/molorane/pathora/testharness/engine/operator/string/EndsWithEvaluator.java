@@ -37,13 +37,13 @@ public class EndsWithEvaluator implements AssertionEvaluator {
 
         if (!actualStr.endsWith(suffix)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.ENDS_WITH,
-                    path,
-                    suffix,
-                    actualStr,
-                    "ENDS_WITH failed at " + path +
-                            ". Expected to end with: " + suffix +
-                            ", Actual: " + actualStr);
+                AssertionOperator.ENDS_WITH,
+                path,
+                suffix,
+                actualStr,
+                "ENDS_WITH failed at " + path +
+                    ". Expected to end with: " + suffix +
+                    ", Actual: " + actualStr);
         }
     }
 }

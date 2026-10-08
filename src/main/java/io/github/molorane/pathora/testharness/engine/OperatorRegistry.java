@@ -25,12 +25,12 @@ public final class OperatorRegistry {
 
     private Map<AssertionOperator, AssertionEvaluator> loadOperators() {
         return StreamSupport.stream(
-                        ServiceLoader.load(AssertionEvaluator.class).spliterator(),
-                        false)
-                .collect(Collectors.toUnmodifiableMap(
-                        AssertionEvaluator::operator,
-                        Function.identity()
-                ));
+                ServiceLoader.load(AssertionEvaluator.class).spliterator(),
+                false)
+            .collect(Collectors.toUnmodifiableMap(
+                AssertionEvaluator::operator,
+                Function.identity()
+            ));
     }
 
     /**

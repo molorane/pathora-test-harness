@@ -40,13 +40,13 @@ public class DateSecondEqualsEvaluator implements AssertionEvaluator {
 
         if (actualSecond != expectedSecond) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_SECOND_EQUALS,
-                    path,
-                    expectedSecond,
-                    actualSecond,
-                    "DATE_SECOND_EQUALS failed at " + path +
-                            ". Expected second: " + expectedSecond +
-                            ", Actual second: " + actualSecond + " (from " + normalizedActual + ")");
+                AssertionOperator.DATE_SECOND_EQUALS,
+                path,
+                expectedSecond,
+                actualSecond,
+                "DATE_SECOND_EQUALS failed at " + path +
+                    ". Expected second: " + expectedSecond +
+                    ", Actual second: " + actualSecond + " (from " + normalizedActual + ")");
         }
     }
 }

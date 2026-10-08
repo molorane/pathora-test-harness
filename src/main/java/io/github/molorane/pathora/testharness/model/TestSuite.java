@@ -11,6 +11,7 @@ import java.util.List;
  * @param requestPath    the file path to the default JSON request template
  * @param xmlRequestPath the file path to an optional XML request template
  * @param tests          the list of test cases in this suite
+ * @param timezone       optional timezone identifier (e.g. UTC, Africa/Johannesburg) for date evaluation
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record TestSuite(
@@ -22,8 +23,26 @@ public record TestSuite(
         String xmlRequestPath,
 
         @JsonProperty("tests")
-        List<RuleTestCase> tests
+        List<RuleTestCase> tests,
+
+        @JsonProperty("timezone")
+        String timezone
 ) {
+
+    /**
+     * Backward-compatible constructor for suites without timezone specified.
+     *
+     * @param requestPath    the file path to the default JSON request template
+     * @param xmlRequestPath the file path to an optional XML request template
+     * @param tests          the list of test cases in this suite
+     */
+    public TestSuite(
+            String requestPath,
+            String xmlRequestPath,
+            List<RuleTestCase> tests
+    ) {
+        this(requestPath, xmlRequestPath, tests, null);
+    }
     /**
      * Resolves the primary request template path, preferring XML path if specified.
      *

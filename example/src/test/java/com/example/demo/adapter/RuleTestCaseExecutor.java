@@ -8,8 +8,11 @@ import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
 import io.github.molorane.pathora.testharness.loader.RequestLoader;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
 import io.github.molorane.pathora.testharness.model.TestSuite;
+import io.github.molorane.pathora.testharness.util.PathoraClock;
 
 import java.nio.file.Path;
+import java.time.Clock;
+import java.time.ZoneId;
 
 @Component
 class RuleTestCaseExecutor {
@@ -34,14 +37,33 @@ class RuleTestCaseExecutor {
     }
 
     void execute(Path suitePath, TestSuite suite, RuleTestCase testCase, Path reportDirectory) {
-        String testFileName = suitePath.getFileName().toString();
-        String mutatedRequest = arrangeMutatedRequest(suitePath, suite, testCase, testFileName);
+        String effectiveTimezone = (testCase.timezone() != null && !testCase.timezone().isBlank())
+                ? testCase.timezone()
+                : suite.timezone();
+        boolean customTimezone = effectiveTimezone != null && !effectiveTimezone.isBlank();
 
-        log.info("Executing test: {}", testCase.name());
-        log.info("Mutated Request: {}", mutatedRequest);
+        RuleTestCase effectiveTestCase = customTimezone && (testCase.timezone() == null || testCase.timezone().isBlank())
+                ? new RuleTestCase(testCase.name(), testCase.description(), testCase.operation(), testCase.mutations(), testCase.assertions(), effectiveTimezone)
+                : testCase;
 
-        String response = dispatchToEngine(suite, testCase, mutatedRequest);
-        assertionFailureReporter.assertAndReport(testFileName, mutatedRequest, response, reportDirectory, testCase);
+        if (customTimezone) {
+            PathoraClock.setThreadClock(Clock.system(ZoneId.of(effectiveTimezone.trim())));
+        }
+
+        try {
+            String testFileName = suitePath.getFileName().toString();
+            String mutatedRequest = arrangeMutatedRequest(suitePath, suite, effectiveTestCase, testFileName);
+
+            log.info("Executing test: {}", effectiveTestCase.name());
+            log.info("Mutated Request: {}", mutatedRequest);
+
+            String response = dispatchToEngine(suite, effectiveTestCase, mutatedRequest);
+            assertionFailureReporter.assertAndReport(testFileName, mutatedRequest, response, reportDirectory, effectiveTestCase);
+        } finally {
+            if (customTimezone) {
+                PathoraClock.clearThreadClock();
+            }
+        }
     }
 
     private String arrangeMutatedRequest(

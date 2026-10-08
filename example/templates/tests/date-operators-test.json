@@ -55,7 +55,6 @@
         {
           "path": "$.currentDate",
           "operator": "IS_TODAY",
-          "value": null,
           "description": "Current date equals system date today"
         },
         {
@@ -162,7 +161,6 @@
         {
           "path": "$.currentDateTime",
           "operator": "IS_PAST_DATETIME",
-          "value": null,
           "description": "Current datetime is in the past"
         },
         {
@@ -177,7 +175,6 @@
         {
           "path": "$.futureDateTime",
           "operator": "IS_FUTURE_DATETIME",
-          "value": null,
           "description": "Future datetime is in the future"
         },
         {

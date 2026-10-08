@@ -38,13 +38,13 @@ public class ObjectContainsFieldsIgnoreNullsEvaluator implements AssertionEvalua
 
         if (!AssertionUtils.objectContainsFields(normalizedActual, expected, true)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.OBJECT_CONTAINS_FIELDS_IGNORE_NULLS,
-                    path,
-                    expected,
-                    normalizedActual,
-                    "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS failed at " + path +
-                            ". Expected fields: " + expected +
-                            ", Actual: " + normalizedActual);
+                AssertionOperator.OBJECT_CONTAINS_FIELDS_IGNORE_NULLS,
+                path,
+                expected,
+                normalizedActual,
+                "OBJECT_CONTAINS_FIELDS_IGNORE_NULLS failed at " + path +
+                    ". Expected fields: " + expected +
+                    ", Actual: " + normalizedActual);
         }
     }
 }

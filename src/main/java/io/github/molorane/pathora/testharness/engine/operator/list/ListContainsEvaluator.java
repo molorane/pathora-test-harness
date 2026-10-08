@@ -39,13 +39,13 @@ public class ListContainsEvaluator implements AssertionEvaluator {
 
         if (!found) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_CONTAINS,
-                    path,
-                    expected,
-                    list,
-                    "LIST_CONTAINS failed at " + path +
-                            ". Expected list to contain: " + expected +
-                            ", Actual: " + list);
+                AssertionOperator.LIST_CONTAINS,
+                path,
+                expected,
+                list,
+                "LIST_CONTAINS failed at " + path +
+                    ". Expected list to contain: " + expected +
+                    ", Actual: " + list);
         }
     }
 }

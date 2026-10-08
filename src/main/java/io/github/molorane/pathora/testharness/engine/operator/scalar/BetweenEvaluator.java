@@ -45,7 +45,7 @@ public class BetweenEvaluator implements AssertionEvaluator {
 
         if (minObj == null || maxObj == null) {
             throw new IllegalArgumentException(
-                    "BETWEEN operator requires 'min' and 'max' in Value at " + path);
+                "BETWEEN operator requires 'min' and 'max' in Value at " + path);
         }
 
         Object[] normalizedMin = AssertionUtils.normalizeTypes(normalizedActual, minObj);
@@ -57,13 +57,13 @@ public class BetweenEvaluator implements AssertionEvaluator {
 
         if (actualValue < min || actualValue > max) {
             throw new HarnessAssertionException(
-                    AssertionOperator.BETWEEN,
-                    path,
-                    "between " + min + " and " + max,
-                    actualValue,
-                    "BETWEEN failed at " + path +
-                            ". Expected between " + min + " and " + max +
-                            ", Actual: " + actualValue);
+                AssertionOperator.BETWEEN,
+                path,
+                "between " + min + " and " + max,
+                actualValue,
+                "BETWEEN failed at " + path +
+                    ". Expected between " + min + " and " + max +
+                    ", Actual: " + actualValue);
         }
     }
 }

@@ -39,13 +39,13 @@ public class GreaterThanEvaluator implements AssertionEvaluator {
 
         if (!(a > e)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.GREATER_THAN,
-                    path,
-                    e,
-                    a,
-                    "GREATER_THAN failed at " + path +
-                            ". Expected > " + e +
-                            ", Actual: " + a);
+                AssertionOperator.GREATER_THAN,
+                path,
+                e,
+                a,
+                "GREATER_THAN failed at " + path +
+                    ". Expected > " + e +
+                    ", Actual: " + a);
         }
     }
 }

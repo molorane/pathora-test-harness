@@ -32,10 +32,10 @@ public class PathExistsEvaluator implements AssertionEvaluator {
 
         if (!pathExists) {
             throw new AssertionError("""
-                    PATH_EXISTS_FAILED
-                    Expected path to exist, but it was not found in the response.
-                    JsonPath: %s
-                    """.formatted(path));
+                PATH_EXISTS_FAILED
+                Expected path to exist, but it was not found in the response.
+                JsonPath: %s
+                """.formatted(path));
         }
     }
 }

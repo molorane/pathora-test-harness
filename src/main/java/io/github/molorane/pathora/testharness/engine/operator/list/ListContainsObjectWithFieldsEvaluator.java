@@ -39,17 +39,17 @@ public class ListContainsObjectWithFieldsEvaluator implements AssertionEvaluator
         List<?> list = AssertionUtils.requireList(actual, path);
 
         boolean found = list.stream()
-                .anyMatch(item -> AssertionUtils.objectContainsFields(item, expected, false));
+            .anyMatch(item -> AssertionUtils.objectContainsFields(item, expected, false));
 
         if (!found) {
             throw new HarnessAssertionException(
-                    AssertionOperator.LIST_CONTAINS_OBJECT_WITH_FIELDS,
-                    path,
-                    expected,
-                    list,
-                    "LIST_CONTAINS_OBJECT_WITH_FIELDS failed at " + path +
-                            ". Expected object fields: " + expected +
-                            ", Actual: " + list);
+                AssertionOperator.LIST_CONTAINS_OBJECT_WITH_FIELDS,
+                path,
+                expected,
+                list,
+                "LIST_CONTAINS_OBJECT_WITH_FIELDS failed at " + path +
+                    ". Expected object fields: " + expected +
+                    ", Actual: " + list);
         }
     }
 }

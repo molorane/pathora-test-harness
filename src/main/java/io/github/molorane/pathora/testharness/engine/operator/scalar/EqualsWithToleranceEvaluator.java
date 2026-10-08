@@ -48,17 +48,17 @@ public class EqualsWithToleranceEvaluator implements AssertionEvaluator {
             tolerance = toDouble(conf.getOrDefault("tolerance", 0.0), path + " (tolerance)");
         } else {
             throw new IllegalArgumentException(
-                    "EQUALS_WITH_TOLERANCE requires Value object with 'value' and 'tolerance' at " + path);
+                "EQUALS_WITH_TOLERANCE requires Value object with 'value' and 'tolerance' at " + path);
         }
 
         if (Math.abs(actualVal - expectedVal) > tolerance) {
             throw new HarnessAssertionException(
-                    AssertionOperator.EQUALS_WITH_TOLERANCE,
-                    path,
-                    expected,
-                    actual,
-                    "EQUALS_WITH_TOLERANCE failed at " + path +
-                            ". Expected: " + expectedVal + " (+/- " + tolerance + "), Actual: " + actualVal);
+                AssertionOperator.EQUALS_WITH_TOLERANCE,
+                path,
+                expected,
+                actual,
+                "EQUALS_WITH_TOLERANCE failed at " + path +
+                    ". Expected: " + expectedVal + " (+/- " + tolerance + "), Actual: " + actualVal);
         }
     }
 

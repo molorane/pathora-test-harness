@@ -50,13 +50,13 @@ public class NoneMatchEvaluator implements AssertionEvaluator {
                 Object[] normalized = AssertionUtils.normalizeTypes(element, expected);
                 if (Objects.equals(normalized[0], normalized[1])) {
                     throw new HarnessAssertionException(
-                            AssertionOperator.NONE_MATCH,
-                            path,
-                            "none equal to " + expected,
-                            element,
-                            "NONE_MATCH failed at " + path +
-                                    "[" + i + "]. Expected no element to equal: " + expected +
-                                    ", but found matching element at index " + i + ": " + element);
+                        AssertionOperator.NONE_MATCH,
+                        path,
+                        "none equal to " + expected,
+                        element,
+                        "NONE_MATCH failed at " + path +
+                            "[" + i + "]. Expected no element to equal: " + expected +
+                            ", but found matching element at index " + i + ": " + element);
                 }
             }
         }
@@ -69,13 +69,13 @@ public class NoneMatchEvaluator implements AssertionEvaluator {
                 double val = toDouble(list.get(i));
                 if (val > threshold) {
                     throw new HarnessAssertionException(
-                            AssertionOperator.NONE_MATCH,
-                            path,
-                            "none > " + threshold,
-                            val,
-                            "NONE_MATCH failed at " + path +
-                                    "[" + i + "]. Expected no elements > " + threshold +
-                                    ", but element at index " + i + " was: " + val);
+                        AssertionOperator.NONE_MATCH,
+                        path,
+                        "none > " + threshold,
+                        val,
+                        "NONE_MATCH failed at " + path +
+                            "[" + i + "]. Expected no elements > " + threshold +
+                            ", but element at index " + i + " was: " + val);
                 }
             }
         } else if (condition.containsKey("lessThan")) {
@@ -84,13 +84,13 @@ public class NoneMatchEvaluator implements AssertionEvaluator {
                 double val = toDouble(list.get(i));
                 if (val < threshold) {
                     throw new HarnessAssertionException(
-                            AssertionOperator.NONE_MATCH,
-                            path,
-                            "none < " + threshold,
-                            val,
-                            "NONE_MATCH failed at " + path +
-                                    "[" + i + "]. Expected no elements < " + threshold +
-                                    ", but element at index " + i + " was: " + val);
+                        AssertionOperator.NONE_MATCH,
+                        path,
+                        "none < " + threshold,
+                        val,
+                        "NONE_MATCH failed at " + path +
+                            "[" + i + "]. Expected no elements < " + threshold +
+                            ", but element at index " + i + " was: " + val);
                 }
             }
         } else if (condition.containsKey("between")) {
@@ -101,19 +101,19 @@ public class NoneMatchEvaluator implements AssertionEvaluator {
                 double val = toDouble(list.get(i));
                 if (val >= min && val <= max) {
                     throw new HarnessAssertionException(
-                            AssertionOperator.NONE_MATCH,
-                            path,
-                            "none between " + min + " and " + max,
-                            val,
-                            "NONE_MATCH failed at " + path +
-                                    "[" + i + "]. Expected no elements between " + min + " and " + max +
-                                    ", but element at index " + i + " was: " + val);
+                        AssertionOperator.NONE_MATCH,
+                        path,
+                        "none between " + min + " and " + max,
+                        val,
+                        "NONE_MATCH failed at " + path +
+                            "[" + i + "]. Expected no elements between " + min + " and " + max +
+                            ", but element at index " + i + " was: " + val);
                 }
             }
         } else {
             throw new IllegalArgumentException(
-                    "NONE_MATCH condition must contain 'greaterThan', 'lessThan', or 'between' at " + path +
-                            ". Got: " + condition.keySet());
+                "NONE_MATCH condition must contain 'greaterThan', 'lessThan', or 'between' at " + path +
+                    ". Got: " + condition.keySet());
         }
     }
 

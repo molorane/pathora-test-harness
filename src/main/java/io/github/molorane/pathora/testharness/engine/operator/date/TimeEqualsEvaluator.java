@@ -41,22 +41,22 @@ public class TimeEqualsEvaluator implements AssertionEvaluator {
         boolean match;
         if (hasOnlyHoursAndMinutes(expectedStr)) {
             match = actualTime.getHour() == expectedTime.getHour()
-                    && actualTime.getMinute() == expectedTime.getMinute();
+                && actualTime.getMinute() == expectedTime.getMinute();
         } else {
             match = actualTime.getHour() == expectedTime.getHour()
-                    && actualTime.getMinute() == expectedTime.getMinute()
-                    && actualTime.getSecond() == expectedTime.getSecond();
+                && actualTime.getMinute() == expectedTime.getMinute()
+                && actualTime.getSecond() == expectedTime.getSecond();
         }
 
         if (!match) {
             throw new HarnessAssertionException(
-                    AssertionOperator.TIME_EQUALS,
-                    path,
-                    expected,
-                    actualTime,
-                    "TIME_EQUALS failed at " + path +
-                            ". Expected time: " + expected +
-                            ", Actual time: " + actualTime + " (from " + normalizedActual + ")");
+                AssertionOperator.TIME_EQUALS,
+                path,
+                expected,
+                actualTime,
+                "TIME_EQUALS failed at " + path +
+                    ". Expected time: " + expected +
+                    ", Actual time: " + actualTime + " (from " + normalizedActual + ")");
         }
     }
 

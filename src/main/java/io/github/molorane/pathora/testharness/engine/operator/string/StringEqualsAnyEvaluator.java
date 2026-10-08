@@ -34,13 +34,13 @@ public class StringEqualsAnyEvaluator implements AssertionEvaluator {
 
         if (!StringHelper.equalsAny(actualStr, searchStrings)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_EQUALS_ANY,
-                    path,
-                    expected,
-                    actual,
-                    "STRING_EQUALS_ANY failed at " + path +
-                            ". Expected to equal any of: " + expected +
-                            ", Actual: " + actualStr);
+                AssertionOperator.STRING_EQUALS_ANY,
+                path,
+                expected,
+                actual,
+                "STRING_EQUALS_ANY failed at " + path +
+                    ". Expected to equal any of: " + expected +
+                    ", Actual: " + actualStr);
         }
     }
 }

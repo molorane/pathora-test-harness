@@ -48,21 +48,21 @@ public class DateBeforeDurationEvaluator implements DocumentContextAwareEvaluato
         ChronoUnit unit = DurationHelper.parseUnit(String.valueOf(config.get("unit")));
 
         LocalDateTime baseDt = DurationHelper.parseDateTime(
-                String.valueOf((Object) context.read(basePath)), basePath);
+            String.valueOf((Object) context.read(basePath)), basePath);
         LocalDateTime compareDt = DurationHelper.parseDateTime(
-                String.valueOf((Object) context.read(comparePath)), comparePath);
+            String.valueOf((Object) context.read(comparePath)), comparePath);
         LocalDateTime threshold = baseDt.plus(amount, unit);
 
         if (!compareDt.isBefore(threshold)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_BEFORE_DURATION,
-                    basePath + " + " + amount + " " + unit,
-                    "before " + threshold,
-                    compareDt,
-                    "DATE_BEFORE_DURATION failed. " +
-                            comparePath + " (" + compareDt + ") is not before " +
-                            basePath + " (" + baseDt + ") + " +
-                            amount + " " + unit + " (threshold: " + threshold + ")");
+                AssertionOperator.DATE_BEFORE_DURATION,
+                basePath + " + " + amount + " " + unit,
+                "before " + threshold,
+                compareDt,
+                "DATE_BEFORE_DURATION failed. " +
+                    comparePath + " (" + compareDt + ") is not before " +
+                    basePath + " (" + baseDt + ") + " +
+                    amount + " " + unit + " (threshold: " + threshold + ")");
         }
     }
 }

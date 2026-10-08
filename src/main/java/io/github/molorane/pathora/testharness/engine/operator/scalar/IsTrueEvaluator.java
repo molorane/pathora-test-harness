@@ -32,16 +32,16 @@ public class IsTrueEvaluator implements AssertionEvaluator {
         Object normalized = AssertionUtils.normalizeResult(actual, path);
 
         boolean isTrue = Boolean.TRUE.equals(normalized)
-                || normalized instanceof String str && "true".equalsIgnoreCase(str.trim());
+            || normalized instanceof String str && "true".equalsIgnoreCase(str.trim());
 
         if (!isTrue) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_TRUE,
-                    path,
-                    true,
-                    actual,
-                    "IS_TRUE failed at " + path +
-                            ". Expected true but was: " + normalized);
+                AssertionOperator.IS_TRUE,
+                path,
+                true,
+                actual,
+                "IS_TRUE failed at " + path +
+                    ". Expected true but was: " + normalized);
         }
     }
 }

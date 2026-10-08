@@ -32,16 +32,16 @@ public class IsFalseEvaluator implements AssertionEvaluator {
         Object normalized = AssertionUtils.normalizeResult(actual, path);
 
         boolean isFalse = Boolean.FALSE.equals(normalized)
-                || normalized instanceof String str && "false".equalsIgnoreCase(str.trim());
+            || normalized instanceof String str && "false".equalsIgnoreCase(str.trim());
 
         if (!isFalse) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_FALSE,
-                    path,
-                    false,
-                    actual,
-                    "IS_FALSE failed at " + path +
-                            ". Expected false but was: " + normalized);
+                AssertionOperator.IS_FALSE,
+                path,
+                false,
+                actual,
+                "IS_FALSE failed at " + path +
+                    ". Expected false but was: " + normalized);
         }
     }
 }

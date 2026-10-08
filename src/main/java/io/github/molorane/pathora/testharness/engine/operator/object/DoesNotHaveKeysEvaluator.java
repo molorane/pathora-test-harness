@@ -46,12 +46,12 @@ public class DoesNotHaveKeysEvaluator implements AssertionEvaluator {
 
         if (!foundKeys.isEmpty()) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DOES_NOT_HAVE_KEYS,
-                    path,
-                    "keys absent: " + expectedKeys,
-                    map.keySet(),
-                    "DOES_NOT_HAVE_KEYS failed at " + path +
-                            ". Found disallowed key(s): " + foundKeys + " in: " + map.keySet());
+                AssertionOperator.DOES_NOT_HAVE_KEYS,
+                path,
+                "keys absent: " + expectedKeys,
+                map.keySet(),
+                "DOES_NOT_HAVE_KEYS failed at " + path +
+                    ". Found disallowed key(s): " + foundKeys + " in: " + map.keySet());
         }
     }
 
@@ -63,7 +63,7 @@ public class DoesNotHaveKeysEvaluator implements AssertionEvaluator {
             return List.of(str);
         }
         throw new IllegalArgumentException(
-                "DOES_NOT_HAVE_KEYS requires key name (String) or List of keys at " + path);
+            "DOES_NOT_HAVE_KEYS requires key name (String) or List of keys at " + path);
     }
 }
 

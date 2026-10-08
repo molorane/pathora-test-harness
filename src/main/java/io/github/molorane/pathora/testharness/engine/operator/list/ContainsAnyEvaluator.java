@@ -46,12 +46,12 @@ public class ContainsAnyEvaluator implements AssertionEvaluator {
         }
 
         throw new HarnessAssertionException(
-                AssertionOperator.CONTAINS_ANY,
-                path,
-                expected,
-                actual,
-                "CONTAINS_ANY failed at " + path +
-                        ". Expected array to contain at least one of: " + expectedList +
-                        ", Actual: " + actualList);
+            AssertionOperator.CONTAINS_ANY,
+            path,
+            expected,
+            actual,
+            "CONTAINS_ANY failed at " + path +
+                ". Expected array to contain at least one of: " + expectedList +
+                ", Actual: " + actualList);
     }
 }

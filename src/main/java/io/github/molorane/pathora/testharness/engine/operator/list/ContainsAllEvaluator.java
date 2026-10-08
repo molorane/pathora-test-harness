@@ -48,14 +48,14 @@ public class ContainsAllEvaluator implements AssertionEvaluator {
             }
             if (!found) {
                 throw new HarnessAssertionException(
-                        AssertionOperator.CONTAINS_ALL,
-                        path,
-                        expected,
-                        actual,
-                        "CONTAINS_ALL failed at " + path +
-                                ". Missing value: " + exp +
-                                ", Expected all of: " + expectedList +
-                                ", Actual: " + actualList);
+                    AssertionOperator.CONTAINS_ALL,
+                    path,
+                    expected,
+                    actual,
+                    "CONTAINS_ALL failed at " + path +
+                        ". Missing value: " + exp +
+                        ", Expected all of: " + expectedList +
+                        ", Actual: " + actualList);
             }
         }
     }

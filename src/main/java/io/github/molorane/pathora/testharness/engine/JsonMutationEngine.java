@@ -1,10 +1,11 @@
 package io.github.molorane.pathora.testharness.engine;
 
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.dataformat.xml.XmlMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.github.molorane.pathora.testharness.model.JsonMutation;
+import io.github.molorane.pathora.testharness.util.DateExpressionResolver;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.xml.XmlMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -83,29 +84,29 @@ public class JsonMutationEngine {
 
             } catch (Exception e) {
                 throw new AssertionError(
-                        """
-                                ==========================
-                                MUTATION_FAILED
-                                ==========================
-                                Test File   : %s
-                                Operation   : %s
-                                JsonPath    : %s
-                                Value       : %s
-                                
-                                Reason:
-                                %s
-                                
-                                Original Payload:
-                                %s
-                                """.formatted(
-                                testFileName,
-                                entryPoint,
-                                mutation.path(),
-                                mutation.value(),
-                                e.getMessage(),
-                                payload
-                        ),
-                        e
+                    """
+                        ==========================
+                        MUTATION_FAILED
+                        ==========================
+                        Test File   : %s
+                        Operation   : %s
+                        JsonPath    : %s
+                        Value       : %s
+                        
+                        Reason:
+                        %s
+                        
+                        Original Payload:
+                        %s
+                        """.formatted(
+                        testFileName,
+                        entryPoint,
+                        mutation.path(),
+                        mutation.value(),
+                        e.getMessage(),
+                        payload
+                    ),
+                    e
                 );
             }
         }
@@ -119,7 +120,7 @@ public class JsonMutationEngine {
             return objectMapper.writeValueAsString(node);
         } catch (Exception e) {
             throw new IllegalArgumentException(
-                    "Failed to convert XML template to JSON representation: " + e.getMessage(), e
+                "Failed to convert XML template to JSON representation: " + e.getMessage(), e
             );
         }
     }
@@ -132,7 +133,7 @@ public class JsonMutationEngine {
         int lastDot = fullPath.lastIndexOf('.');
         if (lastDot == -1) {
             throw new IllegalArgumentException(
-                    "Invalid mutation path (no leaf property): " + fullPath
+                "Invalid mutation path (no leaf property): " + fullPath
             );
         }
 
@@ -143,16 +144,18 @@ public class JsonMutationEngine {
 
         if (parentResult == null) {
             throw new IllegalStateException(
-                    "Parent path returned null: " + parentPath
+                "Parent path returned null: " + parentPath
             );
         }
+
+        Object resolvedValue = DateExpressionResolver.resolve(mutation.value());
 
         // CASE 1: Filter path (returns List)
         if (parentResult instanceof List<?> list) {
 
             if (list.isEmpty()) {
                 throw new IllegalStateException(
-                        "No element matched filter for path: " + parentPath
+                    "No element matched filter for path: " + parentPath
                 );
             }
 
@@ -160,14 +163,14 @@ public class JsonMutationEngine {
 
                 if (!(target instanceof Map<?, ?> map)) {
                     throw new IllegalStateException(
-                            "Target element is not JSON object: " + target
+                        "Target element is not JSON object: " + target
                     );
                 }
 
                 @SuppressWarnings("unchecked")
                 Map<String, Object> targetMap = (Map<String, Object>) map;
 
-                targetMap.put(leafProperty, mutation.value());
+                targetMap.put(leafProperty, resolvedValue);
             }
             return;
         }
@@ -178,14 +181,14 @@ public class JsonMutationEngine {
             @SuppressWarnings("unchecked")
             Map<String, Object> targetMap = (Map<String, Object>) map;
 
-            targetMap.put(leafProperty, mutation.value());
+            targetMap.put(leafProperty, resolvedValue);
             return;
         }
 
         throw new IllegalStateException(
-                "Unsupported parent result type for path: "
-                        + parentPath
-                        + " -> " + parentResult.getClass()
+            "Unsupported parent result type for path: "
+                + parentPath
+                + " -> " + parentResult.getClass()
         );
     }
 }

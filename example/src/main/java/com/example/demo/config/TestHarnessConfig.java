@@ -9,6 +9,9 @@ import io.github.molorane.pathora.testharness.loader.RequestTemplateLoader;
 import io.github.molorane.pathora.testharness.loader.TestSuiteLoader;
 import io.github.molorane.pathora.testharness.registry.EntryPointRegistry;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
+import io.github.molorane.pathora.testharness.util.PathoraClock;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tools.jackson.databind.ObjectMapper;
@@ -19,6 +22,16 @@ import java.util.List;
 
 @Configuration
 public class TestHarnessConfig {
+
+    @Value("${pathora.timezone:}")
+    private String configuredTimezone;
+
+    @PostConstruct
+    public void initTimezone() {
+        if (configuredTimezone != null && !configuredTimezone.isBlank()) {
+            PathoraClock.setTimezone(configuredTimezone);
+        }
+    }
 
     @Bean
     public EntryPointRegistry entryPointRegistry(List<EntryPointExecutor<?, ?>> executors) {

@@ -35,13 +35,13 @@ public class StringLengthGreaterThanEvaluator implements AssertionEvaluator {
 
         if (actualLength <= threshold) {
             throw new HarnessAssertionException(
-                    AssertionOperator.STRING_LENGTH_GREATER_THAN,
-                    path,
-                    "> " + threshold,
-                    actualLength,
-                    "STRING_LENGTH_GREATER_THAN failed at " + path +
-                            ". Expected length > " + threshold +
-                            ", but found length " + actualLength + " for value: " + actualStr);
+                AssertionOperator.STRING_LENGTH_GREATER_THAN,
+                path,
+                "> " + threshold,
+                actualLength,
+                "STRING_LENGTH_GREATER_THAN failed at " + path +
+                    ". Expected length > " + threshold +
+                    ", but found length " + actualLength + " for value: " + actualStr);
         }
     }
 

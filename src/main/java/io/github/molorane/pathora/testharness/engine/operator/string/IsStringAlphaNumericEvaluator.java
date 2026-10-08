@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
-import org.apache.commons.lang3.StringUtils;
 import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Operator: {@code IS_STRING_ALPHA_NUMERIC}
@@ -33,12 +33,12 @@ public class IsStringAlphaNumericEvaluator implements AssertionEvaluator {
 
         if (!StringUtils.isAlphanumeric(actualStr)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_STRING_ALPHA_NUMERIC,
-                    path,
-                    "alphanumeric string",
-                    actual,
-                    "IS_STRING_ALPHA_NUMERIC failed at " + path +
-                            ". Expected alphanumeric characters only, Actual: " + actualStr);
+                AssertionOperator.IS_STRING_ALPHA_NUMERIC,
+                path,
+                "alphanumeric string",
+                actual,
+                "IS_STRING_ALPHA_NUMERIC failed at " + path +
+                    ". Expected alphanumeric characters only, Actual: " + actualStr);
         }
     }
 }

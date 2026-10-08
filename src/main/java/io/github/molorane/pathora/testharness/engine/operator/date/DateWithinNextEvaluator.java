@@ -5,6 +5,7 @@ import io.github.molorane.pathora.testharness.engine.operator.duration.DurationH
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.util.AssertionUtils;
+import io.github.molorane.pathora.testharness.util.PathoraClock;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -46,20 +47,20 @@ public class DateWithinNextEvaluator implements AssertionEvaluator {
         long amount = DurationHelper.toLong(config.get("amount"));
         ChronoUnit unit = DurationHelper.parseUnit(String.valueOf(config.get("unit")));
 
-        LocalDate today = LocalDate.now();
+        LocalDate today = PathoraClock.today();
         LocalDate threshold = today.plus(amount, unit);
         LocalDate actualDate = parseDate(String.valueOf(normalizedActual), path);
 
         if (actualDate.isBefore(today) || actualDate.isAfter(threshold)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.DATE_WITHIN_NEXT,
-                    path,
-                    "within next " + amount + " " + unit,
-                    actualDate,
-                    "DATE_WITHIN_NEXT failed at " + path +
-                            ". Value " + actualDate +
-                            " is not within the next " + amount + " " + unit +
-                            " (window: " + today + " to " + threshold + ")");
+                AssertionOperator.DATE_WITHIN_NEXT,
+                path,
+                "within next " + amount + " " + unit,
+                actualDate,
+                "DATE_WITHIN_NEXT failed at " + path +
+                    ". Value " + actualDate +
+                    " is not within the next " + amount + " " + unit +
+                    " (window: " + today + " to " + threshold + ")");
         }
     }
 }

@@ -62,11 +62,11 @@ public class PathNotExistsEvaluator implements AssertionEvaluator {
 
         // Case 3: path exists and returned a non-empty value — assertion fails.
         throw new AssertionError("""
-                PATH_NOT_EXISTS_FAILED
-                Expected path to NOT exist or return no results, but it resolved to a value.
-                JsonPath  : %s
-                Actual    : %s
-                """.formatted(path, actual));
+            PATH_NOT_EXISTS_FAILED
+            Expected path to NOT exist or return no results, but it resolved to a value.
+            JsonPath  : %s
+            Actual    : %s
+            """.formatted(path, actual));
     }
 }
 

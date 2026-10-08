@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
-import org.apache.commons.lang3.StringUtils;
 import io.github.molorane.pathora.testharness.engine.operator.AssertionEvaluator;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Operator: {@code IS_STRING_ALPHA_SPACE}
@@ -33,12 +33,12 @@ public class IsStringAlphaSpaceEvaluator implements AssertionEvaluator {
 
         if (!StringUtils.isAlphaSpace(actualStr)) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_STRING_ALPHA_SPACE,
-                    path,
-                    "alpha space string",
-                    actual,
-                    "IS_STRING_ALPHA_SPACE failed at " + path +
-                            ". Expected letters and spaces only, Actual: " + actualStr);
+                AssertionOperator.IS_STRING_ALPHA_SPACE,
+                path,
+                "alpha space string",
+                actual,
+                "IS_STRING_ALPHA_SPACE failed at " + path +
+                    ". Expected letters and spaces only, Actual: " + actualStr);
         }
     }
 }

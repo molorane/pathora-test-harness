@@ -35,12 +35,12 @@ public class IsEmptyObjectEvaluator implements AssertionEvaluator {
 
         if (!map.isEmpty()) {
             throw new HarnessAssertionException(
-                    AssertionOperator.IS_EMPTY_OBJECT,
-                    path,
-                    "empty object {}",
-                    actual,
-                    "IS_EMPTY_OBJECT failed at " + path +
-                            ". Expected empty object {} but found " + map.size() + " key(s): " + map.keySet());
+                AssertionOperator.IS_EMPTY_OBJECT,
+                path,
+                "empty object {}",
+                actual,
+                "IS_EMPTY_OBJECT failed at " + path +
+                    ". Expected empty object {} but found " + map.size() + " key(s): " + map.keySet());
         }
     }
 }
