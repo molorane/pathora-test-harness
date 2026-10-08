@@ -65,7 +65,7 @@ Do **not** create sub-packages inside `operator/`.
 
 - All models are **Java records**.
 - All records are annotated with `@JsonIgnoreProperties(ignoreUnknown = true)`.
-- All record fields are annotated with `@JsonProperty("PascalCase")`.
+- All record fields are annotated with the exact JSON property names used by the model, matching the `@JsonProperty` values in the Java record.
 - Records must not contain business logic.
 - Records must not extend or implement anything except when required by Jackson.
 
@@ -74,11 +74,20 @@ Do **not** create sub-packages inside `operator/`.
 ```java
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record JsonAssertion(
-        @JsonProperty("JsonPath")    String jsonPath,
-        @JsonProperty("Operator")    AssertionOperator operator,
-        @JsonProperty("Value")       Object value,
-        @JsonProperty("Description") String description,
-        @JsonProperty("Assertions")  List<JsonAssertion> assertions
+        @JsonProperty("path")
+        String path,
+
+        @JsonProperty("operator")
+        AssertionOperator operator,
+
+        @JsonProperty("value")
+        Object value,
+
+        @JsonProperty("description")
+        String description,
+
+        @JsonProperty("assertions")
+        List<JsonAssertion> assertions
 ) {
     public JsonAssertion {
         if (operator == null) {
@@ -90,18 +99,22 @@ public record JsonAssertion(
 
 ## JSON field name contract
 
+The project currently uses lowercase JSON property names that match the Java record field names exactly.
+
 | Java record field           | JSON key                  |
 |-----------------------------|---------------------------|
-| `testName`                  | `TestName`                |
-| `testDescription`           | `TestDescription`         |
-| `entryPointName`            | `EntryPointName`          |
-| `testCaseParameterValues`   | `TestCaseParameterValues` |
-| `responseAssertions`        | `ResponseAssertions`      |
-| `jsonPath`                  | `JsonPath`                |
-| `operator`                  | `Operator`                |
-| `value`                     | `Value`                   |
-| `assertions`                | `Assertions`              |
-| `defaultJSONRequestPath`    | `DefaultJSONRequestPath`  |
+| `requestPath`               | `requestPath`             |
+| `xmlRequestPath`            | `xmlRequestPath`          |
+| `tests`                     | `tests`                   |
+| `timezone`                  | `timezone`                |
+| `name`                      | `name`                    |
+| `description`               | `description`             |
+| `operation`                 | `operation`               |
+| `mutations`                 | `mutations`               |
+| `assertions`                | `assertions`              |
+| `path`                      | `path`                    |
+| `operator`                  | `operator`                |
+| `value`                     | `value`                   |
 
 ------------------------------------------------------------------------
 
@@ -460,8 +473,8 @@ Integration tests for `AssertionEngine` must:
 - Build `JsonAssertion` and `RuleTestCase` inline — no file I/O.
 - Call `engine.assertResponse(response, testCase, mutatedRequest)`.
 - For logical operator tests use these message fragments:
-  - `"LOGICAL_OR_FAILED"`
-  - `"LOGICAL_NOT_FAILED"`
+    - `"LOGICAL_OR_FAILED"`
+    - `"LOGICAL_NOT_FAILED"`
 
 ------------------------------------------------------------------------
 
@@ -489,14 +502,14 @@ Integration tests for `AssertionEngine` must:
 
 1. Add the new value to `AssertionOperator` enum in the correct category group.
 2. Create `MyNewOperator.java` in `engine/operator/`.
-   - Implement `OperatorAssertion` (single path) or
-     `DocumentContextAwareOperator` (multi-path).
-   - Use `AssertionUtils` helpers.
-   - Throw `HarnessAssertionException` on failure.
+    - Implement `OperatorAssertion` (single path) or
+      `DocumentContextAwareOperator` (multi-path).
+    - Use `AssertionUtils` helpers.
+    - Throw `HarnessAssertionException` on failure.
 3. Register in `AssertionEngine` constructor:
    `operators.put(AssertionOperator.MY_NEW_OPERATOR, new MyNewOperator());`
 4. Create `MyNewOperatorTest.java` in the matching test package.
-   - Cover: pass, fail, null, type coercion, and edge cases.
+    - Cover: pass, fail, null, type coercion, and edge cases.
 5. Run `mvn test` — all existing tests must still pass.
 
 ------------------------------------------------------------------------
@@ -524,4 +537,3 @@ An operator is complete only when:
 5. No `AssertionUtils` logic duplicated inside the operator.
 6. Error message produced by the operator contains operator name, path,
    expected value, and actual value.
-
