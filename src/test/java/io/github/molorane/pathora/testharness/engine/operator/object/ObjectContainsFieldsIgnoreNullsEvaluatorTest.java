@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.object;
 
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,17 +27,17 @@ class ObjectContainsFieldsIgnoreNullsEvaluatorTest {
     @DisplayName("PASS: null expected fields are ignored")
     void shouldPassIgnoringNullExpectedFields() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031"
-                }
-                """);
+            {
+              "clientType": "1031"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "middleName": null
-                }
-                """);
+            {
+              "clientType": "1031",
+              "middleName": null
+            }
+            """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.client", actual, expected, true));
     }
@@ -51,20 +51,20 @@ class ObjectContainsFieldsIgnoreNullsEvaluatorTest {
     @DisplayName("PASS: all non-null fields match")
     void shouldPassWhenNonNullFieldsMatch() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "riskLevel": "HIGH",
-                  "segment": "Retail"
-                }
-                """);
+            {
+              "clientType": "1031",
+              "riskLevel": "HIGH",
+              "segment": "Retail"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "riskLevel": "HIGH",
-                  "optionalField": null
-                }
-                """);
+            {
+              "clientType": "1031",
+              "riskLevel": "HIGH",
+              "optionalField": null
+            }
+            """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.client", actual, expected, true));
     }
@@ -78,17 +78,17 @@ class ObjectContainsFieldsIgnoreNullsEvaluatorTest {
     @DisplayName("PASS: all expected fields are null — always passes")
     void shouldPassWhenAllExpectedFieldsAreNull() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "anything": "value"
-                }
-                """);
+            {
+              "anything": "value"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "field1": null,
-                  "field2": null
-                }
-                """);
+            {
+              "field1": null,
+              "field2": null
+            }
+            """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
@@ -102,21 +102,21 @@ class ObjectContainsFieldsIgnoreNullsEvaluatorTest {
     @DisplayName("FAIL: non-null expected field value mismatch")
     void shouldFailWhenNonNullFieldMismatch() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "clientType": "1032"
-                }
-                """);
+            {
+              "clientType": "1032"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "middleName": null
-                }
-                """);
+            {
+              "clientType": "1031",
+              "middleName": null
+            }
+            """);
 
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("OBJECT_CONTAINS_FIELDS_IGNORE_NULLS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("OBJECT_CONTAINS_FIELDS_IGNORE_NULLS failed");
     }
 
     /**
@@ -128,21 +128,21 @@ class ObjectContainsFieldsIgnoreNullsEvaluatorTest {
     @DisplayName("FAIL: non-null expected field missing in actual")
     void shouldFailWhenNonNullFieldMissing() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "otherField": "value"
-                }
-                """);
+            {
+              "otherField": "value"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "clientType": "1031",
-                  "middleName": null
-                }
-                """);
+            {
+              "clientType": "1031",
+              "middleName": null
+            }
+            """);
 
         assertThatThrownBy(() -> operator.apply("$.client", actual, expected, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("OBJECT_CONTAINS_FIELDS_IGNORE_NULLS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("OBJECT_CONTAINS_FIELDS_IGNORE_NULLS failed");
     }
 
     /**
@@ -154,18 +154,18 @@ class ObjectContainsFieldsIgnoreNullsEvaluatorTest {
     @DisplayName("PASS: exact match with no null fields")
     void shouldPassWithExactMatchNoNulls() {
         Object actual = TestJsonHelper.parse("""
-                {
-                  "a": "1",
-                  "b": "2"
-                }
-                """);
+            {
+              "a": "1",
+              "b": "2"
+            }
+            """);
 
         Object expected = TestJsonHelper.parse("""
-                {
-                  "a": "1",
-                  "b": "2"
-                }
-                """);
+            {
+              "a": "1",
+              "b": "2"
+            }
+            """);
 
         assertThatNoException().isThrownBy(() -> operator.apply("$.data", actual, expected, true));
     }
@@ -179,13 +179,13 @@ class ObjectContainsFieldsIgnoreNullsEvaluatorTest {
     @DisplayName("FAIL: actual is not a map")
     void shouldFailWhenActualIsNotMap() {
         Object expected = TestJsonHelper.parse("""
-                {
-                  "field": "value"
-                }
-                """);
+            {
+              "field": "value"
+            }
+            """);
 
         assertThatThrownBy(() -> operator.apply("$.data", "not-a-map", expected, true))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Expected object but got");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Expected object but got");
     }
 }

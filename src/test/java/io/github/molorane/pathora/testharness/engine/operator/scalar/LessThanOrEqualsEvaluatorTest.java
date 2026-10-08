@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -71,8 +71,8 @@ class LessThanOrEqualsEvaluatorTest {
     @DisplayName("FAIL: actual greater than expected")
     void shouldFailWhenGreater() {
         assertThatThrownBy(() -> operator.apply("$.score", 60, 50, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LESS_THAN_OR_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LESS_THAN_OR_EQUALS failed");
     }
 
     /**
@@ -84,7 +84,7 @@ class LessThanOrEqualsEvaluatorTest {
     @DisplayName("FAIL: just above expected")
     void shouldFailWhenJustAbove() {
         assertThatThrownBy(() -> operator.apply("$.score", 50.01, 50, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LESS_THAN_OR_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LESS_THAN_OR_EQUALS failed");
     }
 }

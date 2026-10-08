@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,8 +68,8 @@ class ListContainsOnlyOneValueEvaluatorTest {
     void shouldFailWithMultipleElements() {
         List<String> list = Arrays.asList("SUCCESS", "PENDING");
         assertThatThrownBy(() -> operator.apply("$.results", list, "SUCCESS", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("Expected exactly one element");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("Expected exactly one element");
     }
 
     /**
@@ -82,8 +82,8 @@ class ListContainsOnlyOneValueEvaluatorTest {
     void shouldFailWithEmptyArray() {
         List<String> list = Collections.emptyList();
         assertThatThrownBy(() -> operator.apply("$.results", list, "SUCCESS", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("Expected exactly one element");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("Expected exactly one element");
     }
 
     /**
@@ -96,8 +96,8 @@ class ListContainsOnlyOneValueEvaluatorTest {
     void shouldFailWithWrongValue() {
         List<String> list = List.of("FAILED");
         assertThatThrownBy(() -> operator.apply("$.results", list, "SUCCESS", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LIST_CONTAINS_ONLY_ONE_VALUE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LIST_CONTAINS_ONLY_ONE_VALUE failed");
     }
 
     /**
@@ -109,8 +109,8 @@ class ListContainsOnlyOneValueEvaluatorTest {
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {
         assertThatThrownBy(() -> operator.apply("$.results", "scalar", "SUCCESS", true))
-                .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("Expected array at path");
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("Expected array at path");
     }
 
     /**

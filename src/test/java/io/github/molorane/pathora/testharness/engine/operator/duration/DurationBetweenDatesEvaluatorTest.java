@@ -2,11 +2,11 @@ package io.github.molorane.pathora.testharness.engine.operator.duration;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,17 +33,17 @@ class DurationBetweenDatesEvaluatorTest {
     @DisplayName("PASS: 5 days within 0-7 range")
     void shouldPassWhenWithinRange() {
         DocumentContext ctx = parse("""
-                {"outputData": {"applicationDate": "2026-01-01", "approvalDate": "2026-01-06"}}
-                """);
+            {"outputData": {"applicationDate": "2026-01-01", "approvalDate": "2026-01-06"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "startPath": "$.outputData.applicationDate",
-                  "endPath": "$.outputData.approvalDate",
-                  "unit": "DAYS",
-                  "min": 0,
-                  "max": 7
-                }
-                """);
+            {
+              "startPath": "$.outputData.applicationDate",
+              "endPath": "$.outputData.approvalDate",
+              "unit": "DAYS",
+              "min": 0,
+              "max": 7
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -56,17 +56,17 @@ class DurationBetweenDatesEvaluatorTest {
     @DisplayName("PASS: at min boundary")
     void shouldPassAtMin() {
         DocumentContext ctx = parse("""
-                {"outputData": {"start": "2026-01-01", "end": "2026-01-01"}}
-                """);
+            {"outputData": {"start": "2026-01-01", "end": "2026-01-01"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "startPath": "$.outputData.start",
-                  "endPath": "$.outputData.end",
-                  "unit": "DAYS",
-                  "min": 0,
-                  "max": 7
-                }
-                """);
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "DAYS",
+              "min": 0,
+              "max": 7
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -79,19 +79,19 @@ class DurationBetweenDatesEvaluatorTest {
     @DisplayName("FAIL: 10 days exceeds max 7")
     void shouldFailWhenExceedsMax() {
         DocumentContext ctx = parse("""
-                {"outputData": {"start": "2026-01-01", "end": "2026-01-11"}}
-                """);
+            {"outputData": {"start": "2026-01-01", "end": "2026-01-11"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "startPath": "$.outputData.start",
-                  "endPath": "$.outputData.end",
-                  "unit": "DAYS",
-                  "min": 0,
-                  "max": 7
-                }
-                """);
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "DAYS",
+              "min": 0,
+              "max": 7
+            }
+            """);
         assertThatThrownBy(() -> operator.apply(ctx, value))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("DURATION_BETWEEN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DURATION_BETWEEN failed");
     }
 }

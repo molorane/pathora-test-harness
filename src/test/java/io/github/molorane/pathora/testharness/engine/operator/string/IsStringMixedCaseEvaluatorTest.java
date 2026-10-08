@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,16 +28,16 @@ class IsStringMixedCaseEvaluatorTest {
     @DisplayName("FAIL: all upper case")
     void shouldFailWhenAllUpper() {
         assertThatThrownBy(() -> operator.apply("$.text", "HELLO", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_STRING_MIXED_CASE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_STRING_MIXED_CASE failed");
     }
 
     @Test
     @DisplayName("FAIL: all lower case")
     void shouldFailWhenAllLower() {
         assertThatThrownBy(() -> operator.apply("$.text", "hello", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_STRING_MIXED_CASE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_STRING_MIXED_CASE failed");
     }
 }
 

@@ -4,10 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.EntryPointDispatcher;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
@@ -18,10 +14,16 @@ import io.github.molorane.pathora.testharness.loader.TestSuiteLoader;
 import io.github.molorane.pathora.testharness.registry.EntryPointRegistry;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import io.github.molorane.pathora.testharness.util.PathoraClock;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
 @Configuration
+@Import(CustomOperatorConfig.class)
 public class TestHarnessConfig {
 
     @Value("${pathora.timezone:}")
@@ -96,3 +98,4 @@ public class TestHarnessConfig {
         return new ResponseAssertionExecutor(assertionEngine);
     }
 }
+

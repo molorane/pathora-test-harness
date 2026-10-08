@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,12 +29,12 @@ class IsIpAddressEvaluatorTest {
     @DisplayName("FAIL: invalid IP string")
     void shouldFailWhenInvalidIp() {
         assertThatThrownBy(() -> operator.apply("$.ip", "999.999.999.999", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_IP_ADDRESS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_IP_ADDRESS failed");
 
         assertThatThrownBy(() -> operator.apply("$.ip", "not-an-ip", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_IP_ADDRESS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_IP_ADDRESS failed");
     }
 }
 

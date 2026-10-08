@@ -1,14 +1,14 @@
 package io.github.molorane.pathora.testharness.engine.integration;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
 import io.github.molorane.pathora.testharness.util.PathoraClock;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.List;
@@ -35,16 +35,16 @@ class DynamicDateAssertionIntegrationTest {
     @Test
     void testDateEqualsWithDynamicCurrentDate() {
         String response = """
-                {
-                    "decisionDate": "2026-10-07",
-                    "expiryDate": "2026-11-06"
-                }
-                """;
+            {
+                "decisionDate": "2026-10-07",
+                "expiryDate": "2026-11-06"
+            }
+            """;
 
         List<JsonAssertion> assertions = List.of(
-                new JsonAssertion("$.decisionDate", AssertionOperator.DATE_EQUALS, "{{$CURRENT_DATE}}", "Matches today", null),
-                new JsonAssertion("$.expiryDate", AssertionOperator.DATE_EQUALS, "{{$CURRENT_DATE + 30d}}", "Matches +30d", null),
-                new JsonAssertion("$.decisionDate", AssertionOperator.IS_TODAY, null, "Is today", null)
+            new JsonAssertion("$.decisionDate", AssertionOperator.DATE_EQUALS, "{{$CURRENT_DATE}}", "Matches today", null),
+            new JsonAssertion("$.expiryDate", AssertionOperator.DATE_EQUALS, "{{$CURRENT_DATE + 30d}}", "Matches +30d", null),
+            new JsonAssertion("$.decisionDate", AssertionOperator.IS_TODAY, null, "Is today", null)
         );
 
         RuleTestCase testCase = new RuleTestCase("test-date", "desc", "op", List.of(), assertions);
@@ -55,22 +55,22 @@ class DynamicDateAssertionIntegrationTest {
     @Test
     void testDateBetweenWithDynamicTokens() {
         String response = """
-                {
-                    "effectiveDate": "2026-10-10"
-                }
-                """;
+            {
+                "effectiveDate": "2026-10-10"
+            }
+            """;
 
         List<JsonAssertion> assertions = List.of(
-                new JsonAssertion(
-                        "$.effectiveDate",
-                        AssertionOperator.DATE_BETWEEN,
-                        Map.of(
-                                "min", "{{$CURRENT_DATE - 5d}}",
-                                "max", "{{$CURRENT_DATE + 5d}}"
-                        ),
-                        "Date in window",
-                        null
-                )
+            new JsonAssertion(
+                "$.effectiveDate",
+                AssertionOperator.DATE_BETWEEN,
+                Map.of(
+                    "min", "{{$CURRENT_DATE - 5d}}",
+                    "max", "{{$CURRENT_DATE + 5d}}"
+                ),
+                "Date in window",
+                null
+            )
         );
 
         RuleTestCase testCase = new RuleTestCase("test-between", "desc", "op", List.of(), assertions);
@@ -81,13 +81,13 @@ class DynamicDateAssertionIntegrationTest {
     @Test
     void testDateEqualsMismatchThrowsHarnessAssertionException() {
         String response = """
-                {
-                    "decisionDate": "2026-10-01"
-                }
-                """;
+            {
+                "decisionDate": "2026-10-01"
+            }
+            """;
 
         List<JsonAssertion> assertions = List.of(
-                new JsonAssertion("$.decisionDate", AssertionOperator.DATE_EQUALS, "{{$CURRENT_DATE}}", "Matches today", null)
+            new JsonAssertion("$.decisionDate", AssertionOperator.DATE_EQUALS, "{{$CURRENT_DATE}}", "Matches today", null)
         );
 
         RuleTestCase testCase = new RuleTestCase("test-fail", "desc", "op", List.of(), assertions);

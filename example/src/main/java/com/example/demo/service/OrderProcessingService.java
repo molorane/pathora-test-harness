@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.OrderRequest;
-import com.example.demo.dto.OrderResponse;
+import com.example.demo.dto.order.OrderRequest;
+import com.example.demo.dto.order.OrderResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -26,15 +26,14 @@ public class OrderProcessingService {
         double totalAmount = Math.round((subtotal + tax) * 100.0) / 100.0;
 
         return new OrderResponse(
-                orderId,
-                orderRequest.customerId(),
-                totalItems,
-                subtotal,
-                tax,
-                totalAmount,
-                "CREATED",
-                Instant.now()
+            orderId,
+            orderRequest.customerId(),
+            totalItems,
+            subtotal,
+            tax,
+            totalAmount,
+            "CREATED",
+            Instant.now()
         );
     }
 }
-

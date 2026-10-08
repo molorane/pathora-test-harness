@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,16 +29,16 @@ class IsStringAlphaNumericEvaluatorTest {
     @DisplayName("FAIL: contains special characters")
     void shouldFailWhenContainsSpecialChars() {
         assertThatThrownBy(() -> operator.apply("$.code", "User_123", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_STRING_ALPHA_NUMERIC failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_STRING_ALPHA_NUMERIC failed");
     }
 
     @Test
     @DisplayName("FAIL: contains whitespace")
     void shouldFailWhenContainsWhitespace() {
         assertThatThrownBy(() -> operator.apply("$.code", "User 123", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_STRING_ALPHA_NUMERIC failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_STRING_ALPHA_NUMERIC failed");
     }
 }
 

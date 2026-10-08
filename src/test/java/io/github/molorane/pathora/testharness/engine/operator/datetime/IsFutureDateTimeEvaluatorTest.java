@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.datetime;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +40,7 @@ class IsFutureDateTimeEvaluatorTest {
     @DisplayName("PASS: future datetime is after now")
     void shouldPassWithFutureDatetime() {
         String future = LocalDateTime.now().plusHours(1)
-                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         assertThatNoException().isThrownBy(() -> operator.apply("$.expiry", future, null, true));
     }
 
@@ -53,8 +53,8 @@ class IsFutureDateTimeEvaluatorTest {
     @DisplayName("FAIL: past date is not after now")
     void shouldFailWithPastDate() {
         assertThatThrownBy(() -> operator.apply("$.expiry", "2020-01-01", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_FUTURE_DATETIME failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_FUTURE_DATETIME failed");
     }
 }
 

@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.util;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -32,11 +32,11 @@ class MoneyUtilsTest {
     @DisplayName("PASS: validate currency match")
     void shouldValidateCurrencyMatch() {
         assertThatNoException().isThrownBy(() ->
-                MoneyUtils.validateCurrencyMatch("$.amount", Map.of("currency", "USD"), Map.of("currency", "USD"), AssertionOperator.MONEY_EQUALS));
+            MoneyUtils.validateCurrencyMatch("$.amount", Map.of("currency", "USD"), Map.of("currency", "USD"), AssertionOperator.MONEY_EQUALS));
 
         assertThatThrownBy(() ->
-                MoneyUtils.validateCurrencyMatch("$.amount", Map.of("currency", "USD"), Map.of("currency", "EUR"), AssertionOperator.MONEY_EQUALS))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("Currency mismatch");
+            MoneyUtils.validateCurrencyMatch("$.amount", Map.of("currency", "USD"), Map.of("currency", "EUR"), AssertionOperator.MONEY_EQUALS))
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("Currency mismatch");
     }
 }

@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.LoanRequest;
-import com.example.demo.dto.LoanResponse;
+import com.example.demo.dto.loan.LoanRequest;
+import com.example.demo.dto.loan.LoanResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -35,18 +35,17 @@ public class LoanApplicationService {
         boolean requiresManualReview = "APPROVED_CONDITIONAL".equals(decisionStatus);
 
         return new LoanResponse(
-                applicationId,
-                loanRequest.applicantId(),
-                approvedAmount,
-                interestRate,
-                decisionStatus,
-                Instant.now(),
-                eligible,
-                requiresManualReview,
-                -10,
-                loanRequest.creditScore(),
-                null
+            applicationId,
+            loanRequest.applicantId(),
+            approvedAmount,
+            interestRate,
+            decisionStatus,
+            Instant.now(),
+            eligible,
+            requiresManualReview,
+            -10,
+            loanRequest.creditScore(),
+            null
         );
     }
 }
-

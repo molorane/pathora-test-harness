@@ -22,6 +22,12 @@ library**. Its job is to:
 There is **no Spring context**. There are **no annotations**. All wiring
 is done via plain constructors.
 
+> Note: examples such as `MyNewOperator`, `MyMultiPathOperator`, and
+> `MyNewOperatorTest` are intentionally placeholder names. They are not
+> real classes in the library; they illustrate the required pattern.
+> Substitute the actual operator/class name when implementing a real
+> operator.
+
 ------------------------------------------------------------------------
 
 # 🏗 Architecture Overview
@@ -65,7 +71,7 @@ Do **not** create sub-packages inside `operator/`.
 
 - All models are **Java records**.
 - All records are annotated with `@JsonIgnoreProperties(ignoreUnknown = true)`.
-- All record fields are annotated with `@JsonProperty("PascalCase")`.
+- All record fields are annotated with the exact JSON property names used by the model, matching the `@JsonProperty` values in the Java record.
 - Records must not contain business logic.
 - Records must not extend or implement anything except when required by Jackson.
 
@@ -74,11 +80,20 @@ Do **not** create sub-packages inside `operator/`.
 ```java
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record JsonAssertion(
-        @JsonProperty("JsonPath")    String jsonPath,
-        @JsonProperty("Operator")    AssertionOperator operator,
-        @JsonProperty("Value")       Object value,
-        @JsonProperty("Description") String description,
-        @JsonProperty("Assertions")  List<JsonAssertion> assertions
+        @JsonProperty("path")
+        String path,
+
+        @JsonProperty("operator")
+        AssertionOperator operator,
+
+        @JsonProperty("value")
+        Object value,
+
+        @JsonProperty("description")
+        String description,
+
+        @JsonProperty("assertions")
+        List<JsonAssertion> assertions
 ) {
     public JsonAssertion {
         if (operator == null) {
@@ -90,18 +105,22 @@ public record JsonAssertion(
 
 ## JSON field name contract
 
+The project currently uses lowercase JSON property names that match the Java record field names exactly.
+
 | Java record field           | JSON key                  |
 |-----------------------------|---------------------------|
-| `testName`                  | `TestName`                |
-| `testDescription`           | `TestDescription`         |
-| `entryPointName`            | `EntryPointName`          |
-| `testCaseParameterValues`   | `TestCaseParameterValues` |
-| `responseAssertions`        | `ResponseAssertions`      |
-| `jsonPath`                  | `JsonPath`                |
-| `operator`                  | `Operator`                |
-| `value`                     | `Value`                   |
-| `assertions`                | `Assertions`              |
-| `defaultJSONRequestPath`    | `DefaultJSONRequestPath`  |
+| `requestPath`               | `requestPath`             |
+| `xmlRequestPath`            | `xmlRequestPath`          |
+| `tests`                     | `tests`                   |
+| `timezone`                  | `timezone`                |
+| `name`                      | `name`                    |
+| `description`               | `description`             |
+| `operation`                 | `operation`               |
+| `mutations`                 | `mutations`               |
+| `assertions`                | `assertions`              |
+| `path`                      | `path`                    |
+| `operator`                  | `operator`                |
+| `value`                     | `value`                   |
 
 ------------------------------------------------------------------------
 
@@ -139,12 +158,17 @@ They are handled exclusively inside `AssertionEngine.evaluateAssertion()`.
 
 # 3️⃣ Operator Pattern (MANDATORY)
 
+The examples below use placeholder names such as `ExampleOperator` and
+`ExampleMultiPathOperator` to illustrate the required pattern. They are
+not real classes in the library and are meant to be replaced with the
+actual operator name when you implement a real operator.
+
 ## Standard operator — implements `OperatorAssertion`
 
 Use this for every operator that works on a single resolved JSON value.
 
 ```java
-public class MyNewOperator implements OperatorAssertion {
+public class ExampleOperator implements OperatorAssertion {
 
     @Override
     public void apply(String path, Object actual, Object expected, boolean pathExists) {
@@ -175,7 +199,7 @@ Use this **only** when the operator must resolve more than one JsonPath
 from the same response (e.g. `FIELD_EQUALS_OTHER_FIELD`).
 
 ```java
-public class MyMultiPathOperator implements DocumentContextAwareOperator {
+public class ExampleMultiPathOperator implements DocumentContextAwareOperator {
 
     @Override
     public void apply(DocumentContext context, Object expected) {
@@ -207,7 +231,7 @@ public class MyMultiPathOperator implements DocumentContextAwareOperator {
 Every new operator **must** be registered in `AssertionEngine` constructor:
 
 ```java
-operators.put(AssertionOperator.MY_NEW_OPERATOR, new MyNewOperator());
+operators.put(AssertionOperator.MY_NEW_OPERATOR, new ExampleOperator());
 ```
 
 Operators that implement `DocumentContextAwareOperator` are dispatched
@@ -505,11 +529,33 @@ Integration tests for `AssertionEngine` must:
 
 1. Implement `EntryPointExecutor` in the consumer project.
 2. Register it in `EntryPointRegistry` by adding it to the constructor list.
-3. Create a suite JSON file with `"EntryPointName"` matching
+3. Create a suite JSON file with `"operation"` matching
    `getEntryPointName()`.
 4. Create a base request JSON template file.
-5. Add test cases with `TestCaseParameterValues` (mutations) and
-   `ResponseAssertions`.
+5. Add test cases with `mutations` and `assertions`.
+
+```java
+public interface EntryPointExecutor<REQ, RES> {
+    String getEntryPointName();   // must match the "operation" value in suite JSON
+    Class<REQ> getRequestType();  // Jackson deserialisation target type
+    RES execute(REQ request);
+}
+```
+
+Rules:
+- `getEntryPointName()` must exactly match the `operation` value
+  used in test suite JSON files.
+
+## Integration tests (AssertionEngine level)
+
+Integration tests for `AssertionEngine` must:
+
+- Construct `AssertionEngine` in `@BeforeEach`.
+- Build `JsonAssertion` and `RuleTestCase` inline — no file I/O.
+- Call `engine.assertResponse(response, testCase, mutatedRequest)`.
+- For logical operator tests use these message fragments:
+  - `"LOGICAL_OR_FAILED"`
+  - `"LOGICAL_NOT_FAILED"`
 
 ------------------------------------------------------------------------
 

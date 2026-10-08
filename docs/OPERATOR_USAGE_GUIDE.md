@@ -3,10 +3,10 @@
 This guide demonstrates how to configure and use every assertion operator available in the **Pathora Test Harness** engine.
 
 > **Note on Null Values:**
-> For unary, structural, and flag-based operators where an expected value is not required, omit the `"value"` field entirely. The test harness engine defaults unassigned fields to `null`.
+> For unary, structural, and flag-based operators where an expected value is not required, omit the `"value"` field entirely. The harness treats absent values as `null` at runtime, but the canonical schema is to omit the field rather than emit `"value": null`.
 >
 > **💡 Temporal Testing & Dynamic Expressions Guide:**
-> For an in-depth reference on dynamic date tokens (`{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`), relative offsets (`+30d`, `-25y`, `+2h`), custom formats, 6 timezone configuration methods, and `PathoraClock` deterministic time-travel testing, see **[DATE_EXPRESSIONS_AND_TIMEZONES.md](DATE_EXPRESSIONS_AND_TIMEZONES.md)**.
+> For an in-depth reference on dynamic date tokens (`{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`), relative offsets (`+30d`, `-25y`, `+2h`), custom formats, 7 timezone configuration methods, and `PathoraClock` deterministic time-travel testing, see **[DATE_EXPRESSIONS_AND_TIMEZONES.md](DATE_EXPRESSIONS_AND_TIMEZONES.md)**.
 
 ---
 
@@ -1876,4 +1876,3 @@ Logical NOT operator inverting the outcome of child assertion rules (passes when
   ]
 }
 ```
-

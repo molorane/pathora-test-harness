@@ -13,7 +13,7 @@ This project provides a comprehensive, production-ready demonstration of **Patho
 - [Writing Test Suites & Request Templates](#writing-test-suites--request-templates)
 - [Running the Demo Tests](#running-the-demo-tests)
 - [Dynamic Date Expressions & Offsets](#dynamic-date-expressions--offsets)
-- [Timezone & Clock Configuration (6 Ways)](#timezone--clock-configuration-6-ways)
+- [Timezone & Clock Configuration (7 Ways)](#timezone--clock-configuration-7-ways)
 - [Testing Approaches](#testing-approaches)
   - [Approach A: Individual File Testing](#approach-a-individual-file-testing)
   - [Approach B: Dynamic Directory Batch Execution](#approach-b-dynamic-directory-batch-execution)
@@ -25,10 +25,16 @@ This project provides a comprehensive, production-ready demonstration of **Patho
 ## Overview
 
 Pathora Test Harness allows developers and QA engineers to define service test scenarios in declarative JSON/XML files. Tests can:
-1. Load base JSON or XML request templates (`DefaultJSONRequestPath` or `DefaultXMLRequestPath`).
-2. Override specific payload fields using JSONPath syntax (`TestCaseParameterValues`).
+1. Load base JSON or XML request templates (`requestPath` or `xmlRequestPath`).
+2. Override specific payload fields using JSONPath syntax within `mutations`.
 3. Dispatch mutated requests to Spring domain services via registered **EntryPoint Executors**.
-4. Validate service responses using rich assertion rules (`ResponseAssertions`).
+4. Validate service responses using rich assertion rules in `assertions`.
+
+Current suite shape:
+- Root request file: `requestPath` or `xmlRequestPath`
+- Test list: `tests`
+- Each test: `name`, `description`, `operation`, `mutations`, `assertions`
+- Each mutation/assertion: `path`, `operator`, `value`
 
 ---
 
@@ -47,7 +53,7 @@ It acts as the **bridge/adapter** between Pathora Test Harness and your applicat
              │
              ▼
 ┌─────────────────────────┐
-│   EntryPointDispatcher  │ (Matches "EntryPointName" from JSON test file)
+│   EntryPointDispatcher  │ (Matches "operation" from JSON test file)
 └────────────┬────────────┘
              │
              ▼
@@ -109,7 +115,7 @@ public class LoanApplicationExecutor implements EntryPointExecutor<LoanRequest, 
 ## XML Request Template Support
 
 Pathora Test Harness natively supports **XML request templates** (`.xml`) alongside JSON templates:
-- **`DefaultXMLRequestPath`**: Specify your base XML template file in the test suite JSON file (`"DefaultXMLRequestPath": "../requests/user-create-request.xml"`).
+- **`xmlRequestPath`**: Specify your base XML template file in the test suite JSON file (`"xmlRequestPath": "../requests/user-create-request.xml"`).
 - **Automatic Payload Format Detection**: `EntryPointDispatcher` automatically detects XML payloads and uses Jackson `XmlMapper` to deserialize XML into your Java DTOs.
 - **JSONPath Parameter Mutations on XML**: `JsonMutationEngine` automatically converts XML templates to an in-memory representation so you can use standard JSONPath mutations (`$.username`, `$.role`) seamlessly on XML requests.
 
@@ -174,20 +180,20 @@ example/
 ### Test Suite referencing XML (`templates/tests/user-create-xml-test.json`)
 ```json
 {
-  "DefaultXMLRequestPath": "../requests/user-create-request.xml",
-  "Tests": [
+  "xmlRequestPath": "../requests/user-create-request.xml",
+  "tests": [
     {
-      "TestName": "Valid User Registration Test from XML Template",
-      "TestDescription": "Validates user account creation using an XML base request template.",
-      "EntryPointName": "user-registration-service",
-      "TestCaseParameterValues": [
-        { "JsonPath": "$.username", "Value": "alex_murphy" },
-        { "JsonPath": "$.role", "Value": "ADMIN" }
+      "name": "Valid User Registration Test from XML Template",
+      "description": "Validates user account creation using an XML base request template.",
+      "operation": "user-registration-service",
+      "mutations": [
+        { "path": "$.username", "value": "alex_murphy" },
+        { "path": "$.role", "value": "ADMIN" }
       ],
-      "ResponseAssertions": [
-        { "JsonPath": "$.userId", "Operator": "STARTS_WITH", "Value": "USR-" },
-        { "JsonPath": "$.username", "Value": "alex_murphy" },
-        { "JsonPath": "$.role", "Value": "ADMIN" }
+      "assertions": [
+        { "path": "$.userId", "operator": "STARTS_WITH", "value": "USR-" },
+        { "path": "$.username", "value": "alex_murphy" },
+        { "path": "$.role", "value": "ADMIN" }
       ]
     }
   ]
@@ -246,7 +252,7 @@ Append `+` or `-` offsets using `d` (days), `w` (weeks), `m` (months), `y` (year
 
 ---
 
-## Timezone & Clock Configuration (6 Ways)
+## Timezone & Clock Configuration (7 Ways)
 
 Pathora Test Harness provides full flexibility to manage timezones and deterministic clocks across environments and test setups:
 
@@ -319,6 +325,31 @@ System.setProperty("pathora.timezone", "Australia/Sydney");
 PathoraClock.reset();
 ```
 
+### Way 7: Spring Environment / `application.yml` Configuration
+```yaml
+pathora:
+  timezone: "Africa/Johannesburg"
+```
+Then initialize the harness from your Spring config:
+```java
+@Configuration
+public class TestHarnessConfig {
+
+    @Value("${pathora.timezone:}")
+    private String configuredTimezone;
+
+    @PostConstruct
+    public void initTimezone() {
+        if (configuredTimezone != null && !configuredTimezone.isBlank()) {
+            PathoraClock.setTimezone(configuredTimezone);
+        }
+    }
+}
+```
+
+### Way 8: Default System Timezone
+When no explicit timezone is configured anywhere else, the harness falls back to the JVM default zone.
+
 ---
 
 ## Testing Approaches
@@ -330,7 +361,7 @@ Runs individual test suite JSON/XML files directly using explicit Spring test me
 Automatically discovers and executes all test suites located under `templates/tests/` dynamically generating JUnit 5 dynamic tests.
 
 ### Approach C: Timezone & Deterministic Clock Demo (`TimezoneAndClockDemoTest`)
-Demonstrates all 6 timezone configuration and clock freezing strategies with assertions against mutated JSON responses.
+Demonstrates all 7 timezone configuration and clock freezing strategies with assertions against mutated JSON responses.
 
 ---
 

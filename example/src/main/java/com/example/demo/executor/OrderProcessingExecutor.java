@@ -1,7 +1,7 @@
 package com.example.demo.executor;
 
-import com.example.demo.dto.OrderRequest;
-import com.example.demo.dto.OrderResponse;
+import com.example.demo.dto.order.OrderRequest;
+import com.example.demo.dto.order.OrderResponse;
 import com.example.demo.service.OrderProcessingService;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
 import org.springframework.stereotype.Component;
@@ -30,3 +30,4 @@ public class OrderProcessingExecutor implements EntryPointExecutor<OrderRequest,
         return orderProcessingService.processOrder(orderRequest);
     }
 }
+

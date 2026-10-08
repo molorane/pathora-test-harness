@@ -8,7 +8,7 @@
 
 - **[Why Pathora Test Harness Exists (Design Rationale)](docs/WHY_PATHORA.md)**: Explains the problem Pathora solves, why traditional Java DTO builders and HTTP testing tools fall short, and why Pathora relies on JayWay JsonPath for in-memory payload mutations and assertions.
 - **[Industry Readiness, Reliability & Accuracy Assurance](docs/INDUSTRY_READINESS_AND_RELIABILITY.md)**: Details the architectural guarantees, multi-threaded safety, type normalization, and 650+ test verification suite that ensure 100% correct evaluations in enterprise production environments.
-- **[Dynamic Date Expressions, Timezones & Temporal Testing Guide](docs/DATE_EXPRESSIONS_AND_TIMEZONES.md)**: Complete guide to dynamic temporal tokens (`{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`, relative offsets, custom formats), 6 timezone configuration methods, and deterministic `PathoraClock` time-travel testing.
+- **[Dynamic Date Expressions, Timezones & Temporal Testing Guide](docs/DATE_EXPRESSIONS_AND_TIMEZONES.md)**: Complete guide to dynamic temporal tokens (`{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`, relative offsets, custom formats), 7 timezone configuration methods, and deterministic `PathoraClock` time-travel testing.
 - **[Complete Assertion Operators Reference Catalog](docs/ASSERTION_OPERATORS_CATALOG.md)**: Full catalog of all supported assertion operators across Scalar, String, Date, DateTime, Duration, Structural, Array, Object, Money, and Logical categories.
 - **[Assertion Operator In-Depth Usage Guide](docs/OPERATOR_USAGE_GUIDE.md)**: Comprehensive guide with JSON payload examples and schema configurations for every operator.
 - **[Architecture & Design Patterns](docs/DESIGN_PATTERNS.md)**: Explains the design patterns used throughout the codebase (Strategy, Factory, Registry, Dispatcher, Builder, SPI).
@@ -20,7 +20,7 @@
 ## 🌟 Key Features
 
 - 📄 **Declarative JSON Test Suites**: Store base JSON request templates and test definitions in human-readable JSON files.
-- ⚡ **Surgical Parameter Mutation**: Mutate specific JSON properties using JSONPath expressions (`TestCaseParameterValues`), eliminating duplicate test data files.
+- ⚡ **Surgical Parameter Mutation**: Mutate specific JSON properties using JSONPath expressions within `mutations`, eliminating duplicate test data files.
 - 🔌 **In-Process SPI Execution (`EntryPointExecutor`)**: Dispatches mutated requests directly to Java DTOs and Spring `@Service` beans in-memory. **Zero HTTP network latency, zero web server startup overhead.**
 - 🎯 **Rich JsonPath Assertions**: Validate response nodes using Scalar, String, Date/Time, Duration, Structural, Array, Object, and Logical operators.
 - 🕒 **Dynamic Date Expressions & Time-Travel Testing**: Use dynamic tokens like `{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`, relative offsets (`+30d`, `-25y`, `+2h`), epoch timestamps, and thread-safe `PathoraClock` freezing for deterministic date assertions and payload mutations.
@@ -36,7 +36,7 @@
 <dependency>
     <groupId>io.github.molorane</groupId>
     <artifactId>pathora-test-harness</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 </dependency>
 ```
 
@@ -84,24 +84,24 @@ public class OrderProcessingExecutor implements EntryPointExecutor<OrderRequest,
 **Test Suite (`templates/tests/order-test.json`)**:
 ```json
 {
-  "DefaultJSONRequestPath": "../requests/order-request.json",
-  "Tests": [
+  "requestPath": "../requests/order-request.json",
+  "tests": [
     {
-      "TestName": "Order Checkout Calculation Test",
-      "TestDescription": "Validates customer ID and CREATED status.",
-      "EntryPointName": "order-processing-service",
-      "TestCaseParameterValues": [
-        { "JsonPath": "$.customerId", "Value": "CUST-99001" }
+      "name": "Order Checkout Calculation Test",
+      "description": "Validates customer ID and CREATED status.",
+      "operation": "order-processing-service",
+      "mutations": [
+        { "path": "$.customerId", "value": "CUST-99001" }
       ],
-      "ResponseAssertions": [
+      "assertions": [
         {
-          "JsonPath": "$.orderId",
-          "Operator": "STARTS_WITH",
-          "Value": "ORD-"
+          "path": "$.orderId",
+          "operator": "STARTS_WITH",
+          "value": "ORD-"
         },
         {
-          "JsonPath": "$.status",
-          "Value": "CREATED"
+          "path": "$.status",
+          "value": "CREATED"
         }
       ]
     }

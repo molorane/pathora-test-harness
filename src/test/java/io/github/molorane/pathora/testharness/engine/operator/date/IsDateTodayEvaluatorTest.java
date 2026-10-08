@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.date;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.time.LocalDate;
 
@@ -30,8 +30,8 @@ class IsDateTodayEvaluatorTest {
     @DisplayName("FAIL: date is not today")
     void shouldFailWhenDateIsNotToday() {
         assertThatThrownBy(() -> operator.apply("$.date", "2000-01-01", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_TODAY failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_TODAY failed");
     }
 }
 

@@ -32,7 +32,7 @@ class PathNotExistsEvaluatorTest {
     @DisplayName("PASS: path is structurally absent (PathNotFoundException)")
     void shouldPassWhenPathDoesNotExist() {
         assertThatNoException().isThrownBy(
-                () -> operator.apply("$.optionalField", null, null, false));
+            () -> operator.apply("$.optionalField", null, null, false));
     }
 
     /**
@@ -43,7 +43,7 @@ class PathNotExistsEvaluatorTest {
     @DisplayName("PASS: filter expression returned an empty list")
     void shouldPassWhenFilterReturnsEmptyList() {
         assertThatNoException().isThrownBy(
-                () -> operator.apply("$.items[?(@.type == 'EXCLUDED')]", Collections.emptyList(), null, true));
+            () -> operator.apply("$.items[?(@.type == 'EXCLUDED')]", Collections.emptyList(), null, true));
     }
 
     /**
@@ -53,7 +53,7 @@ class PathNotExistsEvaluatorTest {
     @DisplayName("PASS: nested path is absent")
     void shouldPassWhenNestedPathDoesNotExist() {
         assertThatNoException().isThrownBy(
-                () -> operator.apply("$.outputData.nested.field", null, null, false));
+            () -> operator.apply("$.outputData.nested.field", null, null, false));
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -68,9 +68,9 @@ class PathNotExistsEvaluatorTest {
     @DisplayName("FAIL: path exists with a string value")
     void shouldFailWhenPathExistsWithString() {
         assertThatThrownBy(() -> operator.apply("$.outputData.status", "APPROVED", null, true))
-                .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("PATH_NOT_EXISTS_FAILED")
-                .hasMessageContaining("$.outputData.status");
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("PATH_NOT_EXISTS_FAILED")
+            .hasMessageContaining("$.outputData.status");
     }
 
     /**
@@ -82,8 +82,8 @@ class PathNotExistsEvaluatorTest {
     void shouldFailWhenFilterReturnsNonEmptyList() {
         List<Object> matches = Collections.singletonList("some-item");
         assertThatThrownBy(() -> operator.apply("$.items[?(@.type == 'ACTIVE')]", matches, null, true))
-                .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("PATH_NOT_EXISTS_FAILED");
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("PATH_NOT_EXISTS_FAILED");
     }
 
     /**
@@ -93,8 +93,8 @@ class PathNotExistsEvaluatorTest {
     @DisplayName("FAIL: path exists but holds a null value (structurally present)")
     void shouldFailWhenPathExistsWithNullValue() {
         assertThatThrownBy(() -> operator.apply("$.nullableField", null, null, true))
-                .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("PATH_NOT_EXISTS_FAILED");
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("PATH_NOT_EXISTS_FAILED");
     }
 }
 

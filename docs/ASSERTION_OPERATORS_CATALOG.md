@@ -3,7 +3,7 @@
 This document provides a comprehensive reference of all assertion operators supported by the Pathora Test Harness engine. Each operator is categorized by functional domain and includes its description, `AssertionOperator` enum value, underlying evaluator class, and sample JSON usage.
 
 > **💡 Temporal Testing & Dynamic Expressions Guide**:
-> For an in-depth reference on dynamic date tokens (`{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`), relative offsets (`+30d`, `-25y`, `+2h`), custom formatting patterns, 6 timezone configuration methods, and `PathoraClock` deterministic time-travel testing, see **[DATE_EXPRESSIONS_AND_TIMEZONES.md](DATE_EXPRESSIONS_AND_TIMEZONES.md)**.
+> For an in-depth reference on dynamic date tokens (`{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`), relative offsets (`+30d`, `-25y`, `+2h`), custom formatting patterns, 7 timezone configuration methods, and `PathoraClock` deterministic time-travel testing, see **[DATE_EXPRESSIONS_AND_TIMEZONES.md](DATE_EXPRESSIONS_AND_TIMEZONES.md)**.
 
 ---
 
@@ -642,4 +642,3 @@ Logical operators combine nested assertion rules with boolean logic (`AND`, `OR`
   ]
 }
 ```
-

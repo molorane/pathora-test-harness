@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,16 +36,16 @@ class IsNullEvaluatorTest {
     @DisplayName("FAIL: actual is non-null")
     void shouldFailWhenActualIsNotNull() {
         assertThatThrownBy(() -> operator.apply("$.field", "hello", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_NULL failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_NULL failed");
     }
 
     @Test
     @DisplayName("FAIL: actual is non-empty list with value")
     void shouldFailWhenActualIsNonEmptyList() {
         assertThatThrownBy(() -> operator.apply("$.field", List.of("value"), null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_NULL failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_NULL failed");
     }
 }
 

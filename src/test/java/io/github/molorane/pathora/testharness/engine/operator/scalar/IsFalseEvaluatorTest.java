@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,12 +29,12 @@ class IsFalseEvaluatorTest {
     @DisplayName("FAIL: boolean true or non-boolean")
     void shouldFailWhenNotFalse() {
         assertThatThrownBy(() -> operator.apply("$.active", true, null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_FALSE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_FALSE failed");
 
         assertThatThrownBy(() -> operator.apply("$.active", "true", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_FALSE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_FALSE failed");
     }
 }
 

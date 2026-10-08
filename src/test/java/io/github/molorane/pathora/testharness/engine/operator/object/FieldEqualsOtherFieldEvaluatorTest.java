@@ -2,11 +2,11 @@ package io.github.molorane.pathora.testharness.engine.operator.object;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,14 +33,14 @@ class FieldEqualsOtherFieldEvaluatorTest {
     @DisplayName("PASS: two fields have the same value")
     void shouldPassWhenFieldsEqual() {
         DocumentContext ctx = parse("""
-                {"outputData": {"amount": 100, "calculatedAmount": 100}}
-                """);
+            {"outputData": {"amount": 100, "calculatedAmount": 100}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "leftPath": "$.outputData.amount",
-                  "rightPath": "$.outputData.calculatedAmount"
-                }
-                """);
+            {
+              "leftPath": "$.outputData.amount",
+              "rightPath": "$.outputData.calculatedAmount"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -53,14 +53,14 @@ class FieldEqualsOtherFieldEvaluatorTest {
     @DisplayName("PASS: string fields equal")
     void shouldPassWhenStringFieldsEqual() {
         DocumentContext ctx = parse("""
-                {"outputData": {"status": "APPROVED", "finalStatus": "APPROVED"}}
-                """);
+            {"outputData": {"status": "APPROVED", "finalStatus": "APPROVED"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "leftPath": "$.outputData.status",
-                  "rightPath": "$.outputData.finalStatus"
-                }
-                """);
+            {
+              "leftPath": "$.outputData.status",
+              "rightPath": "$.outputData.finalStatus"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -73,14 +73,14 @@ class FieldEqualsOtherFieldEvaluatorTest {
     @DisplayName("PASS: numeric type coercion — int vs double")
     void shouldPassWithTypeCoercion() {
         DocumentContext ctx = parse("""
-                {"outputData": {"amount": 100, "calculatedAmount": 100.0}}
-                """);
+            {"outputData": {"amount": 100, "calculatedAmount": 100.0}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "leftPath": "$.outputData.amount",
-                  "rightPath": "$.outputData.calculatedAmount"
-                }
-                """);
+            {
+              "leftPath": "$.outputData.amount",
+              "rightPath": "$.outputData.calculatedAmount"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -93,19 +93,19 @@ class FieldEqualsOtherFieldEvaluatorTest {
     @DisplayName("FAIL: two fields have different values")
     void shouldFailWhenFieldsDiffer() {
         DocumentContext ctx = parse("""
-                {"outputData": {"amount": 100, "calculatedAmount": 200}}
-                """);
+            {"outputData": {"amount": 100, "calculatedAmount": 200}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "leftPath": "$.outputData.amount",
-                  "rightPath": "$.outputData.calculatedAmount"
-                }
-                """);
+            {
+              "leftPath": "$.outputData.amount",
+              "rightPath": "$.outputData.calculatedAmount"
+            }
+            """);
         assertThatThrownBy(() -> operator.apply(ctx, value))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("FIELD_EQUALS_OTHER_FIELD failed")
-                .hasMessageContaining("100")
-                .hasMessageContaining("200");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("FIELD_EQUALS_OTHER_FIELD failed")
+            .hasMessageContaining("100")
+            .hasMessageContaining("200");
     }
 
     /**
@@ -117,26 +117,26 @@ class FieldEqualsOtherFieldEvaluatorTest {
     @DisplayName("FAIL: different string values")
     void shouldFailWhenStringFieldsDiffer() {
         DocumentContext ctx = parse("""
-                {"outputData": {"status": "APPROVED", "finalStatus": "DECLINED"}}
-                """);
+            {"outputData": {"status": "APPROVED", "finalStatus": "DECLINED"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "leftPath": "$.outputData.status",
-                  "rightPath": "$.outputData.finalStatus"
-                }
-                """);
+            {
+              "leftPath": "$.outputData.status",
+              "rightPath": "$.outputData.finalStatus"
+            }
+            """);
         assertThatThrownBy(() -> operator.apply(ctx, value))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("FIELD_EQUALS_OTHER_FIELD failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("FIELD_EQUALS_OTHER_FIELD failed");
     }
 
     @Test
     @DisplayName("FAIL: expected is not a map")
     void shouldFailWhenExpectedIsNotMap() {
         DocumentContext ctx = parse("""
-                {"outputData": {"amount": 100}}
-                """);
+            {"outputData": {"amount": 100}}
+            """);
         assertThatThrownBy(() -> operator.apply(ctx, "not-a-map"))
-                .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class);
     }
 }
