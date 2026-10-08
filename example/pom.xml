@@ -19,13 +19,14 @@
 
     <properties>
         <java.version>17</java.version>
+        <pathora.version>1.0.5</pathora.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.github.molorane</groupId>
             <artifactId>pathora-test-harness</artifactId>
-            <version>1.0.5</version>
+            <version>${pathora.version}</version>
         </dependency>
 
         <dependency>
