@@ -20,7 +20,7 @@
 ## 🌟 Key Features
 
 - 📄 **Declarative JSON Test Suites**: Store base JSON request templates and test definitions in human-readable JSON files.
-- ⚡ **Surgical Parameter Mutation**: Mutate specific JSON properties using JSONPath expressions (`TestCaseParameterValues`), eliminating duplicate test data files.
+- ⚡ **Surgical Parameter Mutation**: Mutate specific JSON properties using JSONPath expressions within `mutations`, eliminating duplicate test data files.
 - 🔌 **In-Process SPI Execution (`EntryPointExecutor`)**: Dispatches mutated requests directly to Java DTOs and Spring `@Service` beans in-memory. **Zero HTTP network latency, zero web server startup overhead.**
 - 🎯 **Rich JsonPath Assertions**: Validate response nodes using Scalar, String, Date/Time, Duration, Structural, Array, Object, and Logical operators.
 - 🕒 **Dynamic Date Expressions & Time-Travel Testing**: Use dynamic tokens like `{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`, relative offsets (`+30d`, `-25y`, `+2h`), epoch timestamps, and thread-safe `PathoraClock` freezing for deterministic date assertions and payload mutations.
@@ -84,24 +84,24 @@ public class OrderProcessingExecutor implements EntryPointExecutor<OrderRequest,
 **Test Suite (`templates/tests/order-test.json`)**:
 ```json
 {
-  "DefaultJSONRequestPath": "../requests/order-request.json",
-  "Tests": [
+  "requestPath": "../requests/order-request.json",
+  "tests": [
     {
-      "TestName": "Order Checkout Calculation Test",
-      "TestDescription": "Validates customer ID and CREATED status.",
-      "EntryPointName": "order-processing-service",
-      "TestCaseParameterValues": [
-        { "JsonPath": "$.customerId", "Value": "CUST-99001" }
+      "name": "Order Checkout Calculation Test",
+      "description": "Validates customer ID and CREATED status.",
+      "operation": "order-processing-service",
+      "mutations": [
+        { "path": "$.customerId", "value": "CUST-99001" }
       ],
-      "ResponseAssertions": [
+      "assertions": [
         {
-          "JsonPath": "$.orderId",
-          "Operator": "STARTS_WITH",
-          "Value": "ORD-"
+          "path": "$.orderId",
+          "operator": "STARTS_WITH",
+          "value": "ORD-"
         },
         {
-          "JsonPath": "$.status",
-          "Value": "CREATED"
+          "path": "$.status",
+          "value": "CREATED"
         }
       ]
     }
@@ -138,10 +138,10 @@ Pathora provides built-in expression resolution for date mutations and assertion
 ```java
 // Freeze time globally or per-thread during tests
 PathoraClock.freeze(LocalDate.of(2028, 2, 29)); // leap day
-PathoraClock.freeze(Instant.parse("2026-12-31T23:59:59Z"));
+    PathoraClock.freeze(Instant.parse("2026-12-31T23:59:59Z"));
 
 // Reset when done
-PathoraClock.reset();
+    PathoraClock.reset();
 ```
 
 ### 5. Run the Demo

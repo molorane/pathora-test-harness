@@ -74,20 +74,20 @@ Do **not** create sub-packages inside `operator/`.
 ```java
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record JsonAssertion(
-        @JsonProperty("path")
-        String path,
+    @JsonProperty("path")
+    String path,
 
-        @JsonProperty("operator")
-        AssertionOperator operator,
+    @JsonProperty("operator")
+    AssertionOperator operator,
 
-        @JsonProperty("value")
-        Object value,
+    @JsonProperty("value")
+    Object value,
 
-        @JsonProperty("description")
-        String description,
+    @JsonProperty("description")
+    String description,
 
-        @JsonProperty("assertions")
-        List<JsonAssertion> assertions
+    @JsonProperty("assertions")
+    List<JsonAssertion> assertions
 ) {
     public JsonAssertion {
         if (operator == null) {
@@ -170,13 +170,13 @@ public class MyNewOperator implements OperatorAssertion {
         // 3. Business check
         if (/* condition fails */) {
             throw new HarnessAssertionException(
-                    AssertionOperator.MY_NEW_OPERATOR,
-                    path,
-                    expected,
-                    actual,
-                    "MY_NEW_OPERATOR failed at " + path +
-                            ". Expected: " + expected +
-                            ", Actual: " + actual);
+                AssertionOperator.MY_NEW_OPERATOR,
+                path,
+                expected,
+                actual,
+                "MY_NEW_OPERATOR failed at " + path +
+                    ". Expected: " + expected +
+                    ", Actual: " + actual);
         }
     }
 }
@@ -201,11 +201,11 @@ public class MyMultiPathOperator implements DocumentContextAwareOperator {
 
         if (/* condition fails */) {
             throw new HarnessAssertionException(
-                    AssertionOperator.MY_MULTI_PATH_OPERATOR,
-                    pathA + " vs " + pathB,
-                    b,
-                    a,
-                    "MY_MULTI_PATH_OPERATOR failed …");
+                AssertionOperator.MY_MULTI_PATH_OPERATOR,
+                pathA + " vs " + pathB,
+                b,
+                a,
+                "MY_MULTI_PATH_OPERATOR failed …");
         }
     }
 }
@@ -253,13 +253,13 @@ Never throw a raw `AssertionError` from inside an operator.
 
 ```java
 throw new HarnessAssertionException(
-        AssertionOperator.<OPERATOR>,   // the enum value
-        path,                           // the JsonPath string
-        expected,                       // expected value (raw, before normalisation)
-        actual,                         // actual value (raw, before normalisation)
+    AssertionOperator.<OPERATOR>,   // the enum value
+    path,                           // the JsonPath string
+    expected,                       // expected value (raw, before normalisation)
+    actual,                         // actual value (raw, before normalisation)
         "<OPERATOR_NAME> failed at " + path +
-                ". Expected: " + expected +
-                ", Actual: " + actual);
+        ". Expected: " + expected +
+        ", Actual: " + actual);
 ```
 
 `HarnessAssertionException` extends `AssertionError` and formats a
@@ -311,7 +311,7 @@ Before resolving the JsonPath, `evaluateAssertion()` checks:
 if (handler instanceof DocumentContextAwareOperator contextAware) {
     contextAware.apply(context, assertion.value());
     return;
-}
+    }
 ```
 
 This means `DocumentContextAwareOperator` implementations never receive
@@ -432,16 +432,16 @@ class MyNewOperatorTest {
     @DisplayName("PASS: <scenario description>")
     void shouldPassWhen<Condition>() {
         assertThatNoException().isThrownBy(
-                () -> operator.apply("$.field", actualValue, expectedValue, true));
+            () -> operator.apply("$.field", actualValue, expectedValue, true));
     }
 
     @Test
     @DisplayName("FAIL: <scenario description>")
     void shouldFailWhen<Condition>() {
         assertThatThrownBy(
-                () -> operator.apply("$.field", wrongValue, expectedValue, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("MY_NEW_OPERATOR failed");
+            () -> operator.apply("$.field", wrongValue, expectedValue, true))
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("MY_NEW_OPERATOR failed");
     }
 }
 ```
@@ -518,11 +518,33 @@ Integration tests for `AssertionEngine` must:
 
 1. Implement `EntryPointExecutor` in the consumer project.
 2. Register it in `EntryPointRegistry` by adding it to the constructor list.
-3. Create a suite JSON file with `"EntryPointName"` matching
+3. Create a suite JSON file with `"operation"` matching
    `getEntryPointName()`.
 4. Create a base request JSON template file.
-5. Add test cases with `TestCaseParameterValues` (mutations) and
-   `ResponseAssertions`.
+5. Add test cases with `mutations` and `assertions`.
+
+```java
+public interface EntryPointExecutor<REQ, RES> {
+    String getEntryPointName();   // must match the "operation" value in suite JSON
+    Class<REQ> getRequestType();  // Jackson deserialisation target type
+    RES execute(REQ request);
+}
+```
+
+Rules:
+- `getEntryPointName()` must exactly match the `operation` value
+  used in test suite JSON files.
+
+## Integration tests (AssertionEngine level)
+
+Integration tests for `AssertionEngine` must:
+
+- Construct `AssertionEngine` in `@BeforeEach`.
+- Build `JsonAssertion` and `RuleTestCase` inline — no file I/O.
+- Call `engine.assertResponse(response, testCase, mutatedRequest)`.
+- For logical operator tests use these message fragments:
+    - `"LOGICAL_OR_FAILED"`
+    - `"LOGICAL_NOT_FAILED"`
 
 ------------------------------------------------------------------------
 

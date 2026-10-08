@@ -25,10 +25,16 @@ This project provides a comprehensive, production-ready demonstration of **Patho
 ## Overview
 
 Pathora Test Harness allows developers and QA engineers to define service test scenarios in declarative JSON/XML files. Tests can:
-1. Load base JSON or XML request templates (`DefaultJSONRequestPath` or `DefaultXMLRequestPath`).
-2. Override specific payload fields using JSONPath syntax (`TestCaseParameterValues`).
+1. Load base JSON or XML request templates (`requestPath` or `xmlRequestPath`).
+2. Override specific payload fields using JSONPath syntax within `mutations`.
 3. Dispatch mutated requests to Spring domain services via registered **EntryPoint Executors**.
-4. Validate service responses using rich assertion rules (`ResponseAssertions`).
+4. Validate service responses using rich assertion rules in `assertions`.
+
+Current suite shape:
+- Root request file: `requestPath` or `xmlRequestPath`
+- Test list: `tests`
+- Each test: `name`, `description`, `operation`, `mutations`, `assertions`
+- Each mutation/assertion: `path`, `operator`, `value`
 
 ---
 
@@ -47,7 +53,7 @@ It acts as the **bridge/adapter** between Pathora Test Harness and your applicat
              │
              ▼
 ┌─────────────────────────┐
-│   EntryPointDispatcher  │ (Matches "EntryPointName" from JSON test file)
+│   EntryPointDispatcher  │ (Matches "operation" from JSON test file)
 └────────────┬────────────┘
              │
              ▼
@@ -109,7 +115,7 @@ public class LoanApplicationExecutor implements EntryPointExecutor<LoanRequest, 
 ## XML Request Template Support
 
 Pathora Test Harness natively supports **XML request templates** (`.xml`) alongside JSON templates:
-- **`DefaultXMLRequestPath`**: Specify your base XML template file in the test suite JSON file (`"DefaultXMLRequestPath": "../requests/user-create-request.xml"`).
+- **`xmlRequestPath`**: Specify your base XML template file in the test suite JSON file (`"xmlRequestPath": "../requests/user-create-request.xml"`).
 - **Automatic Payload Format Detection**: `EntryPointDispatcher` automatically detects XML payloads and uses Jackson `XmlMapper` to deserialize XML into your Java DTOs.
 - **JSONPath Parameter Mutations on XML**: `JsonMutationEngine` automatically converts XML templates to an in-memory representation so you can use standard JSONPath mutations (`$.username`, `$.role`) seamlessly on XML requests.
 
@@ -174,20 +180,20 @@ example/
 ### Test Suite referencing XML (`templates/tests/user-create-xml-test.json`)
 ```json
 {
-  "DefaultXMLRequestPath": "../requests/user-create-request.xml",
-  "Tests": [
+  "xmlRequestPath": "../requests/user-create-request.xml",
+  "tests": [
     {
-      "TestName": "Valid User Registration Test from XML Template",
-      "TestDescription": "Validates user account creation using an XML base request template.",
-      "EntryPointName": "user-registration-service",
-      "TestCaseParameterValues": [
-        { "JsonPath": "$.username", "Value": "alex_murphy" },
-        { "JsonPath": "$.role", "Value": "ADMIN" }
+      "name": "Valid User Registration Test from XML Template",
+      "description": "Validates user account creation using an XML base request template.",
+      "operation": "user-registration-service",
+      "mutations": [
+        { "path": "$.username", "value": "alex_murphy" },
+        { "path": "$.role", "value": "ADMIN" }
       ],
-      "ResponseAssertions": [
-        { "JsonPath": "$.userId", "Operator": "STARTS_WITH", "Value": "USR-" },
-        { "JsonPath": "$.username", "Value": "alex_murphy" },
-        { "JsonPath": "$.role", "Value": "ADMIN" }
+      "assertions": [
+        { "path": "$.userId", "operator": "STARTS_WITH", "value": "USR-" },
+        { "path": "$.username", "value": "alex_murphy" },
+        { "path": "$.role", "value": "ADMIN" }
       ]
     }
   ]
@@ -283,7 +289,7 @@ LocalDate leapDay = LocalDate.of(2028, 2, 29);
 PathoraClock.freeze(leapDay, ZoneId.of("Africa/Johannesburg"));
 
 // All expressions and date operators now evaluate against 2028-02-29
-DateExpressionResolver.resolveToString("{{$CURRENT_DATE}}"); // "2028-02-29"
+    DateExpressionResolver.resolveToString("{{$CURRENT_DATE}}"); // "2028-02-29"
 DateExpressionResolver.resolveToString("{{$CURRENT_DATE + 30d}}"); // "2028-03-30"
 ```
 
@@ -293,10 +299,10 @@ Isolate deterministic time overrides per test thread so parallel tests never col
 Instant threadInstant = Instant.parse("2030-07-04T16:00:00Z");
 PathoraClock.freezeThread(threadInstant, ZoneId.of("America/New_York"));
 
-try {
+    try {
     // Current thread sees America/New_York (2030-07-04)
     // Other concurrent threads still see the global clock
-} finally {
+    } finally {
     PathoraClock.clearThreadClock();
 }
 ```
