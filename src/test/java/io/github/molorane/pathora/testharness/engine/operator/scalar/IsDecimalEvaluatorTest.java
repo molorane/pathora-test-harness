@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.math.BigDecimal;
 
@@ -32,8 +32,8 @@ class IsDecimalEvaluatorTest {
     @DisplayName("FAIL: non-decimal string or non-numeric")
     void shouldFailWhenNotDecimal() {
         assertThatThrownBy(() -> operator.apply("$.val", "abc", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_DECIMAL failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_DECIMAL failed");
     }
 }
 

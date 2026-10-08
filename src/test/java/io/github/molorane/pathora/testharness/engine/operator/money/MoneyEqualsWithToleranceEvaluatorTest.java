@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.money;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.Map;
 
@@ -36,8 +36,8 @@ class MoneyEqualsWithToleranceEvaluatorTest {
         Map<String, Object> config = Map.of("expected", "100.05", "tolerance", "0.01");
 
         assertThatThrownBy(() -> evaluator.apply("$.amount", "100.07", config, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("MONEY_EQUALS_WITH_TOLERANCE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("MONEY_EQUALS_WITH_TOLERANCE failed");
     }
 
     @Test
@@ -47,7 +47,7 @@ class MoneyEqualsWithToleranceEvaluatorTest {
         Map<String, Object> config = Map.of("expected", "100.05", "tolerance", "0.01", "currency", "EUR");
 
         assertThatThrownBy(() -> evaluator.apply("$.amount", actual, config, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("Currency mismatch");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("Currency mismatch");
     }
 }

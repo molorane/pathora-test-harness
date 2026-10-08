@@ -50,7 +50,7 @@ class SingleTestSuiteDemoTest {
     @Test
     @DisplayName("Verify Spring Boot Context Loads Executors")
     void contextLoads() {
-        assertThat(executorBeans).hasSize(6);
+        assertThat(executorBeans).hasSize(7);
     }
 
     @Test
@@ -159,3 +159,4 @@ class SingleTestSuiteDemoTest {
         }
     }
 }
+

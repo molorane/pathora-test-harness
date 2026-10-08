@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,15 +32,15 @@ class NoneMatchEvaluatorTest {
     @DisplayName("PASS: no elements satisfy condition")
     void shouldPassWhenNoneConditionMatches() {
         assertThatNoException().isThrownBy(() ->
-                operator.apply("$.scores", List.of(10, 20, 30), Map.of("greaterThan", 50), true));
+            operator.apply("$.scores", List.of(10, 20, 30), Map.of("greaterThan", 50), true));
     }
 
     @Test
     @DisplayName("FAIL: an element matches expected value")
     void shouldFailWhenAnyMatches() {
         assertThatThrownBy(() -> operator.apply("$.scores", List.of(10, 20, 30), 20, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("NONE_MATCH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("NONE_MATCH failed");
     }
 }
 

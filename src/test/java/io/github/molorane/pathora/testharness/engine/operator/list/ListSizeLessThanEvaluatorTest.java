@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.List;
 
@@ -29,8 +29,8 @@ class ListSizeLessThanEvaluatorTest {
     @DisplayName("FAIL: list size is greater than or equal to expected")
     void shouldFailWhenSizeNotLessThan() {
         assertThatThrownBy(() -> operator.apply("$.items", List.of("A", "B"), 2, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LIST_SIZE_LESS_THAN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LIST_SIZE_LESS_THAN failed");
     }
 }
 

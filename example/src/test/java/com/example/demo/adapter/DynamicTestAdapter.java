@@ -76,3 +76,4 @@ public class DynamicTestAdapter {
         ruleTestCaseExecutor.execute(suitePath, suite, testCase, reportDirectory);
     }
 }
+

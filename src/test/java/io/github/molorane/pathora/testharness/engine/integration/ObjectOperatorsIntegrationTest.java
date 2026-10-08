@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.integration;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,10 +24,10 @@ class ObjectOperatorsIntegrationTest extends BaseIntegrationTest {
         expectedWithNull.put("optionalNote", null);
 
         List<JsonAssertion> assertions = List.of(
-                assertion("$.user", AssertionOperator.OBJECT_CONTAINS_FIELDS, Map.of("id", 101, "name", "Jane Doe")),
-                assertion("$.user", AssertionOperator.OBJECT_CONTAINS_FIELDS_IGNORE_NULLS, expectedWithNull),
-                assertion("$.user", AssertionOperator.HAS_KEYS, List.of("id", "name", "email")),
-                assertion(null, AssertionOperator.FIELD_EQUALS_OTHER_FIELD, Map.of("leftPath", "$.metrics.total", "rightPath", "$.metrics.calculatedTotal"))
+            assertion("$.user", AssertionOperator.OBJECT_CONTAINS_FIELDS, Map.of("id", 101, "name", "Jane Doe")),
+            assertion("$.user", AssertionOperator.OBJECT_CONTAINS_FIELDS_IGNORE_NULLS, expectedWithNull),
+            assertion("$.user", AssertionOperator.HAS_KEYS, List.of("id", "name", "email")),
+            assertion(null, AssertionOperator.FIELD_EQUALS_OTHER_FIELD, Map.of("leftPath", "$.metrics.total", "rightPath", "$.metrics.calculatedTotal"))
         );
 
         RuleTestCase ruleTestCase = testCase("Object Operators Test", assertions);

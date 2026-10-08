@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.integration;
 
-import org.junit.jupiter.api.BeforeEach;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.date;
 
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.time.LocalDate;
 
@@ -30,11 +30,11 @@ class DateWithinLastEvaluatorTest {
     void shouldPassWithDateWithinDays() {
         String recent = LocalDate.now().minusDays(3).toString();
         Object value = TestJsonHelper.parse("""
-                {
-                  "amount": 7,
-                  "unit": "DAYS"
-                }
-                """);
+            {
+              "amount": 7,
+              "unit": "DAYS"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.date", recent, value, true));
     }
 
@@ -48,11 +48,11 @@ class DateWithinLastEvaluatorTest {
     void shouldPassWhenToday() {
         String today = LocalDate.now().toString();
         Object value = TestJsonHelper.parse("""
-                {
-                  "amount": 1,
-                  "unit": "DAYS"
-                }
-                """);
+            {
+              "amount": 1,
+              "unit": "DAYS"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.date", today, value, true));
     }
 
@@ -66,14 +66,14 @@ class DateWithinLastEvaluatorTest {
     void shouldFailWhenTooOld() {
         String old = LocalDate.now().minusDays(10).toString();
         Object value = TestJsonHelper.parse("""
-                {
-                  "amount": 7,
-                  "unit": "DAYS"
-                }
-                """);
+            {
+              "amount": 7,
+              "unit": "DAYS"
+            }
+            """);
         assertThatThrownBy(() -> operator.apply("$.date", old, value, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("DATE_WITHIN_LAST failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DATE_WITHIN_LAST failed");
     }
 }
 

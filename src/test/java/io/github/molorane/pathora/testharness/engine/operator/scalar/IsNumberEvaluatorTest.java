@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,8 +29,8 @@ class IsNumberEvaluatorTest {
     @DisplayName("FAIL: non-numeric string or object")
     void shouldFailWhenNotNumber() {
         assertThatThrownBy(() -> operator.apply("$.val", "abc", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_NUMBER failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_NUMBER failed");
     }
 }
 

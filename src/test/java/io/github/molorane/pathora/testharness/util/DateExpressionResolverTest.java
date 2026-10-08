@@ -86,8 +86,8 @@ class DateExpressionResolverTest {
         assertEquals("2026-10-08", resolvedList.get(2));
 
         Map<String, Object> map = Map.of(
-                "today", "{{$CURRENT_DATE}}",
-                "nextWeek", "{{$CURRENT_DATE + 7d}}"
+            "today", "{{$CURRENT_DATE}}",
+            "nextWeek", "{{$CURRENT_DATE + 7d}}"
         );
         Map<?, ?> resolvedMap = (Map<?, ?>) DateExpressionResolver.resolve(map);
         assertEquals("2026-10-07", resolvedMap.get("today"));
@@ -105,7 +105,7 @@ class DateExpressionResolverTest {
     @Test
     void testInvalidTokenThrowsException() {
         assertThrows(IllegalArgumentException.class, () ->
-                DateExpressionResolver.resolve("{{$INVALID_TOKEN}}")
+            DateExpressionResolver.resolve("{{$INVALID_TOKEN}}")
         );
     }
 

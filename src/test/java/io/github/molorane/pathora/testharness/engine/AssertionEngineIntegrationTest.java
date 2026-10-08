@@ -1,12 +1,12 @@
 package io.github.molorane.pathora.testharness.engine;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -54,14 +54,14 @@ class AssertionEngineIntegrationTest {
         String jsonPayload = loadJsonResource("/integration/banking_response.json");
 
         List<JsonAssertion> assertions = List.of(
-                assertion("$.status", AssertionOperator.EQUALS, "ACTIVE"),
-                assertion("$.accountType", AssertionOperator.VALUE_IN, List.of("SAVINGS", "CHECKING")),
-                assertion("$.balance", AssertionOperator.MONEY_EQUALS, Map.of("amount", 15420.50, "currency", "USD")),
-                assertion("$.balance", AssertionOperator.MONEY_GREATER_THAN, 10000.00),
-                assertion("$.balance", AssertionOperator.MONEY_BETWEEN, Map.of("min", 10000.00, "max", 20000.00)),
-                assertion("$.transactions", AssertionOperator.LIST_SIZE_EQUALS, 3),
-                assertion("$.transactions[*].id", AssertionOperator.UNIQUE_ELEMENTS, null),
-                assertion("$.openingDate", AssertionOperator.DATE_BEFORE, "2025-01-01")
+            assertion("$.status", AssertionOperator.EQUALS, "ACTIVE"),
+            assertion("$.accountType", AssertionOperator.VALUE_IN, List.of("SAVINGS", "CHECKING")),
+            assertion("$.balance", AssertionOperator.MONEY_EQUALS, Map.of("amount", 15420.50, "currency", "USD")),
+            assertion("$.balance", AssertionOperator.MONEY_GREATER_THAN, 10000.00),
+            assertion("$.balance", AssertionOperator.MONEY_BETWEEN, Map.of("min", 10000.00, "max", 20000.00)),
+            assertion("$.transactions", AssertionOperator.LIST_SIZE_EQUALS, 3),
+            assertion("$.transactions[*].id", AssertionOperator.UNIQUE_ELEMENTS, null),
+            assertion("$.openingDate", AssertionOperator.DATE_BEFORE, "2025-01-01")
         );
 
         RuleTestCase ruleTestCase = testCase("Banking Test", assertions);
@@ -75,14 +75,14 @@ class AssertionEngineIntegrationTest {
         String jsonPayload = loadJsonResource("/integration/ecommerce_order.json");
 
         List<JsonAssertion> assertions = List.of(
-                assertion("$.orderId", AssertionOperator.STARTS_WITH, "ORD-"),
-                assertion("$.payment.status", AssertionOperator.EQUALS, "COMPLETED"),
-                assertion("$.totals.grandTotal", AssertionOperator.MONEY_EQUALS, 258.39),
-                assertion(null, AssertionOperator.FIELD_EQUALS_OTHER_FIELD, Map.of("leftPath", "$.totals.subtotal", "rightPath", "$.totals.calculatedSubtotal")),
-                composite(AssertionOperator.AND, List.of(
-                        assertion("$.customer.membershipLevel", AssertionOperator.EQUALS, "GOLD"),
-                        assertion("$.shippingAddress.country", AssertionOperator.EQUALS, "USA")
-                ))
+            assertion("$.orderId", AssertionOperator.STARTS_WITH, "ORD-"),
+            assertion("$.payment.status", AssertionOperator.EQUALS, "COMPLETED"),
+            assertion("$.totals.grandTotal", AssertionOperator.MONEY_EQUALS, 258.39),
+            assertion(null, AssertionOperator.FIELD_EQUALS_OTHER_FIELD, Map.of("leftPath", "$.totals.subtotal", "rightPath", "$.totals.calculatedSubtotal")),
+            composite(AssertionOperator.AND, List.of(
+                assertion("$.customer.membershipLevel", AssertionOperator.EQUALS, "GOLD"),
+                assertion("$.shippingAddress.country", AssertionOperator.EQUALS, "USA")
+            ))
         );
 
         RuleTestCase ruleTestCase = testCase("E-commerce Order Test", assertions);
@@ -96,11 +96,11 @@ class AssertionEngineIntegrationTest {
         String jsonPayload = loadJsonResource("/integration/user_profile.json");
 
         List<JsonAssertion> assertions = List.of(
-                assertion("$.userId", AssertionOperator.PATH_EXISTS, null),
-                assertion("$.profile.securityFlags.twoFactorEnabled", AssertionOperator.EQUALS, true),
-                assertion("$.roles", AssertionOperator.CONTAINS_ALL, List.of("USER", "ADMIN")),
-                assertion("$.profile.age", AssertionOperator.GREATER_THAN, 18),
-                assertion("$.preferences.theme", AssertionOperator.VALUE_IN, List.of("DARK", "LIGHT"))
+            assertion("$.userId", AssertionOperator.PATH_EXISTS, null),
+            assertion("$.profile.securityFlags.twoFactorEnabled", AssertionOperator.EQUALS, true),
+            assertion("$.roles", AssertionOperator.CONTAINS_ALL, List.of("USER", "ADMIN")),
+            assertion("$.profile.age", AssertionOperator.GREATER_THAN, 18),
+            assertion("$.preferences.theme", AssertionOperator.VALUE_IN, List.of("DARK", "LIGHT"))
         );
 
         RuleTestCase ruleTestCase = testCase("User Profile Test", assertions);
@@ -114,13 +114,13 @@ class AssertionEngineIntegrationTest {
         String jsonPayload = loadJsonResource("/integration/banking_response.json");
 
         List<JsonAssertion> assertions = List.of(
-                assertion("$.balance", AssertionOperator.MONEY_EQUALS, Map.of("amount", 15420.50, "currency", "EUR"))
+            assertion("$.balance", AssertionOperator.MONEY_EQUALS, Map.of("amount", 15420.50, "currency", "EUR"))
         );
 
         RuleTestCase ruleTestCase = testCase("Banking Currency Mismatch", assertions);
 
         assertThatThrownBy(() -> engine.assertResponse(jsonPayload, ruleTestCase))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("Currency mismatch");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("Currency mismatch");
     }
 }

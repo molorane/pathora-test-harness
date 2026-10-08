@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.List;
 
@@ -29,24 +29,24 @@ class IsStringNoneEmptyEvaluatorTest {
     @DisplayName("PASS: list of non-empty strings")
     void shouldPassWhenListOfNonEmpty() {
         assertThatNoException().isThrownBy(() ->
-                operator.apply("$.items", List.of("apple", "banana", "cherry"), null, true));
+            operator.apply("$.items", List.of("apple", "banana", "cherry"), null, true));
     }
 
     @Test
     @DisplayName("FAIL: single empty string")
     void shouldFailWhenSingleEmpty() {
         assertThatThrownBy(() -> operator.apply("$.text", "", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_STRING_NONE_EMPTY failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_STRING_NONE_EMPTY failed");
     }
 
     @Test
     @DisplayName("FAIL: list containing an empty string")
     void shouldFailWhenListContainsEmpty() {
         assertThatThrownBy(() ->
-                operator.apply("$.items", List.of("apple", "", "cherry"), null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_STRING_NONE_EMPTY failed");
+            operator.apply("$.items", List.of("apple", "", "cherry"), null, true))
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_STRING_NONE_EMPTY failed");
     }
 }
 

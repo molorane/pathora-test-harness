@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,8 +27,8 @@ class ListContainsEvaluatorTest {
     @DisplayName("PASS: array contains the expected string value")
     void shouldPassWhenArrayContainsString() {
         Object list = TestJsonHelper.parse("""
-                ["1004", "1011" ]
-                """);
+            ["1004", "1011" ]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.codes", list, "1004", true));
     }
 
@@ -41,8 +41,8 @@ class ListContainsEvaluatorTest {
     @DisplayName("PASS: array contains the expected numeric value")
     void shouldPassWhenArrayContainsNumber() {
         Object list = TestJsonHelper.parse("""
-                [1.0, 2.0, 3.0 ]
-                """);
+            [1.0, 2.0, 3.0 ]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.ids", list, 2.0, true));
     }
 
@@ -55,8 +55,8 @@ class ListContainsEvaluatorTest {
     @DisplayName("PASS: array contains value — single element")
     void shouldPassWithSingleElementArray() {
         Object list = TestJsonHelper.parse("""
-                ["ONLY" ]
-                """);
+            ["ONLY" ]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "ONLY", true));
     }
 
@@ -69,8 +69,8 @@ class ListContainsEvaluatorTest {
     @DisplayName("PASS: array contains value — last element")
     void shouldPassWhenValueIsLastElement() {
         Object list = TestJsonHelper.parse("""
-                ["A", "B", "C" ]
-                """);
+            ["A", "B", "C" ]
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply("$.items", list, "C", true));
     }
 
@@ -83,11 +83,11 @@ class ListContainsEvaluatorTest {
     @DisplayName("FAIL: array does not contain expected value")
     void shouldFailWhenValueNotInArray() {
         Object list = TestJsonHelper.parse("""
-                ["1011", "1012" ]
-                """);
+            ["1011", "1012" ]
+            """);
         assertThatThrownBy(() -> operator.apply("$.codes", list, "1004", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LIST_CONTAINS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LIST_CONTAINS failed");
     }
 
     /**
@@ -99,11 +99,11 @@ class ListContainsEvaluatorTest {
     @DisplayName("FAIL: empty array")
     void shouldFailWhenArrayIsEmpty() {
         Object list = TestJsonHelper.parse("""
-                []
-                """);
+            []
+            """);
         assertThatThrownBy(() -> operator.apply("$.codes", list, "1004", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LIST_CONTAINS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LIST_CONTAINS failed");
     }
 
     /**
@@ -115,8 +115,8 @@ class ListContainsEvaluatorTest {
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {
         assertThatThrownBy(() -> operator.apply("$.codes", "not-a-list", "1004", true))
-                .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("Expected array at path");
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("Expected array at path");
     }
 }
 

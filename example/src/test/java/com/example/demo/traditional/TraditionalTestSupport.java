@@ -1,6 +1,17 @@
 package com.example.demo.traditional;
 
-import com.example.demo.dto.*;
+import com.example.demo.dto.inventory.InventoryRequest;
+import com.example.demo.dto.inventory.InventoryResponse;
+import com.example.demo.dto.loan.LoanRequest;
+import com.example.demo.dto.loan.LoanResponse;
+import com.example.demo.dto.order.OrderRequest;
+import com.example.demo.dto.order.OrderResponse;
+import com.example.demo.dto.payment.PaymentRequest;
+import com.example.demo.dto.payment.PaymentResponse;
+import com.example.demo.dto.policy.PolicyRequest;
+import com.example.demo.dto.policy.PolicyResponse;
+import com.example.demo.dto.user.UserRequest;
+import com.example.demo.dto.user.UserResponse;
 import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import tools.jackson.databind.ObjectMapper;
@@ -15,7 +26,7 @@ import java.util.UUID;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
-abstract class TraditionalTestSupport {
+public abstract class TraditionalTestSupport {
 
     protected static final Path POLICY_REQUEST_PATH = Paths.get("templates/requests/complex-policy-request.json");
     protected static final Path USER_REQUEST_PATH = Paths.get("templates/requests/user-create-request.json");
@@ -150,4 +161,3 @@ abstract class TraditionalTestSupport {
         }
     }
 }
-

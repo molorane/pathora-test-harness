@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.string;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,7 +29,7 @@ class RegexMatchEvaluatorTest {
     @DisplayName("PASS: reference ID matches pattern")
     void shouldPassWhenReferenceIdMatches() {
         assertThatNoException()
-                .isThrownBy(() -> operator.apply("$.refId", "REF-1234-56789", "^REF-\\d{4}-\\d{5}$", true));
+            .isThrownBy(() -> operator.apply("$.refId", "REF-1234-56789", "^REF-\\d{4}-\\d{5}$", true));
     }
 
     /**
@@ -41,7 +41,7 @@ class RegexMatchEvaluatorTest {
     @DisplayName("PASS: email matches pattern")
     void shouldPassWhenEmailMatches() {
         assertThatNoException()
-                .isThrownBy(() -> operator.apply("$.email", "user@example.com", "^[\\w.]+@[\\w.]+\\.[a-z]{2,}$", true));
+            .isThrownBy(() -> operator.apply("$.email", "user@example.com", "^[\\w.]+@[\\w.]+\\.[a-z]{2,}$", true));
     }
 
     /**
@@ -64,7 +64,7 @@ class RegexMatchEvaluatorTest {
     @DisplayName("PASS: UUID matches pattern")
     void shouldPassWhenUuidMatches() {
         assertThatNoException().isThrownBy(() -> operator.apply("$.id", "550e8400-e29b-41d4-a716-446655440000",
-                "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", true));
+            "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", true));
     }
 
     /**
@@ -100,8 +100,8 @@ class RegexMatchEvaluatorTest {
     @DisplayName("FAIL: reference ID does not match pattern")
     void shouldFailWhenPatternDoesNotMatch() {
         assertThatThrownBy(() -> operator.apply("$.refId", "INVALID-ID", "^REF-\\d{4}-\\d{5}$", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("REGEX_MATCH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("REGEX_MATCH failed");
     }
 
     /**
@@ -113,8 +113,8 @@ class RegexMatchEvaluatorTest {
     @DisplayName("FAIL: partial match is not enough — must be full match")
     void shouldFailOnPartialMatch() {
         assertThatThrownBy(() -> operator.apply("$.refId", "REF-1234-56789-extra", "^REF-\\d{4}-\\d{5}$", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("REGEX_MATCH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("REGEX_MATCH failed");
     }
 
     /**
@@ -126,8 +126,8 @@ class RegexMatchEvaluatorTest {
     @DisplayName("FAIL: empty string against non-empty pattern")
     void shouldFailWhenActualIsEmpty() {
         assertThatThrownBy(() -> operator.apply("$.field", "", ".+", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("REGEX_MATCH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("REGEX_MATCH failed");
     }
 
     // ── Edge / error cases ──
@@ -141,8 +141,8 @@ class RegexMatchEvaluatorTest {
     @DisplayName("FAIL: expected is not a string")
     void shouldFailWhenExpectedIsNotString() {
         assertThatThrownBy(() -> operator.apply("$.field", "value", 123, true))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("REGEX_MATCH requires a string pattern");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("REGEX_MATCH requires a string pattern");
     }
 
     /**
@@ -154,8 +154,8 @@ class RegexMatchEvaluatorTest {
     @DisplayName("FAIL: invalid regex pattern")
     void shouldFailWithInvalidRegex() {
         assertThatThrownBy(() -> operator.apply("$.field", "value", "[invalid(", true))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("invalid regex pattern");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("invalid regex pattern");
     }
 
     /**
@@ -167,7 +167,7 @@ class RegexMatchEvaluatorTest {
     @DisplayName("PASS: case-sensitive match by default")
     void shouldBeCaseSensitive() {
         assertThatThrownBy(() -> operator.apply("$.status", "approved", "^APPROVED$", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("REGEX_MATCH failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("REGEX_MATCH failed");
     }
 }

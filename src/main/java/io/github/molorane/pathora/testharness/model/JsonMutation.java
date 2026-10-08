@@ -12,11 +12,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record JsonMutation(
 
-        @JsonProperty("path")
-        String path,
+    @JsonProperty("path")
+    String path,
 
-        @JsonProperty("value")
-        Object value
+    @JsonProperty("value")
+    Object value
 ) {
 }
 

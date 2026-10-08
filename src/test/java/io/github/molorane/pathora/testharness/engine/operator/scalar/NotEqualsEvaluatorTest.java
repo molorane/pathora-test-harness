@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -82,8 +82,8 @@ class NotEqualsEvaluatorTest {
     @DisplayName("FAIL: same strings")
     void shouldFailWhenStringsMatch() {
         assertThatThrownBy(() -> operator.apply("$.status", "DECLINED", "DECLINED", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("NOT_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("NOT_EQUALS failed");
     }
 
     /**
@@ -95,8 +95,8 @@ class NotEqualsEvaluatorTest {
     @DisplayName("FAIL: same numbers")
     void shouldFailWhenNumbersMatch() {
         assertThatThrownBy(() -> operator.apply("$.score", 100, 100, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("NOT_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("NOT_EQUALS failed");
     }
 
     /**
@@ -108,8 +108,8 @@ class NotEqualsEvaluatorTest {
     @DisplayName("FAIL: numeric coercion makes them equal")
     void shouldFailWithNumericCoercion() {
         assertThatThrownBy(() -> operator.apply("$.score", 5, 5.0, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("NOT_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("NOT_EQUALS failed");
     }
 
     /**
@@ -121,8 +121,8 @@ class NotEqualsEvaluatorTest {
     @DisplayName("FAIL: string-to-number coercion makes them equal")
     void shouldFailWithStringToNumberCoercion() {
         assertThatThrownBy(() -> operator.apply("$.score", 42, "42", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("NOT_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("NOT_EQUALS failed");
     }
 
     /**
@@ -134,7 +134,7 @@ class NotEqualsEvaluatorTest {
     @DisplayName("FAIL: both null")
     void shouldFailWhenBothNull() {
         assertThatThrownBy(() -> operator.apply("$.field", null, null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("NOT_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("NOT_EQUALS failed");
     }
 }

@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.object;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.Collections;
 import java.util.Map;
@@ -30,8 +30,8 @@ class IsNotEmptyObjectEvaluatorTest {
     @DisplayName("FAIL: empty map {}")
     void shouldFailWhenEmptyObject() {
         assertThatThrownBy(() -> operator.apply("$.meta", Collections.emptyMap(), null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_NOT_EMPTY_OBJECT failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_NOT_EMPTY_OBJECT failed");
     }
 }
 

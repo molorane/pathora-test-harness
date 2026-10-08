@@ -91,13 +91,13 @@ public class AssertionEngine {
         String mutatedRequest) {
 
         // Handle logical composition operators first
-        if (isLogicalOperator(assertion.operator())) {
+        if (isLogicalOperator(assertion.operatorName())) {
             evaluateLogicalAssertion(assertion, context, testCase, response, mutatedRequest);
             return;
         }
 
         // Context-aware operators resolve their own paths
-        AssertionEvaluator handler = operatorRegistry.get(assertion.operator());
+        AssertionEvaluator handler = resolveEvaluator(assertion);
         if (handler instanceof DocumentContextAwareEvaluator contextAware) {
             Object resolvedValue = DateExpressionResolver.resolve(assertion.value());
             contextAware.apply(context, resolvedValue);
@@ -105,6 +105,13 @@ public class AssertionEngine {
         }
 
         evaluatePathAssertion(assertion, context, testCase, response, mutatedRequest);
+    }
+
+    private boolean isLogicalOperator(String operatorName) {
+        String normalized = operatorName == null ? "" : operatorName.trim().toUpperCase();
+        return "AND".equals(normalized)
+            || "OR".equals(normalized)
+            || "NOT".equals(normalized);
     }
 
     private boolean isLogicalOperator(AssertionOperator operator) {
@@ -119,11 +126,12 @@ public class AssertionEngine {
         RuleTestCase testCase,
         String response,
         String mutatedRequest) {
-        if (assertion.operator() == AssertionOperator.AND) {
+        AssertionOperator logicalOperator = assertion.asEnum();
+        if (logicalOperator == AssertionOperator.AND) {
             evaluateAnd(assertion, context, testCase, response, mutatedRequest);
-        } else if (assertion.operator() == AssertionOperator.OR) {
+        } else if (logicalOperator == AssertionOperator.OR) {
             evaluateOr(assertion, context, testCase, response, mutatedRequest);
-        } else if (assertion.operator() == AssertionOperator.NOT) {
+        } else if (logicalOperator == AssertionOperator.NOT) {
             evaluateNot(assertion, context, testCase, response, mutatedRequest);
         }
     }
@@ -215,8 +223,9 @@ public class AssertionEngine {
         String response,
         String mutatedRequest,
         com.jayway.jsonpath.PathNotFoundException e) {
-        if (assertion.operator() != AssertionOperator.PATH_EXISTS
-            && assertion.operator() != AssertionOperator.PATH_NOT_EXISTS) {
+        AssertionOperator operator = assertion.asEnum();
+        if (operator != AssertionOperator.PATH_EXISTS
+            && operator != AssertionOperator.PATH_NOT_EXISTS) {
             throw new AssertionError(
                 """
                     JSON_PATH_EVALUATION_FAILED
@@ -235,7 +244,7 @@ public class AssertionEngine {
                     """.formatted(
                     assertion.path(),
                     assertion.value(),
-                    assertion.operator(),
+                    assertion.operatorName(),
                     testCase.operation(),
                     response,
                     mutatedRequest),
@@ -267,7 +276,7 @@ public class AssertionEngine {
                 """.formatted(
                 assertion.path(),
                 assertion.value(),
-                assertion.operator(),
+                assertion.operatorName(),
                 testCase.operation(),
                 e.getMessage(),
                 response,
@@ -284,11 +293,11 @@ public class AssertionEngine {
      */
     public void applyAssertion(JsonAssertion assertion, Object actual, boolean pathExists) {
 
-        AssertionEvaluator handler = operatorRegistry.get(assertion.operator());
+        AssertionEvaluator handler = resolveEvaluator(assertion);
 
         if (handler == null) {
             throw new IllegalArgumentException(
-                "No handler registered for operator: " + assertion.operator());
+                "No handler registered for operator: " + assertion.operatorName());
         }
 
         Object resolvedValue = DateExpressionResolver.resolve(assertion.value());
@@ -298,5 +307,49 @@ public class AssertionEngine {
             resolvedValue,
             pathExists);
     }
-}
 
+    private AssertionEvaluator resolveEvaluator(JsonAssertion assertion) {
+        AssertionOperator builtIn = assertion.asEnum();
+        if (builtIn != null) {
+            AssertionEvaluator evaluator = operatorRegistry.get(builtIn);
+            if (evaluator != null) {
+                return evaluator;
+            }
+        }
+        return operatorRegistry.get(assertion.operatorName());
+    }
+
+    private AssertionEvaluator resolveEvaluator(String operatorName) {
+        return operatorRegistry.get(operatorName);
+    }
+
+    /**
+     * Registers a custom operator implementation by name.
+     *
+     * @param name      the custom operator name, for example {@code HAS_ACTIVE_SUBSCRIPTION}
+     * @param evaluator the custom evaluator implementation
+     */
+    public void registerOperator(String name, AssertionEvaluator evaluator) {
+        operatorRegistry.register(name, evaluator);
+    }
+
+    /**
+     * Returns the handler for a built-in or custom operator name.
+     *
+     * @param name the operator name
+     * @return the evaluator, or {@code null} if none is registered
+     */
+    public AssertionEvaluator getOperator(String name) {
+        return operatorRegistry.get(name);
+    }
+
+    /**
+     * Returns the handler for a built-in enum operator.
+     *
+     * @param operator the built-in operator
+     * @return the evaluator, or {@code null} if none is registered
+     */
+    public AssertionEvaluator getOperator(AssertionOperator operator) {
+        return operatorRegistry.get(operator);
+    }
+}

@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.date;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -49,8 +49,8 @@ class DateAfterEvaluatorTest {
     @DisplayName("FAIL: same date")
     void shouldFailWhenEqual() {
         assertThatThrownBy(() -> operator.apply("$.start", "2026-12-31", "2026-12-31", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("DATE_AFTER failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DATE_AFTER failed");
     }
 
     /**
@@ -62,8 +62,8 @@ class DateAfterEvaluatorTest {
     @DisplayName("FAIL: date before expected")
     void shouldFailWhenBefore() {
         assertThatThrownBy(() -> operator.apply("$.start", "2025-06-15", "2026-12-31", true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("DATE_AFTER failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DATE_AFTER failed");
     }
 
     /**
@@ -75,7 +75,7 @@ class DateAfterEvaluatorTest {
     @DisplayName("FAIL: invalid date format")
     void shouldFailWithInvalidFormat() {
         assertThatThrownBy(() -> operator.apply("$.start", "not-a-date", "2026-12-31", true))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Cannot parse date");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Cannot parse date");
     }
 }

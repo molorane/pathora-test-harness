@@ -2,11 +2,11 @@ package io.github.molorane.pathora.testharness.engine.operator.duration;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,16 +33,16 @@ class DurationGreaterThanEvaluatorTest {
     @DisplayName("PASS: duration > threshold")
     void shouldPassWhenGreater() {
         DocumentContext ctx = parse("""
-                {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T14:00:00"}}
-                """);
+            {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T14:00:00"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "startPath": "$.outputData.start",
-                  "endPath": "$.outputData.end",
-                  "unit": "HOURS",
-                  "value": 2
-                }
-                """);
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "HOURS",
+              "value": 2
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -55,19 +55,19 @@ class DurationGreaterThanEvaluatorTest {
     @DisplayName("FAIL: duration equals threshold (not strictly greater)")
     void shouldFailWhenEqual() {
         DocumentContext ctx = parse("""
-                {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T12:00:00"}}
-                """);
+            {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T12:00:00"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "startPath": "$.outputData.start",
-                  "endPath": "$.outputData.end",
-                  "unit": "HOURS",
-                  "value": 2
-                }
-                """);
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "HOURS",
+              "value": 2
+            }
+            """);
         assertThatThrownBy(() -> operator.apply(ctx, value))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("DURATION_GREATER_THAN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DURATION_GREATER_THAN failed");
     }
 
     /**
@@ -79,18 +79,18 @@ class DurationGreaterThanEvaluatorTest {
     @DisplayName("FAIL: duration < threshold")
     void shouldFailWhenLess() {
         DocumentContext ctx = parse("""
-                {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T11:00:00"}}
-                """);
+            {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T11:00:00"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "startPath": "$.outputData.start",
-                  "endPath": "$.outputData.end",
-                  "unit": "HOURS",
-                  "value": 2
-                }
-                """);
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "HOURS",
+              "value": 2
+            }
+            """);
         assertThatThrownBy(() -> operator.apply(ctx, value))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("DURATION_GREATER_THAN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DURATION_GREATER_THAN failed");
     }
 }

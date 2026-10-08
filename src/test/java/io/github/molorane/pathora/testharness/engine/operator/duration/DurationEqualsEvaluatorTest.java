@@ -2,11 +2,11 @@ package io.github.molorane.pathora.testharness.engine.operator.duration;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,17 +33,17 @@ class DurationEqualsEvaluatorTest {
     @DisplayName("PASS: duration equals expected — 150 minutes")
     void shouldPassWhenEqual() {
         DocumentContext ctx = parse(
-                """
-                        {"outputData": {"createdAt": "2026-01-01T10:00:00", "processedAt": "2026-01-01T12:30:00"}}
-                        """);
-        Object value = TestJsonHelper.parse("""
-                {
-                  "startPath": "$.outputData.createdAt",
-                  "endPath": "$.outputData.processedAt",
-                  "unit": "MINUTES",
-                  "expected": 150
-                }
+            """
+                {"outputData": {"createdAt": "2026-01-01T10:00:00", "processedAt": "2026-01-01T12:30:00"}}
                 """);
+        Object value = TestJsonHelper.parse("""
+            {
+              "startPath": "$.outputData.createdAt",
+              "endPath": "$.outputData.processedAt",
+              "unit": "MINUTES",
+              "expected": 150
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -56,16 +56,16 @@ class DurationEqualsEvaluatorTest {
     @DisplayName("PASS: duration equals expected — 5 days")
     void shouldPassWithDays() {
         DocumentContext ctx = parse("""
-                {"outputData": {"start": "2026-01-01", "end": "2026-01-06"}}
-                """);
+            {"outputData": {"start": "2026-01-01", "end": "2026-01-06"}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "startPath": "$.outputData.start",
-                  "endPath": "$.outputData.end",
-                  "unit": "DAYS",
-                  "expected": 5
-                }
-                """);
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "DAYS",
+              "expected": 5
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -78,20 +78,20 @@ class DurationEqualsEvaluatorTest {
     @DisplayName("FAIL: duration does not match")
     void shouldFailWhenNotEqual() {
         DocumentContext ctx = parse(
-                """
-                        {"outputData": {"createdAt": "2026-01-01T10:00:00", "processedAt": "2026-01-01T12:00:00"}}
-                        """);
-        Object value = TestJsonHelper.parse("""
-                {
-                  "startPath": "$.outputData.createdAt",
-                  "endPath": "$.outputData.processedAt",
-                  "unit": "MINUTES",
-                  "expected": 150
-                }
+            """
+                {"outputData": {"createdAt": "2026-01-01T10:00:00", "processedAt": "2026-01-01T12:00:00"}}
                 """);
+        Object value = TestJsonHelper.parse("""
+            {
+              "startPath": "$.outputData.createdAt",
+              "endPath": "$.outputData.processedAt",
+              "unit": "MINUTES",
+              "expected": 150
+            }
+            """);
         assertThatThrownBy(() -> operator.apply(ctx, value))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("DURATION_EQUALS failed")
-                .hasMessageContaining("120");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DURATION_EQUALS failed")
+            .hasMessageContaining("120");
     }
 }

@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.OrderRequest;
-import com.example.demo.dto.OrderResponse;
+import com.example.demo.dto.order.OrderRequest;
+import com.example.demo.dto.order.OrderResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -37,4 +37,5 @@ public class OrderProcessingService {
         );
     }
 }
+
 

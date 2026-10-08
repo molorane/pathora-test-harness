@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,9 +79,9 @@ class UniqueElementsEvaluatorTest {
     void shouldFailWithDuplicateString() {
         List<String> list = Arrays.asList("A", "B", "A");
         assertThatThrownBy(() -> operator.apply("$.codes", list, null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("UNIQUE_ELEMENTS failed")
-                .hasMessageContaining("Duplicate found: A");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("UNIQUE_ELEMENTS failed")
+            .hasMessageContaining("Duplicate found: A");
     }
 
     /**
@@ -94,9 +94,9 @@ class UniqueElementsEvaluatorTest {
     void shouldFailWithDuplicateNumbers() {
         List<Integer> list = Arrays.asList(1, 2, 2, 3);
         assertThatThrownBy(() -> operator.apply("$.ids", list, null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("Duplicate found: 2")
-                .hasMessageContaining("index 2");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("Duplicate found: 2")
+            .hasMessageContaining("index 2");
     }
 
     /**
@@ -109,8 +109,8 @@ class UniqueElementsEvaluatorTest {
     void shouldFailWhenAllSame() {
         List<String> list = Arrays.asList("X", "X", "X");
         assertThatThrownBy(() -> operator.apply("$.codes", list, null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("UNIQUE_ELEMENTS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("UNIQUE_ELEMENTS failed");
     }
 
     /**
@@ -122,7 +122,7 @@ class UniqueElementsEvaluatorTest {
     @DisplayName("FAIL: actual is not a list")
     void shouldFailWhenActualIsNotList() {
         assertThatThrownBy(() -> operator.apply("$.codes", "scalar", null, true))
-                .isInstanceOf(AssertionError.class)
-                .hasMessageContaining("Expected array at path");
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("Expected array at path");
     }
 }

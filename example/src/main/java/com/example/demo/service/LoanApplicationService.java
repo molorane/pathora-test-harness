@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.LoanRequest;
-import com.example.demo.dto.LoanResponse;
+import com.example.demo.dto.loan.LoanRequest;
+import com.example.demo.dto.loan.LoanResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -49,4 +49,5 @@ public class LoanApplicationService {
         );
     }
 }
+
 

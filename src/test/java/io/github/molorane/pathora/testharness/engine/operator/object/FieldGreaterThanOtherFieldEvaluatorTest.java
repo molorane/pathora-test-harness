@@ -2,11 +2,11 @@ package io.github.molorane.pathora.testharness.engine.operator.object;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.engine.operator.TestJsonHelper;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,14 +28,14 @@ class FieldGreaterThanOtherFieldEvaluatorTest {
     @DisplayName("PASS: left field > right field")
     void shouldPassWhenLeftGreaterThanRight() {
         DocumentContext ctx = parse("""
-                {"outputData": {"maxScore": 100, "minScore": 50}}
-                """);
+            {"outputData": {"maxScore": 100, "minScore": 50}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "leftPath": "$.outputData.maxScore",
-                  "rightPath": "$.outputData.minScore"
-                }
-                """);
+            {
+              "leftPath": "$.outputData.maxScore",
+              "rightPath": "$.outputData.minScore"
+            }
+            """);
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
@@ -43,17 +43,17 @@ class FieldGreaterThanOtherFieldEvaluatorTest {
     @DisplayName("FAIL: left field <= right field")
     void shouldFailWhenLeftNotGreaterThanRight() {
         DocumentContext ctx = parse("""
-                {"outputData": {"maxScore": 50, "minScore": 100}}
-                """);
+            {"outputData": {"maxScore": 50, "minScore": 100}}
+            """);
         Object value = TestJsonHelper.parse("""
-                {
-                  "leftPath": "$.outputData.maxScore",
-                  "rightPath": "$.outputData.minScore"
-                }
-                """);
+            {
+              "leftPath": "$.outputData.maxScore",
+              "rightPath": "$.outputData.minScore"
+            }
+            """);
         assertThatThrownBy(() -> operator.apply(ctx, value))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("FIELD_GREATER_THAN_OTHER_FIELD failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("FIELD_GREATER_THAN_OTHER_FIELD failed");
     }
 }
 

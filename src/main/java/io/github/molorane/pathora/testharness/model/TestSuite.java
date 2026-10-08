@@ -16,17 +16,17 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record TestSuite(
 
-        @JsonProperty("requestPath")
-        String requestPath,
+    @JsonProperty("requestPath")
+    String requestPath,
 
-        @JsonProperty("xmlRequestPath")
-        String xmlRequestPath,
+    @JsonProperty("xmlRequestPath")
+    String xmlRequestPath,
 
-        @JsonProperty("tests")
-        List<RuleTestCase> tests,
+    @JsonProperty("tests")
+    List<RuleTestCase> tests,
 
-        @JsonProperty("timezone")
-        String timezone
+    @JsonProperty("timezone")
+    String timezone
 ) {
 
     /**
@@ -37,12 +37,13 @@ public record TestSuite(
      * @param tests          the list of test cases in this suite
      */
     public TestSuite(
-            String requestPath,
-            String xmlRequestPath,
-            List<RuleTestCase> tests
+        String requestPath,
+        String xmlRequestPath,
+        List<RuleTestCase> tests
     ) {
         this(requestPath, xmlRequestPath, tests, null);
     }
+
     /**
      * Resolves the primary request template path, preferring XML path if specified.
      *

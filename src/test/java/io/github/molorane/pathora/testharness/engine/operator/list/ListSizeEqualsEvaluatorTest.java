@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.list;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -90,8 +90,8 @@ class ListSizeEqualsEvaluatorTest {
     void shouldFailWhenTooManyElements() {
         List<String> list = Arrays.asList("A", "B", "C");
         assertThatThrownBy(() -> operator.apply("$.items", list, 2, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LIST_SIZE_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LIST_SIZE_EQUALS failed");
     }
 
     /**
@@ -104,8 +104,8 @@ class ListSizeEqualsEvaluatorTest {
     void shouldFailWhenTooFewElements() {
         List<String> list = List.of("A");
         assertThatThrownBy(() -> operator.apply("$.items", list, 3, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LIST_SIZE_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LIST_SIZE_EQUALS failed");
     }
 
     /**
@@ -117,8 +117,8 @@ class ListSizeEqualsEvaluatorTest {
     @DisplayName("FAIL: non-list value")
     void shouldFailWhenNotAList() {
         assertThatThrownBy(() -> operator.apply("$.items", "not-a-list", 1, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("Expected array at path");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("Expected array at path");
     }
 
     /**
@@ -130,8 +130,8 @@ class ListSizeEqualsEvaluatorTest {
     @DisplayName("FAIL: null actual with expected size > 0")
     void shouldFailWhenNullWithNonZeroExpected() {
         assertThatThrownBy(() -> operator.apply("$.items", null, 1, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("LIST_SIZE_EQUALS failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("LIST_SIZE_EQUALS failed");
     }
 }
 

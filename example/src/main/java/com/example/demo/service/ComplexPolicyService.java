@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.PolicyRequest;
-import com.example.demo.dto.PolicyResponse;
+import com.example.demo.dto.policy.PolicyRequest;
+import com.example.demo.dto.policy.PolicyResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -163,4 +163,5 @@ public class ComplexPolicyService {
         );
     }
 }
+
 

@@ -1,10 +1,10 @@
 package io.github.molorane.pathora.testharness.engine.operator.money;
 
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import java.util.Map;
 
@@ -36,11 +36,11 @@ class MoneyBetweenEvaluatorTest {
         Map<String, Object> range = Map.of("min", "100.00", "max", "200.00");
 
         assertThatThrownBy(() -> operator.apply("$.amount", "99.99", range, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("MONEY_BETWEEN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("MONEY_BETWEEN failed");
 
         assertThatThrownBy(() -> operator.apply("$.amount", "200.01", range, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("MONEY_BETWEEN failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("MONEY_BETWEEN failed");
     }
 }

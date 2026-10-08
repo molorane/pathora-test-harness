@@ -1,9 +1,9 @@
 package io.github.molorane.pathora.testharness.engine.operator.scalar;
 
+import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import io.github.molorane.pathora.testharness.exception.HarnessAssertionException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,16 +29,16 @@ class IsTrueEvaluatorTest {
     @DisplayName("FAIL: boolean false, string false, or non-boolean")
     void shouldFailWhenNotTrue() {
         assertThatThrownBy(() -> operator.apply("$.active", false, null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_TRUE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_TRUE failed");
 
         assertThatThrownBy(() -> operator.apply("$.active", "false", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_TRUE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_TRUE failed");
 
         assertThatThrownBy(() -> operator.apply("$.active", "random", null, true))
-                .isInstanceOf(HarnessAssertionException.class)
-                .hasMessageContaining("IS_TRUE failed");
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("IS_TRUE failed");
     }
 }
 
