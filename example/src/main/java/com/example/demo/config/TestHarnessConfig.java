@@ -1,9 +1,5 @@
 package com.example.demo.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.EntryPointDispatcher;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
@@ -19,6 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.dataformat.xml.XmlMapper;
 
 import java.util.List;
 
@@ -43,18 +42,14 @@ public class TestHarnessConfig {
 
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return objectMapper;
+        return JsonMapper.builder()
+            .build();
     }
 
     @Bean
     public XmlMapper xmlMapper() {
-        XmlMapper xmlMapper = new XmlMapper();
-        xmlMapper.registerModule(new JavaTimeModule());
-        xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return xmlMapper;
+        return XmlMapper.builder()
+            .build();
     }
 
     @Bean
@@ -98,4 +93,3 @@ public class TestHarnessConfig {
         return new ResponseAssertionExecutor(assertionEngine);
     }
 }
-

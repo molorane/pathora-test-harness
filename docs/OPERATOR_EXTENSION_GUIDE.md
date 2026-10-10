@@ -145,7 +145,85 @@ These operators evaluate business rules at runtime using the service and do not 
 - Prefer names that are stable, uppercase, and obvious for test authors.
 - Return clear assertion failures with meaningful messages for production troubleshooting.
 
+---
+
+## Extending the Expression Language (`ExpressionTokenEvaluator`)
+
+In addition to custom assertion operators, consumers can extend Pathora's dynamic expression language by registering custom **Expression Evaluator Strategies**.
+
+### 1. The `ExpressionTokenEvaluator` Interface Contract
+
+Implement `ExpressionTokenEvaluator` to handle custom token names:
+
+```java
+package com.example.demo.expression;
+
+import io.github.molorane.pathora.testharness.engine.expression.ExpressionTokenEvaluator;
+import java.util.Set;
+
+public class DemoTenantTokenEvaluator implements ExpressionTokenEvaluator {
+
+    private static final Set<String> TOKENS = Set.of("DEMO_TENANT", "TENANT_CODE");
+
+    @Override
+    public Set<String> supportedTokens() {
+        return TOKENS;
+    }
+
+    @Override
+    public Object evaluate(TokenContext context) {
+        // Access context information: tokenName, offsetStr, formatPattern, allowNumeric
+        String param = context.formatPattern() != null ? context.formatPattern() : "DEFAULT";
+        return "TNT-" + param.toUpperCase() + "-999";
+    }
+}
+```
+
+---
+
+### 2. Registering Custom Evaluators
+
+Custom expression evaluators can be registered using two methods:
+
+#### Method A: Java SPI Auto-Discovery (`ServiceLoader`)
+Zero-code registration! Add a ServiceLoader descriptor file:
+
+**File Path**: `src/main/resources/META-INF/services/io.github.molorane.pathora.testharness.engine.expression.ExpressionTokenEvaluator`
+
+**File Content**:
+```text
+com.example.demo.expression.DemoTenantTokenEvaluator
+```
+
+Pathora automatically scans and registers all SPI implementations during startup.
+
+#### Method B: Programmatic Registration
+Register the evaluator explicitly in code or test setup:
+
+```java
+import io.github.molorane.pathora.testharness.engine.expression.ExpressionRegistry;
+
+ExpressionRegistry.register(new DemoTenantTokenEvaluator());
+```
+
+---
+
+### 3. Usage in JSON Test Files
+
+Use the custom expression token in JSON mutations or assertions:
+
+```json
+{
+  "path": "$.customTenantCode",
+  "value": "{{$DEMO_TENANT:CYBERDYNE}}"
+}
+```
+
+At runtime, Pathora resolves `{{$DEMO_TENANT:CYBERDYNE}}` to `"TNT-CYBERDYNE-999"`.
+
+---
+
 ## Why this is the right pattern
 
-This pattern keeps the core library stable while allowing feature teams to extend the assertion vocabulary with business rules that are meaningful to their domain. No changes to existing built-in operators are required, and the extension remains isolated to the consuming project.
+This pattern keeps the core library stable while allowing feature teams to extend the assertion vocabulary and expression language with business rules and domain tokens that are meaningful to their domain. No changes to existing built-in evaluators or operators are required, and the extension remains isolated to the consuming project.
 

@@ -1,7 +1,7 @@
 package io.github.molorane.pathora.testharness.loader;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.molorane.pathora.testharness.model.TestSuite;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;

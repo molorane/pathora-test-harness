@@ -13,8 +13,8 @@ import com.example.demo.dto.policy.PolicyResponse;
 import com.example.demo.dto.user.UserRequest;
 import com.example.demo.dto.user.UserResponse;
 import com.example.demo.service.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.databind.ObjectMapper;
 
 import java.net.URI;
 import java.nio.file.Files;

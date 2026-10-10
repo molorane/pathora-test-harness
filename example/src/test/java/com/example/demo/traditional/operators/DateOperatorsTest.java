@@ -3,11 +3,11 @@ package com.example.demo.traditional.operators;
 import com.example.demo.dto.policy.PolicyRequest;
 import com.example.demo.dto.policy.PolicyResponse;
 import com.example.demo.service.ComplexPolicyService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import tools.jackson.databind.ObjectMapper;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

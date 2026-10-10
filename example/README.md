@@ -289,8 +289,8 @@ LocalDate leapDay = LocalDate.of(2028, 2, 29);
 PathoraClock.freeze(leapDay, ZoneId.of("Africa/Johannesburg"));
 
 // All expressions and date operators now evaluate against 2028-02-29
-DateExpressionResolver.resolveToString("{{$CURRENT_DATE}}"); // "2028-02-29"
-DateExpressionResolver.resolveToString("{{$CURRENT_DATE + 30d}}"); // "2028-03-30"
+ExpressionResolver.resolveToString("{{$CURRENT_DATE}}"); // "2028-02-29"
+ExpressionResolver.resolveToString("{{$CURRENT_DATE + 30d}}"); // "2028-03-30"
 ```
 
 ### Way 4: Programmatic Thread-Scoped Clock Freezing (Parallel Isolation)

@@ -1,11 +1,11 @@
 package io.github.molorane.pathora.testharness.engine;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.xml.XmlMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.github.molorane.pathora.testharness.model.JsonMutation;
-import io.github.molorane.pathora.testharness.util.DateExpressionResolver;
+import io.github.molorane.pathora.testharness.engine.expression.ExpressionResolver;
 
 import java.util.List;
 import java.util.Map;
@@ -148,7 +148,7 @@ public class JsonMutationEngine {
             );
         }
 
-        Object resolvedValue = DateExpressionResolver.resolve(mutation.value());
+        Object resolvedValue = ExpressionResolver.resolve(mutation.value());
 
         // CASE 1: Filter path (returns List)
         if (parentResult instanceof List<?> list) {

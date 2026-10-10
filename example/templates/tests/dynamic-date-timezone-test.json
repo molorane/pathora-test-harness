@@ -4,7 +4,7 @@
   "tests": [
     {
       "name": "Dynamic Date Token Mutation & Evaluation (Suite Timezone)",
-      "description": "Demonstrates suite-level timezone (Africa/Johannesburg) with dynamic date tokens {{$CURRENT_DATE}} and {{$CURRENT_DATE + 15d}} in request mutations and response assertions.",
+      "description": "Demonstrates suite-level timezone (Africa/Johannesburg) with dynamic date tokens in request mutations and response assertions.",
       "operation": "policy-evaluation-service",
       "mutations": [
         {
@@ -56,7 +56,7 @@
           "path": "$.currentDate",
           "operator": "DATE_EQUALS",
           "value": "{{$CURRENT_DATE}}",
-          "description": "Current date matches {{$CURRENT_DATE}} expression"
+          "description": "Current date matches current date expression"
         }
       ]
     },
@@ -111,7 +111,40 @@
           "description": "Effective date matches exact -30d dynamic token"
         }
       ]
+    },
+    {
+      "name": "Calendar Boundary & Time Expression Tokens Test",
+      "description": "Demonstrates calendar boundary and time expression tokens.",
+      "operation": "policy-evaluation-service",
+      "mutations": [
+        {
+          "path": "$.policyHeader.effectiveDate",
+          "value": "{{$START_OF_MONTH}}T00:00:00"
+        }
+      ],
+      "assertions": [
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_EQUALS",
+          "value": "{{$START_OF_MONTH}}",
+          "description": "Effective date equals start of month"
+        },
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_BETWEEN",
+          "value": {
+            "min": "{{$START_OF_YEAR}}",
+            "max": "{{$END_OF_YEAR}}"
+          },
+          "description": "Effective date is within current year boundary"
+        },
+        {
+          "path": "$.policyHeaderEffectiveDate",
+          "operator": "DATE_BEFORE",
+          "value": "{{$FIRST_DAY_OF_NEXT_MONTH}}",
+          "description": "Start of month is before first day of next month"
+        }
+      ]
     }
   ]
 }
-

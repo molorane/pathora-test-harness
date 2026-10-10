@@ -30,3 +30,6 @@ public class UserRegistrationExecutor implements EntryPointExecutor<UserRequest,
         return userRegistrationService.registerUser(userRequest);
     }
 }
+
+
+
