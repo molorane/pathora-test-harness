@@ -1,6 +1,6 @@
 package io.github.molorane.pathora.testharness.engine;
 
-import tools.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Record holding details of a JSON node mismatch between expected and actual values.

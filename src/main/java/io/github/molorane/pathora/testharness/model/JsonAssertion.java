@@ -32,24 +32,7 @@ public record JsonAssertion(
     @JsonProperty("assertions")
     List<JsonAssertion> assertions
 ) {
-    public JsonAssertion(
-        String path,
-        AssertionOperator operator,
-        Object value,
-        String description,
-        List<JsonAssertion> assertions) {
-        this(path, operator == null ? null : operator.name(), value, description, assertions);
-    }
 
-    @JsonCreator
-    public JsonAssertion(
-        @JsonProperty("path") String path,
-        @JsonProperty("operator") Object operator,
-        @JsonProperty("value") Object value,
-        @JsonProperty("description") String description,
-        @JsonProperty("assertions") List<JsonAssertion> assertions) {
-        this(path, normalizeOperator(operator), value, description, assertions);
-    }
 
     /**
      * Constructs a JsonAssertion with an {@link AssertionOperator} enum.

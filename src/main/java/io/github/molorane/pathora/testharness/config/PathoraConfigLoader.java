@@ -1,7 +1,7 @@
 package io.github.molorane.pathora.testharness.config;
 
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.InputStream;
 import java.util.LinkedHashMap;
