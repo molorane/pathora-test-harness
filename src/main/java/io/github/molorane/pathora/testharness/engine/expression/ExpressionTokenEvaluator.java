@@ -6,7 +6,13 @@ import java.util.Set;
  * Strategy interface for resolving dynamic expression tokens in Pathora Test Harness.
  *
  * <p>Implementations of this interface register supported token names (e.g. {@code CURRENT_DATE},
- * {@code UUID}) and evaluate dynamic expressions according to the provided {@link TokenContext}.</p>
+ * {@code RANDOM_DECIMAL}, {@code MATH}) and evaluate dynamic expressions according to the provided
+ * {@link TokenContext}.</p>
+ *
+ * <p>Library consumers can implement this interface to define custom expression language tokens.
+ * Custom evaluators can be registered programmatically via {@link ExpressionRegistry#register(ExpressionTokenEvaluator)}
+ * or auto-discovered dynamically via Java {@link java.util.ServiceLoader} SPI by adding a descriptor to
+ * {@code META-INF/services/io.github.molorane.pathora.testharness.engine.expression.ExpressionTokenEvaluator}.</p>
  */
 public interface ExpressionTokenEvaluator {
 

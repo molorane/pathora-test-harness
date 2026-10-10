@@ -29,5 +29,6 @@
   "sysJavaVersion": null,
   "pathoraConfigEnv": null,
   "pathoraAppName": null,
-  "pathoraAppRegion": null
+  "pathoraAppRegion": null,
+  "customTenantCode": null
 }

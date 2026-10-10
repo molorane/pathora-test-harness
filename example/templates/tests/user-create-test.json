@@ -125,6 +125,10 @@
         {
           "path": "$.pathoraAppRegion",
           "value": "{{$PATHORA:pathora.app.region}}"
+        },
+        {
+          "path": "$.customTenantCode",
+          "value": "{{$DEMO_TENANT:CYBERDYNE}}"
         }
       ],
       "assertions": [
@@ -300,6 +304,11 @@
           "path": "$.pathoraAppRegion",
           "value": "{{$PATHORA:pathora.app.region}}",
           "description": "Pathora app region matches pathora.yml property"
+        },
+        {
+          "path": "$.customTenantCode",
+          "value": "{{$DEMO_TENANT:CYBERDYNE}}",
+          "description": "Custom tenant code matches resolved DEMO_TENANT custom expression"
         }
       ]
     }

@@ -3,8 +3,8 @@ package com.example.demo.executor;
 import com.example.demo.dto.customer.CustomerEligibilityRequest;
 import com.example.demo.dto.customer.CustomerEligibilityResponse;
 import com.example.demo.service.CustomerEligibilityService;
-import org.springframework.stereotype.Component;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
+import org.springframework.stereotype.Component;
 
 /**
  * Entry point executor that exposes the customer eligibility domain service through the harness.
@@ -40,10 +40,10 @@ public class CustomerEligibilityExecutor implements EntryPointExecutor<CustomerE
     public CustomerEligibilityResponse execute(CustomerEligibilityRequest request) {
         String customerId = request.customerId();
         return new CustomerEligibilityResponse(
-                customerId,
-                customerEligibilityService.getSubscriptionStatus(customerId),
-                customerEligibilityService.getRegion(customerId),
-                customerEligibilityService.isInAllowedRegion(customerId, java.util.List.of("EU", "APAC"))
+            customerId,
+            customerEligibilityService.getSubscriptionStatus(customerId),
+            customerEligibilityService.getRegion(customerId),
+            customerEligibilityService.isInAllowedRegion(customerId, java.util.List.of("EU", "APAC"))
         );
     }
 }

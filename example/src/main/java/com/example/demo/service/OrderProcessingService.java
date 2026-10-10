@@ -26,14 +26,14 @@ public class OrderProcessingService {
         double totalAmount = Math.round((subtotal + tax) * 100.0) / 100.0;
 
         return new OrderResponse(
-                orderId,
-                orderRequest.customerId(),
-                totalItems,
-                subtotal,
-                tax,
-                totalAmount,
-                "CREATED",
-                Instant.now()
+            orderId,
+            orderRequest.customerId(),
+            totalItems,
+            subtotal,
+            tax,
+            totalAmount,
+            "CREATED",
+            Instant.now()
         );
     }
 }

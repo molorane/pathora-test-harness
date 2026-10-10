@@ -12,9 +12,12 @@ import java.util.Properties;
  * Automatically discovers and loads configuration properties from classpath resources
  * ({@code pathora.properties}, {@code pathora.yml}, or {@code pathora.yaml}).
  *
- * <p>Loaded properties are registered into JVM system properties (without overwriting explicitly
- * provided system properties), making them seamlessly available to expression tokens such as
- * {@code $SYS:property.name}.</p>
+ * <p>Discovered YAML and properties files are parsed, flattening nested structures into dotted keys
+ * (e.g. {@code pathora.environment}), and registered into JVM system properties without overwriting
+ * explicitly provided JVM {@code -D} parameters.</p>
+ *
+ * <p>Loaded properties are seamlessly available to dynamic expression tokens such as
+ * {@code {{$PROP:key}}}, {@code {{$PATHORA:key}}}, {@code {{$CONFIG:key}}}, and {@code {{$SYS:key}}}.</p>
  */
 public final class PathoraConfigLoader {
 

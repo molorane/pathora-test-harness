@@ -47,7 +47,7 @@ Hardcoded static timestamps in test payloads quickly become stale and cause test
 
 Dynamic expressions are wrapped in double curly braces `{{...}}` or written as standalone tokens (e.g. `{{$CURRENT_DATE}}` or `$CURRENT_DATE`).
 
-### Supported Base Tokens
+### Supported Base & Temporal Tokens
 
 | Token | Alias | Output Type | Default Format / Example |
 | :--- | :--- | :--- | :--- |
@@ -56,6 +56,61 @@ Dynamic expressions are wrapped in double curly braces `{{...}}` or written as s
 | `{{$CURRENT_TIME}}` | | String (ISO Time) | `HH:mm:ss` (e.g., `14:30:00`) |
 | `{{$EPOCH_MILLIS}}` | `{{$TIMESTAMP}}` | Long (Integer) | Milliseconds since epoch (e.g., `1791374400000`) |
 | `{{$EPOCH_SECONDS}}` | | Long (Integer) | Seconds since epoch (e.g., `1791374400`) |
+| `{{$START_OF_DAY}}` | | String (UTC Instant) | Start of current UTC day (e.g., `2026-10-07T00:00:00Z`) |
+| `{{$END_OF_DAY}}` | | String (UTC Instant) | End of current UTC day (e.g., `2026-10-07T23:59:59.999999999Z`) |
+| `{{$START_OF_MONTH}}` | | String (ISO Date) | First day of current month (e.g., `2026-10-01`) |
+| `{{$END_OF_MONTH}}` | | String (ISO Date) | Last day of current month (e.g., `2026-10-31`) |
+| `{{$FIRST_DAY_OF_NEXT_MONTH}}` | | String (ISO Date) | First day of next month (e.g., `2026-11-01`) |
+| `{{$START_OF_YEAR}}` | | String (ISO Date) | First day of current year (e.g., `2026-01-01`) |
+| `{{$END_OF_YEAR}}` | | String (ISO Date) | Last day of current year (e.g., `2026-12-31`) |
+
+---
+
+### Identifiers, Random Generators & Utility Tokens
+
+| Token Category | Token Expression | Example Usage | Evaluated Result |
+| :--- | :--- | :--- | :--- |
+| **UUID** | `{{$UUID}}` | `{{$UUID}}` | `f8d24235-c39d-4fe1-a579-92d46ed30c07` |
+| **Random Integer** | `{{$RANDOM_INT:min:max}}` | `{{$RANDOM_INT:1000:9999}}` | `4829` |
+| **Random Decimal** | `{{$RANDOM_DECIMAL:min:max:scale}}` | `{{$RANDOM_DECIMAL:10.00:500.00:2}}` | `142.75` |
+| **Random Alphanumeric**| `{{$RANDOM_ALPHANUMERIC:len}}` | `REF-{{$RANDOM_ALPHANUMERIC:8}}` | `REF-Z8R2UBVL` |
+| **Random Email** | `{{$RANDOM_EMAIL}}` | `{{$RANDOM_EMAIL}}` | `user_n34ty5@test.com` |
+| **Random Boolean** | `{{$RANDOM_BOOLEAN}}` | `{{$RANDOM_BOOLEAN}}` | `true` or `false` |
+| **Math Calculations** | `{{$MATH: expression}}` | `{{$MATH: 100 * 1.15}}` | `115` |
+| **Base64 Encoding** | `{{$BASE64_ENCODE:text}}` | `{{$BASE64_ENCODE:admin:secret}}` | `YWRtaW46c2VjcmV0` |
+| **Base64 Decoding** | `{{$BASE64_DECODE:b64}}` | `{{$BASE64_DECODE:YWRtaW46c2VjcmV0}}` | `admin:secret` |
+| **URL Encoding** | `{{$URL_ENCODE:text}}` | `{{$URL_ENCODE:user@test.org}}` | `user%40test.org` |
+| **SHA-256 Hash** | `{{$HASH_SHA256:text}}` | `{{$HASH_SHA256:secret123}}` | `8c6976e5b5410415bde908bd4dee15df...` |
+| **MD5 Hash** | `{{$HASH_MD5:text}}` | `{{$HASH_MD5:secret123}}` | `5d7845ac6ee7cfffafc5fe5f35cf666d` |
+| **Uppercase** | `{{$UPPERCASE:text}}` | `{{$UPPERCASE:manager}}` | `MANAGER` |
+| **Lowercase** | `{{$LOWERCASE:text}}` | `{{$LOWERCASE:MANAGER}}` | `manager` |
+
+---
+
+### Environment Variables & Config/System Properties
+
+Pathora resolves environment variables, system properties, and properties from classpath config files (`pathora.yml`, `pathora.properties`, `pathora.yaml`).
+
+| Token Expression | Syntaxes | Example Usage | Description |
+| :--- | :--- | :--- | :--- |
+| **Environment Variable** | `{{$ENV:VAR_NAME}}`<br>`{{$ENV:VAR_NAME:default}}` | `{{$ENV:PATH:default_path}}` | Resolves OS environment variables via `System.getenv()`. |
+| **System Property** | `{{$SYS:prop.name}}`<br>`{{$SYS:prop.name:default}}` | `{{$SYS:java.version}}` | Resolves JVM system properties via `System.getProperty()`. |
+| **Config & Classpath Property** | `{{$PROP:key}}`<br>`{{$PATHORA:key}}`<br>`{{$CONFIG:key}}` | `{{$PROP:pathora.environment}}`<br>`{{$PATHORA:pathora.app.name}}` | Resolves properties loaded from classpath configuration files (`pathora.yml`, `pathora.properties`, `pathora.yaml`). |
+
+#### Automatic Classpath Property Loading (`pathora.yml` / `pathora.properties`)
+Pathora automatically scans and discovers `pathora.properties`, `pathora.yml`, or `pathora.yaml` on the classpath during engine initialization.
+Nested YAML structures are flattened into dotted keys:
+
+**`src/test/resources/pathora.yml`**:
+```yaml
+pathora:
+  environment: DEMO_STAGING
+  app:
+    name: Pathora Service
+    region: AFRICA_SOUTH
+```
+
+These properties are automatically populated into the engine property registry so that tokens like `{{$PROP:pathora.environment}}` or `{{$PATHORA:pathora.app.region}}` resolve seamlessly in mutations and assertions without requiring explicit JVM `-D` flags.
 
 ---
 

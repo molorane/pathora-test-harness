@@ -3,8 +3,8 @@ package com.example.demo.executor;
 import com.example.demo.dto.policy.PolicyRequest;
 import com.example.demo.dto.policy.PolicyResponse;
 import com.example.demo.service.ComplexPolicyService;
-import org.springframework.stereotype.Component;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ComplexPolicyExecutor implements EntryPointExecutor<PolicyRequest, PolicyResponse> {

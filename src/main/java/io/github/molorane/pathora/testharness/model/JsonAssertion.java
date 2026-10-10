@@ -32,6 +32,15 @@ public record JsonAssertion(
     @JsonProperty("assertions")
     List<JsonAssertion> assertions
 ) {
+    /**
+     * Constructs a JsonAssertion with an {@link AssertionOperator} enum.
+     *
+     * @param path        the target field path
+     * @param operator    the assertion operator enum
+     * @param value       the expected value
+     * @param description human-readable description
+     * @param assertions  nested assertions
+     */
     public JsonAssertion(
         String path,
         AssertionOperator operator,
@@ -41,6 +50,15 @@ public record JsonAssertion(
         this(path, operator == null ? null : operator.name(), value, description, assertions);
     }
 
+    /**
+     * JsonCreator constructor for deserializing JsonAssertion instances from JSON or string operators.
+     *
+     * @param path        the target field path
+     * @param operator    the assertion operator object or string name
+     * @param value       the expected value
+     * @param description human-readable description
+     * @param assertions  nested assertions
+     */
     @JsonCreator
     public JsonAssertion(
         @JsonProperty("path") String path,
@@ -53,6 +71,12 @@ public record JsonAssertion(
 
     /**
      * Compact constructor ensuring default operator is {@link AssertionOperator#EQUALS} when null.
+     *
+     * @param path        the JSONPath expression pointing to the target field in the response
+     * @param operator    the assertion operator name to apply
+     * @param value       the expected value, threshold, object, or parameters required by the operator
+     * @param description optional human-readable description of the assertion's purpose
+     * @param assertions  nested assertions used by logical operators ({@code AND}, {@code OR}, {@code NOT})
      */
     public JsonAssertion {
         if (operator == null || operator.isBlank()) {

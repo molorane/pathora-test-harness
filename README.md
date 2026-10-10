@@ -23,7 +23,9 @@
 - ⚡ **Surgical Parameter Mutation**: Mutate specific JSON properties using JSONPath expressions within `mutations`, eliminating duplicate test data files.
 - 🔌 **In-Process SPI Execution (`EntryPointExecutor`)**: Dispatches mutated requests directly to Java DTOs and Spring `@Service` beans in-memory. **Zero HTTP network latency, zero web server startup overhead.**
 - 🎯 **Rich JsonPath Assertions**: Validate response nodes using Scalar, String, Date/Time, Duration, Structural, Array, Object, and Logical operators.
-- 🕒 **Dynamic Date Expressions & Time-Travel Testing**: Use dynamic tokens like `{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`, relative offsets (`+30d`, `-25y`, `+2h`), epoch timestamps, and thread-safe `PathoraClock` freezing for deterministic date assertions and payload mutations.
+- 🔤 **Dynamic Expression Language & Property Resolution**: Support for dynamic temporal tokens (`{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`, `{{$START_OF_MONTH}}`), random data (`{{$RANDOM_DECIMAL}}`, `{{$RANDOM_INT}}`, `{{$UUID}}`), arithmetic (`{{$MATH: 100 * 1.15}}`), security encoding/hashing (`{{$BASE64_ENCODE}}`, `{{$HASH_SHA256}}`), environment variables (`{{$ENV:PATH}}`), system properties (`{{$SYS:java.version}}`), and classpath configuration discovery (`{{$PROP:key}}` loaded automatically from `pathora.yml` or `pathora.properties`).
+- 🧩 **Extensible Plugin SPI Architecture**: Register custom assertion operators (`AssertionEvaluator`) and custom expression language tokens (`ExpressionTokenEvaluator`) programmatically or via zero-code Java `ServiceLoader` SPI.
+- 🕒 **Deterministic Time-Travel Testing**: Freeze the library clock (`PathoraClock`) globally or per-thread for reproducible assertions.
 - 🧪 **Flexible Test Runners**: Supports both individual test file execution (`SingleTestSuiteDemoTest`) and dynamic directory batch execution (`AllSuiteTest` via JUnit 5 `@TestFactory`).
 
 ---
@@ -109,27 +111,26 @@ public class OrderProcessingExecutor implements EntryPointExecutor<OrderRequest,
 }
 ```
 
-### 4. Dynamic Date & Time Expressions
+### 4. Dynamic Expressions & Property Resolution
 
-Pathora provides built-in expression resolution for date mutations and assertions:
+Pathora provides rich dynamic expression resolution for mutations and assertions:
 
 ```json
 {
-  "name": "Applicant Application Test",
-  "operation": "loan-service",
+  "name": "Applicant Registration & Calculation Test",
+  "operation": "user-service",
   "mutations": [
     { "path": "$.applicationDate", "value": "{{$CURRENT_DATE}}" },
-    { "path": "$.dateOfBirth", "value": "{{$CURRENT_DATE - 25y}}" },
-    { "path": "$.submittedAt", "value": "{{$CURRENT_DATETIME}}" }
+    { "path": "$.creditLimit", "value": "{{$RANDOM_DECIMAL:10.00:500.00:2}}" },
+    { "path": "$.taxedAmount", "value": "{{$MATH: 100 * 1.15}}" },
+    { "path": "$.envPath", "value": "{{$ENV:PATH:default_path}}" },
+    { "path": "$.environment", "value": "{{$PROP:pathora.environment}}" },
+    { "path": "$.authToken", "value": "{{$BASE64_ENCODE:admin:secret}}" }
   ],
   "assertions": [
     { "path": "$.approvalDate", "operator": "DATE_EQUALS", "value": "{{$CURRENT_DATE}}" },
-    { "path": "$.expiryDate", "operator": "DATE_EQUALS", "value": "{{$CURRENT_DATE + 30d}}" },
-    {
-      "path": "$.evaluatedAt",
-      "operator": "DATETIME_WITHIN_LAST",
-      "value": { "amount": 5, "unit": "MINUTES" }
-    }
+    { "path": "$.taxedAmount", "operator": "EQUALS", "value": 115.0 },
+    { "path": "$.environment", "value": "{{$PROP:pathora.environment}}" }
   ]
 }
 ```
