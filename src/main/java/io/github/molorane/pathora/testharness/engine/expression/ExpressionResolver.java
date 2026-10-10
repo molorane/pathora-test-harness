@@ -18,11 +18,11 @@ import java.util.regex.Pattern;
 public final class ExpressionResolver {
 
     private static final Pattern BRACED_PATTERN = Pattern.compile(
-        "\\{\\{\\s*\\$([a-zA-Z_]+)([^}:]*?)(?::([^}]+))?\\s*\\}\\}"
+        "\\{\\{\\s*\\$([a-zA-Z0-9_]+)([^}:]*?)(?::([^}]*))?\\s*\\}\\}"
     );
 
     private static final Pattern STANDALONE_PATTERN = Pattern.compile(
-        "^\\$([a-zA-Z_]+)([^:]*?)(?::(.+))?$"
+        "^\\$([a-zA-Z0-9_]+)([^:]*?)(?::(.*))?$"
     );
 
     private ExpressionResolver() {

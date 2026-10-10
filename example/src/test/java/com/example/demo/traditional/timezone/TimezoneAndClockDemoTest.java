@@ -226,6 +226,24 @@ class TimezoneAndClockDemoTest {
 
         assertDoesNotThrow(() -> assertionEngine.assertResponse(mutated, testCase));
     }
+
+    @Test
+    @DisplayName("Demonstrates New Expression Tokens Resolution ($CURRENT_TIME, $START_OF_MONTH, $END_OF_MONTH, $FIRST_DAY_OF_NEXT_MONTH, $START_OF_YEAR, $END_OF_YEAR, $START_OF_DAY, $END_OF_DAY)")
+    void demonstrateNewExpressionTokensResolution() {
+        LocalDate frozenDate = LocalDate.of(2026, 10, 15);
+        PathoraClock.freeze(frozenDate, ZoneOffset.UTC);
+
+        assertAll(
+                () -> assertEquals("2026-10-01", ExpressionResolver.resolveToString("{{$START_OF_MONTH}}")),
+                () -> assertEquals("2026-10-31", ExpressionResolver.resolveToString("{{$END_OF_MONTH}}")),
+                () -> assertEquals("2026-11-01", ExpressionResolver.resolveToString("{{$FIRST_DAY_OF_NEXT_MONTH}}")),
+                () -> assertEquals("2026-01-01", ExpressionResolver.resolveToString("{{$START_OF_YEAR}}")),
+                () -> assertEquals("2026-12-31", ExpressionResolver.resolveToString("{{$END_OF_YEAR}}")),
+                () -> assertEquals("2026-10-15T00:00:00Z", ExpressionResolver.resolveToString("{{$START_OF_DAY}}")),
+                () -> assertEquals("2026-10-15T23:59:59.999999999Z", ExpressionResolver.resolveToString("{{$END_OF_DAY}}")),
+                () -> assertNotNull(ExpressionResolver.resolveToString("{{$CURRENT_TIME}}"))
+        );
+    }
 }
 
 

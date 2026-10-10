@@ -21,9 +21,33 @@ public record UserResponse(
         String postalCode,
         List<String> allBlankTags,
         List<String> anyBlankTags,
-        List<String> noneBlankTags
+        List<String> noneBlankTags,
+        String requestId,
+        Integer pinCode,
+        String promoRef,
+        String contactEmail,
+        Boolean emailNotifications,
+        String registrationTime,
+        String shiftStartTime,
+        String shiftEndTime,
+        String billingCycleStartDate,
+        String billingCycleEndDate,
+        String nextBillingCycleDate,
+        String fiscalYearStartDate,
+        String fiscalYearEndDate,
+        String authToken,
+        String decodedAuthToken,
+        String encodedRedirectUrl,
+        String payloadSignature,
+        String passwordHash,
+        String uppercaseCode,
+        String lowercaseCode,
+        Double creditLimit,
+        Double taxedAmount,
+        String envPath,
+        String sysJavaVersion,
+        String pathoraConfigEnv,
+        String pathoraAppName,
+        String pathoraAppRegion
 ) {
 }
-
-
-

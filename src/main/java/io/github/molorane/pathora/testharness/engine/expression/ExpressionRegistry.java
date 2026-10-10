@@ -1,13 +1,27 @@
 package io.github.molorane.pathora.testharness.engine.expression;
 
+import io.github.molorane.pathora.testharness.engine.expression.base64.Base64DecodeTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.base64.Base64EncodeTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.date.DateBoundaryTokenEvaluator;
 import io.github.molorane.pathora.testharness.engine.expression.date.DateTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.datetime.DateTimeBoundaryTokenEvaluator;
 import io.github.molorane.pathora.testharness.engine.expression.datetime.DateTimeTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.env.EnvTokenEvaluator;
 import io.github.molorane.pathora.testharness.engine.expression.epoch.EpochMillisTokenEvaluator;
 import io.github.molorane.pathora.testharness.engine.expression.epoch.EpochSecondsTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.hash.HashMd5TokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.hash.HashSha256TokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.math.MathTokenEvaluator;
 import io.github.molorane.pathora.testharness.engine.expression.random.RandomAlphanumericTokenEvaluator;
 import io.github.molorane.pathora.testharness.engine.expression.random.RandomBooleanTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.random.RandomDecimalTokenEvaluator;
 import io.github.molorane.pathora.testharness.engine.expression.random.RandomEmailTokenEvaluator;
 import io.github.molorane.pathora.testharness.engine.expression.random.RandomIntTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.string.LowercaseTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.string.UppercaseTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.sys.SysPropertyTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.time.TimeTokenEvaluator;
+import io.github.molorane.pathora.testharness.engine.expression.url.UrlEncodeTokenEvaluator;
 import io.github.molorane.pathora.testharness.engine.expression.uuid.UuidTokenEvaluator;
 
 import java.util.Collections;
@@ -26,18 +40,37 @@ public final class ExpressionRegistry {
     private static final Map<String, ExpressionTokenEvaluator> REGISTRY = new ConcurrentHashMap<>();
 
     static {
+        // Automatically load classpath properties (pathora.properties, pathora.yml, pathora.yaml)
+        io.github.molorane.pathora.testharness.config.PathoraConfigLoader.init();
+
         // Register default built-in date, time, and timestamp evaluators
         register(new DateTokenEvaluator());
+        register(new DateBoundaryTokenEvaluator());
         register(new DateTimeTokenEvaluator());
+        register(new DateTimeBoundaryTokenEvaluator());
+        register(new TimeTokenEvaluator());
         register(new EpochMillisTokenEvaluator());
         register(new EpochSecondsTokenEvaluator());
 
         // Register default built-in random & identifier evaluators
         register(new UuidTokenEvaluator());
         register(new RandomIntTokenEvaluator());
+        register(new RandomDecimalTokenEvaluator());
         register(new RandomAlphanumericTokenEvaluator());
         register(new RandomEmailTokenEvaluator());
         register(new RandomBooleanTokenEvaluator());
+
+        // Register default built-in encoding, hashing, string transformation, math, env, and sys evaluators
+        register(new Base64EncodeTokenEvaluator());
+        register(new Base64DecodeTokenEvaluator());
+        register(new UrlEncodeTokenEvaluator());
+        register(new HashSha256TokenEvaluator());
+        register(new HashMd5TokenEvaluator());
+        register(new UppercaseTokenEvaluator());
+        register(new LowercaseTokenEvaluator());
+        register(new MathTokenEvaluator());
+        register(new EnvTokenEvaluator());
+        register(new SysPropertyTokenEvaluator());
 
         // Load custom plugin evaluators via ServiceLoader
         try {

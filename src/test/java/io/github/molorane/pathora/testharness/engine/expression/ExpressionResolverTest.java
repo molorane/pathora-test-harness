@@ -33,6 +33,17 @@ class ExpressionResolverTest {
     }
 
     @Test
+    void testCurrentTimeAndCalendarBoundaries() {
+        assertEquals("12:00:00", ExpressionResolver.resolve("{{$CURRENT_TIME}}"));
+        assertEquals("2026-10-07T00:00:00Z", ExpressionResolver.resolve("{{$START_OF_DAY}}"));
+        assertEquals("2026-10-01", ExpressionResolver.resolve("{{$START_OF_MONTH}}"));
+        assertEquals("2026-10-31", ExpressionResolver.resolve("{{$END_OF_MONTH}}"));
+        assertEquals("2026-11-01", ExpressionResolver.resolve("{{$FIRST_DAY_OF_NEXT_MONTH}}"));
+        assertEquals("2026-01-01", ExpressionResolver.resolve("{{$START_OF_YEAR}}"));
+        assertEquals("2026-12-31", ExpressionResolver.resolve("{{$END_OF_YEAR}}"));
+    }
+
+    @Test
     void testCurrentDateTimeAndNow() {
         assertEquals("2026-10-07T12:00:00Z", ExpressionResolver.resolve("{{$CURRENT_DATETIME}}"));
         assertEquals("2026-10-07T12:00:00Z", ExpressionResolver.resolve("{{$NOW}}"));

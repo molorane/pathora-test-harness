@@ -33,9 +33,34 @@ public class UserRegistrationService {
                 "90210",
                 List.of("  ", "\t", ""),
                 List.of("tag1", "   "),
-                List.of("ADMIN", "SUPPORT", "STAFF")
+                List.of("ADMIN", "SUPPORT", "STAFF"),
+                userRequest.requestId(),
+                userRequest.pinCode(),
+                userRequest.promoRef(),
+                userRequest.contactEmail(),
+                userRequest.emailNotifications(),
+                userRequest.registrationTime(),
+                userRequest.shiftStartTime(),
+                userRequest.shiftEndTime(),
+                userRequest.billingCycleStartDate(),
+                userRequest.billingCycleEndDate(),
+                userRequest.nextBillingCycleDate(),
+                userRequest.fiscalYearStartDate(),
+                userRequest.fiscalYearEndDate(),
+                userRequest.authToken(),
+                userRequest.decodedAuthToken(),
+                userRequest.encodedRedirectUrl(),
+                userRequest.payloadSignature(),
+                userRequest.passwordHash(),
+                userRequest.uppercaseCode(),
+                userRequest.lowercaseCode(),
+                userRequest.creditLimit(),
+                userRequest.taxedAmount(),
+                userRequest.envPath(),
+                userRequest.sysJavaVersion(),
+                userRequest.pathoraConfigEnv(),
+                userRequest.pathoraAppName(),
+                userRequest.pathoraAppRegion()
         );
     }
 }
-
-
