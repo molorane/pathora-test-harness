@@ -8,7 +8,7 @@ import io.github.molorane.pathora.testharness.exception.HarnessAssertionExceptio
 import io.github.molorane.pathora.testharness.model.AssertionOperator;
 import io.github.molorane.pathora.testharness.model.JsonAssertion;
 import io.github.molorane.pathora.testharness.model.RuleTestCase;
-import io.github.molorane.pathora.testharness.util.DateExpressionResolver;
+import io.github.molorane.pathora.testharness.engine.expression.ExpressionResolver;
 import io.github.molorane.pathora.testharness.util.PathoraClock;
 
 import java.time.Clock;
@@ -99,7 +99,7 @@ public class AssertionEngine {
         // Context-aware operators resolve their own paths
         AssertionEvaluator handler = resolveEvaluator(assertion);
         if (handler instanceof DocumentContextAwareEvaluator contextAware) {
-            Object resolvedValue = DateExpressionResolver.resolve(assertion.value());
+            Object resolvedValue = ExpressionResolver.resolve(assertion.value());
             contextAware.apply(context, resolvedValue);
             return;
         }
@@ -300,7 +300,7 @@ public class AssertionEngine {
                 "No handler registered for operator: " + assertion.operatorName());
         }
 
-        Object resolvedValue = DateExpressionResolver.resolve(assertion.value());
+        Object resolvedValue = ExpressionResolver.resolve(assertion.value());
         handler.apply(
             assertion.path(),
             actual,

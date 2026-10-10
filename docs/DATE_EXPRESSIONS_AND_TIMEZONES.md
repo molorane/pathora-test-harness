@@ -279,8 +279,8 @@ LocalDate testDate = LocalDate.of(2028, 2, 29);
 PathoraClock.freeze(testDate, ZoneId.of("Africa/Johannesburg"));
 
 // Dynamic tokens resolve to 2028-02-29
-DateExpressionResolver.resolveToString("{{$CURRENT_DATE}}"); // "2028-02-29"
-DateExpressionResolver.resolveToString("{{$CURRENT_DATE + 30d}}"); // "2028-03-30"
+ExpressionResolver.resolveToString("{{$CURRENT_DATE}}"); // "2028-02-29"
+ExpressionResolver.resolveToString("{{$CURRENT_DATE + 30d}}"); // "2028-03-30"
 ```
 
 #### Way 4: Programmatic Thread-Scoped Freezing (Parallel Isolation)
@@ -347,7 +347,7 @@ public class TestHarnessConfig {
 
 1. When a test case executes, `AssertionEngine` (and `RuleTestCaseExecutor`) inspects `testCase.timezone()` and `suite.timezone()`.
 2. It calls `PathoraClock.setThreadClock(Clock.system(ZoneId.of(zoneId)))`.
-3. All evaluator calls (`PathoraClock.today()`, `PathoraClock.now()`) and expression resolvers (`DateExpressionResolver.resolve(...)`) query the `ThreadLocal` clock first.
+3. All evaluator calls (`PathoraClock.today()`, `PathoraClock.now()`) and expression resolvers (`ExpressionResolver.resolve(...)`) query the `ThreadLocal` clock first.
 4. In a `finally` block, `PathoraClock.clearThreadClock()` is invoked, ensuring zero state leakage across test cases or worker threads.
 
 ---
