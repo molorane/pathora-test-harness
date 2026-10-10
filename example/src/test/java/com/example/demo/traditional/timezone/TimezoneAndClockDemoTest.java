@@ -1,5 +1,6 @@
 package com.example.demo.traditional.timezone;
 
+import io.github.molorane.pathora.testharness.engine.expression.ExpressionResolver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import io.github.molorane.pathora.testharness.engine.JsonMutationEngine;
 import io.github.molorane.pathora.testharness.model.*;
-import io.github.molorane.pathora.testharness.util.DateExpressionResolver;
 import io.github.molorane.pathora.testharness.util.PathoraClock;
 
 import java.time.*;
@@ -91,9 +91,9 @@ class TimezoneAndClockDemoTest {
         assertAll(
                 () -> assertEquals(joburg, PathoraClock.getZoneId()),
                 () -> assertEquals(LocalDate.of(2028, 2, 29), PathoraClock.today()),
-                () -> assertEquals("2028-02-29", DateExpressionResolver.resolveToString("{{$CURRENT_DATE}}")),
-                () -> assertEquals("2028-03-30", DateExpressionResolver.resolveToString("{{$CURRENT_DATE + 30d}}")),
-                () -> assertEquals("2003-02-28", DateExpressionResolver.resolveToString("{{$CURRENT_DATE - 25y}}"))
+                () -> assertEquals("2028-02-29", ExpressionResolver.resolveToString("{{$CURRENT_DATE}}")),
+                () -> assertEquals("2028-03-30", ExpressionResolver.resolveToString("{{$CURRENT_DATE + 30d}}")),
+                () -> assertEquals("2003-02-28", ExpressionResolver.resolveToString("{{$CURRENT_DATE - 25y}}"))
         );
 
         String sampleResponse = """
@@ -133,7 +133,7 @@ class TimezoneAndClockDemoTest {
         // Current thread sees the thread-scoped clock and timezone
         assertEquals(newYork, PathoraClock.getZoneId());
         assertEquals(LocalDate.of(2030, 7, 4), PathoraClock.today());
-        assertEquals("2030-07-04", DateExpressionResolver.resolveToString("{{$CURRENT_DATE}}"));
+        assertEquals("2030-07-04", ExpressionResolver.resolveToString("{{$CURRENT_DATE}}"));
 
         // Another concurrent thread still sees the global clock in UTC
         Thread worker = new Thread(() -> {
@@ -159,7 +159,7 @@ class TimezoneAndClockDemoTest {
         assertNotNull(PathoraClock.today());
 
         // Dynamic tokens resolve using Europe/London
-        String dateString = DateExpressionResolver.resolveToString("{{$CURRENT_DATE}}");
+        String dateString = ExpressionResolver.resolveToString("{{$CURRENT_DATE}}");
         assertEquals(LocalDate.now(londonClock).toString(), dateString);
     }
 
@@ -225,6 +225,24 @@ class TimezoneAndClockDemoTest {
         );
 
         assertDoesNotThrow(() -> assertionEngine.assertResponse(mutated, testCase));
+    }
+
+    @Test
+    @DisplayName("Demonstrates New Expression Tokens Resolution ($CURRENT_TIME, $START_OF_MONTH, $END_OF_MONTH, $FIRST_DAY_OF_NEXT_MONTH, $START_OF_YEAR, $END_OF_YEAR, $START_OF_DAY, $END_OF_DAY)")
+    void demonstrateNewExpressionTokensResolution() {
+        LocalDate frozenDate = LocalDate.of(2026, 10, 15);
+        PathoraClock.freeze(frozenDate, ZoneOffset.UTC);
+
+        assertAll(
+                () -> assertEquals("2026-10-01", ExpressionResolver.resolveToString("{{$START_OF_MONTH}}")),
+                () -> assertEquals("2026-10-31", ExpressionResolver.resolveToString("{{$END_OF_MONTH}}")),
+                () -> assertEquals("2026-11-01", ExpressionResolver.resolveToString("{{$FIRST_DAY_OF_NEXT_MONTH}}")),
+                () -> assertEquals("2026-01-01", ExpressionResolver.resolveToString("{{$START_OF_YEAR}}")),
+                () -> assertEquals("2026-12-31", ExpressionResolver.resolveToString("{{$END_OF_YEAR}}")),
+                () -> assertEquals("2026-10-15T00:00:00Z", ExpressionResolver.resolveToString("{{$START_OF_DAY}}")),
+                () -> assertEquals("2026-10-15T23:59:59.999999999Z", ExpressionResolver.resolveToString("{{$END_OF_DAY}}")),
+                () -> assertNotNull(ExpressionResolver.resolveToString("{{$CURRENT_TIME}}"))
+        );
     }
 }
 

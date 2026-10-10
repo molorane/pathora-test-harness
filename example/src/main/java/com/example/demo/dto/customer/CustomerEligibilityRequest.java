@@ -12,9 +12,9 @@ package com.example.demo.dto.customer;
  * @param region             the operating or business region for the customer
  */
 public record CustomerEligibilityRequest(
-        String customerId,
-        String subscriptionStatus,
-        String region
+    String customerId,
+    String subscriptionStatus,
+    String region
 ) {
 }
 

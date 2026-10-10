@@ -3,8 +3,8 @@ package com.example.demo.executor;
 import com.example.demo.dto.order.OrderRequest;
 import com.example.demo.dto.order.OrderResponse;
 import com.example.demo.service.OrderProcessingService;
-import org.springframework.stereotype.Component;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
+import org.springframework.stereotype.Component;
 
 @Component
 public class OrderProcessingExecutor implements EntryPointExecutor<OrderRequest, OrderResponse> {

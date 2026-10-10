@@ -3,8 +3,8 @@ package com.example.demo.executor;
 import com.example.demo.dto.payment.PaymentRequest;
 import com.example.demo.dto.payment.PaymentResponse;
 import com.example.demo.service.PaymentGatewayService;
-import org.springframework.stereotype.Component;
 import io.github.molorane.pathora.testharness.spi.EntryPointExecutor;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PaymentGatewayExecutor implements EntryPointExecutor<PaymentRequest, PaymentResponse> {

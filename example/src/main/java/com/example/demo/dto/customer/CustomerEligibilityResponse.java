@@ -12,10 +12,10 @@ package com.example.demo.dto.customer;
  * @param eligibleInPrimaryRegion whether the customer falls within the allowed region set
  */
 public record CustomerEligibilityResponse(
-        String customerId,
-        String subscriptionStatus,
-        String region,
-        boolean eligibleInPrimaryRegion
+    String customerId,
+    String subscriptionStatus,
+    String region,
+    boolean eligibleInPrimaryRegion
 ) {
 }
 

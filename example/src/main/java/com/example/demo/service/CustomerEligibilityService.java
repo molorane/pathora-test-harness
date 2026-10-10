@@ -52,7 +52,7 @@ public class CustomerEligibilityService {
     /**
      * Resolves whether the customer is active in a specific region.
      *
-     * @param customerId the customer identifier
+     * @param customerId     the customer identifier
      * @param allowedRegions the regions allowed for this rule
      * @return {@code true} when the customer's region is included in the allowed region list
      */
@@ -62,9 +62,9 @@ public class CustomerEligibilityService {
         }
         String region = getRegion(customerId);
         Set<String> normalized = allowedRegions.stream()
-                .filter(value -> value != null && !value.isBlank())
-                .map(value -> value.trim().toUpperCase())
-                .collect(java.util.stream.Collectors.toSet());
+            .filter(value -> value != null && !value.isBlank())
+            .map(value -> value.trim().toUpperCase())
+            .collect(java.util.stream.Collectors.toSet());
         return normalized.contains(region.toUpperCase());
     }
 }

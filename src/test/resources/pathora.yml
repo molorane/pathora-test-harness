@@ -1,0 +1,4 @@
+pathora:
+  test:
+    env: STAGING
+    timeout: 5000

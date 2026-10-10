@@ -25,12 +25,12 @@ public class HasActiveSubscriptionEvaluator implements AssertionEvaluator {
 
         if (!"ACTIVE".equalsIgnoreCase(currentStatus) || !requiredState.equalsIgnoreCase(currentStatus)) {
             throw new HarnessAssertionException(
-                    null,
-                    path,
-                    expected,
-                    actual,
-                    "HAS_ACTIVE_SUBSCRIPTION failed at " + path + ". Expected active subscription for customer "
-                            + customerId + ", but status was " + currentStatus
+                null,
+                path,
+                expected,
+                actual,
+                "HAS_ACTIVE_SUBSCRIPTION failed at " + path + ". Expected active subscription for customer "
+                    + customerId + ", but status was " + currentStatus
             );
         }
     }

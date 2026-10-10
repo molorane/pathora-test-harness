@@ -3,11 +3,11 @@ package com.example.demo.dto.inventory;
 import java.time.Instant;
 
 public record InventoryResponse(
-        String productId,
-        int stockLevel,
-        String stockStatus,
-        double unitPrice,
-        Instant lastUpdated
+    String productId,
+    int stockLevel,
+    String stockStatus,
+    double unitPrice,
+    Instant lastUpdated
 ) {
 }
 

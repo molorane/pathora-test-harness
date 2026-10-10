@@ -35,17 +35,17 @@ public class LoanApplicationService {
         boolean requiresManualReview = "APPROVED_CONDITIONAL".equals(decisionStatus);
 
         return new LoanResponse(
-                applicationId,
-                loanRequest.applicantId(),
-                approvedAmount,
-                interestRate,
-                decisionStatus,
-                Instant.now(),
-                eligible,
-                requiresManualReview,
-                -10,
-                loanRequest.creditScore(),
-                null
+            applicationId,
+            loanRequest.applicantId(),
+            approvedAmount,
+            interestRate,
+            decisionStatus,
+            Instant.now(),
+            eligible,
+            requiresManualReview,
+            -10,
+            loanRequest.creditScore(),
+            null
         );
     }
 }

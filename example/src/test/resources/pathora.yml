@@ -1,0 +1,5 @@
+pathora:
+  environment: DEMO_STAGING
+  app:
+    name: Pathora Example Service
+    region: AFRICA_SOUTH

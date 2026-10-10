@@ -4,6 +4,7 @@ import com.example.demo.operator.HasActiveSubscriptionEvaluator;
 import com.example.demo.operator.InRegionEvaluator;
 import com.example.demo.service.CustomerEligibilityService;
 import io.github.molorane.pathora.testharness.engine.AssertionEngine;
+import io.github.molorane.pathora.testharness.engine.expression.ExpressionRegistry;
 
 /**
  * Internal registrar responsible for registering the custom assertion evaluators.
@@ -16,12 +17,12 @@ public class CustomOperatorRegistrar {
     /**
      * Constructs the registrar.
      *
-     * @param assertionEngine the harness engine instance
+     * @param assertionEngine            the harness engine instance
      * @param customerEligibilityService the service used to resolve business facts
      */
     public CustomOperatorRegistrar(
-            AssertionEngine assertionEngine,
-            CustomerEligibilityService customerEligibilityService) {
+        AssertionEngine assertionEngine,
+        CustomerEligibilityService customerEligibilityService) {
         this.assertionEngine = assertionEngine;
         this.customerEligibilityService = customerEligibilityService;
         registerOperators();
@@ -29,9 +30,11 @@ public class CustomOperatorRegistrar {
 
     private void registerOperators() {
         assertionEngine.registerOperator("HAS_ACTIVE_SUBSCRIPTION",
-                new HasActiveSubscriptionEvaluator(customerEligibilityService));
+            new HasActiveSubscriptionEvaluator(customerEligibilityService));
         assertionEngine.registerOperator("IN_REGION",
-                new InRegionEvaluator(customerEligibilityService));
+            new InRegionEvaluator(customerEligibilityService));
+        ExpressionRegistry.register(
+            new com.example.demo.expression.DemoTenantTokenEvaluator());
     }
 }
 

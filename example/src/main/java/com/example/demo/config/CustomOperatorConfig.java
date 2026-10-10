@@ -1,9 +1,9 @@
 package com.example.demo.config;
 
 import com.example.demo.service.CustomerEligibilityService;
+import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import io.github.molorane.pathora.testharness.engine.AssertionEngine;
 
 /**
  * Spring configuration that registers custom assertion operators for the demo.
@@ -18,14 +18,14 @@ public class CustomOperatorConfig {
     /**
      * Creates a dedicated registrar that binds the extension logic to the shared assertion engine.
      *
-     * @param assertionEngine the existing engine used by the harness
+     * @param assertionEngine            the existing engine used by the harness
      * @param customerEligibilityService the business service used to evaluate customer state
      * @return a registrar bean that wires the custom operators
      */
     @Bean
     public CustomOperatorRegistrar customOperatorRegistrar(
-            AssertionEngine assertionEngine,
-            CustomerEligibilityService customerEligibilityService) {
+        AssertionEngine assertionEngine,
+        CustomerEligibilityService customerEligibilityService) {
         return new CustomOperatorRegistrar(assertionEngine, customerEligibilityService);
     }
 }

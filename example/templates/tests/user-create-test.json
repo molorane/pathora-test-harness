@@ -3,7 +3,7 @@
   "tests": [
     {
       "name": "Valid User Registration Test",
-      "description": "Validates successful user account creation, userId generation, role assignment, and active status.",
+      "description": "Validates successful user account creation, userId generation, role assignment, active status, and dynamic expression resolution including environment variables, system properties, random decimal, math, random int/boolean/email, UUID, time, calendar boundary, base64, url, hash, and case transformation tokens.",
       "operation": "user-registration-service",
       "mutations": [
         {
@@ -17,6 +17,118 @@
         {
           "path": "$.role",
           "value": "MANAGER"
+        },
+        {
+          "path": "$.requestId",
+          "value": "{{$UUID}}"
+        },
+        {
+          "path": "$.pinCode",
+          "value": "{{$RANDOM_INT:1000:9999}}"
+        },
+        {
+          "path": "$.promoRef",
+          "value": "REF-{{$RANDOM_ALPHANUMERIC:8}}"
+        },
+        {
+          "path": "$.contactEmail",
+          "value": "{{$RANDOM_EMAIL}}"
+        },
+        {
+          "path": "$.emailNotifications",
+          "value": "{{$RANDOM_BOOLEAN}}"
+        },
+        {
+          "path": "$.registrationTime",
+          "value": "{{$CURRENT_TIME}}"
+        },
+        {
+          "path": "$.shiftStartTime",
+          "value": "{{$START_OF_DAY}}"
+        },
+        {
+          "path": "$.shiftEndTime",
+          "value": "{{$END_OF_DAY}}"
+        },
+        {
+          "path": "$.billingCycleStartDate",
+          "value": "{{$START_OF_MONTH}}"
+        },
+        {
+          "path": "$.billingCycleEndDate",
+          "value": "{{$END_OF_MONTH}}"
+        },
+        {
+          "path": "$.nextBillingCycleDate",
+          "value": "{{$FIRST_DAY_OF_NEXT_MONTH}}"
+        },
+        {
+          "path": "$.fiscalYearStartDate",
+          "value": "{{$START_OF_YEAR}}"
+        },
+        {
+          "path": "$.fiscalYearEndDate",
+          "value": "{{$END_OF_YEAR}}"
+        },
+        {
+          "path": "$.authToken",
+          "value": "{{$BASE64_ENCODE:admin:secret}}"
+        },
+        {
+          "path": "$.decodedAuthToken",
+          "value": "{{$BASE64_DECODE:YWRtaW46c2VjcmV0}}"
+        },
+        {
+          "path": "$.encodedRedirectUrl",
+          "value": "{{$URL_ENCODE:user@cyberdyne.org}}"
+        },
+        {
+          "path": "$.payloadSignature",
+          "value": "{{$HASH_SHA256:admin:secret}}"
+        },
+        {
+          "path": "$.passwordHash",
+          "value": "{{$HASH_MD5:secret123}}"
+        },
+        {
+          "path": "$.uppercaseCode",
+          "value": "{{$UPPERCASE:sarah_connor_manager}}"
+        },
+        {
+          "path": "$.lowercaseCode",
+          "value": "{{$LOWERCASE:SARAH_CONNOR_MANAGER}}"
+        },
+        {
+          "path": "$.creditLimit",
+          "value": "{{$RANDOM_DECIMAL:10.00:500.00:2}}"
+        },
+        {
+          "path": "$.taxedAmount",
+          "value": "{{$MATH: 100 * 1.15}}"
+        },
+        {
+          "path": "$.envPath",
+          "value": "{{$ENV:PATH:default_env_path}}"
+        },
+        {
+          "path": "$.sysJavaVersion",
+          "value": "{{$SYS:java.version:17.0.0}}"
+        },
+        {
+          "path": "$.pathoraConfigEnv",
+          "value": "{{$PROP:pathora.environment}}"
+        },
+        {
+          "path": "$.pathoraAppName",
+          "value": "{{$PROP:pathora.app.name}}"
+        },
+        {
+          "path": "$.pathoraAppRegion",
+          "value": "{{$PATHORA:pathora.app.region}}"
+        },
+        {
+          "path": "$.customTenantCode",
+          "value": "{{$DEMO_TENANT:CYBERDYNE}}"
         }
       ],
       "assertions": [
@@ -46,6 +158,157 @@
           "path": "$.status",
           "value": "ACTIVE",
           "description": "Status must be ACTIVE"
+        },
+        {
+          "path": "$.requestId",
+          "operator": "IS_UUID",
+          "description": "Request ID must be a valid UUID generated dynamically"
+        },
+        {
+          "path": "$.pinCode",
+          "operator": "BETWEEN",
+          "value": {
+            "min": 1000,
+            "max": 9999
+          },
+          "description": "PIN code must be a random integer between 1000 and 9999"
+        },
+        {
+          "path": "$.promoRef",
+          "operator": "STARTS_WITH",
+          "value": "REF-",
+          "description": "Promo reference must start with REF- prefix"
+        },
+        {
+          "path": "$.contactEmail",
+          "operator": "IS_EMAIL",
+          "description": "Contact email must be a valid email"
+        },
+        {
+          "path": "$.emailNotifications",
+          "operator": "IS_NOT_NULL",
+          "description": "Email notifications must be a non-null boolean"
+        },
+        {
+          "path": "$.registrationTime",
+          "value": "{{$CURRENT_TIME}}",
+          "description": "Registration time matches dynamic HH:mm:ss current time"
+        },
+        {
+          "path": "$.shiftStartTime",
+          "operator": "DATETIME_BEFORE",
+          "value": "{{$END_OF_DAY}}",
+          "description": "Shift start time is before shift end time"
+        },
+        {
+          "path": "$.billingCycleStartDate",
+          "operator": "DATE_EQUALS",
+          "value": "{{$START_OF_MONTH}}",
+          "description": "Billing cycle start date matches start of month"
+        },
+        {
+          "path": "$.billingCycleEndDate",
+          "operator": "DATE_AFTER",
+          "value": "{{$START_OF_MONTH}}",
+          "description": "Billing cycle end date is after start of month"
+        },
+        {
+          "path": "$.nextBillingCycleDate",
+          "operator": "DATE_EQUALS",
+          "value": "{{$FIRST_DAY_OF_NEXT_MONTH}}",
+          "description": "Next billing cycle date matches first day of next month"
+        },
+        {
+          "path": "$.fiscalYearStartDate",
+          "operator": "DATE_EQUALS",
+          "value": "{{$START_OF_YEAR}}",
+          "description": "Fiscal year start date matches start of year"
+        },
+        {
+          "path": "$.fiscalYearEndDate",
+          "operator": "DATE_EQUALS",
+          "value": "{{$END_OF_YEAR}}",
+          "description": "Fiscal year end date matches end of year"
+        },
+        {
+          "path": "$.authToken",
+          "value": "{{$BASE64_ENCODE:admin:secret}}",
+          "description": "Auth token matches Base64 encoded string"
+        },
+        {
+          "path": "$.decodedAuthToken",
+          "value": "{{$BASE64_DECODE:YWRtaW46c2VjcmV0}}",
+          "description": "Decoded auth token matches original plain text"
+        },
+        {
+          "path": "$.encodedRedirectUrl",
+          "value": "{{$URL_ENCODE:user@cyberdyne.org}}",
+          "description": "URL encoded value matches URL encoded string"
+        },
+        {
+          "path": "$.payloadSignature",
+          "value": "{{$HASH_SHA256:admin:secret}}",
+          "description": "Payload signature matches SHA-256 hash"
+        },
+        {
+          "path": "$.passwordHash",
+          "value": "{{$HASH_MD5:secret123}}",
+          "description": "Password hash matches MD5 hash"
+        },
+        {
+          "path": "$.uppercaseCode",
+          "value": "{{$UPPERCASE:sarah_connor_manager}}",
+          "description": "Uppercase transformation matches uppercase string"
+        },
+        {
+          "path": "$.lowercaseCode",
+          "value": "{{$LOWERCASE:SARAH_CONNOR_MANAGER}}",
+          "description": "Lowercase transformation matches lowercase string"
+        },
+        {
+          "path": "$.creditLimit",
+          "operator": "BETWEEN",
+          "value": {
+            "min": 10.0,
+            "max": 500.0
+          },
+          "description": "Credit limit is a random decimal between 10.00 and 500.00"
+        },
+        {
+          "path": "$.taxedAmount",
+          "operator": "EQUALS",
+          "value": 115.0,
+          "description": "Taxed amount matches calculated total with tax"
+        },
+        {
+          "path": "$.envPath",
+          "value": "{{$ENV:PATH:default_env_path}}",
+          "description": "Env path matches resolved environment variable"
+        },
+        {
+          "path": "$.sysJavaVersion",
+          "value": "{{$SYS:java.version:17.0.0}}",
+          "description": "Sys java version matches resolved system property"
+        },
+        {
+          "path": "$.pathoraConfigEnv",
+          "value": "{{$PROP:pathora.environment}}",
+          "description": "Pathora config environment matches pathora.yml property"
+        },
+        {
+          "path": "$.pathoraAppName",
+          "value": "{{$PROP:pathora.app.name}}",
+          "description": "Pathora app name matches pathora.yml property"
+        },
+        {
+          "path": "$.pathoraAppRegion",
+          "value": "{{$PATHORA:pathora.app.region}}",
+          "description": "Pathora app region matches pathora.yml property"
+        },
+        {
+          "path": "$.customTenantCode",
+          "value": "{{$DEMO_TENANT:CYBERDYNE}}",
+          "description": "Custom tenant code matches resolved DEMO_TENANT custom expression"
         }
       ]
     }

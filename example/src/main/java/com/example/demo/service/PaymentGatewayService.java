@@ -16,11 +16,11 @@ public class PaymentGatewayService {
         String status = paymentRequest.amount() > 0 ? "SUCCESS" : "FAILED";
 
         return new PaymentResponse(
-                paymentId,
-                paymentRequest.transactionId(),
-                paymentRequest.amount(),
-                status,
-                Instant.now()
+            paymentId,
+            paymentRequest.transactionId(),
+            paymentRequest.amount(),
+            status,
+            Instant.now()
         );
     }
 }

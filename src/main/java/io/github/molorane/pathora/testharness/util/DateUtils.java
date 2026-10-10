@@ -1,5 +1,7 @@
 package io.github.molorane.pathora.testharness.util;
 
+import io.github.molorane.pathora.testharness.engine.expression.ExpressionResolver;
+
 import java.time.*;
 import java.time.format.DateTimeParseException;
 
@@ -20,7 +22,7 @@ public class DateUtils {
         if (value == null) {
             throw new IllegalArgumentException("Cannot parse date at " + path + ": null");
         }
-        String resolved = DateExpressionResolver.resolveToString(value).trim();
+        String resolved = ExpressionResolver.resolveToString(value).trim();
         LocalDate parsed = tryParseDateString(resolved);
         if (parsed != null) {
             return parsed;
@@ -42,7 +44,7 @@ public class DateUtils {
         if (value == null) {
             throw new IllegalArgumentException("Cannot parse datetime at " + path + ": null");
         }
-        String resolved = DateExpressionResolver.resolveToString(value).trim();
+        String resolved = ExpressionResolver.resolveToString(value).trim();
         try {
             return LocalDateTime.parse(resolved);
         } catch (DateTimeParseException ignored) {
@@ -78,7 +80,7 @@ public class DateUtils {
         if (value instanceof LocalDateTime localDateTime) {
             return localDateTime.toLocalDate();
         }
-        String str = DateExpressionResolver.resolveToString(String.valueOf(value)).trim();
+        String str = ExpressionResolver.resolveToString(String.valueOf(value)).trim();
         LocalDate parsed = tryParseDateString(str);
         if (parsed != null) {
             return parsed;
