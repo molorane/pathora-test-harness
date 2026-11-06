@@ -38,7 +38,7 @@
 <dependency>
     <groupId>io.github.molorane</groupId>
     <artifactId>pathora-test-harness</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.7</version>
 </dependency>
 ```
 

@@ -5,6 +5,9 @@ This document provides a comprehensive reference of all assertion operators supp
 > **💡 Temporal Testing & Dynamic Expressions Guide**:
 > For an in-depth reference on dynamic date tokens (`{{$CURRENT_DATE}}`, `{{$CURRENT_DATETIME}}`), relative offsets (`+30d`, `-25y`, `+2h`), custom formatting patterns, 7 timezone configuration methods, and `PathoraClock` deterministic time-travel testing, see **[DATE_EXPRESSIONS_AND_TIMEZONES.md](DATE_EXPRESSIONS_AND_TIMEZONES.md)**.
 
+> **Convention Note:**
+> In assertion configurations that take an object in the assertion's `value` field (such as `EQUALS_WITH_TOLERANCE`, `DATETIME_EQUALS_WITH_TOLERANCE`, `MONEY_EQUALS_WITH_TOLERANCE`, and duration comparison operators), `expected` is canonical for the target threshold/expected value, while `value` is retained as a deprecated fallback.
+
 ---
 
 ## Table of Contents

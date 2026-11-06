@@ -26,12 +26,77 @@ class DurationLessThanEvaluatorTest {
 
     /**
      * ```json
-     * { "Operator": "DURATION_LESS_THAN", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "MINUTES", "value": 180 } }
+     * { "Operator": "DURATION_LESS_THAN", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "MINUTES", "expected": 180 } }
      * ```
      */
     @Test
     @DisplayName("PASS: duration < threshold")
     void shouldPassWhenLess() {
+        DocumentContext ctx = parse("""
+            {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T12:00:00"}}
+            """);
+        Object value = TestJsonHelper.parse("""
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "MINUTES",
+              "expected": 180
+            }
+            """);
+        assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
+    }
+
+    /**
+     * ```json
+     * { "Operator": "DURATION_LESS_THAN", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "MINUTES", "expected": 180 } }
+     * ```
+     */
+    @Test
+    @DisplayName("FAIL: duration equals threshold (not strictly less)")
+    void shouldFailWhenEqual() {
+        DocumentContext ctx = parse("""
+            {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T13:00:00"}}
+            """);
+        Object value = TestJsonHelper.parse("""
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "MINUTES",
+              "expected": 180
+            }
+            """);
+        assertThatThrownBy(() -> operator.apply(ctx, value))
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DURATION_LESS_THAN failed");
+    }
+
+    /**
+     * ```json
+     * { "Operator": "DURATION_LESS_THAN", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "MINUTES", "expected": 180 } }
+     * ```
+     */
+    @Test
+    @DisplayName("FAIL: duration > threshold")
+    void shouldFailWhenGreater() {
+        DocumentContext ctx = parse("""
+            {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T14:00:00"}}
+            """);
+        Object value = TestJsonHelper.parse("""
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "MINUTES",
+              "expected": 180
+            }
+            """);
+        assertThatThrownBy(() -> operator.apply(ctx, value))
+            .isInstanceOf(HarnessAssertionException.class)
+            .hasMessageContaining("DURATION_LESS_THAN failed");
+    }
+
+    @Test
+    @DisplayName("PASS: legacy 'value' fallback when duration < threshold")
+    void shouldPassWithLegacyValueFallback() {
         DocumentContext ctx = parse("""
             {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T12:00:00"}}
             """);
@@ -46,51 +111,21 @@ class DurationLessThanEvaluatorTest {
         assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
     }
 
-    /**
-     * ```json
-     * { "Operator": "DURATION_LESS_THAN", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "MINUTES", "value": 180 } }
-     * ```
-     */
     @Test
-    @DisplayName("FAIL: duration equals threshold (not strictly less)")
-    void shouldFailWhenEqual() {
+    @DisplayName("FAIL: missing 'expected' key")
+    void shouldFailWhenExpectedKeyIsMissing() {
         DocumentContext ctx = parse("""
-            {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T13:00:00"}}
+            {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T12:00:00"}}
             """);
         Object value = TestJsonHelper.parse("""
             {
               "startPath": "$.outputData.start",
               "endPath": "$.outputData.end",
-              "unit": "MINUTES",
-              "value": 180
+              "unit": "MINUTES"
             }
             """);
         assertThatThrownBy(() -> operator.apply(ctx, value))
-            .isInstanceOf(HarnessAssertionException.class)
-            .hasMessageContaining("DURATION_LESS_THAN failed");
-    }
-
-    /**
-     * ```json
-     * { "Operator": "DURATION_LESS_THAN", "Value": { "startPath": "$.outputData.start", "endPath": "$.outputData.end", "unit": "MINUTES", "value": 180 } }
-     * ```
-     */
-    @Test
-    @DisplayName("FAIL: duration > threshold")
-    void shouldFailWhenGreater() {
-        DocumentContext ctx = parse("""
-            {"outputData": {"start": "2026-01-01T10:00:00", "end": "2026-01-01T14:00:00"}}
-            """);
-        Object value = TestJsonHelper.parse("""
-            {
-              "startPath": "$.outputData.start",
-              "endPath": "$.outputData.end",
-              "unit": "MINUTES",
-              "value": 180
-            }
-            """);
-        assertThatThrownBy(() -> operator.apply(ctx, value))
-            .isInstanceOf(HarnessAssertionException.class)
-            .hasMessageContaining("DURATION_LESS_THAN failed");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("'expected'");
     }
 }

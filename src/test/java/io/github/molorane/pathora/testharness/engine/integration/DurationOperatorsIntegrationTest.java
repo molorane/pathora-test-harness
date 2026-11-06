@@ -29,13 +29,13 @@ class DurationOperatorsIntegrationTest extends BaseIntegrationTest {
                 "startPath", "$.startDate",
                 "endPath", "$.endDate",
                 "unit", "HOURS",
-                "value", 1
+                "expected", 1
             )),
             assertion(null, AssertionOperator.DURATION_LESS_THAN, Map.of(
                 "startPath", "$.startDate",
                 "endPath", "$.endDate",
                 "unit", "HOURS",
-                "value", 5
+                "expected", 5
             )),
             assertion(null, AssertionOperator.DURATION_BETWEEN, Map.of(
                 "startPath", "$.startDate",

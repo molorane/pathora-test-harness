@@ -42,7 +42,28 @@ public class DurationEqualsEvaluator implements DocumentContextAwareEvaluator {
 
         String startPath = String.valueOf(config.get("startPath"));
         String endPath = String.valueOf(config.get("endPath"));
-        long expectedDuration = DurationHelper.toLong(config.get("expected"));
+        Object rawExpected;
+        String keyName;
+        if (config.containsKey("expected")) {
+            rawExpected = config.get("expected");
+            keyName = "expected";
+        } else if (config.containsKey("value")) {
+            rawExpected = config.get("value");
+            keyName = "value";
+        } else {
+            throw new IllegalArgumentException(
+                "DURATION_EQUALS requires missing or non-numeric 'expected' in Value");
+        }
+        long expectedDuration;
+        try {
+            if (rawExpected == null) {
+                throw new IllegalArgumentException("missing or non-numeric '" + keyName + "'");
+            }
+            expectedDuration = DurationHelper.toLong(rawExpected);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(
+                "DURATION_EQUALS requires valid numeric duration, missing or non-numeric '" + keyName + "': " + rawExpected, e);
+        }
         var unit = DurationHelper.parseUnit(String.valueOf(config.get("unit")));
 
         long actual = DurationHelper.calculateDuration(

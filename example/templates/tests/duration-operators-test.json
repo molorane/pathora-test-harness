@@ -37,7 +37,7 @@
             "startPath": "$.evaluationTimestamp",
             "endPath": "$.expirationTimestamp",
             "unit": "MONTHS",
-            "value": 10
+            "expected": 10
           },
           "description": "Duration between dates exceeds 10 months"
         },
@@ -48,7 +48,7 @@
             "startPath": "$.evaluationTimestamp",
             "endPath": "$.expirationTimestamp",
             "unit": "YEARS",
-            "value": 2
+            "expected": 2
           },
           "description": "Duration between dates is less than 2 years"
         }

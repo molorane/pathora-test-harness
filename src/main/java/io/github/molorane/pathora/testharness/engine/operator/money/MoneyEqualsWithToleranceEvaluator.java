@@ -40,8 +40,10 @@ public class MoneyEqualsWithToleranceEvaluator implements AssertionEvaluator {
         Object normalizedActual = AssertionUtils.normalizeResult(actual, path);
 
         Map<String, Object> config = AssertionUtils.toMap(expected);
-        Object expObj = config.get("expected");
-        if (expObj == null) {
+        Object expObj;
+        if (config.containsKey("expected")) {
+            expObj = config.get("expected");
+        } else {
             expObj = config.get("value");
         }
         Object tolObj = config.get("tolerance");

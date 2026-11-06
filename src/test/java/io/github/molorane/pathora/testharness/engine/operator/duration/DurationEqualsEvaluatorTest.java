@@ -94,4 +94,39 @@ class DurationEqualsEvaluatorTest {
             .hasMessageContaining("DURATION_EQUALS failed")
             .hasMessageContaining("120");
     }
+
+    @Test
+    @DisplayName("PASS: legacy 'value' fallback when duration equals expected")
+    void shouldPassWithLegacyValueFallback() {
+        DocumentContext ctx = parse("""
+            {"outputData": {"start": "2026-01-01", "end": "2026-01-06"}}
+            """);
+        Object value = TestJsonHelper.parse("""
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "DAYS",
+              "value": 5
+            }
+            """);
+        assertThatNoException().isThrownBy(() -> operator.apply(ctx, value));
+    }
+
+    @Test
+    @DisplayName("FAIL: missing 'expected' key")
+    void shouldFailWhenExpectedKeyIsMissing() {
+        DocumentContext ctx = parse("""
+            {"outputData": {"start": "2026-01-01", "end": "2026-01-06"}}
+            """);
+        Object value = TestJsonHelper.parse("""
+            {
+              "startPath": "$.outputData.start",
+              "endPath": "$.outputData.end",
+              "unit": "DAYS"
+            }
+            """);
+        assertThatThrownBy(() -> operator.apply(ctx, value))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("'expected'");
+    }
 }

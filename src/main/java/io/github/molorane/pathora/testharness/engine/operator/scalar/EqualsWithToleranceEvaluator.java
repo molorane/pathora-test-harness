@@ -44,11 +44,32 @@ public class EqualsWithToleranceEvaluator implements AssertionEvaluator {
         if (expected instanceof Map<?, ?> map) {
             @SuppressWarnings("unchecked")
             Map<String, Object> conf = (Map<String, Object>) map;
-            expectedVal = toDouble(conf.get("value"), path + " (expected value)");
+            Object expValObj;
+            String keyName;
+            if (conf.containsKey("expected")) {
+                expValObj = conf.get("expected");
+                keyName = "expected";
+            } else if (conf.containsKey("value")) {
+                expValObj = conf.get("value");
+                keyName = "value";
+            } else {
+                throw new IllegalArgumentException(
+                    "EQUALS_WITH_TOLERANCE requires missing or non-numeric 'expected' at " + path);
+            }
+            if (expValObj == null) {
+                throw new IllegalArgumentException(
+                    "EQUALS_WITH_TOLERANCE has missing or non-numeric '" + keyName + "' at " + path);
+            }
+            try {
+                expectedVal = toDouble(expValObj, path + " (" + keyName + ")");
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(
+                    "EQUALS_WITH_TOLERANCE has missing or non-numeric '" + keyName + "' at " + path + ": " + expValObj, e);
+            }
             tolerance = toDouble(conf.getOrDefault("tolerance", 0.0), path + " (tolerance)");
         } else {
             throw new IllegalArgumentException(
-                "EQUALS_WITH_TOLERANCE requires Value object with 'value' and 'tolerance' at " + path);
+                "EQUALS_WITH_TOLERANCE requires Value object with 'expected' and 'tolerance' at " + path);
         }
 
         if (Math.abs(actualVal - expectedVal) > tolerance) {
@@ -75,4 +96,3 @@ public class EqualsWithToleranceEvaluator implements AssertionEvaluator {
         throw new IllegalArgumentException("Expected numeric value at " + path + " but was: " + value);
     }
 }
-
