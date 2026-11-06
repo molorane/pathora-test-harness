@@ -35,7 +35,7 @@
           "path": "$.interestRate",
           "operator": "EQUALS_WITH_TOLERANCE",
           "value": {
-            "value": 6.5,
+            "expected": 6.5,
             "tolerance": 0.1
           },
           "description": "Interest rate should equal 6.5 within 0.1 tolerance"

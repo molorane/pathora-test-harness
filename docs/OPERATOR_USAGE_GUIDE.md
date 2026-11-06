@@ -174,6 +174,9 @@ An assertion entry contains the following attributes:
 | `path` | String | Conditional | JSONPath expression targeting the node to validate (e.g. `$.status`). Omit or set to `null` for cross-field operations. |
 | `operator` | String | Optional | The operator enum name. Defaults to `EQUALS` if omitted. |
 | `value` | Any | Optional | The expected value, range, or configuration object. **Omit when not required.** |
+
+> **Convention Note:**
+> For assertion operators that take a configuration object in the assertion's `value` field (such as `EQUALS_WITH_TOLERANCE`, `DATETIME_EQUALS_WITH_TOLERANCE`, `MONEY_EQUALS_WITH_TOLERANCE`, `DURATION_EQUALS`, `DURATION_GREATER_THAN`, and `DURATION_LESS_THAN`), `expected` is canonical for the target threshold/expected value. The legacy `value` key is retained as a deprecated fallback for backward compatibility.
 | `description` | String | Optional | Descriptive summary of the assertion rule. |
 | `assertions` | Array | Conditional | Nested child assertions used exclusively with logical operators (`AND`, `OR`, `NOT`). |
 
@@ -1216,7 +1219,7 @@ Validates that elapsed duration between two dates is strictly greater than expec
     "startPath": "$.sessionStart",
     "endPath": "$.sessionEnd",
     "unit": "SECONDS",
-    "value": 30
+    "expected": 30
   },
   "description": "Session duration must be greater than 30 seconds"
 }
@@ -1231,7 +1234,7 @@ Validates that elapsed duration between two dates is strictly less than expected
     "startPath": "$.requestTimestamp",
     "endPath": "$.responseTimestamp",
     "unit": "SECONDS",
-    "value": 3
+    "expected": 3
   },
   "description": "Response duration must be under 3 seconds"
 }

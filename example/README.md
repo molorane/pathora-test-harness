@@ -396,6 +396,8 @@ Expected output:
 
 Pathora Test Harness provides comprehensive operators for validating JSON responses:
 
+> **Convention Note:** In assertion configurations that take an object in the assertion's `value` field (e.g. `EQUALS_WITH_TOLERANCE`, `DATETIME_EQUALS_WITH_TOLERANCE`, `MONEY_EQUALS_WITH_TOLERANCE`, and duration operators), `expected` is canonical for the target threshold/value, while `value` is retained as a deprecated fallback.
+
 | Category | Operator | Description | Example Value Syntax |
 | :--- | :--- | :--- | :--- |
 | **Scalar** | *(omitted / `EQUALS`)* | Exact value equality | `"ACTIVE"` / `100` |
@@ -424,8 +426,8 @@ Pathora Test Harness provides comprehensive operators for validating JSON respon
 | | | | `IS_PAST_DATETIME` / `IS_FUTURE_DATETIME` | Compare against current system timestamp | `null` |
 | | | | `DATETIME_WITHIN_NEXT` / `DATETIME_WITHIN_LAST` | DateTime window check | `{"amount": 24, "unit": "HOURS"}` |
 | **Duration** | `DURATION_EQUALS` | Exact duration between two date paths | `{"startPath": "$.start", "endPath": "$.end", "unit": "DAYS", "expected": 365}` |
-| | `DURATION_GREATER_THAN` | Duration > threshold | `{"startPath": "$.start", "endPath": "$.end", "unit": "MONTHS", "value": 11}` |
-| | `DURATION_LESS_THAN` | Duration < threshold | `{"startPath": "$.start", "endPath": "$.end", "unit": "YEARS", "value": 2}` |
+| | `DURATION_GREATER_THAN` | Duration > threshold | `{"startPath": "$.start", "endPath": "$.end", "unit": "MONTHS", "expected": 11}` |
+| | `DURATION_LESS_THAN` | Duration < threshold | `{"startPath": "$.start", "endPath": "$.end", "unit": "YEARS", "expected": 2}` |
 | | `DATE_AFTER_DURATION` | End date is after start date + duration | `{"basePath": "$.start", "comparePath": "$.end", "amount": 30, "unit": "DAYS"}` |
 | | `DATE_BEFORE_DURATION` | End date is before start date + duration | `{"basePath": "$.start", "comparePath": "$.end", "amount": 400, "unit": "DAYS"}` |
 | **Structural** | `PATH_EXISTS` | JSONPath exists in response | `null` |

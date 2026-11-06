@@ -20,7 +20,7 @@ import java.util.Map;
  *   "Value": {
  *     "startPath": "$.outputData.startedAt",
  *     "endPath": "$.outputData.completedAt",
- *     "value": 10,
+ *     "expected": 10,
  *     "unit": "SECONDS"
  *   }
  * }
@@ -42,7 +42,28 @@ public class DurationGreaterThanEvaluator implements DocumentContextAwareEvaluat
 
         String startPath = String.valueOf(config.get("startPath"));
         String endPath = String.valueOf(config.get("endPath"));
-        long threshold = DurationHelper.toLong(config.get("value"));
+        Object rawExpected;
+        String keyName;
+        if (config.containsKey("expected")) {
+            rawExpected = config.get("expected");
+            keyName = "expected";
+        } else if (config.containsKey("value")) {
+            rawExpected = config.get("value");
+            keyName = "value";
+        } else {
+            throw new IllegalArgumentException(
+                "DURATION_GREATER_THAN requires missing or non-numeric 'expected' in Value");
+        }
+        long threshold;
+        try {
+            if (rawExpected == null) {
+                throw new IllegalArgumentException("missing or non-numeric '" + keyName + "'");
+            }
+            threshold = DurationHelper.toLong(rawExpected);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(
+                "DURATION_GREATER_THAN requires valid numeric threshold, missing or non-numeric '" + keyName + "': " + rawExpected, e);
+        }
         var unit = DurationHelper.parseUnit(String.valueOf(config.get("unit")));
 
         long actual = DurationHelper.calculateDuration(
